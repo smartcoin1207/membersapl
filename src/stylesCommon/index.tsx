@@ -6,6 +6,9 @@ const colors = {
   border: '#989898',
   background: '#F4F2EF',
   placeholder: '#BDBDBD',
+  backgroundTab: '#595757',
+  activeTab: '#1AA1AA',
+  inActiveTab: '#FFFFFF',
 };
 
 const stylesCommon = StyleSheet.create({

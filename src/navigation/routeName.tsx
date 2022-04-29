@@ -1,5 +1,14 @@
 const ROUTE_NAME = {
+  //auth
   LOGIN: 'LOGIN',
+
+  //common
+  TAB_SCREEN: 'TAB_SCREEN',
+
+  //app
+  LISTCHAT_SCREEN: 'LISTCHAT_SCREEN',
+  SETTING_SCREEN: 'SETTING_SCREEN',
+  USER_SCREEN: 'USER_SCREEN',
 };
 
 export {ROUTE_NAME};
