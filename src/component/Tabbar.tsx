@@ -11,6 +11,7 @@ import {ROUTE_NAME} from '../navigation/routeName';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
 // import {iconBell, appointmentsIcon, scheduleIcon, historyIcon} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
+import {verticalScale, moderateScale} from 'react-native-size-matters';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -47,9 +48,9 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
             <Text
               style={{
                 color: isFocused ? active_color : inActive_color,
-                fontSize: 12,
-                ...stylesCommon.fontWeight600,
-                marginTop: 6,
+                fontSize: moderateScale(12),
+                ...stylesCommon.fontWeight500,
+                marginTop: verticalScale(6),
               }}>
               {renderLabel(route.name)}
             </Text>
@@ -64,11 +65,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     width: width,
-    paddingTop: 12,
+    paddingTop: verticalScale(12),
     paddingBottom: height >= 812 ? getBottomSpace() + 5 : 12,
     backgroundColor: colors.backgroundTab,
-    borderTopWidth: 1,
-    borderColor: '#DDDDDD',
   },
   button: {
     width: width / 3,
