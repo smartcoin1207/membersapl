@@ -1,11 +1,19 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
+import {useDispatch} from 'react-redux';
+import {demoActionChange} from '@redux';
 
 const ListChat = () => {
+  const dispatch = useDispatch();
   return (
     <View style={styles.container}>
-      <Text>ListChat</Text>
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(demoActionChange(0));
+        }}>
+        <Text>ListChat</Text>
+      </TouchableOpacity>
     </View>
   );
 };

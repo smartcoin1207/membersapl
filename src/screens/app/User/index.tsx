@@ -5,7 +5,7 @@ import {styles} from './styles';
 const User = () => {
   return (
     <View style={styles.container}>
-      <Text>Setting</Text>
+      <Text>User</Text>
     </View>
   );
 };
