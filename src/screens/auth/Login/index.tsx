@@ -1,42 +1,77 @@
 import React, {useCallback, useState} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {styles} from './styles';
-
-import {useSelector, useDispatch} from 'react-redux';
+import {logo} from '@images';
+import LinearGradient from 'react-native-linear-gradient';
+import {colors} from '@stylesCommon';
+import {Formik} from 'formik';
+import * as yup from 'yup';
+import {validateForm} from '@util';
+import {useDispatch} from 'react-redux';
 import {demoActionChange} from '@redux';
 
 import {AppButton, AppInput} from '@component';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const demoState = useSelector((state: any) => state?.demo?.number);
+  const formInitialValues = {
+    email: '',
+    password: '',
+  };
+  const validationSchema = yup.object().shape({
+    email: validateForm().email,
+    password: validateForm().password,
+  });
 
-  const [value, setValue] = useState<string>();
-
-  const onChangeState = useCallback(() => {
-    dispatch(demoActionChange(demoState + 1));
-  }, [demoState]);
-
-  const onChange = useCallback(
-    (txt: string) => {
-      setValue(txt);
-    },
-    [value],
-  );
+  const onSubmit = useCallback((value: any) => {
+    dispatch(demoActionChange(1));
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Nomar: {demoState}</Text>
-      <Text style={styles.txtFontMedium}>Medium: {demoState}</Text>
-      <Text style={styles.txtFontBold}>Bold: {demoState}</Text>
-
-      <AppInput
-        placeholder="メールアドレス"
-        onChange={onChange}
-        value={value}
-        error="Error"
-      />
-      <AppButton title="グループを追加" onPress={onChangeState} />
+      <Image style={styles.image} source={logo} />
+      <Formik
+        initialValues={formInitialValues}
+        validationSchema={validationSchema}
+        validateOnChange={false}
+        onSubmit={onSubmit}>
+        {props => {
+          return (
+            <LinearGradient
+              colors={colors.colorGradient}
+              style={styles.linearGradient}>
+              <View style={styles.viewContent}>
+                <Text style={styles.txtTitleLogin}>
+                  すでにメンバーの方はこちらメールアドレスとパスワードをご入力の上、ログインしてください。
+                </Text>
+                <AppInput
+                  placeholder="メールアドレス"
+                  onChange={props.handleChange('email')}
+                  value={props.values.email}
+                  error={props.errors.email}
+                />
+                <AppInput
+                  placeholder="パスワード"
+                  onChange={props.handleChange('password')}
+                  value={props.values.password}
+                  error={props.errors.password}
+                />
+                <AppButton
+                  title="グループを追加"
+                  onPress={props.handleSubmit}
+                />
+                <View style={styles.viewBottom}>
+                  <TouchableOpacity>
+                    <Text style={styles.txtBottom}>
+                      パスワードをお忘れの場合
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </LinearGradient>
+          );
+        }}
+      </Formik>
     </View>
   );
 };

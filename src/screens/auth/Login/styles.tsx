@@ -9,15 +9,35 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     paddingHorizontal: '16@s',
   },
-  txtFontMedium: {
-    marginTop: 10,
-    ...stylesCommon.fontWeight500,
-    fontSize: '14@ms'
+  image: {
+    width: '119@vs',
+    height: '119@vs',
+    marginTop: '30@vs',
   },
-  txtFontBold: {
-    marginVertical: 10,
-    ...stylesCommon.fontWeight600,
-    fontSize: '16@ms'
+  linearGradient: {
+    marginTop: '30@vs',
+    borderRadius: '10@ms',
+    padding: 1,
+  },
+  viewContent: {
+    borderRadius: '10@ms',
+    backgroundColor: colors.background,
+    paddingHorizontal: '24@s',
+    paddingVertical: '40@vs',
+  },
+  txtTitleLogin: {
+    ...stylesCommon.fontWeight500,
+    fontSize: '16@ms',
+    color: colors.darkGrayText,
+    marginBottom: '44@vs',
+  },
+  viewBottom: {
+    marginTop: '20@vs',
+    alignItems: 'center',
+  },
+  txtBottom: {
+    color: colors.primary,
+    fontSize: '16@ms',
   },
 });
 

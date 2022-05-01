@@ -4,17 +4,19 @@ const colors = {
   primary: '#1AA1AA',
   secondPrimary: '#EA5A31',
   border: '#989898',
-  background: '#F4F2EF',
+  background: '#E5E5E5',
   placeholder: '#BDBDBD',
   backgroundTab: '#595757',
   activeTab: '#1AA1AA',
   inActiveTab: '#FFFFFF',
+  darkGrayText: '#595757',
+  colorGradient: ['#8BC227', '#1AA1AA', '#FCD000', '#F4A217', '#EA5A31'],
 };
 
 const stylesCommon = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    background: colors.background,
+    backgroundColor: colors.background,
   },
   fontWeight500: {
     fontFamily: 'Inter-Medium',

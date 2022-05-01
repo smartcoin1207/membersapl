@@ -35,7 +35,7 @@ const AppButton = React.memo((props: buttonType) => {
 const styles = ScaledSheet.create({
   container: {
     width: '100%',
-    paddingVertical: '16@vs',
+    paddingVertical: '13@vs',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: colors.primary,

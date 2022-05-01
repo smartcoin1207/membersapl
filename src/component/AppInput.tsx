@@ -37,7 +37,7 @@ const styles = ScaledSheet.create({
     width: '100%',
   },
   container: {
-    marginVertical: '8@ms',
+    marginBottom: '8@ms',
     width: '100%',
     borderRadius: '8@ms',
     borderWidth: 1,
@@ -48,7 +48,7 @@ const styles = ScaledSheet.create({
   input: {
     fontSize: '16@ms',
     ...stylesCommon.fontWeight500,
-    paddingVertical: '14@vs',
+    paddingVertical: '13@vs',
   },
   txtTxtError: {
     fontSize: '12@ms',
