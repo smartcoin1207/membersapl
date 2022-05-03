@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import {ROUTE_NAME} from '../navigation/routeName';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
-// import {iconBell, appointmentsIcon, scheduleIcon, historyIcon} from '@images';
+import {iconTabChat, iconTabSetting, defaultAvatar} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
-import {verticalScale, moderateScale} from 'react-native-size-matters';
+import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -34,6 +34,14 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
         return 'その他';
     }
   };
+  const renderIcon = (value: string) => {
+    switch (value) {
+      case ROUTE_NAME.LISTCHAT_SCREEN:
+        return iconTabChat;
+      case ROUTE_NAME.SETTING_SCREEN:
+        return iconTabSetting;
+    }
+  };
   return (
     <View style={styles.container}>
       {state.routes.map((route: any, index: number) => {
@@ -45,13 +53,26 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
         };
         return (
           <TouchableOpacity onPress={onPress} style={styles.button} key={index}>
+            {route.name === ROUTE_NAME.USER_SCREEN ? (
+              <Image source={defaultAvatar} style={styles.icon} />
+            ) : (
+              <Image
+                source={renderIcon(route.name)}
+                style={[
+                  {
+                    tintColor: isFocused ? active_color : inActive_color,
+                  },
+                  styles.icon,
+                ]}
+              />
+            )}
             <Text
-              style={{
-                color: isFocused ? active_color : inActive_color,
-                fontSize: moderateScale(12),
-                ...stylesCommon.fontWeight500,
-                marginTop: verticalScale(6),
-              }}>
+              style={[
+                {
+                  color: isFocused ? active_color : inActive_color,
+                },
+                styles.txtLabel,
+              ]}>
               {renderLabel(route.name)}
             </Text>
           </TouchableOpacity>
@@ -75,7 +96,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    resizeMode: 'contain',
+    width: scale(23),
+    height: scale(23),
+  },
+  txtLabel: {
+    fontSize: moderateScale(12),
+    ...stylesCommon.fontWeight500,
+    marginTop: verticalScale(4),
   },
 });
 

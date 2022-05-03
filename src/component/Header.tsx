@@ -1,13 +1,47 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
 import {getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
 import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
-import {iconBack, iconDetail, iconSearch} from '@images';
+import {iconBack, iconDetail, iconSearch, logoImage} from '@images';
 import {HITSLOP} from '@util';
+import {useNavigation} from '@react-navigation/native';
 
-const Header = React.memo(() => {
+interface HeaderProps {
+  title?: string;
+  back?: any;
+  customBack?: any;
+  imageCenter?: any;
+  sourceImageCenter?: any;
+  onRightFirst?: any;
+  onRightSecond?: any;
+  iconRightFirst?: any;
+  iconRightSecond?: any;
+}
+
+const Header = React.memo((props: HeaderProps) => {
+  const navigation = useNavigation<any>();
+  const {
+    back,
+    customBack,
+    imageCenter,
+    sourceImageCenter,
+    title,
+    onRightFirst,
+    onRightSecond,
+    iconRightFirst,
+    iconRightSecond,
+  } = props;
+
+  const onPressBack = useCallback(() => {
+    if (customBack) {
+      customBack();
+    } else {
+      navigation.goBack();
+    }
+  }, []);
+
   return (
     <LinearGradient
       colors={colors.colorGradient}
@@ -16,24 +50,42 @@ const Header = React.memo(() => {
       end={{x: 0, y: 0}}>
       <View style={styles.viewHeader}>
         <View style={styles.viewLeft}>
-          <TouchableOpacity hitSlop={HITSLOP} style={styles.buttonBack}>
-            <Image source={iconBack} />
-          </TouchableOpacity>
+          {back && (
+            <TouchableOpacity
+              hitSlop={HITSLOP}
+              style={styles.buttonBack}
+              onPress={onPressBack}>
+              <Image source={iconBack} />
+            </TouchableOpacity>
+          )}
         </View>
         <View style={styles.viewCenter}>
+          {imageCenter && (
+            <Image
+              source={sourceImageCenter ? sourceImageCenter : logoImage}
+              style={styles.imageCenter}
+            />
+          )}
           <Text style={styles.txtTitle} numberOfLines={1}>
-            チャットグループ名
+            {title}
           </Text>
         </View>
         <View style={styles.viewRight}>
-          <TouchableOpacity
-            hitSlop={{...HITSLOP, right: 10}}
-            style={styles.buttonRightSecond}>
-            <Image source={iconSearch} />
-          </TouchableOpacity>
-          <TouchableOpacity hitSlop={{...HITSLOP, left: 0}}>
-            <Image source={iconDetail} />
-          </TouchableOpacity>
+          {onRightSecond && (
+            <TouchableOpacity
+              hitSlop={{...HITSLOP, right: 10}}
+              style={styles.buttonRightSecond}
+              onPress={onRightSecond}>
+              <Image source={iconRightSecond} />
+            </TouchableOpacity>
+          )}
+          {onRightFirst && (
+            <TouchableOpacity
+              hitSlop={{...HITSLOP, left: 0}}
+              onPress={onRightFirst}>
+              <Image source={iconRightFirst} />
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </LinearGradient>
@@ -83,6 +135,12 @@ const styles = StyleSheet.create({
   },
   buttonRightSecond: {
     marginRight: scale(14),
+  },
+  imageCenter: {
+    marginRight: scale(9),
+    width: 24,
+    height: 24,
+    borderRadius: 12,
   },
 });
 

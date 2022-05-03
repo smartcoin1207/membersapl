@@ -9,7 +9,7 @@ const ListChat = () => {
   const dispatch = useDispatch();
   return (
     <View style={styles.container}>
-      <Header />
+      <Header title="チャットグループ一覧" imageCenter />
       <View style={styles.viewContent}>
         <TouchableOpacity
           onPress={() => {
