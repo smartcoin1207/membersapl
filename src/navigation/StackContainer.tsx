@@ -9,7 +9,7 @@ import StackTab from './StackTab';
 
 const Stack = createNativeStackNavigator();
 
-const NavigationApp = () => {
+const NavigationApp = React.forwardRef((props: any, ref: any) => {
   const screenOptions = {
     headerShown: false,
   };
@@ -35,7 +35,9 @@ const NavigationApp = () => {
       );
     }
   };
-  return <NavigationContainer>{renderStackApp()}</NavigationContainer>;
-};
+  return (
+    <NavigationContainer ref={ref}>{renderStackApp()}</NavigationContainer>
+  );
+});
 
 export default NavigationApp;
