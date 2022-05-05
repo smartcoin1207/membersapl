@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {describeSuccessResponse, describeErrorResponse} from './logger';
-// import {showMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {store} from '../redux/store';
 const api = axios.create();
 
-const BASEURL = '';
+const BASEURL = 'https://member-chat-api.adamo.tech/api';
 
 api.interceptors.request.use(
   async (config: any) => {
@@ -41,10 +41,10 @@ api.interceptors.response.use(
     if (error?.response?.data?.data?.screen_detail) {
     } else {
       if (error?.response?.data?.show_alert) {
-        // showMessage({
-        //   message: message,
-        //   type: 'danger',
-        // });
+        showMessage({
+          message: message,
+          type: 'danger',
+        });
       }
     }
     describeErrorResponse(error);

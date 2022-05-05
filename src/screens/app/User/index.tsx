@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
@@ -13,8 +13,23 @@ import {
   iconLogout,
 } from '@images';
 import {ViewItem} from './components/ViewItem';
+import {ModalConfirm} from '@component';
+import {useDispatch} from 'react-redux';
+import {logOut} from '@redux';
 
 const User = () => {
+  const dispatch = useDispatch();
+  const [modal, setModal] = useState<boolean>(false);
+
+  const onCancelModal = useCallback(() => {
+    setModal(!modal);
+  }, [modal]);
+
+  const onLogout = useCallback(() => {
+    onCancelModal();
+    dispatch(logOut());
+  }, [modal]);
+
   return (
     <View style={styles.container}>
       <Header title="個人設定" imageCenter />
@@ -54,9 +69,16 @@ const User = () => {
             isLogout
             hideBorder
             hideNext
+            onClick={onCancelModal}
           />
         </ScrollView>
       </View>
+      <ModalConfirm
+        visible={modal}
+        onCancel={onCancelModal}
+        titleHeader="本当にログアウトしますか？"
+        onConfirm={onLogout}
+      />
     </View>
   );
 };

@@ -11,6 +11,7 @@ const iconNext = require('./IconNext.png');
 const iconLogout = require('./IconLogout.png');
 const iconTabChat = require('./IconTabChat.png');
 const iconTabSetting = require('./IconTabSetting.png');
+const iconAddListChat = require('./IconAddListChat.png');
 
 export {
   iconBack,
@@ -26,4 +27,5 @@ export {
   iconLogout,
   iconTabChat,
   iconTabSetting,
+  iconAddListChat,
 };

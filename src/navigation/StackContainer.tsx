@@ -14,10 +14,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
     headerShown: false,
   };
 
-  let token = useSelector((state: any) => state?.demo?.number);
+  let token = useSelector((state: any) => state?.auth?.token);
 
   const renderStackApp = () => {
-    if (token === 0) {
+    if (!token) {
       return (
         <Stack.Navigator screenOptions={screenOptions}>
           <Stack.Screen name={ROUTE_NAME.LOGIN} component={screens.Login} />

@@ -2,15 +2,8 @@
 import * as yup from 'yup';
 export const validateForm = () => {
   return {
-    email: yup
-      .string()
-      .required('This field is required')
-      .email('Email is not valid'),
-    password: yup
-      .string()
-      .required('This field is required')
-      .min(6, 'Password must be at least 6 characters')
-      .max(30, 'Password may not be greater than 30 characters'),
+    login: yup.string().required('This field is required'),
+    password: yup.string().required('This field is required'),
     confirmPassword: yup
       .string()
       .required('This field is required')
