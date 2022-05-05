@@ -8,23 +8,23 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {validateForm} from '@util';
 import {useDispatch} from 'react-redux';
-import {demoActionChange} from '@redux';
+import {demoActionChange, login} from '@redux';
 
 import {AppButton, AppInput} from '@component';
 
 const Login = () => {
   const dispatch = useDispatch();
   const formInitialValues = {
-    email: '',
+    login: '',
     password: '',
   };
   const validationSchema = yup.object().shape({
-    email: validateForm().email,
+    login: validateForm().login,
     password: validateForm().password,
   });
 
   const onSubmit = useCallback((value: any) => {
-    dispatch(demoActionChange(1));
+    dispatch(login(value));
   }, []);
 
   return (
@@ -46,15 +46,16 @@ const Login = () => {
                 </Text>
                 <AppInput
                   placeholder="メールアドレス"
-                  onChange={props.handleChange('email')}
-                  value={props.values.email}
-                  error={props.errors.email}
+                  onChange={props.handleChange('login')}
+                  value={props.values.login}
+                  error={props.errors.login}
                 />
                 <AppInput
                   placeholder="パスワード"
                   onChange={props.handleChange('password')}
                   value={props.values.password}
                   error={props.errors.password}
+                  secureTextEntry={true}
                 />
                 <AppButton
                   title="グループを追加"
