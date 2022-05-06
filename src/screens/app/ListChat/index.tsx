@@ -1,12 +1,29 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
 import {Item} from './component/Item';
+import {useFocusEffect} from '@react-navigation/native';
+
+import {getRoomList} from '@redux';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
 
 const ListChat = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation<any>();
+  const listRoom = useSelector((state: any) => state.chat.roomList?.data);
   const [value, setValue] = useState<string>('');
+  const [key, setKey] = useState<string>('');
+
+  useFocusEffect(
+    useCallback(() => {
+      dispatch(getRoomList({key: key}));
+    }, []),
+  );
 
   const onChangeText = (text: string) => {
     setValue(text);
@@ -14,12 +31,16 @@ const ListChat = () => {
 
   const renderItem = ({item}: any) => <Item item={item} />;
 
+  const onCreate = useCallback(() => {
+    navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header
         title="チャットグループ一覧"
         imageCenter
-        onRightFirst={() => {}}
+        onRightFirst={onCreate}
         iconRightFirst={iconAddListChat}
       />
       <View style={styles.viewContent}>
@@ -33,7 +54,7 @@ const ListChat = () => {
           styleIcon={styles.icon}
         />
         <FlatList
-          data={[1, 2, 3, 4, 5, 6, 7, 8, 9]}
+          data={listRoom}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}

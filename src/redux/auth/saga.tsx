@@ -4,13 +4,12 @@ import {saveToken} from './action';
 import {typeAuth} from './type';
 import {GlobalService, loginApi, logOutApi} from '@services';
 
-export interface ResponseGenerator {
+interface ResponseGenerator {
   result?: any;
   data?: any;
 }
 
 export function* loginSaga(action: any) {
-  console.log(action);
   try {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield loginApi(action?.payload);
@@ -22,7 +21,6 @@ export function* loginSaga(action: any) {
 }
 
 export function* logOutSaga(action: any) {
-  console.log(action);
   try {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield logOutApi();
