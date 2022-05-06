@@ -27,7 +27,7 @@ const Item = React.memo((props: any) => {
               {item?.name}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              {item?.last_message}
+              {item?.lastMessageJoin?.message}
             </Text>
           </>
         </View>
