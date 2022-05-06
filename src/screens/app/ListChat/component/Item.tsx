@@ -3,7 +3,7 @@ import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext, defaultAvatar} from '@images';
+import {iconNext, defaultAvatar, iconPin} from '@images';
 
 const Item = React.memo((props: any) => {
   const {item} = props;
@@ -12,23 +12,34 @@ const Item = React.memo((props: any) => {
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <View style={styles.image}>
-            <Image source={defaultAvatar} style={styles.image} />
-            <View style={styles.viewActive}>
+            <Image
+              source={item?.icon_image ? item?.icon_image : defaultAvatar}
+              style={styles.image}
+            />
+            {/* <View style={styles.viewActive}>
               <View style={styles.active} />
-            </View>
+            </View> */}
           </View>
         </View>
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
-              チャットルーム名称
+              {item?.name}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              テキストテキストテキスト
+              {item?.last_message}
             </Text>
           </>
         </View>
-        <View style={styles.viewImageNext}>
+        <View
+          style={[
+            styles.viewImageNext,
+            {
+              justifyContent:
+                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
+            },
+          ]}>
+          {item?.pin_flag == 1 && <Image source={iconPin} />}
           <Image source={iconNext} />
         </View>
       </View>
@@ -64,8 +75,9 @@ const styles = StyleSheet.create({
   },
   viewImageNext: {
     width: '15%',
-    alignItems: 'flex-end',
-    justifyContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   txtTitle: {
     ...stylesCommon.fontWeight500,
