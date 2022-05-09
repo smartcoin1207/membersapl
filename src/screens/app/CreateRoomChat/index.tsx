@@ -56,7 +56,6 @@ const CreateRoomChat = (props: any) => {
       if (keySearch?.length > 0) {
         const result = await getListUser({name: keySearch});
         setResultUser(result?.data?.users?.data);
-        setKey(null)
       }
     } catch (error) {}
   };
@@ -64,6 +63,7 @@ const CreateRoomChat = (props: any) => {
   const onAddUser = (item: any) => {
     setListUser(listUser?.concat([item]));
     setResultUser([]);
+    setKey(null)
   };
 
   const onDeleteItem = (item: any) => {
