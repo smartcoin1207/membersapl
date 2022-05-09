@@ -17,7 +17,7 @@ const colors = {
 const stylesCommon = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
   },
   fontWeight500: {
     fontFamily: 'Inter-Medium',

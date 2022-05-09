@@ -9,10 +9,11 @@ interface buttonType {
   styleButton?: any;
   styleTitle?: any;
   onPress?: () => void;
+  disabled?: boolean;
 }
 
 const AppButton = React.memo((props: buttonType) => {
-  const {title, styleButton, styleTitle, onPress} = props;
+  const {title, styleButton, styleTitle, onPress, disabled} = props;
 
   const onPressButton = useCallback(
     debounce(() => {
@@ -25,8 +26,13 @@ const AppButton = React.memo((props: buttonType) => {
 
   return (
     <TouchableOpacity
-      style={[styles.container, styleButton]}
-      onPress={onPressButton}>
+      style={[
+        styles.container,
+        styleButton,
+        {backgroundColor: disabled ? 'gray' : colors.primary},
+      ]}
+      onPress={onPressButton}
+      disabled={disabled}>
       <Text style={[styles.titleButton, styleTitle]}>{title}</Text>
     </TouchableOpacity>
   );
@@ -38,7 +44,6 @@ const styles = ScaledSheet.create({
     paddingVertical: '13@vs',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
     borderRadius: '8@ms',
   },
   titleButton: {
