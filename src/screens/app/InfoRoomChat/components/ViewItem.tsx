@@ -28,14 +28,7 @@ const ViewItem = React.memo((props: any) => {
           {!hideNext && <Image source={iconNext} />}
         </View>
       </View>
-      {!hideBorder && (
-        <LinearGradient
-          colors={colors.colorGradient}
-          style={styles.linearGradient}
-          start={{x: 1, y: 0}}
-          end={{x: 0, y: 0}}
-        />
-      )}
+      {!hideBorder && <View style={styles.linearGradient} />}
     </TouchableOpacity>
   );
 });
@@ -51,6 +44,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     width: '100%',
     height: 1,
+    backgroundColor: colors.border,
   },
   viewImage: {
     width: '20%',

@@ -1,10 +1,11 @@
-import React, {useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity, FlatList} from 'react-native';
+import React, {useState, useCallback, useEffect} from 'react';
+import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
 import {Item} from './component/Item';
 import {useFocusEffect} from '@react-navigation/native';
+import {debounce} from 'lodash';
 
 import {getRoomList} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
@@ -16,7 +17,6 @@ const ListChat = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList?.data);
-  const [value, setValue] = useState<string>('');
   const [key, setKey] = useState<string>('');
 
   useFocusEffect(
@@ -25,14 +25,19 @@ const ListChat = () => {
     }, []),
   );
 
-  const onChangeText = (text: string) => {
-    setValue(text);
-  };
+  const debounceText = useCallback(
+    debounce(text => dispatch(getRoomList({key: text})), 500),
+    [],
+  );
 
+  const onChangeText = (text: any) => {
+    setKey(text);
+    debounceText(text);
+  };
   const renderItem = ({item}: any) => <Item item={item} />;
 
   const onCreate = useCallback(() => {
-    navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT);
+    navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT, {typeScreen: 'CREATE'});
   }, []);
 
   return (
@@ -47,7 +52,7 @@ const ListChat = () => {
         <AppInput
           placeholder="チャット名、メッセージ内容を検索"
           onChange={onChangeText}
-          value={value}
+          value={key}
           styleContainer={styles.containerSearch}
           styleInput={styles.input}
           icon={iconSearch}

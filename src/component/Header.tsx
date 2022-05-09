@@ -105,10 +105,10 @@ const styles = StyleSheet.create({
         paddingTop: getStatusBarHeight() + verticalScale(20),
       },
     ),
-    backgroundColor: '#FFFFFF',
     paddingBottom: verticalScale(15),
     flexDirection: 'row',
     paddingHorizontal: scale(16),
+    backgroundColor: colors.background,
   },
   viewLeft: {
     width: '25%',

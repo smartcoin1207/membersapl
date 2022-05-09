@@ -3,20 +3,16 @@ import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext, defaultAvatar, iconPin} from '@images';
+import {iconRemove, defaultAvatar, iconPin} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const {item} = props;
-
-  const navigateDetail = () => {
-    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {idRoomChat: item?.id});
-  };
+  const {item, deleteUser} = props;
 
   return (
-    <TouchableOpacity style={styles.container} onPress={navigateDetail}>
+    <View style={styles.container}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <View style={styles.image}>
@@ -32,14 +28,18 @@ const Item = React.memo((props: any) => {
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
-              {item?.name}
+              {item?.mail}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              {item?.lastMessageJoin?.message}
+              {item?.first_name}
+              {item?.last_name}
             </Text>
           </>
         </View>
-        <View
+        <TouchableOpacity
+          onPress={() => {
+            deleteUser(item);
+          }}
           style={[
             styles.viewImageNext,
             {
@@ -48,24 +48,18 @@ const Item = React.memo((props: any) => {
             },
           ]}>
           {item?.pin_flag == 1 && <Image source={iconPin} />}
-          <Image source={iconNext} />
-        </View>
+          <Image source={iconRemove} />
+        </TouchableOpacity>
       </View>
-
-      <LinearGradient
-        colors={colors.colorGradient}
-        style={styles.linearGradient}
-        start={{x: 1, y: 0}}
-        end={{x: 0, y: 0}}
-      />
-    </TouchableOpacity>
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingTop: verticalScale(14),
+  },
   viewContent: {
-    paddingVertical: verticalScale(16),
     flexDirection: 'row',
   },
   linearGradient: {
@@ -104,8 +98,8 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
   },
   image: {
-    width: moderateScale(60),
-    height: moderateScale(60),
+    width: moderateScale(51),
+    height: moderateScale(51),
   },
   viewActive: {
     width: moderateScale(14),

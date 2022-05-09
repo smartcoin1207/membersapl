@@ -11,6 +11,7 @@ import {styles} from './styles';
 import {Header, AppInput, AppButton} from '@component';
 import {iconClose} from '@images';
 import {colors} from '@stylesCommon';
+import {debounce} from 'lodash';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -18,8 +19,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {getListUser, createRoom, GlobalService} from '@services';
 
-const CreateRoomChat = () => {
+const CreateRoomChat = (props: any) => {
   const navigation = useNavigation<any>();
+  const {route} = props;
+
+  const {typeScreen} = route?.params;
 
   const [name, setName] = useState<any>(null);
   const [listUser, setListUser] = useState<any>([]);
@@ -37,14 +41,23 @@ const CreateRoomChat = () => {
     [name],
   );
 
+  const debounceText = useCallback(
+    debounce(text => onSearch(text), 500),
+    [],
+  );
+
   const onSearchName = (value: string) => {
     setKey(value);
+    debounceText(value);
   };
 
-  const onSearch = async () => {
+  const onSearch = async (keySearch: any) => {
     try {
-      const result = await getListUser({name: key});
-      setResultUser(result?.data?.users?.data);
+      if (keySearch?.length > 0) {
+        const result = await getListUser({name: keySearch});
+        setResultUser(result?.data?.users?.data);
+        setKey(null)
+      }
     } catch (error) {}
   };
 
@@ -71,17 +84,31 @@ const CreateRoomChat = () => {
   };
 
   const handleSubmit = async () => {
-    try {
-      GlobalService.showLoading();
-      const body = {
-        name: name,
-        user_id: renderIdUser(),
-      };
-      const result = await createRoom(body);
-      navigation.goBack();
-      GlobalService.hideLoading();
-    } catch (error) {
-      GlobalService.hideLoading();
+    if (typeScreen === 'CREATE') {
+      try {
+        GlobalService.showLoading();
+        const body = {
+          name: name,
+          user_id: renderIdUser(),
+        };
+        const result = await createRoom(body);
+        navigation.goBack();
+        GlobalService.hideLoading();
+      } catch (error) {
+        GlobalService.hideLoading();
+      }
+    }
+  };
+
+  const validateDisabled = () => {
+    if (typeScreen === 'CREATE') {
+      if (name && name?.length > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      return false;
     }
   };
 
@@ -101,7 +128,9 @@ const CreateRoomChat = () => {
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
             <Text style={styles.txtTitle}>テキストテキストテキスト。</Text>
-            <AppInput placeholder="名称" onChange={onChange} value={name} />
+            {typeScreen === 'CREATE' && (
+              <AppInput placeholder="名称" onChange={onChange} value={name} />
+            )}
             <View style={styles.viewSelectUser}>
               {listUser?.length > 0 && (
                 <View style={styles.viewRow}>
@@ -126,7 +155,7 @@ const CreateRoomChat = () => {
                 value={key}
                 placeholder="名称"
                 placeholderTextColor={colors.placeholder}
-                onSubmitEditing={onSearch}
+                onSubmitEditing={() => onSearch(key)}
                 returnKeyType="search"
               />
             </View>
@@ -148,6 +177,7 @@ const CreateRoomChat = () => {
               title="グループを追加"
               onPress={handleSubmit}
               styleButton={styles.button}
+              disabled={validateDisabled()}
             />
           </KeyboardAwareScrollView>
         </LinearGradient>
