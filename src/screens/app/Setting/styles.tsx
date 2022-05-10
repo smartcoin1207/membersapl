@@ -4,8 +4,11 @@ import {stylesCommon} from '@stylesCommon';
 const styles = StyleSheet.create({
   container: {
     ...stylesCommon.viewContainer,
+  },
+  viewContent: {
+    ...stylesCommon.viewContainer,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 });
 

@@ -13,3 +13,8 @@ export const saveToken = (payload: any) => ({
   type: typeAuth.SAVE_TOKEN,
   payload,
 });
+
+export const saveInfoUser = (payload: any) => ({
+  type: typeAuth.SAVE_INFO_USER,
+  payload,
+})

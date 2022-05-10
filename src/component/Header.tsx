@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
   txtTitle: {
     fontSize: moderateScale(16),
     ...stylesCommon.fontWeight600,
+    color: colors.darkGrayText,
   },
   buttonRightSecond: {
     marginRight: scale(14),

@@ -15,14 +15,10 @@ const ViewItem = React.memo((props: any) => {
           <Image source={sourceImage} />
         </View>
         <View style={styles.viewTxt}>
-          {!isLogout ? (
-            <>
-              {title && <Text style={styles.txtTitle}>{title}</Text>}
-              {content && <Text style={styles.txtContent}>{content}</Text>}
-            </>
-          ) : (
-            <Text style={styles.txtContentLogout}>{content}</Text>
-          )}
+          <>
+            {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
+            {content ? <Text style={styles.txtContent}>{content}</Text> : null}
+          </>
         </View>
         <View style={styles.viewImageNext}>
           {!hideNext && <Image source={iconNext} />}

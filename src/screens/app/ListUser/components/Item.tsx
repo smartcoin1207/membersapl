@@ -9,7 +9,7 @@ import {ROUTE_NAME} from '@routeName';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const {item, deleteUser} = props;
+  const {item, deleteUser, is_host} = props;
 
   return (
     <View style={styles.container}>
@@ -36,20 +36,22 @@ const Item = React.memo((props: any) => {
             </Text>
           </>
         </View>
-        <TouchableOpacity
-          onPress={() => {
-            deleteUser(item);
-          }}
-          style={[
-            styles.viewImageNext,
-            {
-              justifyContent:
-                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
-            },
-          ]}>
-          {item?.pin_flag == 1 && <Image source={iconPin} />}
-          <Image source={iconRemove} />
-        </TouchableOpacity>
+        {is_host === 1 && (
+          <TouchableOpacity
+            onPress={() => {
+              deleteUser(item);
+            }}
+            style={[
+              styles.viewImageNext,
+              {
+                justifyContent:
+                  item?.pin_flag == 1 ? 'space-between' : 'flex-end',
+              },
+            ]}>
+            {item?.pin_flag == 1 && <Image source={iconPin} />}
+            <Image source={iconRemove} />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -81,12 +83,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  txtTitle: {
+  txtContent: {
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(12),
     color: colors.border,
   },
-  txtContent: {
+  txtTitle: {
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(16),
     marginTop: verticalScale(5),
@@ -94,7 +96,7 @@ const styles = StyleSheet.create({
   },
   txtContentLogout: {
     color: '#EA5A31',
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },
   image: {

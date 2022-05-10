@@ -28,8 +28,8 @@ const AppButton = React.memo((props: buttonType) => {
     <TouchableOpacity
       style={[
         styles.container,
+        {backgroundColor: disabled ? '#595757' : colors.primary},
         styleButton,
-        {backgroundColor: disabled ? 'gray' : colors.primary},
       ]}
       onPress={onPressButton}
       disabled={disabled}>

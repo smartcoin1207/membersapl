@@ -22,11 +22,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(25),
     paddingBottom: verticalScale(20),
     paddingTop: verticalScale(40),
-    backgroundColor: '#FFFFFF',
   },
   txtTitle: {
-    ...stylesCommon.fontWeight600,
-    fontSize: moderateScale(16),
+    ...stylesCommon.fontWeight500,
     color: colors.darkGrayText,
     marginBottom: verticalScale(11),
   },
@@ -51,18 +49,18 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(10),
   },
   viewTxtArray: {
-    backgroundColor: colors.primary,
+    backgroundColor: '#F4A217',
     marginTop: verticalScale(6),
     marginRight: scale(6),
-    paddingVertical: verticalScale(6),
-    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(7),
+    paddingHorizontal: scale(18),
     borderRadius: moderateScale(60),
     flexDirection: 'row',
     alignItems: 'center',
   },
   txtArray: {
     color: '#FFFFFF',
-    fontSize: moderateScale(13),
+    fontSize: moderateScale(16),
     ...stylesCommon.fontWeight500,
   },
   iconClose: {
@@ -82,6 +80,14 @@ const styles = StyleSheet.create({
   viewItemResultUser: {
     paddingHorizontal: 5,
     paddingVertical: 10,
+  },
+  multiline: {
+    height: verticalScale(150),
+  },
+  inputMultiline: {
+    textAlign: 'right',
+    textAlignVertical: 'top',
+    paddingTop: verticalScale(8)
   },
 });
 

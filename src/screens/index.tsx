@@ -10,6 +10,8 @@ import {DetailChat} from './app/DetailChat';
 import {InfoRoomChat} from './app/InfoRoomChat';
 import {ListUser} from './app/ListUser';
 import {EditRoomChat} from './app/EditRoomChat';
+import {EditUser} from './app/EditUser';
+import {ChangePassword} from './app/ChangePassword';
 
 const screens = {
   //auth
@@ -22,7 +24,9 @@ const screens = {
   DetailChat,
   InfoRoomChat,
   ListUser,
-  EditRoomChat
+  EditRoomChat,
+  EditUser,
+  ChangePassword,
 };
 
 export {screens};

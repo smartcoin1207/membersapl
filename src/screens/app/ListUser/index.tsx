@@ -15,7 +15,7 @@ import {ROUTE_NAME} from '@routeName';
 
 const ListUser = (props: any) => {
   const {route} = props;
-  const {idRoomChat} = route?.params;
+  const {idRoomChat, dataDetail} = route?.params;
   const navigation = useNavigation<any>();
   const [listUser, setListUser] = useState([]);
   const renderItem = ({item}: any) => (
@@ -24,6 +24,7 @@ const ListUser = (props: any) => {
       deleteUser={(value: any) => {
         deleteUser(value);
       }}
+      is_host={dataDetail?.is_host}
     />
   );
 
@@ -45,6 +46,7 @@ const ListUser = (props: any) => {
   const onCreate = useCallback(() => {
     navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT, {
       typeScreen: 'ADD_NEW_USER',
+      idRoomchat: idRoomChat,
     });
   }, []);
 
@@ -66,7 +68,7 @@ const ListUser = (props: any) => {
       <Header
         title="メンバー"
         imageCenter
-        onRightFirst={onCreate}
+        onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
         iconRightFirst={iconAddListChat}
         back
       />

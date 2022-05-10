@@ -9,7 +9,7 @@ interface inputType {
   placeholder?: string;
   styleContainer?: any;
   styleInput?: any;
-  error?: string;
+  error?: any;
   icon?: any;
   styleIcon?: any;
   secureTextEntry?: boolean;

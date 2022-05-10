@@ -3,25 +3,31 @@ import {stylesCommon, colors} from '@stylesCommon';
 import {ScaledSheet} from 'react-native-size-matters';
 
 const styles = ScaledSheet.create({
+  view: {
+    ...stylesCommon.viewContainer,
+    backgroundColor: colors.background,
+  },
   container: {
     ...stylesCommon.viewContainer,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: '16@s',
+    backgroundColor: colors.background,
   },
   image: {
     width: '119@vs',
     height: '119@vs',
-    marginTop: '30@vs',
+    marginTop: '60@vs',
   },
   linearGradient: {
     marginTop: '30@vs',
     borderRadius: '10@ms',
     padding: 1,
+    backgroundColor: '#FFFFFF',
   },
   viewContent: {
     borderRadius: '10@ms',
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: '24@s',
     paddingVertical: '40@vs',
   },
@@ -36,7 +42,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
   },
   txtBottom: {
-    color: colors.primary,
+    color: colors.darkGrayText,
     fontSize: '16@ms',
   },
 });

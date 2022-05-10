@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   viewContent: {
     ...stylesCommon.viewContainer,
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: scale(20),
   },
   containerSearch: {

@@ -79,6 +79,8 @@ const styles = StyleSheet.create({
   },
   button: {
     width: '48.5%',
+    backgroundColor: colors.darkGrayText,
+    
   },
 });
 
