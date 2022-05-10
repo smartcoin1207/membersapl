@@ -8,6 +8,11 @@ export default function authReducer(state = INITIAL_STATE_AUTH, action: any) {
         ...state,
         token: action.payload,
       };
+    case typeAuth.SAVE_INFO_USER:
+      return {
+        ...state,
+        userInfo: action.payload,
+      };
     default:
       return state;
   }

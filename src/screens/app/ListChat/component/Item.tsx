@@ -24,9 +24,9 @@ const Item = React.memo((props: any) => {
               source={item?.icon_image ? item?.icon_image : defaultAvatar}
               style={styles.image}
             />
-            {/* <View style={styles.viewActive}>
+            <View style={styles.viewActive}>
               <View style={styles.active} />
-            </View> */}
+            </View>
           </View>
         </View>
         <View style={styles.viewTxt}>
@@ -51,13 +51,6 @@ const Item = React.memo((props: any) => {
           <Image source={iconNext} />
         </View>
       </View>
-
-      <LinearGradient
-        colors={colors.colorGradient}
-        style={styles.linearGradient}
-        start={{x: 1, y: 0}}
-        end={{x: 0, y: 0}}
-      />
     </TouchableOpacity>
   );
 });
@@ -65,7 +58,7 @@ const Item = React.memo((props: any) => {
 const styles = StyleSheet.create({
   container: {},
   viewContent: {
-    paddingVertical: verticalScale(16),
+    paddingBottom: verticalScale(12),
     flexDirection: 'row',
   },
   linearGradient: {
@@ -73,12 +66,12 @@ const styles = StyleSheet.create({
     height: 1,
   },
   viewImage: {
-    width: '23%',
+    width: '20%',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   viewTxt: {
-    width: '62%',
+    width: '65%',
     justifyContent: 'center',
   },
   viewImageNext: {
@@ -93,8 +86,8 @@ const styles = StyleSheet.create({
     color: colors.border,
   },
   txtContent: {
-    ...stylesCommon.fontWeight500,
-    fontSize: moderateScale(16),
+    ...stylesCommon.fontWeight600,
+    fontSize: moderateScale(14),
     marginTop: verticalScale(5),
     color: colors.backgroundTab,
   },
@@ -104,8 +97,8 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
   },
   image: {
-    width: moderateScale(60),
-    height: moderateScale(60),
+    width: moderateScale(51),
+    height: moderateScale(51),
   },
   viewActive: {
     width: moderateScale(14),
@@ -115,7 +108,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: moderateScale(14 / 2),
     position: 'absolute',
-    top: 0,
+    bottom: 0,
     right: 0,
   },
   active: {

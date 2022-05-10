@@ -5,6 +5,7 @@ import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
 const styles = StyleSheet.create({
   container: {
     ...stylesCommon.viewContainer,
+    backgroundColor: '#FFFFFF',
   },
   viewHeader: {
     justifyContent: 'center',
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     width: verticalScale(33),
     height: verticalScale(33),
     borderRadius: verticalScale(33) / 2,
-    backgroundColor: colors.primary,
+    backgroundColor: colors.darkGrayText,
     position: 'absolute',
     right: -verticalScale(33) / 2,
     justifyContent: 'center',
@@ -36,10 +37,20 @@ const styles = StyleSheet.create({
     width: verticalScale(33),
     height: verticalScale(33),
     borderRadius: verticalScale(33) / 2,
-    backgroundColor: colors.primary,
     position: 'absolute',
     right: -verticalScale(33) / 2,
     bottom: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.darkGrayText,
+  },
+  buttonGhim: {
+    width: verticalScale(33),
+    height: verticalScale(33),
+    borderRadius: verticalScale(33) / 2,
+    position: 'absolute',
+    right: -verticalScale(33) / 2,
+    top: 0,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -53,6 +64,9 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(16),
     color: '#EA5A31',
     marginLeft: scale(16),
+  },
+  inActive: {
+    tintColor: '#989898',
   },
 });
 

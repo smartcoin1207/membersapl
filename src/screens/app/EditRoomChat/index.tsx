@@ -71,9 +71,7 @@ const EditRoomChat = (props: any) => {
         onRightFirst={onBack}
       />
       <View style={styles.viewContent}>
-        <LinearGradient
-          colors={colors.colorGradient}
-          style={styles.linearGradient}>
+        <View style={styles.linearGradient}>
           <KeyboardAwareScrollView
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
@@ -94,7 +92,7 @@ const EditRoomChat = (props: any) => {
               styleButton={styles.button}
             />
           </KeyboardAwareScrollView>
-        </LinearGradient>
+        </View>
       </View>
     </View>
   );

@@ -47,6 +47,14 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.EDIT_ROOM_CHAT}
             component={screens.EditRoomChat}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.EDIT_USER}
+            component={screens.EditUser}
+          />
+          <Stack.Screen
+            name={ROUTE_NAME.CHANGE_PASSWORD}
+            component={screens.ChangePassword}
+          />
         </Stack.Navigator>
       );
     }

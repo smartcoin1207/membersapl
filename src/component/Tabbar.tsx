@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     width: width,
     paddingTop: verticalScale(12),
     paddingBottom: height >= 812 ? getBottomSpace() + 5 : 12,
-    backgroundColor: colors.backgroundTab,
+    backgroundColor: colors.primary,
   },
   button: {
     width: width / 3,

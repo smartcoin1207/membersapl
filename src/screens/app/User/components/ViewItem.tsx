@@ -6,10 +6,10 @@ import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext} from '@images';
 
 const ViewItem = React.memo((props: any) => {
-  const {sourceImage, title, content, hideBorder, hideNext, isLogout, onClick} =
+  const {sourceImage, title, content, hideBorder, hideNext, isLogout, onPress} =
     props;
   return (
-    <TouchableOpacity style={styles.container} onPress={onClick}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <Image source={sourceImage} />
@@ -17,8 +17,10 @@ const ViewItem = React.memo((props: any) => {
         <View style={styles.viewTxt}>
           {!isLogout ? (
             <>
-              {title && <Text style={styles.txtTitle}>{title}</Text>}
-              {content && <Text style={styles.txtContent}>{content}</Text>}
+              {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
+              {content ? (
+                <Text style={styles.txtContent}>{content}</Text>
+              ) : null}
             </>
           ) : (
             <Text style={styles.txtContentLogout}>{content}</Text>
@@ -28,14 +30,7 @@ const ViewItem = React.memo((props: any) => {
           {!hideNext && <Image source={iconNext} />}
         </View>
       </View>
-      {!hideBorder && (
-        <LinearGradient
-          colors={colors.colorGradient}
-          style={styles.linearGradient}
-          start={{x: 1, y: 0}}
-          end={{x: 0, y: 0}}
-        />
-      )}
+      {!hideBorder && <View style={styles.linearGradient} />}
     </TouchableOpacity>
   );
 });
@@ -51,6 +46,7 @@ const styles = StyleSheet.create({
   linearGradient: {
     width: '100%',
     height: 1,
+    backgroundColor: colors.border,
   },
   viewImage: {
     width: '20%',

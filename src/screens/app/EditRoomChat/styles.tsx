@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
   },
   viewContent: {
     ...stylesCommon.viewContainer,
+    backgroundColor: colors.background,
   },
   linearGradient: {
     flex: 1,
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   inputMultiline: {
     textAlign: 'right',
     textAlignVertical: 'top',
-    paddingTop: verticalScale(8)
+    paddingTop: verticalScale(8),
   },
 });
 

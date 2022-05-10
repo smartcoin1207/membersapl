@@ -7,7 +7,7 @@ const colors = {
   background: '#F4F2EF',
   placeholder: '#BDBDBD',
   backgroundTab: '#595757',
-  activeTab: '#1AA1AA',
+  activeTab: '#82F7FF',
   inActiveTab: '#FFFFFF',
   darkGrayText: '#595757',
   colorGradient: ['#8BC227', '#1AA1AA', '#FCD000', '#F4A217', '#EA5A31'],

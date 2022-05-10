@@ -3,7 +3,14 @@ import * as yup from 'yup';
 export const validateForm = () => {
   return {
     login: yup.string().required('This field is required'),
+    current_password: yup.string().required('This field is required'),
     password: yup.string().required('This field is required'),
+    first_name: yup.string().required('This field is required'),
+    last_name: yup.string().required('This field is required'),
+    email: yup
+      .string()
+      .required('This field is required')
+      .email('Email is not valid'),
     confirmPassword: yup
       .string()
       .required('This field is required')

@@ -17,13 +17,13 @@ import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {getListUser, createRoom, GlobalService} from '@services';
+import {getListUser, createRoom, GlobalService, inviteMember} from '@services';
 
 const CreateRoomChat = (props: any) => {
   const navigation = useNavigation<any>();
   const {route} = props;
 
-  const {typeScreen} = route?.params;
+  const {typeScreen, idRoomchat} = route?.params;
 
   const [name, setName] = useState<any>(null);
   const [listUser, setListUser] = useState<any>([]);
@@ -63,7 +63,7 @@ const CreateRoomChat = (props: any) => {
   const onAddUser = (item: any) => {
     setListUser(listUser?.concat([item]));
     setResultUser([]);
-    setKey(null)
+    setKey(null);
   };
 
   const onDeleteItem = (item: any) => {
@@ -97,6 +97,19 @@ const CreateRoomChat = (props: any) => {
       } catch (error) {
         GlobalService.hideLoading();
       }
+    } else {
+      try {
+        GlobalService.showLoading();
+        const body = {
+          room_id: idRoomchat,
+          user_id: renderIdUser(),
+        };
+        const result = await inviteMember(body);
+        navigation.goBack();
+        GlobalService.hideLoading();
+      } catch (error) {
+        GlobalService.hideLoading();
+      }
     }
   };
 
@@ -121,9 +134,7 @@ const CreateRoomChat = (props: any) => {
         onRightFirst={onBack}
       />
       <View style={styles.viewContent}>
-        <LinearGradient
-          colors={colors.colorGradient}
-          style={styles.linearGradient}>
+        <View style={styles.linearGradient}>
           <KeyboardAwareScrollView
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
@@ -180,7 +191,7 @@ const CreateRoomChat = (props: any) => {
               disabled={validateDisabled()}
             />
           </KeyboardAwareScrollView>
-        </LinearGradient>
+        </View>
       </View>
     </View>
   );

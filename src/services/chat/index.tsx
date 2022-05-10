@@ -6,6 +6,9 @@ const CREATE_ROOM_LIST = 'user/chat/create-room';
 const REMOVE_USER = 'user/chat/room/remove-member';
 const DETAIL_ROOM_CHAT = 'user/chat/room';
 const UPDATE_INFO_ROOM_CHAT = 'user/chat/room/update-info';
+const INVITE_MEMBER = 'user/chat/room/invite-member';
+const PIN_FLAG = 'user/chat/room/pin-flag';
+const LEAVE_ROOM = 'user/chat/room/leave';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key} = params;
@@ -35,5 +38,20 @@ export const detailRoomchat: any = async (id: any) => {
 
 export const updateInfoRoomchat: any = async (body: any) => {
   const response = api.post(UPDATE_INFO_ROOM_CHAT, body);
+  return response;
+};
+
+export const inviteMember: any = async (body: any) => {
+  const response = api.post(INVITE_MEMBER, body);
+  return response;
+};
+
+export const pinFlag: any = async (id: any, status: any) => {
+  const response = api.get(`${PIN_FLAG}/${id}?status=${status}`);
+  return response;
+};
+
+export const leaveRoomChat: any = async (body: any) => {
+  const response = api.post(LEAVE_ROOM, body);
   return response;
 };

@@ -1,6 +1,6 @@
 import {put, takeLatest, select} from 'redux-saga/effects';
 
-import {saveToken} from './action';
+import {saveToken, saveInfoUser} from './action';
 import {typeAuth} from './type';
 import {GlobalService, loginApi, logOutApi} from '@services';
 
@@ -13,6 +13,7 @@ export function* loginSaga(action: any) {
   try {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield loginApi(action?.payload);
+    yield put(saveInfoUser(result?.data?.user_info));
     yield put(saveToken(result?.data?.token));
   } catch (error) {
   } finally {
