@@ -35,8 +35,6 @@ const User = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state?.auth?.userInfo);
 
-  console.log(user)
-
   const navigation = useNavigation<any>();
   const [modal, setModal] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
@@ -59,7 +57,7 @@ const User = () => {
             ? image?.path.replace('file://', '')
             : image?.path,
         type: 'image/jpeg',
-        name: image?.filename,
+        name: image?.filename ? image?.filename : image?.path,
       };
       data.append('file', imageUpload);
       const res = await updateImageProfile(data);
@@ -69,7 +67,9 @@ const User = () => {
       });
       await dispatch(saveInfoUser(res?.data?.user_info));
       setImage(null);
-    } catch (error) {}
+    } catch (error) {
+      // console.log(error)
+    }
   };
 
   useEffect(() => {
@@ -90,12 +90,11 @@ const User = () => {
       .catch(err => {});
   };
 
-
   return (
     <View style={styles.container}>
       <Header title="個人設定" imageCenter />
       <View style={styles.container}>
-        <ScrollView>
+        <ScrollView alwaysBounceVertical={false}>
           <LinearGradient
             colors={['#1AA1AA', '#989898']}
             style={styles.viewHeader}>

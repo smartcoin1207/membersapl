@@ -73,6 +73,7 @@ const EditRoomChat = (props: any) => {
       <View style={styles.viewContent}>
         <View style={styles.linearGradient}>
           <KeyboardAwareScrollView
+            alwaysBounceVertical={false}
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
             <Text style={styles.txtTitle}>グループ名</Text>

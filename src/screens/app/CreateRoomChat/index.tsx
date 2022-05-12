@@ -136,6 +136,7 @@ const CreateRoomChat = (props: any) => {
       <View style={styles.viewContent}>
         <View style={styles.linearGradient}>
           <KeyboardAwareScrollView
+            alwaysBounceVertical={false}
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
             <Text style={styles.txtTitle}>テキストテキストテキスト。</Text>

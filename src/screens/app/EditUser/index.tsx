@@ -65,6 +65,7 @@ const EditUser = (props: any) => {
             return (
               <View style={styles.linearGradient}>
                 <KeyboardAwareScrollView
+                  alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
                   <Text style={styles.txtTitle}>ファーストネーム</Text>
