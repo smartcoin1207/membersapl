@@ -12,6 +12,7 @@ import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {iconTabChat, iconTabSetting, defaultAvatar} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -24,6 +25,7 @@ type Props = {
 };
 
 const Tabbar: React.FC<Props> = ({state, navigation}) => {
+  const user = useSelector((state: any) => state?.auth?.userInfo);
   const renderLabel = (value: string) => {
     switch (value) {
       case ROUTE_NAME.LISTCHAT_SCREEN:
@@ -54,7 +56,12 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
         return (
           <TouchableOpacity onPress={onPress} style={styles.button} key={index}>
             {route.name === ROUTE_NAME.USER_SCREEN ? (
-              <Image source={defaultAvatar} style={styles.icon} />
+              <Image
+                source={
+                  user?.icon_image ? {uri: user?.icon_image} : defaultAvatar
+                }
+                style={styles.icon}
+              />
             ) : (
               <Image
                 source={renderIcon(route.name)}
@@ -98,6 +105,7 @@ const styles = StyleSheet.create({
   icon: {
     width: scale(23),
     height: scale(23),
+    borderRadius: scale(23) / 2,
   },
   txtLabel: {
     fontSize: moderateScale(12),

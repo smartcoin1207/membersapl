@@ -35,6 +35,12 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to access your PhotoLibrary to select the image</string>
+	<key>NSCameraUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to access the camera and gallery for using your video during a call and sharing of some photos, if required by you</string>
+  <key>NSMicrophoneUsageDescription</key>
+  <string>$(PRODUCT_NAME) would like to access the microphone for making an audio and video call</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string/>
 	<key>UILaunchStoryboardName</key>

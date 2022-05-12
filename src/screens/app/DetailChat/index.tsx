@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';

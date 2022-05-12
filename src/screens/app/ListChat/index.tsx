@@ -13,7 +13,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
+import {AppSocket} from '@util';
+
 const ListChat = () => {
+  let {init, endConnect} = AppSocket;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList?.data);
@@ -24,6 +27,10 @@ const ListChat = () => {
       dispatch(getRoomList({key: key}));
     }, []),
   );
+
+  useEffect(() => {
+    init();
+  }, []);
 
   const debounceText = useCallback(
     debounce(text => dispatch(getRoomList({key: text})), 500),

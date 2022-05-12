@@ -1,5 +1,12 @@
-import React, {useState, useCallback} from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity} from 'react-native';
+import React, {useState, useCallback, useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,17 +22,24 @@ import {
 import {ViewItem} from './components/ViewItem';
 import {ModalConfirm} from '@component';
 import {useDispatch, useSelector} from 'react-redux';
-import {logOut} from '@redux';
+import {logOut, saveInfoUser} from '@redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {colors} from '@stylesCommon';
+import ImagePicker from 'react-native-image-crop-picker';
+import {verticalScale} from 'react-native-size-matters';
+import {updateImageProfile} from '@services';
+import {showMessage} from 'react-native-flash-message';
 
 const User = () => {
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state?.auth?.userInfo);
+
+  console.log(user)
+
   const navigation = useNavigation<any>();
   const [modal, setModal] = useState<boolean>(false);
-  const [dataDetail, setData] = useState<any>(null);
+  const [image, setImage] = useState<any>(null);
 
   const onCancelModal = useCallback(() => {
     setModal(!modal);
@@ -36,6 +50,47 @@ const User = () => {
     dispatch(logOut());
   }, [modal]);
 
+  const uploadImageApi = async () => {
+    try {
+      const data = new FormData();
+      const imageUpload = {
+        uri:
+          Platform.OS === 'ios'
+            ? image?.path.replace('file://', '')
+            : image?.path,
+        type: 'image/jpeg',
+        name: image?.filename,
+      };
+      data.append('file', imageUpload);
+      const res = await updateImageProfile(data);
+      await showMessage({
+        message: res?.data?.message,
+        type: 'success',
+      });
+      await dispatch(saveInfoUser(res?.data?.user_info));
+      setImage(null);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (image) {
+      uploadImageApi();
+    }
+  }, [image]);
+
+  const upLoadImage = () => {
+    ImagePicker.openPicker({
+      cropping: true,
+      width: verticalScale(126),
+      height: verticalScale(126),
+    })
+      .then(async (image: any) => {
+        setImage(image);
+      })
+      .catch(err => {});
+  };
+
+
   return (
     <View style={styles.container}>
       <Header title="個人設定" imageCenter />
@@ -45,8 +100,14 @@ const User = () => {
             colors={['#1AA1AA', '#989898']}
             style={styles.viewHeader}>
             <View style={styles.viewAvatar}>
-              <Image source={defaultAvatar} style={styles.avatar} />
-              <TouchableOpacity style={styles.buttonCamera}>
+              {user?.icon_image ? (
+                <Image source={{uri: user?.icon_image}} style={styles.avatar} />
+              ) : (
+                <Image source={defaultAvatar} style={styles.avatar} />
+              )}
+              <TouchableOpacity
+                style={styles.buttonCamera}
+                onPress={upLoadImage}>
                 <Image
                   source={iconCamera}
                   style={{tintColor: colors.darkGrayText}}
