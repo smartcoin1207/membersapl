@@ -1,5 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Platform,
+} from 'react-native';
 import {styles} from './styles';
 import {Header, ModalConfirm} from '@component';
 import {
@@ -17,6 +24,9 @@ import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {detailRoomchat, pinFlag, leaveRoomChat, GlobalService} from '@services';
 import {showMessage} from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-crop-picker';
+import {verticalScale} from 'react-native-size-matters';
+import {updateImageRoomChat} from '@services';
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -26,6 +36,36 @@ const InfoRoomChat = (props: any) => {
   const [dataDetail, setData] = useState<any>(null);
   const [activePin, setActivePin] = useState<any>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [image, setImage] = useState<any>(null);
+
+  const uploadImageApi = async () => {
+    try {
+      const data = new FormData();
+      const imageUpload = {
+        uri:
+          Platform.OS === 'ios'
+            ? image?.path.replace('file://', '')
+            : image?.path,
+        type: 'image/jpeg',
+        name: image?.filename,
+      };
+      data.append('file', imageUpload);
+      data.append('room_id', idRoomChat);
+      const res = await updateImageRoomChat(data);
+      await showMessage({
+        message: res?.data?.message,
+        type: 'success',
+      });
+      getDetail();
+      setImage(null);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    if (image) {
+      uploadImageApi();
+    }
+  }, [image]);
 
   const getDetail = async () => {
     try {
@@ -77,6 +117,18 @@ const InfoRoomChat = (props: any) => {
     } catch {}
   };
 
+  const upLoadImage = () => {
+    ImagePicker.openPicker({
+      cropping: true,
+      width: verticalScale(126),
+      height: verticalScale(126),
+    })
+      .then(async (image: any) => {
+        setImage(image);
+      })
+      .catch(err => {});
+  };
+
   return (
     <View style={styles.container}>
       <Header title="チャットグループの情報" back imageCenter />
@@ -84,7 +136,14 @@ const InfoRoomChat = (props: any) => {
         <ScrollView>
           <View style={styles.viewHeader}>
             <View style={styles.viewAvatar}>
-              <Image source={defaultAvatar} style={styles.avatar} />
+              {dataDetail?.icon_image ? (
+                <Image
+                  source={{uri: dataDetail?.icon_image}}
+                  style={styles.avatar}
+                />
+              ) : (
+                <Image source={defaultAvatar} style={styles.avatar} />
+              )}
               <TouchableOpacity
                 style={styles.buttonGhim}
                 onPress={onGhimRoomChat}>
@@ -93,12 +152,18 @@ const InfoRoomChat = (props: any) => {
                   style={activePin === false ? styles.inActive : null}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonCamera}>
-                <Image source={iconCamera} />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonDelete}>
-                <Image source={iconDelete} />
-              </TouchableOpacity>
+              {dataDetail?.is_host === 1 && (
+                <TouchableOpacity
+                  style={styles.buttonCamera}
+                  onPress={upLoadImage}>
+                  <Image source={iconCamera} />
+                </TouchableOpacity>
+              )}
+              {dataDetail?.is_host === 1 && (
+                <TouchableOpacity style={styles.buttonDelete}>
+                  <Image source={iconDelete} />
+                </TouchableOpacity>
+              )}
             </View>
           </View>
           <ViewItem
@@ -111,6 +176,7 @@ const InfoRoomChat = (props: any) => {
                 dataDetail: dataDetail,
               });
             }}
+            disabled={dataDetail?.is_host !== 1}
           />
           <ViewItem
             sourceImage={iconDetailRow}

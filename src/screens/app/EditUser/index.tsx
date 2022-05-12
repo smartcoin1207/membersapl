@@ -39,7 +39,7 @@ const EditUser = (props: any) => {
     try {
       GlobalService.showLoading();
       const res = await updateProfile(value);
-      dispatch(saveInfoUser(res?.data?.user));
+      dispatch(saveInfoUser(res?.data?.user_info));
       onBack();
       GlobalService.hideLoading();
     } catch {

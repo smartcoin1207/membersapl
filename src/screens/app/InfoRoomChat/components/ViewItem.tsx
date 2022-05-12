@@ -6,10 +6,21 @@ import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext} from '@images';
 
 const ViewItem = React.memo((props: any) => {
-  const {sourceImage, title, content, hideBorder, hideNext, isLogout, onClick} =
-    props;
+  const {
+    sourceImage,
+    title,
+    content,
+    hideBorder,
+    hideNext,
+    isLogout,
+    onClick,
+    disabled,
+  } = props;
   return (
-    <TouchableOpacity style={styles.container} onPress={onClick}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onClick}
+      disabled={disabled}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <Image source={sourceImage} />
