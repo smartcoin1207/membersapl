@@ -5,6 +5,7 @@ const LOGOUT = 'user/logout';
 const UPDATE_USER_INFO = 'user/edit-profile';
 const CHANGE_PASSWORD = 'user/change-password';
 const UPDATE_IMAGE_PROFILE = 'user/update-avatar';
+const FORGOT_PASSWORD = 'auth/forgot-password';
 
 export const loginApi: any = async (data: any) => {
   const response = await api.post(LOGIN, data);
@@ -28,5 +29,10 @@ export const changePassword: any = async (data: any) => {
 
 export const updateImageProfile: any = async (data: any) => {
   const response = await api.post(UPDATE_IMAGE_PROFILE, data);
+  return response;
+};
+
+export const forgotPassword: any = async (data: any) => {
+  const response = await api.post(FORGOT_PASSWORD, data);
   return response;
 };

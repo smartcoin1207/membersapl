@@ -21,6 +21,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
       return (
         <Stack.Navigator screenOptions={screenOptions}>
           <Stack.Screen name={ROUTE_NAME.LOGIN} component={screens.Login} />
+          <Stack.Screen
+            name={ROUTE_NAME.FORGOT_PASSWORD}
+            component={screens.ForgotPassword}
+          />
         </Stack.Navigator>
       );
     } else {

@@ -10,10 +10,13 @@ import {validateForm} from '@util';
 import {useDispatch} from 'react-redux';
 import {demoActionChange, login} from '@redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
 
 import {AppButton, AppInput} from '@component';
 
 const Login = () => {
+  const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const formInitialValues = {
     login: '',
@@ -26,6 +29,10 @@ const Login = () => {
 
   const onSubmit = useCallback((value: any) => {
     dispatch(login(value));
+  }, []);
+
+  const onForgot = useCallback(() => {
+    navigation.navigate(ROUTE_NAME.FORGOT_PASSWORD);
   }, []);
 
   return (
@@ -66,7 +73,7 @@ const Login = () => {
                     }
                   />
                   <View style={styles.viewBottom}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={onForgot}>
                       <Text style={styles.txtBottom}>
                         パスワードをお忘れの場合
                       </Text>

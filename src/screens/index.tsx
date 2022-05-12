@@ -1,5 +1,6 @@
 //auth
 import {Login} from './auth/Login';
+import {ForgotPassword} from './auth/ForgotPassword';
 
 //app
 import {ListChat} from './app/ListChat';
@@ -16,6 +17,7 @@ import {ChangePassword} from './app/ChangePassword';
 const screens = {
   //auth
   Login,
+  ForgotPassword,
   //app
   ListChat,
   Setting,
