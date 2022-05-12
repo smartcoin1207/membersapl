@@ -6,6 +6,7 @@ import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext, defaultAvatar, iconPin} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
+import FastImage from 'react-native-fast-image';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
@@ -20,9 +21,11 @@ const Item = React.memo((props: any) => {
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <View style={styles.image}>
-            <Image
-              source={item?.icon_image ? item?.icon_image : defaultAvatar}
+            <FastImage
               style={styles.image}
+              source={
+                item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
+              }
             />
             <View style={styles.viewActive}>
               <View style={styles.active} />
@@ -99,6 +102,7 @@ const styles = StyleSheet.create({
   image: {
     width: moderateScale(51),
     height: moderateScale(51),
+    borderRadius: moderateScale(51) / 2,
   },
   viewActive: {
     width: moderateScale(14),

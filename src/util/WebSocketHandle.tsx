@@ -1,33 +1,33 @@
-import {io} from 'socket.io-client';
-const socket = io('https://3.113.64.12/');
+// import {io} from 'socket.io-client';
+// const socket = io('https://3.113.64.12/');
 
 function createAppSocket() {
-  // var ws = new WebSocket('https://3.113.64.12/');
+  var ws = new WebSocket('https://3.113.64.12/443');
   const init = () => {
-    // ws.onopen = () => {
-    //   console.log('CONNECTED_WEB_SOCKET');
-    // };
-    // ws.onerror = e => {
-    //   handleError(e);
-    // };
-    // ws.onmessage = e => {
-    //   handleOnMessage(e);
-    // };
-    socket.on('connect', () => {
-      console.log('Connected');
-    });
-    setTimeout(() => {
-      console.log('Hello', socket)
-    }, 4000)
+    ws.onopen = () => {
+      console.log('CONNECTED_WEB_SOCKET');
+    };
+    ws.onerror = e => {
+      handleError(e);
+    };
+    ws.onmessage = e => {
+      handleOnMessage(e);
+    };
+    // socket.on('connect', () => {
+    //   console.log('Connected');
+    // });
+    // setTimeout(() => {
+    //   console.log('Hello', socket)
+    // }, 4000)
     // socket.on('disconnect', () => {
     //   console.log(socket.id); // undefined
     // });
   };
 
   const endConnect = () => {
-    // ws.onclose = e => {
-    //   console.log('DISCONNECT', e);
-    // };
+    ws.onclose = e => {
+      console.log('DISCONNECT', e);
+    };
   };
 
   const handleError = (e: any) => {

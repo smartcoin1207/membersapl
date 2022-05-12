@@ -1,6 +1,7 @@
 const ROUTE_NAME = {
   //auth
   LOGIN: 'LOGIN',
+  FORGOT_PASSWORD: 'FORGOT_PASSWORD',
 
   //common
   TAB_SCREEN: 'TAB_SCREEN',

@@ -5,8 +5,11 @@ import {Header} from '@component';
 import {iconSearch, iconDetail} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
+import {useFunction} from './useFunction';
 
 const DetailChat = (props: any) => {
+  const {dataTest} = useFunction(props);
+  console.log(dataTest)
   const {route} = props;
   const {idRoomChat} = route?.params;
   const navigation = useNavigation<any>();
