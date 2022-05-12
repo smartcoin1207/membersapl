@@ -47,7 +47,7 @@ const InfoRoomChat = (props: any) => {
             ? image?.path.replace('file://', '')
             : image?.path,
         type: 'image/jpeg',
-        name: image?.filename,
+        name: image?.filename ? image?.filename : image?.path,
       };
       data.append('file', imageUpload);
       data.append('room_id', idRoomChat);

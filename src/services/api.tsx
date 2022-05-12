@@ -38,15 +38,10 @@ api.interceptors.response.use(
   },
   function (error) {
     const {message} = error?.response?.data;
-    if (error?.response?.data?.data?.screen_detail) {
-    } else {
-      if (error?.response?.data?.show_alert) {
-        showMessage({
-          message: message,
-          type: 'danger',
-        });
-      }
-    }
+    showMessage({
+      message: message ? message : 'Network Error',
+      type: 'danger',
+    });
     describeErrorResponse(error);
     return Promise.reject(error);
   },
