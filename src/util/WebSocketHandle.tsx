@@ -1,8 +1,12 @@
 // import {io} from 'socket.io-client';
 // const socket = io('https://3.113.64.12/');
 
+const link1 = 'https://stage.mem-bers.jp:433/socket.io';
+const link2 = 'ws://stage-v3mbs-msg01.mem-bers.jp/socket.io';
+const link3 = 'ws://3.113.64.12/socket.io';
+
 function createAppSocket() {
-  var ws = new WebSocket('https://3.113.64.12/443');
+  var ws = new WebSocket(link1);
   const init = () => {
     ws.onopen = () => {
       console.log('CONNECTED_WEB_SOCKET');

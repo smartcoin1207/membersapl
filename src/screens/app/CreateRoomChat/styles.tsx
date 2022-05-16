@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(14),
     ...stylesCommon.fontWeight500,
     paddingVertical: verticalScale(5),
+    paddingLeft: scale(6),
     flex: 1,
   },
   viewRow: {

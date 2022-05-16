@@ -65,7 +65,7 @@ const Login = () => {
                     secureTextEntry={true}
                   />
                   <AppButton
-                    title="グループを追加"
+                    title="ログイン"
                     onPress={props.handleSubmit}
                     disabled={
                       props.values.login?.length === 0 ||

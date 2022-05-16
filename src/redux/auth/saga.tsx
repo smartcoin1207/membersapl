@@ -2,7 +2,7 @@ import {put, takeLatest, select} from 'redux-saga/effects';
 
 import {saveToken, saveInfoUser} from './action';
 import {typeAuth} from './type';
-import {GlobalService, loginApi, logOutApi} from '@services';
+import {GlobalService, loginApi, logOutApi, getUserInfoApi} from '@services';
 
 interface ResponseGenerator {
   result?: any;
@@ -32,7 +32,17 @@ export function* logOutSaga(action: any) {
   }
 }
 
+export function* getUserInfoSaga(action: any) {
+  try {
+    const result: ResponseGenerator = yield getUserInfoApi(action?.payload);
+    yield put(saveInfoUser(result?.data?.user));
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* authSaga() {
   yield takeLatest(typeAuth.LOGIN, loginSaga);
   yield takeLatest(typeAuth.LOGOUT, logOutSaga);
+  yield takeLatest(typeAuth.GET_USER_INFO, getUserInfoSaga)
 }

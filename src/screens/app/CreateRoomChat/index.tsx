@@ -141,7 +141,12 @@ const CreateRoomChat = (props: any) => {
             showsVerticalScrollIndicator={false}>
             <Text style={styles.txtTitle}>テキストテキストテキスト。</Text>
             {typeScreen === 'CREATE' && (
-              <AppInput placeholder="名称" onChange={onChange} value={name} />
+              <AppInput
+                placeholder="名称"
+                onChange={onChange}
+                value={name}
+                maxLength={150}
+              />
             )}
             <View style={styles.viewSelectUser}>
               {listUser?.length > 0 && (
@@ -165,7 +170,7 @@ const CreateRoomChat = (props: any) => {
                 style={styles.input}
                 onChangeText={onSearchName}
                 value={key}
-                placeholder="名称"
+                placeholder={listUser?.length > 0 ? '' : '名称'}
                 placeholderTextColor={colors.placeholder}
                 onSubmitEditing={() => onSearch(key)}
                 returnKeyType="search"

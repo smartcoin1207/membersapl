@@ -28,7 +28,7 @@ const styles = ScaledSheet.create({
   viewContent: {
     borderRadius: '10@ms',
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: '24@s',
+    paddingHorizontal: 22,
     paddingVertical: '40@vs',
   },
   txtTitleLogin: {

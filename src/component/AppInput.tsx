@@ -14,6 +14,7 @@ interface inputType {
   styleIcon?: any;
   secureTextEntry?: boolean;
   multiline?: boolean;
+  maxLength?: number;
 }
 
 const AppInput = React.memo((props: inputType) => {
@@ -27,7 +28,8 @@ const AppInput = React.memo((props: inputType) => {
     icon,
     styleIcon,
     secureTextEntry,
-    multiline
+    multiline,
+    maxLength,
   } = props;
 
   return (
@@ -42,6 +44,7 @@ const AppInput = React.memo((props: inputType) => {
           placeholderTextColor={colors.placeholder}
           secureTextEntry={secureTextEntry}
           multiline={multiline}
+          maxLength={maxLength}
         />
       </View>
       {error ? <Text style={styles.txtTxtError}>{error}</Text> : <></>}
