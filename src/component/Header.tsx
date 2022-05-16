@@ -55,7 +55,7 @@ const Header = React.memo((props: HeaderProps) => {
               hitSlop={HITSLOP}
               style={styles.buttonBack}
               onPress={onPressBack}>
-              <Image source={iconBack} />
+              <Image source={iconBack} style={styles.colorIcon} />
             </TouchableOpacity>
           )}
         </View>
@@ -76,14 +76,14 @@ const Header = React.memo((props: HeaderProps) => {
               hitSlop={{...HITSLOP, right: 10}}
               style={styles.buttonRightSecond}
               onPress={onRightSecond}>
-              <Image source={iconRightSecond} />
+              <Image source={iconRightSecond} style={styles.colorIcon} />
             </TouchableOpacity>
           )}
           {onRightFirst && (
             <TouchableOpacity
               hitSlop={{...HITSLOP, left: 0}}
               onPress={onRightFirst}>
-              <Image source={iconRightFirst} />
+              <Image source={iconRightFirst} style={styles.colorIcon} />
             </TouchableOpacity>
           )}
         </View>
@@ -142,6 +142,9 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
+  },
+  colorIcon: {
+    tintColor: colors.darkGrayText,
   },
 });
 

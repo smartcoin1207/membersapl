@@ -7,7 +7,7 @@ import {Item} from './component/Item';
 import {useFocusEffect} from '@react-navigation/native';
 import {debounce} from 'lodash';
 
-import {getRoomList} from '@redux';
+import {getRoomList, getUserInfo} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -20,6 +20,7 @@ const ListChat = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList?.data);
+  const user = useSelector((state: any) => state.auth.userInfo);
   const [key, setKey] = useState<string>('');
 
   useFocusEffect(
@@ -29,7 +30,10 @@ const ListChat = () => {
   );
 
   useEffect(() => {
-    init();
+    if (user?.id) {
+      init();
+      dispatch(getUserInfo(user?.id));
+    }
   }, []);
 
   const debounceText = useCallback(

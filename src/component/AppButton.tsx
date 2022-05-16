@@ -20,7 +20,7 @@ const AppButton = React.memo((props: buttonType) => {
       if (onPress) {
         onPress();
       }
-    }, 200),
+    }, 500),
     [onPress],
   );
 

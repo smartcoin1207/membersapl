@@ -59,7 +59,10 @@ const Item = React.memo((props: any) => {
 });
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    paddingLeft: scale(10),
+    paddingRight: scale(8),
+  },
   viewContent: {
     paddingBottom: verticalScale(12),
     flexDirection: 'row',
