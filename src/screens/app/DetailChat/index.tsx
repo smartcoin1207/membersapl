@@ -7,14 +7,24 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {useFunction} from './useFunction';
 
+import {GiftedChat, Message} from '../../../lib/react-native-gifted-chat';
+import {ItemMessage} from './components/ItemMessage';
+
 const DetailChat = (props: any) => {
-  const {dataTest} = useFunction(props);
-  console.log(dataTest)
+  const {dataTest, chatUser} = useFunction(props);
   const {route} = props;
   const {idRoomChat} = route?.params;
   const navigation = useNavigation<any>();
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
+  };
+
+  const renderMessage = (props: any) => {
+    return (
+      <>
+        <ItemMessage {...props} />
+      </>
+    );
   };
 
   return (
@@ -28,9 +38,14 @@ const DetailChat = (props: any) => {
         onRightFirst={navigateToDetail}
         onRightSecond={() => {}}
       />
-      <View>
-        <Text>Detail chat</Text>
-      </View>
+      <GiftedChat
+        placeholder="Type something..."
+        messagesContainerStyle={{paddingBottom: 30}}
+        messages={dataTest}
+        onSend={(messages: any) => {}}
+        renderMessage={renderMessage}
+        user={chatUser}
+      />
     </View>
   );
 };

@@ -30,6 +30,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
     } else {
       return (
         <Stack.Navigator screenOptions={screenOptions}>
+          <Stack.Screen
+            name={ROUTE_NAME.SELECT_COMPANY}
+            component={screens.SelectCompany}
+          />
           <Stack.Screen name={ROUTE_NAME.TAB_SCREEN} component={StackTab} />
           <Stack.Screen
             name={ROUTE_NAME.CREATE_ROOM_CHAT}
@@ -58,6 +62,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
           <Stack.Screen
             name={ROUTE_NAME.CHANGE_PASSWORD}
             component={screens.ChangePassword}
+          />
+          <Stack.Screen
+            name={ROUTE_NAME.CONFIG_NOTI}
+            component={screens.ConfigNoti}
           />
         </Stack.Navigator>
       );
