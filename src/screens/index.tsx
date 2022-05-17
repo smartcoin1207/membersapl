@@ -3,6 +3,7 @@ import {Login} from './auth/Login';
 import {ForgotPassword} from './auth/ForgotPassword';
 
 //app
+import {SelectCompany} from './app/SelectCompany';
 import {ListChat} from './app/ListChat';
 import {Setting} from './app/Setting';
 import {User} from './app/User';
@@ -13,12 +14,14 @@ import {ListUser} from './app/ListUser';
 import {EditRoomChat} from './app/EditRoomChat';
 import {EditUser} from './app/EditUser';
 import {ChangePassword} from './app/ChangePassword';
+import {ConfigNoti} from './app/ConfigNoti';
 
 const screens = {
   //auth
   Login,
   ForgotPassword,
   //app
+  SelectCompany,
   ListChat,
   Setting,
   User,
@@ -29,6 +32,7 @@ const screens = {
   EditRoomChat,
   EditUser,
   ChangePassword,
+  ConfigNoti,
 };
 
 export {screens};
