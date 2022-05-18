@@ -25,6 +25,13 @@ const styles = StyleSheet.create({
     height: moderateScale(15),
     tintColor: colors.placeholder,
   },
+  txtEmpty: {
+    textAlign: 'center',
+    marginTop: verticalScale(20),
+    color: colors.darkGrayText,
+    ...stylesCommon.fontWeight600,
+    fontSize: moderateScale(18),
+  },
 });
 
 export {styles};

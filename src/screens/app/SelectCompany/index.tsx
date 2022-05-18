@@ -5,7 +5,7 @@ import {Header, AppInput, AppButton} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
 import {useFocusEffect} from '@react-navigation/native';
 import {debounce} from 'lodash';
-import {getRoomList, getUserInfo} from '@redux';
+import {saveIdCompany} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -19,9 +19,9 @@ const SelectCompany = () => {
   const [data, setData] = useState([]);
   const [active, setActive] = useState(null);
 
-  const getListCompanyApi = async () => {
+  const getListCompanyApi = async (data?: any) => {
     try {
-      const res = await getListCompany();
+      const res = await getListCompany(data);
       setData(res?.data.data);
     } catch (error) {}
   };
@@ -33,7 +33,7 @@ const SelectCompany = () => {
   );
 
   const debounceText = useCallback(
-    debounce(text => dispatch(getRoomList({key: text})), 500),
+    debounce(text => getListCompanyApi({key_search: text}), 500),
     [],
   );
 
@@ -45,12 +45,13 @@ const SelectCompany = () => {
   );
 
   const onNavigate = useCallback(() => {
+    dispatch(saveIdCompany(active));
     navigation.navigate(ROUTE_NAME.TAB_SCREEN);
-  }, []);
+  }, [active]);
 
   const onChangeText = (text: any) => {
     setKey(text);
-    // debounceText(text);
+    debounceText(text);
   };
   const renderItem = ({item, index}: any) => (
     <>

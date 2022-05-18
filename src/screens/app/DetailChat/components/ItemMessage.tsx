@@ -1,25 +1,33 @@
 import {colors} from '@stylesCommon';
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
 import {defaultAvatar} from '@images';
+import {Menu} from 'react-native-material-menu';
+import {MenuFeature} from '../components/MenuFeature';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
 
 const ItemMessage = React.memo((props: any) => {
   const {user, text, _id} = props.currentMessage;
+  const [visible, setVisible] = useState(false);
+
+  const onShowMenu = useCallback(() => {
+    setVisible(!visible);
+  }, [visible]);
+
   return (
     <View style={user?._id === 2 ? styles.containerCurrent : styles.container}>
-      <View style={styles.chat}>
+      <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
         {user?._id === 2 ? (
           <Text style={styles.txtTimeCurent}>13:45</Text>
         ) : (
           <View style={styles.viewAvatar}>
             <FastImage style={styles.image} source={defaultAvatar} />
-            <View style={{flex: 1}}/>
+            <View style={{flex: 1}} />
           </View>
         )}
         <LinearGradient
@@ -30,7 +38,14 @@ const ItemMessage = React.memo((props: any) => {
           <Text>{text}</Text>
         </LinearGradient>
         {user?._id === 2 ? null : <Text style={styles.txtTime}>13:45</Text>}
-      </View>
+      </TouchableOpacity>
+      <Menu
+        style={styles.containerMenu}
+        visible={visible}
+        onRequestClose={onShowMenu}
+        key={1}>
+        <MenuFeature />
+      </Menu>
     </View>
   );
 });
@@ -77,6 +92,9 @@ const styles = StyleSheet.create({
   },
   viewAvatar: {
     // borderWidth: 1,
+  },
+  containerMenu: {
+    marginTop: 5,
   },
 });
 
