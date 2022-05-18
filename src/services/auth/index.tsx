@@ -9,6 +9,7 @@ const FORGOT_PASSWORD = 'auth/forgot-password';
 const GET_USER_INFO = 'user';
 const CONFIG_NOTI = 'user/setting/notification-status';
 const GET_LIST_COMPANY_LOGIN = 'user/company';
+const SELECT_COMPANY = 'user/select-client'
 
 export const loginApi: any = async (data: any) => {
   const response = await api.post(LOGIN, data);
@@ -52,5 +53,10 @@ export const configNoti: any = async (params: any) => {
 
 export const getListCompany: any = async (params: any) => {
   const response = await api.get(GET_LIST_COMPANY_LOGIN, {params});
+  return response;
+};
+
+export const selectCompany: any = async (id: any) => {
+  const response = await api.get(`${SELECT_COMPANY}/${id}`);
   return response;
 };

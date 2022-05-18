@@ -9,7 +9,7 @@ import {saveIdCompany} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
-import {getListCompany} from '@services';
+import {getListCompany, selectCompany} from '@services';
 
 const SelectCompany = () => {
   const dispatch = useDispatch();
@@ -44,9 +44,12 @@ const SelectCompany = () => {
     [active],
   );
 
-  const onNavigate = useCallback(() => {
-    dispatch(saveIdCompany(active));
-    navigation.navigate(ROUTE_NAME.TAB_SCREEN);
+  const onNavigate = useCallback(async () => {
+    try {
+      const res = await selectCompany(active);
+      dispatch(saveIdCompany(active));
+      navigation.navigate(ROUTE_NAME.TAB_SCREEN);
+    } catch (error: any) {}
   }, [active]);
 
   const onChangeText = (text: any) => {
