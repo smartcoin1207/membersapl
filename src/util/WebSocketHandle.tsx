@@ -1,4 +1,5 @@
 import {io} from 'socket.io-client';
+import {store} from '../redux/store';
 const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443');
 
 const link1 = 'https://stage-v3mbs-msg01.mem-bers.jp:443/socket.io';
@@ -7,6 +8,8 @@ const link3 = 'ws://3.113.64.12/socket.io';
 
 function createAppSocket() {
   var ws = new WebSocket(link1);
+  const state = store.getState();
+  console.log(state);
   const init = () => {
     // ws.onopen = () => {
     //   console.log('CONNECTED_WEB_SOCKET');
@@ -19,6 +22,9 @@ function createAppSocket() {
     // };
     socket.on('connect', () => {
       console.log('Connected');
+    });
+    socket.on('new_message_ind', data => {
+      console.log('new_message_ind', data);
     });
     socket.on('disconnect', () => {
       console.log(socket.id); // undefined
