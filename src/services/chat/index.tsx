@@ -10,10 +10,13 @@ const INVITE_MEMBER = 'user/chat/room/invite-member';
 const PIN_FLAG = 'user/chat/room/pin-flag';
 const LEAVE_ROOM = 'user/chat/room/leave';
 const UPDATE_IMAGE_ROOM_CHAT = 'user/chat/room/update-avatar';
+const DETAIL_CHAT = 'user/chat/room';
 
 export const getRoomListApi: any = async (params: any) => {
-  const {key} = params;
-  const response = await api.get(`${GET_LIST_ROOM}?search=${key}`);
+  const {key, company_id} = params;
+  const response = await api.get(
+    `${GET_LIST_ROOM}?company_id=${company_id}&search=${key}`,
+  );
   return response;
 };
 
@@ -59,5 +62,11 @@ export const leaveRoomChat: any = async (body: any) => {
 
 export const updateImageRoomChat: any = async (body: any) => {
   const response = api.post(UPDATE_IMAGE_ROOM_CHAT, body);
+  return response;
+};
+
+export const getDetailChatApi: any = async (params: any) => {
+  const {id} = params;
+  const response = api.get(`${DETAIL_CHAT}/${id}/message`);
   return response;
 };

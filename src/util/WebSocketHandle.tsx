@@ -1,31 +1,28 @@
-// import {io} from 'socket.io-client';
-// const socket = io('https://3.113.64.12/');
+import {io} from 'socket.io-client';
+const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443');
 
-const link1 = 'https://stage.mem-bers.jp:433/socket.io';
+const link1 = 'https://stage-v3mbs-msg01.mem-bers.jp:443/socket.io';
 const link2 = 'ws://stage-v3mbs-msg01.mem-bers.jp/socket.io';
 const link3 = 'ws://3.113.64.12/socket.io';
 
 function createAppSocket() {
   var ws = new WebSocket(link1);
   const init = () => {
-    ws.onopen = () => {
-      console.log('CONNECTED_WEB_SOCKET');
-    };
-    ws.onerror = e => {
-      handleError(e);
-    };
-    ws.onmessage = e => {
-      handleOnMessage(e);
-    };
-    // socket.on('connect', () => {
-    //   console.log('Connected');
-    // });
-    // setTimeout(() => {
-    //   console.log('Hello', socket)
-    // }, 4000)
-    // socket.on('disconnect', () => {
-    //   console.log(socket.id); // undefined
-    // });
+    // ws.onopen = () => {
+    //   console.log('CONNECTED_WEB_SOCKET');
+    // };
+    // ws.onerror = e => {
+    //   handleError(e);
+    // };
+    // ws.onmessage = e => {
+    //   handleOnMessage(e);
+    // };
+    socket.on('connect', () => {
+      console.log('Connected');
+    });
+    socket.on('disconnect', () => {
+      console.log(socket.id); // undefined
+    });
   };
 
   const endConnect = () => {

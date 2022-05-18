@@ -1,8 +1,16 @@
 import {defaultAvatar} from '@images';
 import moment from 'moment';
-import React, {useMemo} from 'react';
+import React, {useMemo, useEffect, useState, useCallback} from 'react';
+import {useDispatch} from 'react-redux';
+import {getDetailListChat} from '@redux';
 
 export const useFunction = (props: any) => {
+  const dispatch = useDispatch();
+  const {route} = props;
+  const {idRoomChat} = route?.params;
+
+  const [visible, setVisible] = useState(false);
+
   const dataTest = [
     {
       _id: 110,
@@ -52,5 +60,20 @@ export const useFunction = (props: any) => {
     };
   }, []);
 
-  return {dataTest, chatUser};
+  const getListChat = () => {
+    const data = {
+      id: idRoomChat,
+    };
+    dispatch(getDetailListChat(data));
+  };
+
+  useEffect(() => {
+    getListChat();
+  }, []);
+
+  const onShowMenu = useCallback(() => {
+    setVisible(!visible);
+  }, [visible]);
+
+  return {dataTest, chatUser, idRoomChat, visible, onShowMenu};
 };

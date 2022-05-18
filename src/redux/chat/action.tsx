@@ -9,3 +9,18 @@ export const getRoomListSuccess = (payload: any) => ({
   type: typeChat.GET_ROOM_LIST_SUCCESS,
   payload,
 });
+
+export const getDetailListChat = (payload: any) => ({
+  type: typeChat.GET_DETAIL_LIST_CHAT,
+  payload,
+});
+
+export const getDetailListChatSuccess = (payload: any) => ({
+  type: typeChat.GET_DETAIL_LIST_CHAT_SUCCESS,
+  payload,
+});
+
+export const saveIdCompany = (payload: any) => ({
+  type: typeChat.SAVE_ID_COMPANY,
+  payload,
+});

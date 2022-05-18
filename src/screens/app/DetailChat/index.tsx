@@ -1,24 +1,22 @@
 import React, {useRef, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
 import {iconSearch, iconDetail} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {useFunction} from './useFunction';
-
+import {Menu} from 'react-native-material-menu';
 import {GiftedChat, Message} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 
 const DetailChat = (props: any) => {
-  const {dataTest, chatUser} = useFunction(props);
-  const {route} = props;
-  const {idRoomChat} = route?.params;
+  const {dataTest, chatUser, idRoomChat, visible, onShowMenu} =
+    useFunction(props);
   const navigation = useNavigation<any>();
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   };
-
   const renderMessage = (props: any) => {
     return (
       <>

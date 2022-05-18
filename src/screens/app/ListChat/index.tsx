@@ -20,12 +20,13 @@ const ListChat = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList?.data);
+  const idCompany = useSelector((state: any) => state.chat.idCompany);
   const user = useSelector((state: any) => state.auth.userInfo);
   const [key, setKey] = useState<string>('');
 
   useFocusEffect(
     useCallback(() => {
-      dispatch(getRoomList({key: key}));
+      dispatch(getRoomList({key: key, company_id: idCompany}));
     }, []),
   );
 
@@ -37,7 +38,10 @@ const ListChat = () => {
   }, []);
 
   const debounceText = useCallback(
-    debounce(text => dispatch(getRoomList({key: text})), 500),
+    debounce(
+      text => dispatch(getRoomList({key: key, company_id: idCompany})),
+      500,
+    ),
     [],
   );
 
@@ -74,6 +78,7 @@ const ListChat = () => {
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
         />
       </View>
     </View>

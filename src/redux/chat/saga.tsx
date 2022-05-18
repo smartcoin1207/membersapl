@@ -1,8 +1,8 @@
 import {put, takeLatest, select} from 'redux-saga/effects';
-import {getRoomListSuccess} from './action';
+import {getRoomListSuccess, getDetailListChatSuccess} from './action';
 
 import {typeChat} from './type';
-import {getRoomListApi} from '@services';
+import {getRoomListApi, getDetailChatApi} from '@services';
 
 interface ResponseGenerator {
   result?: any;
@@ -18,6 +18,19 @@ export function* getRoomListSaga(action: any) {
   }
 }
 
+export function* getDetailChatSaga(action: any) {
+  try {
+    const param = {
+      id: action?.payload.id,
+    };
+    const result: ResponseGenerator = yield getDetailChatApi(param);
+    yield put(getDetailListChatSuccess(result?.data?.room_messages));
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* chatSaga() {
   yield takeLatest(typeChat.GET_ROOM_LIST, getRoomListSaga);
+  yield takeLatest(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
 }
