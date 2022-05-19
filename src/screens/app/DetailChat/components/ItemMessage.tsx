@@ -1,4 +1,4 @@
-import {colors} from '@stylesCommon';
+import {colors, stylesCommon} from '@stylesCommon';
 import React, {useState, useCallback} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -8,43 +8,85 @@ import {defaultAvatar} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
 
+import {useSelector} from 'react-redux';
+import {Reaction} from './Reaction';
+
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
 
 const ItemMessage = React.memo((props: any) => {
-  const {user, text, _id} = props.currentMessage;
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
+  const {deleteMsg} = props;
+  const {user, text, _id, reaction} = props.currentMessage;
   const [visible, setVisible] = useState(false);
 
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
 
+  const onActionMenu = useCallback(
+    value => {
+      onShowMenu();
+      switch (value) {
+        case 1:
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        case 5:
+          deleteMsg(_id);
+          break;
+      }
+    },
+    [visible],
+  );
+
   return (
-    <View style={user?._id === 2 ? styles.containerCurrent : styles.container}>
-      <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
-        {user?._id === 2 ? (
-          <Text style={styles.txtTimeCurent}>13:45</Text>
-        ) : (
-          <View style={styles.viewAvatar}>
-            <FastImage style={styles.image} source={defaultAvatar} />
-            <View style={{flex: 1}} />
+    <View
+      style={
+        user?._id === user_id ? styles.containerCurrent : styles.container
+      }>
+      <>
+        <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
+          {user?._id === user_id ? (
+            <Text style={styles.txtTimeCurent}>13:45</Text>
+          ) : (
+            <View style={styles.viewAvatar}>
+              <FastImage style={styles.image} source={defaultAvatar} />
+              <View style={{flex: 1}} />
+            </View>
+          )}
+          <LinearGradient
+            colors={user?._id === user_id ? colorCurrent : color}
+            start={{x: 1, y: 0}}
+            end={{x: 0, y: 0}}
+            style={styles.containerChat}>
+            <Text>{text}</Text>
+          </LinearGradient>
+          {user?._id === user_id ? null : (
+            <Text style={styles.txtTime}>13:45</Text>
+          )}
+        </TouchableOpacity>
+        {reaction?.length > 0 && (
+          <View style={styles.viewReaction}>
+            <View style={styles.reaction}>
+              <Reaction reaction={reaction} />
+              {reaction?.length > 1 && (
+                <Text style={styles.txtLengthReaction}>{reaction?.length}</Text>
+              )}
+            </View>
           </View>
         )}
-        <LinearGradient
-          colors={user?._id === 2 ? colorCurrent : color}
-          start={{x: 1, y: 0}}
-          end={{x: 0, y: 0}}
-          style={styles.containerChat}>
-          <Text>{text}</Text>
-        </LinearGradient>
-        {user?._id === 2 ? null : <Text style={styles.txtTime}>13:45</Text>}
-      </TouchableOpacity>
+      </>
       <Menu
         style={styles.containerMenu}
         visible={visible}
         onRequestClose={onShowMenu}
         key={1}>
-        <MenuFeature />
+        <MenuFeature onActionMenu={(value: any) => onActionMenu(value)} />
       </Menu>
     </View>
   );
@@ -66,7 +108,7 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(14),
     paddingHorizontal: verticalScale(14),
     borderRadius: moderateScale(16),
-    marginTop: verticalScale(15),
+    marginVertical: verticalScale(7),
   },
   chat: {
     flex: 1,
@@ -94,7 +136,30 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   containerMenu: {
-    marginTop: 5,
+    marginTop: verticalScale(5),
+  },
+  viewReaction: {
+    marginTop: verticalScale(-15),
+    marginLeft: scale(26) + scale(7),
+    marginBottom: verticalScale(10),
+    alignItems: 'center',
+  },
+  reaction: {
+    flexDirection: 'row',
+    paddingHorizontal: scale(5),
+    paddingVertical: scale(3),
+    borderRadius: moderateScale(16),
+    backgroundColor: '#DDDDDD',
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  txtLengthReaction: {
+    color: colors.darkGrayText,
+    ...stylesCommon.fontWeight500,
+    fontSize: moderateScale(10),
+    marginLeft: scale(2),
   },
 });
 

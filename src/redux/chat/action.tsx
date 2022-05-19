@@ -24,3 +24,8 @@ export const saveIdCompany = (payload: any) => ({
   type: typeChat.SAVE_ID_COMPANY,
   payload,
 });
+
+export const deleteMessage = (payload: any) => ({
+  type: typeChat.DELETE_MESSAGE,
+  payload,
+});

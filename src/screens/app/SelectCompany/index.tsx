@@ -9,7 +9,7 @@ import {saveIdCompany} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
-import {getListCompany, selectCompany} from '@services';
+import {getListCompany, selectCompany, GlobalService} from '@services';
 
 const SelectCompany = () => {
   const dispatch = useDispatch();
@@ -21,9 +21,13 @@ const SelectCompany = () => {
 
   const getListCompanyApi = async (data?: any) => {
     try {
+      GlobalService.showLoading();
       const res = await getListCompany(data);
       setData(res?.data.data);
-    } catch (error) {}
+      GlobalService.hideLoading();
+    } catch (error) {
+      GlobalService.hideLoading();
+    }
   };
 
   useFocusEffect(
@@ -46,10 +50,14 @@ const SelectCompany = () => {
 
   const onNavigate = useCallback(async () => {
     try {
+      GlobalService.showLoading();
       const res = await selectCompany(active);
       dispatch(saveIdCompany(active));
       navigation.navigate(ROUTE_NAME.TAB_SCREEN);
-    } catch (error: any) {}
+      GlobalService.hideLoading();
+    } catch (error: any) {
+      GlobalService.hideLoading();
+    }
   }, [active]);
 
   const onChangeText = (text: any) => {
