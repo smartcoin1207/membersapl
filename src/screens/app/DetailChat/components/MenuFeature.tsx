@@ -1,35 +1,68 @@
 import {colors, stylesCommon} from '@stylesCommon';
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
-import {iconEdit, like, happy, heart, great, smile, sad} from '@images';
+import {
+  like,
+  happy,
+  heart,
+  great,
+  smile,
+  sad,
+  menuCopy,
+  menuDelete,
+  menuEdit,
+  menuPinChat,
+  menuReply,
+} from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
-const MenuFeature = React.memo(() => {
+const MenuFeature = React.memo((props: any) => {
+  const {onActionMenu} = props;
   const dataFeature = [
     {
       id: 1,
-      sourceImage: iconEdit,
+      sourceImage: menuCopy,
       name: 'コピー',
+      style: {
+        width: scale(18),
+        height: scale(22),
+      },
     },
     {
       id: 2,
-      sourceImage: iconEdit,
+      sourceImage: menuEdit,
       name: '編集',
+      style: {
+        width: scale(22),
+        height: scale(22),
+      },
     },
     {
       id: 3,
-      sourceImage: iconEdit,
+      sourceImage: menuReply,
       name: '返信',
+      style: {
+        width: scale(22),
+        height: scale(22),
+      },
     },
     {
       id: 4,
-      sourceImage: iconEdit,
+      sourceImage: menuPinChat,
       name: 'ブックマーク',
+      style: {
+        width: scale(22),
+        height: scale(22),
+      },
     },
     {
       id: 5,
-      sourceImage: iconEdit,
+      sourceImage: menuDelete,
       name: '削除',
+      style: {
+        width: scale(22),
+        height: scale(22),
+      },
     },
   ];
 
@@ -49,6 +82,10 @@ const MenuFeature = React.memo(() => {
     {
       id: 9,
       sourceImage: like,
+      style: {
+        width: scale(22),
+        height: scale(25),
+      },
     },
     {
       id: 10,
@@ -69,8 +106,14 @@ const MenuFeature = React.memo(() => {
       <View style={styles.viewFeature}>
         {dataFeature.map((item: any, index: any) => {
           return (
-            <TouchableOpacity key={item?.id} style={styles.itemFeature}>
-              <Image source={item?.sourceImage} style={styles.imageFeature} />
+            <TouchableOpacity
+              key={item?.id}
+              style={styles.itemFeature}
+              onPress={() => onActionMenu(item?.id)}>
+              <Image
+                source={item?.sourceImage}
+                style={item?.style ? item?.style : styles.imageFeature}
+              />
               <Text style={styles.txtNameFeature}>{item?.name}</Text>
             </TouchableOpacity>
           );

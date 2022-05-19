@@ -11,16 +11,24 @@ import {GiftedChat, Message} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 
 const DetailChat = (props: any) => {
-  const {dataTest, chatUser, idRoomChat, visible, onShowMenu} =
+  const {chatUser, idRoomChat, getConvertedMessages, listChat, deleteMsg} =
     useFunction(props);
   const navigation = useNavigation<any>();
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   };
+
+  console.log(listChat)
+
   const renderMessage = (props: any) => {
     return (
       <>
-        <ItemMessage {...props} />
+        <ItemMessage
+          {...props}
+          deleteMsg={(id: any) => {
+            deleteMsg(id);
+          }}
+        />
       </>
     );
   };
@@ -38,8 +46,9 @@ const DetailChat = (props: any) => {
       />
       <GiftedChat
         placeholder="Type something..."
-        messagesContainerStyle={{paddingBottom: 30}}
-        messages={dataTest}
+        messagesContainerStyle={{marginBottom: 20}}
+        messages={getConvertedMessages(listChat)}
+        // messages={dataTest}
         onSend={(messages: any) => {}}
         renderMessage={renderMessage}
         user={chatUser}

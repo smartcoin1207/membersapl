@@ -16,7 +16,21 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
     case typeChat.GET_DETAIL_LIST_CHAT_SUCCESS:
       return {
         ...state,
-        detailChat: action.payload,
+        detailChat: action.payload.data,
+        pagingDetail: action.payload.paging,
+      };
+    case typeChat.DELETE_MESSAGE:
+      const {detailChat} = state;
+      let data = [...detailChat];
+      const index = data.findIndex(
+        (element: any) => element?.id == action.payload,
+      );
+      if (index > -1) {
+        data.splice(index, 1);
+      }
+      return {
+        ...state,
+        detailChat: data,
       };
     default:
       return state;
