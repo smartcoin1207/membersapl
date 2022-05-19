@@ -68,7 +68,8 @@ const ListUser = (props: any) => {
       <Header
         title="メンバー"
         imageCenter
-        onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
+        onRightFirst={onCreate}
+        // onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
         iconRightFirst={iconAddListChat}
         back
       />

@@ -52,7 +52,7 @@ const Login = () => {
                     すでにメンバーの方はこちらメールアドレスとパスワードをご入力の上、ログインしてください。
                   </Text>
                   <AppInput
-                    placeholder="メールアドレス"
+                    placeholder="ID"
                     onChange={props.handleChange('login')}
                     value={props.values.login}
                     error={props.errors.login}

@@ -152,18 +152,17 @@ const InfoRoomChat = (props: any) => {
                   style={activePin === false ? styles.inActive : null}
                 />
               </TouchableOpacity>
-              {dataDetail?.is_host === 1 && (
-                <TouchableOpacity
-                  style={styles.buttonCamera}
-                  onPress={upLoadImage}>
-                  <Image source={iconCamera} />
-                </TouchableOpacity>
-              )}
-              {dataDetail?.is_host === 1 && (
-                <TouchableOpacity style={styles.buttonDelete}>
-                  <Image source={iconDelete} />
-                </TouchableOpacity>
-              )}
+
+              <TouchableOpacity
+                style={styles.buttonCamera}
+                onPress={upLoadImage}>
+                <Image source={iconCamera} />
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.buttonDelete}>
+                <Image source={iconDelete} />
+              </TouchableOpacity>
+
             </View>
           </View>
           <ViewItem
@@ -176,7 +175,6 @@ const InfoRoomChat = (props: any) => {
                 dataDetail: dataDetail,
               });
             }}
-            disabled={dataDetail?.is_host !== 1}
           />
           <ViewItem
             sourceImage={iconDetailRow}
