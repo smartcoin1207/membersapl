@@ -1,7 +1,7 @@
 import React, {useCallback} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
 import {iconEdit, like, happy, heart, great, smile, sad} from '@images';
-import {verticalScale, scale} from 'react-native-size-matters';
+import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
 const Reaction = React.memo((props: any) => {
   const {reaction} = props;
@@ -24,9 +24,10 @@ const Reaction = React.memo((props: any) => {
 
   return (
     <>
-      {reaction?.map((item: any) => {
+      {reaction?.map((item: any, index: any) => {
         return (
           <Image
+            key={index}
             source={renderSource(item.reaction_no)}
             style={[item.reaction_no === 1 ? styles.imageHeart : styles.image]}
           />
@@ -38,14 +39,14 @@ const Reaction = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   image: {
-    width: scale(14),
-    height: scale(14),
-    marginHorizontal: scale(2),
+    width: moderateScale(14),
+    height: moderateScale(14),
+    marginHorizontal: moderateScale(2),
   },
   imageHeart: {
-    width: scale(14),
-    height: scale(12),
-    marginHorizontal: scale(2),
+    width: moderateScale(14),
+    height: moderateScale(12),
+    marginHorizontal: moderateScale(2),
   },
 });
 

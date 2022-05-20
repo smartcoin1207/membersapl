@@ -5,6 +5,7 @@ const ROUTE_NAME = {
 
   //common
   TAB_SCREEN: 'TAB_SCREEN',
+  SPLASH_SCREEN: 'SPLASH_SCREEN',
 
   //app
   SELECT_COMPANY: 'SELECT_COMPANY',

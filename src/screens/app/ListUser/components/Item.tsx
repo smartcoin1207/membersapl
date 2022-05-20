@@ -36,22 +36,20 @@ const Item = React.memo((props: any) => {
             </Text>
           </>
         </View>
-        {is_host === 1 && (
-          <TouchableOpacity
-            onPress={() => {
-              deleteUser(item);
-            }}
-            style={[
-              styles.viewImageNext,
-              {
-                justifyContent:
-                  item?.pin_flag == 1 ? 'space-between' : 'flex-end',
-              },
-            ]}>
-            {item?.pin_flag == 1 && <Image source={iconPin} />}
-            <Image source={iconRemove} />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity
+          onPress={() => {
+            deleteUser(item);
+          }}
+          style={[
+            styles.viewImageNext,
+            {
+              justifyContent:
+                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
+            },
+          ]}>
+          {item?.pin_flag == 1 && <Image source={iconPin} />}
+          <Image source={iconRemove} />
+        </TouchableOpacity>
       </View>
     </View>
   );

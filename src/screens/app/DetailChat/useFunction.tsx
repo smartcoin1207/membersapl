@@ -3,7 +3,8 @@ import moment from 'moment';
 import React, {useMemo, useEffect, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {getDetailListChat, deleteMessage} from '@redux';
-import {deleteMessageApi, GlobalService} from '@services';
+import {deleteMessageApi, GlobalService, detailRoomchat} from '@services';
+import {useNavigation, useFocusEffect} from '@react-navigation/native';
 
 export const useFunction = (props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
@@ -12,15 +13,16 @@ export const useFunction = (props: any) => {
   const {route} = props;
   const {idRoomChat} = route?.params;
   const [visible, setVisible] = useState(false);
+  const [dataDetail, setData] = useState<any>(null);
 
   const convertDataMessage = useCallback((message: any) => {
     return {
       _id: message?.id,
       text: message?.message,
-      createdAt: moment(message?.created_at).toDate(),
+      createdAt: message?.created_at,
       user: {
         _id: message?.from_id,
-        avatar: message?.avatar,
+        avatar: message?.user_send?.icon_image,
       },
       reaction: message?.reactions,
     };
@@ -49,6 +51,19 @@ export const useFunction = (props: any) => {
     getListChat();
   }, []);
 
+  const getDetail = async () => {
+    try {
+      const response = await detailRoomchat(idRoomChat);
+      setData(response?.data?.room);
+    } catch {}
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      getDetail();
+    }, []),
+  );
+
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
@@ -75,5 +90,6 @@ export const useFunction = (props: any) => {
     getConvertedMessages,
     listChat,
     deleteMsg,
+    dataDetail
   };
 };

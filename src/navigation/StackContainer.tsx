@@ -19,20 +19,25 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
   const renderStackApp = () => {
     if (!token) {
       return (
-        <Stack.Navigator screenOptions={screenOptions}>
-          <Stack.Screen name={ROUTE_NAME.LOGIN} component={screens.Login} />
+        <>
+          <Stack.Screen
+            name={ROUTE_NAME.LOGIN}
+            component={screens.Login}
+            options={{gestureEnabled: false}}
+          />
           <Stack.Screen
             name={ROUTE_NAME.FORGOT_PASSWORD}
             component={screens.ForgotPassword}
           />
-        </Stack.Navigator>
+        </>
       );
     } else {
       return (
-        <Stack.Navigator screenOptions={screenOptions}>
+        <>
           <Stack.Screen
             name={ROUTE_NAME.SELECT_COMPANY}
             component={screens.SelectCompany}
+            options={{gestureEnabled: false}}
           />
           <Stack.Screen name={ROUTE_NAME.TAB_SCREEN} component={StackTab} />
           <Stack.Screen
@@ -67,12 +72,20 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.CONFIG_NOTI}
             component={screens.ConfigNoti}
           />
-        </Stack.Navigator>
+        </>
       );
     }
   };
   return (
-    <NavigationContainer ref={ref}>{renderStackApp()}</NavigationContainer>
+    <NavigationContainer ref={ref}>
+      <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen
+          name={ROUTE_NAME.SPLASH_SCREEN}
+          component={screens.Splash}
+        />
+        {renderStackApp()}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 });
 

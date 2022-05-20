@@ -19,6 +19,7 @@ const iconDetailRow = require('./IconDetailRow.png');
 const iconBell = require('./IconBell.png');
 const iconDocument = require('./IconDocument.png');
 const iconBook = require('./IconBook.png');
+const iconAddUser = require('./IconAddUser.png');
 
 export {
   iconBack,
@@ -42,4 +43,5 @@ export {
   iconBell,
   iconDocument,
   iconBook,
+  iconAddUser,
 };
