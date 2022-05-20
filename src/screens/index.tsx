@@ -1,6 +1,7 @@
 //auth
 import {Login} from './auth/Login';
 import {ForgotPassword} from './auth/ForgotPassword';
+import {Splash} from './auth/Splash';
 
 //app
 import {SelectCompany} from './app/SelectCompany';
@@ -18,6 +19,7 @@ import {ConfigNoti} from './app/ConfigNoti';
 
 const screens = {
   //auth
+  Splash,
   Login,
   ForgotPassword,
   //app

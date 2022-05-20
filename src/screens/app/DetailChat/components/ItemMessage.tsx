@@ -7,6 +7,7 @@ import FastImage from 'react-native-fast-image';
 import {defaultAvatar} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
+import moment from 'moment';
 
 import {useSelector} from 'react-redux';
 import {Reaction} from './Reaction';
@@ -17,7 +18,7 @@ const color = ['#E8E8E8', '#D4D4D4'];
 const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const {deleteMsg} = props;
-  const {user, text, _id, reaction} = props.currentMessage;
+  const {user, text, _id, reaction, createdAt} = props.currentMessage;
   const [visible, setVisible] = useState(false);
 
   const onShowMenu = useCallback(() => {
@@ -52,10 +53,12 @@ const ItemMessage = React.memo((props: any) => {
       <>
         <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
           {user?._id === user_id ? (
-            <Text style={styles.txtTimeCurent}>13:45</Text>
+            <Text style={styles.txtTimeCurent}>
+              {moment(createdAt).format('HH:mm')}
+            </Text>
           ) : (
             <View style={styles.viewAvatar}>
-              <FastImage style={styles.image} source={defaultAvatar} />
+              <FastImage style={styles.image} source={{uri: user?.avatar}} />
               <View style={{flex: 1}} />
             </View>
           )}
@@ -64,10 +67,12 @@ const ItemMessage = React.memo((props: any) => {
             start={{x: 1, y: 0}}
             end={{x: 0, y: 0}}
             style={styles.containerChat}>
-            <Text>{text}</Text>
+            <Text style={styles.txtMessage}>{text}</Text>
           </LinearGradient>
           {user?._id === user_id ? null : (
-            <Text style={styles.txtTime}>13:45</Text>
+            <Text style={styles.txtTime}>
+              {moment(createdAt).format('HH:mm')}
+            </Text>
           )}
         </TouchableOpacity>
         {reaction?.length > 0 && (
@@ -105,10 +110,10 @@ const styles = StyleSheet.create({
   },
   containerChat: {
     maxWidth: '70%',
-    paddingVertical: verticalScale(14),
-    paddingHorizontal: verticalScale(14),
-    borderRadius: moderateScale(16),
-    marginVertical: verticalScale(7),
+    paddingVertical: verticalScale(10),
+    paddingHorizontal: scale(14),
+    borderRadius: verticalScale(16),
+    marginVertical: verticalScale(5),
   },
   chat: {
     flex: 1,
@@ -160,6 +165,11 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(10),
     marginLeft: scale(2),
+  },
+  txtMessage: {
+    fontSize: moderateScale(16),
+    ...stylesCommon.fontWeight500,
+    color: colors.darkGrayText,
   },
 });
 

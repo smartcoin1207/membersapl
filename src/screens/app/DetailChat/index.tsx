@@ -18,8 +18,6 @@ const DetailChat = (props: any) => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   };
 
-  console.log(listChat)
-
   const renderMessage = (props: any) => {
     return (
       <>

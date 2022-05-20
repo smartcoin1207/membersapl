@@ -1,5 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+  BackHandler,
+} from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput, AppButton} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
@@ -30,11 +37,17 @@ const SelectCompany = () => {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      getListCompanyApi();
-    }, []),
-  );
+  useEffect(() => {
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    getListCompanyApi();
+    return () => backHandler.remove();
+  }, []);
 
   const debounceText = useCallback(
     debounce(text => getListCompanyApi({key_search: text}), 500),

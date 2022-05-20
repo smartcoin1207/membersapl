@@ -17,10 +17,10 @@ export const useFunction = (props: any) => {
     return {
       _id: message?.id,
       text: message?.message,
-      createdAt: moment(message?.created_at).toDate(),
+      createdAt: message?.created_at,
       user: {
         _id: message?.from_id,
-        avatar: message?.avatar,
+        avatar: message?.user_send?.icon_image,
       },
       reaction: message?.reactions,
     };

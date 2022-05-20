@@ -3,6 +3,8 @@ import {put, takeLatest, select} from 'redux-saga/effects';
 import {saveToken, saveInfoUser} from './action';
 import {typeAuth} from './type';
 import {GlobalService, loginApi, logOutApi, getUserInfoApi} from '@services';
+import {NavigationUtils} from '@navigation';
+import {ROUTE_NAME} from '@routeName';
 
 interface ResponseGenerator {
   result?: any;
@@ -15,6 +17,7 @@ export function* loginSaga(action: any) {
     const result: ResponseGenerator = yield loginApi(action?.payload);
     yield put(saveInfoUser(result?.data?.user_info));
     yield put(saveToken(result?.data?.token));
+    yield NavigationUtils.navigate(ROUTE_NAME.SELECT_COMPANY);
   } catch (error) {
   } finally {
     GlobalService.hideLoading();
@@ -26,6 +29,7 @@ export function* logOutSaga(action: any) {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield logOutApi();
     yield put(saveToken(null));
+    yield NavigationUtils.navigate(ROUTE_NAME.LOGIN);
   } catch (error) {
   } finally {
     GlobalService.hideLoading();
@@ -44,5 +48,5 @@ export function* getUserInfoSaga(action: any) {
 export function* authSaga() {
   yield takeLatest(typeAuth.LOGIN, loginSaga);
   yield takeLatest(typeAuth.LOGOUT, logOutSaga);
-  yield takeLatest(typeAuth.GET_USER_INFO, getUserInfoSaga)
+  yield takeLatest(typeAuth.GET_USER_INFO, getUserInfoSaga);
 }
