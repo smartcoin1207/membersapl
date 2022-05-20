@@ -63,7 +63,9 @@ const Header = React.memo((props: HeaderProps) => {
           {imageCenter && (
             <Image
               source={sourceImageCenter ? sourceImageCenter : logoImage}
-              style={styles.imageCenter}
+              style={
+                sourceImageCenter ? styles.imageCenter : styles.marginRight
+              }
             />
           )}
           <Text style={styles.txtTitle} numberOfLines={1}>
@@ -82,7 +84,8 @@ const Header = React.memo((props: HeaderProps) => {
           {onRightFirst && (
             <TouchableOpacity
               hitSlop={{...HITSLOP, left: 0}}
-              onPress={onRightFirst}>
+              onPress={onRightFirst}
+              activeOpacity={1}>
               <Image source={iconRightFirst} style={styles.colorIcon} />
             </TouchableOpacity>
           )}
@@ -144,7 +147,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
   },
   colorIcon: {
-    tintColor: colors.darkGrayText,
+    tintColor: colors.border,
+  },
+  marginRight: {
+    marginRight: scale(9),
   },
 });
 

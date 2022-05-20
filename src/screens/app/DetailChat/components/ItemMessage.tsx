@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(5),
   },
   viewReaction: {
-    marginTop: verticalScale(-15),
+    marginTop: verticalScale(-10),
     marginLeft: scale(26) + scale(7),
     marginBottom: verticalScale(10),
     alignItems: 'center',

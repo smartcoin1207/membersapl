@@ -43,9 +43,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   txtTitle: {
-    color: '#242424',
+    color: colors.darkGrayText,
     fontSize: moderateScale(16),
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
   },
   txtTitle2: {
     color: '#696969CC',

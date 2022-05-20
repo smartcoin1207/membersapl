@@ -1,8 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles} from './styles';
-import {Header, AppInput} from '@component';
-import {iconSearch, iconAddListChat} from '@images';
+import {Header, AppInput, ModalConfirm} from '@component';
+import {iconAddUser, iconAddListChat} from '@images';
 import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
 
@@ -18,22 +18,27 @@ const ListUser = (props: any) => {
   const {idRoomChat, dataDetail} = route?.params;
   const navigation = useNavigation<any>();
   const [listUser, setListUser] = useState([]);
+  const [nameUser, setNameUser] = useState(null);
+  const [idUser, setIdUser] = useState(null);
+  const [modal, setModal] = useState<boolean>(false);
+
   const renderItem = ({item}: any) => (
     <Item
       item={item}
       deleteUser={(value: any) => {
-        deleteUser(value);
+        setIdUser(value?.id);
+        setNameUser(value?.name);
+        onCancelModal();
       }}
-      is_host={dataDetail?.is_host}
     />
   );
 
-  const deleteUser = async (value: any) => {
+  const deleteUser = async () => {
     try {
       GlobalService.showLoading();
       const body = {
         room_id: idRoomChat,
-        user_id: value?.id,
+        user_id: idUser,
       };
       const result = await removeUser(body);
       getListUserOfRoom();
@@ -63,6 +68,15 @@ const ListUser = (props: any) => {
     }, []),
   );
 
+  const onCancelModal = useCallback(() => {
+    setModal(!modal);
+  }, [modal]);
+
+  const onConfirm = useCallback(() => {
+    onCancelModal();
+    deleteUser();
+  }, [modal, idUser]);
+
   return (
     <View style={styles.container}>
       <Header
@@ -70,7 +84,7 @@ const ListUser = (props: any) => {
         imageCenter
         onRightFirst={onCreate}
         // onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
-        iconRightFirst={iconAddListChat}
+        iconRightFirst={iconAddUser}
         back
       />
       <View style={styles.viewContent}>
@@ -81,6 +95,12 @@ const ListUser = (props: any) => {
           showsVerticalScrollIndicator={false}
         />
       </View>
+      <ModalConfirm
+        visible={modal}
+        onCancel={onCancelModal}
+        titleHeader="グループからメンバーを削除しますか"
+        onConfirm={onConfirm}
+      />
     </View>
   );
 };

@@ -118,19 +118,19 @@ const Setting = () => {
           </LinearGradient>
           <ViewItem
             sourceImage={iconBell}
-            content="Notification Settings"
+            content="通知設定"
             onPress={() => {
               navigation.navigate(ROUTE_NAME.CONFIG_NOTI);
             }}
           />
           <ViewItem
             sourceImage={iconDocument}
-            content="Terms and Conditions"
+            content="規約と条件"
             onPress={() => {}}
           />
           <ViewItem
             sourceImage={iconBook}
-            content="How To Use"
+            content="使い方"
             onPress={() => {}}
           />
           <ViewItem

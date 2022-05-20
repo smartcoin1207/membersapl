@@ -28,13 +28,9 @@ const SelectCompany = () => {
 
   const getListCompanyApi = async (data?: any) => {
     try {
-      GlobalService.showLoading();
       const res = await getListCompany(data);
       setData(res?.data.data);
-      GlobalService.hideLoading();
-    } catch (error) {
-      GlobalService.hideLoading();
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -101,7 +97,7 @@ const SelectCompany = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="チャットグループ一覧" imageCenter />
+      <Header title="検索クライアント" imageCenter />
       <View style={styles.viewContent}>
         <AppInput
           placeholder="チャット名、メッセージ内容を検索"

@@ -11,8 +11,14 @@ import {GiftedChat, Message} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 
 const DetailChat = (props: any) => {
-  const {chatUser, idRoomChat, getConvertedMessages, listChat, deleteMsg} =
-    useFunction(props);
+  const {
+    chatUser,
+    idRoomChat,
+    getConvertedMessages,
+    listChat,
+    deleteMsg,
+    dataDetail,
+  } = useFunction(props);
   const navigation = useNavigation<any>();
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
@@ -35,7 +41,7 @@ const DetailChat = (props: any) => {
     <View style={styles.container}>
       <Header
         back
-        title="チャットグループ名"
+        title={dataDetail?.name}
         imageCenter
         iconRightFirst={iconDetail}
         iconRightSecond={iconSearch}

@@ -131,7 +131,7 @@ const InfoRoomChat = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Header title="チャットグループの情報" back imageCenter />
+      <Header title={dataDetail?.name} back imageCenter />
       <View style={styles.container}>
         <ScrollView>
           <View style={styles.viewHeader}>
@@ -162,7 +162,6 @@ const InfoRoomChat = (props: any) => {
               <TouchableOpacity style={styles.buttonDelete}>
                 <Image source={iconDelete} />
               </TouchableOpacity>
-
             </View>
           </View>
           <ViewItem
@@ -173,6 +172,7 @@ const InfoRoomChat = (props: any) => {
               navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
                 idRoomChat: idRoomChat,
                 dataDetail: dataDetail,
+                type: 'name',
               });
             }}
           />
@@ -184,6 +184,7 @@ const InfoRoomChat = (props: any) => {
               navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
                 idRoomChat: idRoomChat,
                 dataDetail: dataDetail,
+                type: 'content',
               });
             }}
           />

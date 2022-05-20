@@ -11,13 +11,13 @@ const Splash = () => {
   var timer: any;
 
   useEffect(() => {
-    // timer = setTimeout(() => {
-    //   if (token) {
-    //     navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
-    //   } else {
-    //     navigation.navigate(ROUTE_NAME.LOGIN);
-    //   }
-    // }, 1700);
+    timer = setTimeout(() => {
+      if (token) {
+        navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
+      } else {
+        navigation.navigate(ROUTE_NAME.LOGIN);
+      }
+    }, 1700);
     return () => {
       clearTimeout(timer);
     };

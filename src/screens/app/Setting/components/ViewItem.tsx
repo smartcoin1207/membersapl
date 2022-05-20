@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     color: colors.border,
   },
   txtContent: {
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
     marginTop: verticalScale(5),
     color: colors.backgroundTab,
