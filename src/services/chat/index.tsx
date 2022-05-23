@@ -12,6 +12,7 @@ const LEAVE_ROOM = 'user/chat/room/leave';
 const UPDATE_IMAGE_ROOM_CHAT = 'user/chat/room/update-avatar';
 const DETAIL_CHAT = 'user/chat/room';
 const DELETE_MESSAGE = 'user/chat/room/delete-message';
+const SEND_MESSAGE = 'user/chat/room/send-message';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id} = params;
@@ -74,5 +75,10 @@ export const getDetailChatApi: any = async (params: any) => {
 
 export const deleteMessageApi: any = async (idMessage: any, idRoom: any) => {
   const response = api.post(`${DELETE_MESSAGE}/${idMessage}?room_id=${idRoom}`);
+  return response;
+};
+
+export const sendMessageApi: any = async (body: any) => {
+  const response = api.post(SEND_MESSAGE, body);
   return response;
 };

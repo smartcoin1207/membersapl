@@ -20,6 +20,7 @@ const iconBell = require('./IconBell.png');
 const iconDocument = require('./IconDocument.png');
 const iconBook = require('./IconBook.png');
 const iconAddUser = require('./IconAddUser.png');
+const iconSend = require('./IconSend.png');
 
 export {
   iconBack,
@@ -44,4 +45,5 @@ export {
   iconDocument,
   iconBook,
   iconAddUser,
+  iconSend
 };
