@@ -16,8 +16,9 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
     case typeChat.GET_DETAIL_LIST_CHAT_SUCCESS:
       return {
         ...state,
-        detailChat: action.payload.data,
-        pagingDetail: action.payload.paging,
+        detailChat: action.payload.room_messages.data,
+        pagingDetail: action.payload.room_messages.paging,
+        message_pinned: action.payload.messeage_pinned,
       };
     case typeChat.DELETE_MESSAGE:
       const {detailChat} = state;

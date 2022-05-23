@@ -24,7 +24,7 @@ export function* getDetailChatSaga(action: any) {
       id: action?.payload.id,
     };
     const result: ResponseGenerator = yield getDetailChatApi(param);
-    yield put(getDetailListChatSuccess(result?.data?.room_messages));
+    yield put(getDetailListChatSuccess(result?.data));
   } catch (error) {
   } finally {
   }

@@ -4,17 +4,18 @@ import {store} from '../redux/store';
 function createAppSocket() {
   const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443');
   const state = store.getState();
+
   const init = () => {
-    console.log();
     socket.on('connect', () => {
       console.log('Connected');
+      socket.on('message_ind', data => {
+        console.log('message_ind', data);
+      });
+      socket.on('new_message_ind', data => {
+        console.log('new_message_ind', data);
+      });
     });
-    socket.on('new_message_ind', data => {
-      console.log('new_message_ind', data);
-    });
-    socket.on('disconnect', () => {
-      console.log(socket.id); // undefined
-    });
+    
   };
 
   const endConnect = () => {};
@@ -22,6 +23,7 @@ function createAppSocket() {
   return {
     init,
     endConnect,
+    socket,
   };
 }
 

@@ -3,6 +3,7 @@ export type ChatState = {
   detailChat: any;
   pagingDetail: any;
   idCompany: any;
+  message_pinned: any;
 };
 
 export const INITIAL_STATE_CHAT: ChatState = {
@@ -10,4 +11,5 @@ export const INITIAL_STATE_CHAT: ChatState = {
   detailChat: null,
   idCompany: null,
   pagingDetail: null,
+  message_pinned: null,
 };
