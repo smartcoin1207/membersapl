@@ -29,3 +29,8 @@ export const deleteMessage = (payload: any) => ({
   type: typeChat.DELETE_MESSAGE,
   payload,
 });
+
+export const pinMessage = (payload: any) => ({
+  type: typeChat.PIN_MESSAGE,
+  payload,
+})

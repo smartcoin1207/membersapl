@@ -6,6 +6,7 @@ const typeChat = {
   SAVE_ID_COMPANY: 'SAVE_ID_COMPANY',
 
   DELETE_MESSAGE: 'DELETE_MESSAGE',
+  PIN_MESSAGE: 'PIN_MESSAGE',
 };
 
 export {typeChat};

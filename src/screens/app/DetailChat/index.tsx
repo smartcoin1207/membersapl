@@ -22,6 +22,7 @@ const DetailChat = (props: any) => {
     sendMessage,
     navigateToDetail,
     message_pinned,
+    updateGimMessage,
   } = useFunction(props);
 
   const renderMessage = (props: any) => {
@@ -31,6 +32,9 @@ const DetailChat = (props: any) => {
           {...props}
           deleteMsg={(id: any) => {
             deleteMsg(id);
+          }}
+          pinMsg={(id: any) => {
+            updateGimMessage(id, 1);
           }}
         />
       </>
@@ -48,7 +52,7 @@ const DetailChat = (props: any) => {
         onRightFirst={navigateToDetail}
         onRightSecond={() => {}}
       />
-      {message_pinned && (
+      {message_pinned?.message && (
         <View style={styles.viewPinMessage}>
           <View style={styles.viewContent}>
             <Text style={styles.txtTitle}>Pinned message</Text>
@@ -56,7 +60,11 @@ const DetailChat = (props: any) => {
               {message_pinned?.message}
             </Text>
           </View>
-          <TouchableOpacity style={styles.viewIcon}>
+          <TouchableOpacity
+            style={styles.viewIcon}
+            onPress={() => {
+              updateGimMessage(message_pinned?.id, 0);
+            }}>
             <Image source={iconDelete} style={styles.iconDelete} />
           </TouchableOpacity>
         </View>

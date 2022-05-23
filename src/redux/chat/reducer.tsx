@@ -33,6 +33,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         detailChat: data,
       };
+    case typeChat.PIN_MESSAGE:
+      return {
+        ...state,
+        message_pinned: action.payload,
+      };
     default:
       return state;
   }
