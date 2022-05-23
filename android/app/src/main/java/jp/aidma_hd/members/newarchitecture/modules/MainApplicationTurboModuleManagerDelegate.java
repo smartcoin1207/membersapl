@@ -1,4 +1,4 @@
-package com.chat.newarchitecture.modules;
+package jp.aidma_hd.members.newarchitecture.modules;
 
 import com.facebook.jni.HybridData;
 import com.facebook.react.ReactPackage;
