@@ -2,12 +2,13 @@ import {defaultAvatar} from '@images';
 import moment from 'moment';
 import React, {useMemo, useEffect, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getDetailListChat, deleteMessage} from '@redux';
+import {getDetailListChat, deleteMessage, pinMessage} from '@redux';
 import {
   deleteMessageApi,
   GlobalService,
   detailRoomchat,
   sendMessageApi,
+  pinMessageApi,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -32,6 +33,7 @@ export const useFunction = (props: any) => {
   };
 
   const convertDataMessage = useCallback((message: any) => {
+    console.log(message);
     return {
       _id: message?.id,
       text: message?.message,
@@ -41,6 +43,7 @@ export const useFunction = (props: any) => {
         avatar: message?.user_send?.icon_image,
       },
       reaction: message?.reactions,
+      msg_type: message?.msg_type,
     };
   }, []);
 
@@ -127,10 +130,19 @@ export const useFunction = (props: any) => {
     } catch (error: any) {}
   }, []);
 
-  const updateGimMessage = useCallback(() => {
-    try {
-    } catch (error: any) {}
-  }, [message_pinned?.id]);
+  const updateGimMessage = useCallback(
+    async (id, status) => {
+      try {
+        const res = await pinMessageApi(id, status);
+        if (status === 0) {
+          dispatch(pinMessage(null));
+        } else {
+          getListChat();
+        }
+      } catch (error: any) {}
+    },
+    [message_pinned?.id],
+  );
 
   return {
     chatUser,

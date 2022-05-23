@@ -13,6 +13,7 @@ const UPDATE_IMAGE_ROOM_CHAT = 'user/chat/room/update-avatar';
 const DETAIL_CHAT = 'user/chat/room';
 const DELETE_MESSAGE = 'user/chat/room/delete-message';
 const SEND_MESSAGE = 'user/chat/room/send-message';
+const PIN_MESSAGE = 'user/chat/room/pin-message';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id} = params;
@@ -80,5 +81,10 @@ export const deleteMessageApi: any = async (idMessage: any, idRoom: any) => {
 
 export const sendMessageApi: any = async (body: any) => {
   const response = api.post(SEND_MESSAGE, body);
+  return response;
+};
+
+export const pinMessageApi: any = async (id: any, status: any) => {
+  const response = api.get(`${PIN_MESSAGE}/${id}?pin_flag=${status}`);
   return response;
 };
