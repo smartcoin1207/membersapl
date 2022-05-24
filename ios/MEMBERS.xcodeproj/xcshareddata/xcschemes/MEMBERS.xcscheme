@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "MEMBER S.app"
-               BlueprintName = "MEMBER S"
-               ReferencedContainer = "container:MEMBER S.xcodeproj">
+               BuildableName = "MEMBERS.app"
+               BlueprintName = "MEMBERS"
+               ReferencedContainer = "container:MEMBERS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "MEMBER STests.xctest"
-               BlueprintName = "MEMBER STests"
-               ReferencedContainer = "container:MEMBER S.xcodeproj">
+               BuildableName = "MEMBERSTests.xctest"
+               BlueprintName = "MEMBERSTests"
+               ReferencedContainer = "container:MEMBERS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MEMBER S.app"
-            BlueprintName = "MEMBER S"
-            ReferencedContainer = "container:MEMBER S.xcodeproj">
+            BuildableName = "MEMBERS.app"
+            BlueprintName = "MEMBERS"
+            ReferencedContainer = "container:MEMBERS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "MEMBER S.app"
-            BlueprintName = "MEMBER S"
-            ReferencedContainer = "container:MEMBER S.xcodeproj">
+            BuildableName = "MEMBERS.app"
+            BlueprintName = "MEMBERS"
+            ReferencedContainer = "container:MEMBERS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
