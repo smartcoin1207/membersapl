@@ -33,4 +33,19 @@ export const deleteMessage = (payload: any) => ({
 export const pinMessage = (payload: any) => ({
   type: typeChat.PIN_MESSAGE,
   payload,
-})
+});
+
+export const saveIdRoomChat = (payload: any) => ({
+  type: typeChat.SAVE_ID_ROOMCHAT,
+  payload,
+});
+
+export const getDetailMessageSocket = (payload: any) => ({
+  type: typeChat.GET_DETAIL_MESSAGE_SOCKET,
+  payload,
+});
+
+export const getDetailMessageSocketSuccess = (payload: any) => ({
+  type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SUCCESS,
+  payload,
+});

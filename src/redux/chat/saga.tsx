@@ -1,8 +1,16 @@
-import {put, takeLatest, select} from 'redux-saga/effects';
-import {getRoomListSuccess, getDetailListChatSuccess} from './action';
+import {put, takeLatest, select, takeEvery, call} from 'redux-saga/effects';
+import {
+  getRoomListSuccess,
+  getDetailListChatSuccess,
+  getDetailMessageSocketSuccess,
+} from './action';
 
 import {typeChat} from './type';
-import {getRoomListApi, getDetailChatApi} from '@services';
+import {
+  getRoomListApi,
+  getDetailChatApi,
+  getMessageFromSocket,
+} from '@services';
 
 interface ResponseGenerator {
   result?: any;
@@ -22,6 +30,7 @@ export function* getDetailChatSaga(action: any) {
   try {
     const param = {
       id: action?.payload.id,
+      page: action?.payload.page,
     };
     const result: ResponseGenerator = yield getDetailChatApi(param);
     yield put(getDetailListChatSuccess(result?.data));
@@ -30,7 +39,20 @@ export function* getDetailChatSaga(action: any) {
   }
 }
 
+export function* getDetailMessageSaga(action: any) {
+  try {
+    const body = {
+      message_id: action.payload,
+    };
+    const result: ResponseGenerator = yield getMessageFromSocket(body);
+    yield put(getDetailMessageSocketSuccess([result?.data?.message]));
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* chatSaga() {
-  yield takeLatest(typeChat.GET_ROOM_LIST, getRoomListSaga);
-  yield takeLatest(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
+  yield takeEvery(typeChat.GET_ROOM_LIST, getRoomListSaga);
+  yield takeEvery(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
+  yield takeEvery(typeChat.GET_DETAIL_MESSAGE_SOCKET, getDetailMessageSaga);
 }

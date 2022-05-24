@@ -14,9 +14,13 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         roomList: action.payload,
       };
     case typeChat.GET_DETAIL_LIST_CHAT_SUCCESS:
+      let page = action.payload.room_messages.paging?.current_page;
       return {
         ...state,
-        detailChat: action.payload.room_messages.data,
+        detailChat:
+          page === 1
+            ? action.payload.room_messages.data
+            : state.detailChat.concat(action.payload.room_messages.data),
         pagingDetail: action.payload.room_messages.paging,
         message_pinned: action.payload.messeage_pinned,
       };
@@ -37,6 +41,16 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
       return {
         ...state,
         message_pinned: action.payload,
+      };
+    case typeChat.SAVE_ID_ROOMCHAT:
+      return {
+        ...state,
+        id_roomChat: action.payload,
+      };
+    case typeChat.GET_DETAIL_MESSAGE_SOCKET_SUCCESS:
+      return {
+        ...state,
+        detailChat: action.payload.concat(state.detailChat),
       };
     default:
       return state;

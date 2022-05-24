@@ -2,7 +2,12 @@ import {defaultAvatar} from '@images';
 import moment from 'moment';
 import React, {useMemo, useEffect, useState, useCallback} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {getDetailListChat, deleteMessage, pinMessage} from '@redux';
+import {
+  getDetailListChat,
+  deleteMessage,
+  pinMessage,
+  getDetailMessageSocketSuccess,
+} from '@redux';
 import {
   deleteMessageApi,
   GlobalService,
@@ -19,6 +24,7 @@ export const useFunction = (props: any) => {
   const navigation = useNavigation<any>();
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const listChat = useSelector((state: any) => state.chat?.detailChat);
+  const pagging = useSelector((state: any) => state.chat?.pagingDetail);
   const message_pinned = useSelector(
     (state: any) => state.chat?.message_pinned,
   );
@@ -27,13 +33,13 @@ export const useFunction = (props: any) => {
   const {idRoomChat} = route?.params;
   const [visible, setVisible] = useState(false);
   const [dataDetail, setData] = useState<any>(null);
+  const [page, setPage] = useState(1);
 
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   };
 
   const convertDataMessage = useCallback((message: any) => {
-    console.log(message);
     return {
       _id: message?.id,
       text: message?.message,
@@ -62,13 +68,14 @@ export const useFunction = (props: any) => {
   const getListChat = () => {
     const data = {
       id: idRoomChat,
+      page: page,
     };
     dispatch(getDetailListChat(data));
   };
 
   useEffect(() => {
     getListChat();
-  }, []);
+  }, [page]);
 
   const getDetail = async () => {
     try {
@@ -108,9 +115,6 @@ export const useFunction = (props: any) => {
       data.append('from_id', mes[0]?.user?._id);
       data.append('message', mes[0]?.text);
       const res = await sendMessageApi(data);
-
-      console.log('SOCKET', socket);
-
       socket.emit('message_ind', {
         user_id: mes[0]?.user?._id,
         room_id: idRoomChat,
@@ -127,6 +131,7 @@ export const useFunction = (props: any) => {
         text2: null,
         time: res?.data?.data?.created_at,
       });
+      dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
     } catch (error: any) {}
   }, []);
 
@@ -144,6 +149,14 @@ export const useFunction = (props: any) => {
     [message_pinned?.id],
   );
 
+  const onLoadMore = useCallback(() => {
+    if (page !== pagging?.last_page) {
+      setPage(prevPage => prevPage + 1);
+    } else {
+      null;
+    }
+  }, [page, pagging]);
+
   return {
     chatUser,
     idRoomChat,
@@ -157,5 +170,6 @@ export const useFunction = (props: any) => {
     navigateToDetail,
     message_pinned,
     updateGimMessage,
+    onLoadMore,
   };
 };
