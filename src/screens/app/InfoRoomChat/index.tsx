@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {styles} from './styles';
 import {Header, ModalConfirm} from '@component';
@@ -27,6 +28,7 @@ import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
 import {updateImageRoomChat} from '@services';
+import {colors} from '@stylesCommon';
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -133,80 +135,86 @@ const InfoRoomChat = (props: any) => {
     <View style={styles.container}>
       <Header title={dataDetail?.name} back imageCenter />
       <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.viewHeader}>
-            <View style={styles.viewAvatar}>
-              {dataDetail?.icon_image ? (
-                <Image
-                  source={{uri: dataDetail?.icon_image}}
-                  style={styles.avatar}
-                />
-              ) : (
-                <Image source={defaultAvatar} style={styles.avatar} />
-              )}
-              <TouchableOpacity
-                style={styles.buttonGhim}
-                onPress={onGhimRoomChat}>
-                <Image
-                  source={iconPin}
-                  style={activePin === false ? styles.inActive : null}
-                />
-              </TouchableOpacity>
+        {dataDetail ? (
+          <ScrollView>
+            <View style={styles.viewHeader}>
+              <View style={styles.viewAvatar}>
+                {dataDetail?.icon_image ? (
+                  <Image
+                    source={{uri: dataDetail?.icon_image}}
+                    style={styles.avatar}
+                  />
+                ) : (
+                  <Image source={defaultAvatar} style={styles.avatar} />
+                )}
+                <TouchableOpacity
+                  style={styles.buttonGhim}
+                  onPress={onGhimRoomChat}>
+                  <Image
+                    source={iconPin}
+                    style={activePin === false ? styles.inActive : null}
+                  />
+                </TouchableOpacity>
 
-              <TouchableOpacity
-                style={styles.buttonCamera}
-                onPress={upLoadImage}>
-                <Image source={iconCamera} />
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonCamera}
+                  onPress={upLoadImage}>
+                  <Image source={iconCamera} />
+                </TouchableOpacity>
 
-              <TouchableOpacity style={styles.buttonDelete}>
-                <Image source={iconDelete} />
-              </TouchableOpacity>
+                <TouchableOpacity style={styles.buttonDelete}>
+                  <Image source={iconDelete} />
+                </TouchableOpacity>
+              </View>
             </View>
+            <ViewItem
+              sourceImage={iconEdit}
+              title="表示名"
+              content={dataDetail?.name}
+              onClick={() => {
+                navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
+                  idRoomChat: idRoomChat,
+                  dataDetail: dataDetail,
+                  type: 'name',
+                });
+              }}
+            />
+            <ViewItem
+              sourceImage={iconDetailRow}
+              title="メールアドレス "
+              content={dataDetail?.summary_column}
+              onClick={() => {
+                navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
+                  idRoomChat: idRoomChat,
+                  dataDetail: dataDetail,
+                  type: 'content',
+                });
+              }}
+            />
+            <ViewItem
+              sourceImage={iconUser}
+              content="メンバー"
+              onClick={() => {
+                navigation.navigate(ROUTE_NAME.LIST_USER, {
+                  idRoomChat: idRoomChat,
+                  dataDetail: dataDetail,
+                });
+              }}
+            />
+            <ViewItem
+              sourceImage={iconLogout}
+              content="グループを退出"
+              isLogout
+              hideBorder
+              hideNext
+              onClick={onCancelModal}
+            />
+          </ScrollView>
+        ) : (
+          <View style={styles.marginTop}>
+            <ActivityIndicator size='small' color={colors.border} />
           </View>
-          <ViewItem
-            sourceImage={iconEdit}
-            title="表示名"
-            content={dataDetail?.name}
-            onClick={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
-                idRoomChat: idRoomChat,
-                dataDetail: dataDetail,
-                type: 'name',
-              });
-            }}
-          />
-          <ViewItem
-            sourceImage={iconDetailRow}
-            title="メールアドレス "
-            content={dataDetail?.summary_column}
-            onClick={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
-                idRoomChat: idRoomChat,
-                dataDetail: dataDetail,
-                type: 'content',
-              });
-            }}
-          />
-          <ViewItem
-            sourceImage={iconUser}
-            content="メンバー"
-            onClick={() => {
-              navigation.navigate(ROUTE_NAME.LIST_USER, {
-                idRoomChat: idRoomChat,
-                dataDetail: dataDetail,
-              });
-            }}
-          />
-          <ViewItem
-            sourceImage={iconLogout}
-            content="グループを退出"
-            isLogout
-            hideBorder
-            hideNext
-            onClick={onCancelModal}
-          />
-        </ScrollView>
+        )}
       </View>
       <ModalConfirm
         visible={modal}

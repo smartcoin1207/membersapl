@@ -14,6 +14,7 @@ const DETAIL_CHAT = 'user/chat/room';
 const DELETE_MESSAGE = 'user/chat/room/delete-message';
 const SEND_MESSAGE = 'user/chat/room/send-message';
 const PIN_MESSAGE = 'user/chat/room/pin-message';
+const GET_MESSAGE_FROM_SOCKET = 'user/chat/get_chat_message_info_for_websocket';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id} = params;
@@ -69,8 +70,10 @@ export const updateImageRoomChat: any = async (body: any) => {
 };
 
 export const getDetailChatApi: any = async (params: any) => {
-  const {id} = params;
-  const response = api.get(`${DETAIL_CHAT}/${id}/message`);
+  const {id, page} = params;
+  const response = api.get(
+    `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}`,
+  );
   return response;
 };
 
@@ -86,5 +89,10 @@ export const sendMessageApi: any = async (body: any) => {
 
 export const pinMessageApi: any = async (id: any, status: any) => {
   const response = api.get(`${PIN_MESSAGE}/${id}?pin_flag=${status}`);
+  return response;
+};
+
+export const getMessageFromSocket: any = async (body: any) => {
+  const response = api.post(GET_MESSAGE_FROM_SOCKET, body);
   return response;
 };

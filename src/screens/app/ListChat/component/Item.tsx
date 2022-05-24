@@ -8,11 +8,16 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import FastImage from 'react-native-fast-image';
 
+import {saveIdRoomChat} from '@redux';
+import {useDispatch} from 'react-redux';
+
 const Item = React.memo((props: any) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const {item} = props;
 
-  const navigateDetail = () => {
+  const navigateDetail = async () => {
+    await dispatch(saveIdRoomChat(item?.id));
     navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {idRoomChat: item?.id});
   };
 

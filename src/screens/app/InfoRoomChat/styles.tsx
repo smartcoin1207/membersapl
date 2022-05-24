@@ -68,6 +68,9 @@ const styles = StyleSheet.create({
   inActive: {
     tintColor: '#989898',
   },
+  marginTop: {
+    marginTop: verticalScale(20),
+  },
 });
 
 export {styles};

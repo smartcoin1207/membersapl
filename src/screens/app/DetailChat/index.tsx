@@ -7,9 +7,14 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {useFunction} from './useFunction';
 import {Menu} from 'react-native-material-menu';
-import {GiftedChat, Message} from '../../../lib/react-native-gifted-chat';
+import {
+  GiftedChat,
+  Message,
+  LoadEarlier,
+} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 import {renderSend} from './components/InputToolbar';
+import {colors} from '@stylesCommon';
 
 const DetailChat = (props: any) => {
   const {
@@ -23,6 +28,7 @@ const DetailChat = (props: any) => {
     navigateToDetail,
     message_pinned,
     updateGimMessage,
+    onLoadMore,
   } = useFunction(props);
 
   const renderMessage = (props: any) => {
@@ -38,6 +44,18 @@ const DetailChat = (props: any) => {
           }}
         />
       </>
+    );
+  };
+
+  const isCloseToTop = ({
+    layoutMeasurement,
+    contentOffset,
+    contentSize,
+  }: any) => {
+    const paddingToTop = -20;
+    return (
+      contentSize.height - layoutMeasurement.height - paddingToTop <=
+      contentOffset.y
     );
   };
 
@@ -79,6 +97,14 @@ const DetailChat = (props: any) => {
         renderMessage={renderMessage}
         user={chatUser}
         renderSend={renderSend}
+        listViewProps={{
+          scrollEventThrottle: 400,
+          onScroll: ({nativeEvent}: any) => {
+            if (isCloseToTop(nativeEvent)) {
+              onLoadMore();
+            }
+          },
+        }}
       />
     </View>
   );
