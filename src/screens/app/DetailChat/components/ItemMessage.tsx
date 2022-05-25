@@ -1,6 +1,12 @@
 import {colors, stylesCommon} from '@stylesCommon';
 import React, {useState, useCallback} from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import FastImage from 'react-native-fast-image';
@@ -8,12 +14,15 @@ import {defaultAvatar} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
 import moment from 'moment';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {showMessage} from 'react-native-flash-message';
 
 import {useSelector} from 'react-redux';
 import {Reaction} from './Reaction';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
+const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
@@ -30,6 +39,23 @@ const ItemMessage = React.memo((props: any) => {
       onShowMenu();
       switch (value) {
         case 1:
+          Clipboard.setString(text);
+          showMessage({
+            message: 'コピー',
+            backgroundColor: colors.backgroundTab,
+            color: '#FFFFFF',
+            position: {
+              bottom: 0,
+              left: width / 2 - scale(50 + 10),
+              right: width / 2 - scale(50),
+            },
+            duration: 500,
+            style: {
+              width: scale(100),
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+          });
           break;
         case 2:
           break;
@@ -121,11 +147,13 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
     paddingHorizontal: scale(11),
+    marginVertical: verticalScale(6),
   },
   containerCurrent: {
     width: '100%',
     alignItems: 'flex-end',
     paddingHorizontal: scale(11),
+    marginVertical: verticalScale(6),
   },
   viewCenter: {
     width: '100%',
@@ -137,7 +165,6 @@ const styles = StyleSheet.create({
     paddingVertical: verticalScale(10),
     paddingHorizontal: scale(14),
     borderRadius: verticalScale(16),
-    marginVertical: verticalScale(5),
   },
   chat: {
     flex: 1,

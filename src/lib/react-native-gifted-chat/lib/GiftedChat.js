@@ -557,6 +557,7 @@ const styles = StyleSheet.create({
     },
     safeArea: {
         flex: 1,
+        backgroundColor: '#F4F2EF'
     },
 });
 export { GiftedChat, Actions, Avatar, Bubble, SystemMessage, MessageImage, MessageText, Composer, Day, InputToolbar, LoadEarlier, Message, MessageContainer, Send, Time, GiftedAvatar, utils, };
