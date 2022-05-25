@@ -15,6 +15,7 @@ const DELETE_MESSAGE = 'user/chat/room/delete-message';
 const SEND_MESSAGE = 'user/chat/room/send-message';
 const PIN_MESSAGE = 'user/chat/room/pin-message';
 const GET_MESSAGE_FROM_SOCKET = 'user/chat/get_chat_message_info_for_websocket';
+const REPLY_MESSAGE = 'user/chat/room/reply-message';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id} = params;
@@ -94,5 +95,10 @@ export const pinMessageApi: any = async (id: any, status: any) => {
 
 export const getMessageFromSocket: any = async (body: any) => {
   const response = api.post(GET_MESSAGE_FROM_SOCKET, body);
+  return response;
+};
+
+export const replyMessageApi: any = async (body: any) => {
+  const response = api.post(REPLY_MESSAGE, body);
   return response;
 };

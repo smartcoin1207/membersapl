@@ -52,6 +52,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         detailChat: action.payload.concat(state.detailChat),
       };
+    case typeChat.SAVE_MESSAGE_REPLY:
+      return {
+        ...state,
+        messageReply: action.payload,
+      };
     default:
       return state;
   }

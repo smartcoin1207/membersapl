@@ -12,7 +12,10 @@ const ViewItem = React.memo((props: any) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
-          <Image source={sourceImage} />
+          <Image
+            source={sourceImage}
+            style={{tintColor: isLogout ? '#EA5A31' : colors.darkGrayText}}
+          />
         </View>
         <View style={styles.viewTxt}>
           {!isLogout ? (
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
   },
   viewImageNext: {
     width: '15%',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   txtTitle: {
@@ -68,15 +71,18 @@ const styles = StyleSheet.create({
     color: colors.border,
   },
   txtContent: {
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
     marginTop: verticalScale(5),
     color: colors.backgroundTab,
   },
   txtContentLogout: {
     color: '#EA5A31',
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
+  },
+  icon: {
+    tintColor: colors.darkGrayText,
   },
 });
 

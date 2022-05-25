@@ -138,19 +138,20 @@ const User = () => {
           />
           <ViewItem
             sourceImage={iconPassword}
-            title="表示名"
+            title="パスワード"
             onPress={() => {
               navigation.navigate(ROUTE_NAME.CHANGE_PASSWORD);
             }}
+            hideBorder
           />
-          <ViewItem
+          {/* <ViewItem
             sourceImage={iconLogout}
             content="ログアウト"
             isLogout
             hideBorder
             hideNext
             onPress={onCancelModal}
-          />
+          /> */}
         </ScrollView>
       </View>
       <ModalConfirm

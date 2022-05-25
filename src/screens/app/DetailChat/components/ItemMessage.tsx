@@ -16,7 +16,6 @@ import {MenuFeature} from '../components/MenuFeature';
 import moment from 'moment';
 import Clipboard from '@react-native-clipboard/clipboard';
 import {showMessage} from 'react-native-flash-message';
-
 import {useSelector} from 'react-redux';
 import {Reaction} from './Reaction';
 
@@ -26,9 +25,19 @@ const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
-  const {deleteMsg, pinMsg} = props;
-  const {user, text, _id, reaction, createdAt, msg_type} = props.currentMessage;
+  const {deleteMsg, pinMsg, replyMsg} = props;
+  const {
+    user,
+    text,
+    _id,
+    reaction,
+    createdAt,
+    msg_type,
+    reply_to_message_text,
+  } = props.currentMessage;
   const [visible, setVisible] = useState(false);
+
+  // console.log(reply_to_message_text, msg_type)
 
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
@@ -60,6 +69,12 @@ const ItemMessage = React.memo((props: any) => {
         case 2:
           break;
         case 3:
+          const dataMessageReply = {
+            id: _id,
+            user: user,
+            text: text,
+          };
+          replyMsg(dataMessageReply);
           break;
         case 4:
           pinMsg(_id);
@@ -108,6 +123,17 @@ const ItemMessage = React.memo((props: any) => {
                 start={{x: 1, y: 0}}
                 end={{x: 0, y: 0}}
                 style={styles.containerChat}>
+                {msg_type === 3 && (
+                  <View style={styles.viewReply}>
+                    <View style={styles.viewColumn} />
+                    <View>
+                      <Text style={styles.txtTitleReply}>Reply message</Text>
+                      <Text style={styles.txtContentReply} numberOfLines={1}>
+                        {reply_to_message_text}
+                      </Text>
+                    </View>
+                  </View>
+                )}
                 <Text style={styles.txtMessage}>{text}</Text>
               </LinearGradient>
               {user?._id === user_id ? null : (
@@ -227,6 +253,27 @@ const styles = StyleSheet.create({
     color: colors.border,
     ...stylesCommon.fontWeight600,
     marginVertical: verticalScale(8),
+  },
+  viewReply: {
+    flexDirection: 'row',
+    marginBottom: verticalScale(5),
+  },
+  viewColumn: {
+    width: 2,
+    height: '100%',
+    backgroundColor: 'green',
+    marginRight: scale(10),
+  },
+  txtTitleReply: {
+    fontSize: moderateScale(10),
+    ...stylesCommon.fontWeight500,
+    color: colors.border,
+  },
+  txtContentReply: {
+    fontSize: moderateScale(12),
+    ...stylesCommon.fontWeight500,
+    color: colors.backgroundTab,
+    marginTop: verticalScale(8),
   },
 });
 

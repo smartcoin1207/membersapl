@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
 import {
@@ -37,6 +37,9 @@ const DetailChat = (props: any) => {
     message_pinned,
     updateGimMessage,
     onLoadMore,
+    replyMessage,
+    messageReply,
+    removeReplyMessage,
   } = useFunction(props);
 
   const renderMessage = (props: any) => {
@@ -50,6 +53,9 @@ const DetailChat = (props: any) => {
           pinMsg={(id: any) => {
             updateGimMessage(id, 1);
           }}
+          replyMsg={(data: any) => {
+            replyMessage(data);
+          }}
         />
       </>
     );
@@ -60,7 +66,7 @@ const DetailChat = (props: any) => {
     contentOffset,
     contentSize,
   }: any) => {
-    const paddingToTop = -20;
+    const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
     return (
       contentSize.height - layoutMeasurement.height - paddingToTop <=
       contentOffset.y
@@ -108,7 +114,7 @@ const DetailChat = (props: any) => {
         renderFooter={() => (
           <View
             style={{
-              height: verticalScale(20),
+              height: verticalScale(10),
             }}
           />
         )}
@@ -120,20 +126,32 @@ const DetailChat = (props: any) => {
             }
           },
         }}
-        renderAccessory={() => (
-          <View style={styles.viewRepMessage}>
-            <View style={styles.viewIconRepMessage}>
-              <Image source={menuReply} style={styles.iconReply} />
-            </View>
-            <View style={styles.viewTxtRepMessage}>
-              <Text style={styles.name}>Name</Text>
-              <Text style={styles.content}>hello</Text>
-            </View>
-            <View style={styles.viewIconRepMessage}>
-              <Image source={iconClose} style={styles.iconClose} />
-            </View>
-          </View>
-        )}
+        renderAccessory={
+          messageReply
+            ? () => (
+                <>
+                  {messageReply && (
+                    <View style={styles.viewRepMessage}>
+                      <View style={styles.viewIconRepMessage}>
+                        <Image source={menuReply} style={styles.iconReply} />
+                      </View>
+                      <View style={styles.viewTxtRepMessage}>
+                        <Text style={styles.name}>Reply message</Text>
+                        <Text style={styles.content} numberOfLines={2}>
+                          {messageReply?.text}
+                        </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.viewIconRepMessage}
+                        onPress={removeReplyMessage}>
+                        <Image source={iconClose} style={styles.iconClose} />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </>
+              )
+            : undefined
+        }
         bottomOffset={0}
       />
     </View>
