@@ -2,9 +2,13 @@ import React, {useRef, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
-import {iconSearch, iconDetail, iconDelete} from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
+import {
+  iconSearch,
+  iconDetail,
+  iconDelete,
+  menuReply,
+  iconClose,
+} from '@images';
 import {useFunction} from './useFunction';
 import {Menu} from 'react-native-material-menu';
 import {
@@ -13,8 +17,12 @@ import {
   LoadEarlier,
 } from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
-import {renderSend} from './components/InputToolbar';
-import {colors} from '@stylesCommon';
+import {
+  renderSend,
+  renderInputToolbar,
+  renderComposer,
+} from './components/InputToolbar';
+import {verticalScale} from 'react-native-size-matters';
 
 const DetailChat = (props: any) => {
   const {
@@ -88,15 +96,22 @@ const DetailChat = (props: any) => {
         </View>
       )}
       <GiftedChat
-        placeholder="Type something..."
-        messagesContainerStyle={{marginBottom: 20}}
         messages={getConvertedMessages(listChat)}
         onSend={(messages: any) => {
           sendMessage(messages);
         }}
         renderMessage={renderMessage}
+        renderInputToolbar={renderInputToolbar}
+        renderComposer={renderComposer}
         user={chatUser}
         renderSend={renderSend}
+        renderFooter={() => (
+          <View
+            style={{
+              height: verticalScale(20),
+            }}
+          />
+        )}
         listViewProps={{
           scrollEventThrottle: 400,
           onScroll: ({nativeEvent}: any) => {
@@ -105,6 +120,21 @@ const DetailChat = (props: any) => {
             }
           },
         }}
+        renderAccessory={() => (
+          <View style={styles.viewRepMessage}>
+            <View style={styles.viewIconRepMessage}>
+              <Image source={menuReply} style={styles.iconReply} />
+            </View>
+            <View style={styles.viewTxtRepMessage}>
+              <Text style={styles.name}>Name</Text>
+              <Text style={styles.content}>hello</Text>
+            </View>
+            <View style={styles.viewIconRepMessage}>
+              <Image source={iconClose} style={styles.iconClose} />
+            </View>
+          </View>
+        )}
+        bottomOffset={0}
       />
     </View>
   );

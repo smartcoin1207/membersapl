@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
     },
     accessory: {
-        height: 44,
+        // height: 44,
     },
 });
 export default class InputToolbar extends React.Component {
@@ -64,7 +64,7 @@ export default class InputToolbar extends React.Component {
             return this.props.renderActions(props);
         }
         else if (this.props.onPressActionButton) {
-            return <Actions {...props}/>;
+            return <Actions {...props} />;
         }
         return null;
     }
@@ -72,19 +72,19 @@ export default class InputToolbar extends React.Component {
         if (this.props.renderSend) {
             return this.props.renderSend(this.props);
         }
-        return <Send {...this.props}/>;
+        return <Send {...this.props} />;
     }
     renderComposer() {
         if (this.props.renderComposer) {
             return this.props.renderComposer(this.props);
         }
-        return <Composer {...this.props}/>;
+        return <Composer {...this.props} />;
     }
     renderAccessory() {
         if (this.props.renderAccessory) {
             return (<View style={[styles.accessory, this.props.accessoryStyle]}>
-          {this.props.renderAccessory(this.props)}
-        </View>);
+                {this.props.renderAccessory(this.props)}
+            </View>);
         }
         return null;
     }
@@ -94,13 +94,13 @@ export default class InputToolbar extends React.Component {
             { position: this.state.position },
             this.props.containerStyle,
         ]}>
-        <View style={[styles.primary, this.props.primaryStyle]}>
-          {this.renderActions()}
-          {this.renderComposer()}
-          {this.renderSend()}
-        </View>
-        {this.renderAccessory()}
-      </View>);
+            {this.renderAccessory()}
+            <View style={[styles.primary, this.props.primaryStyle]}>
+                {this.renderActions()}
+                {this.renderComposer()}
+                {this.renderSend()}
+            </View>
+        </View>);
     }
 }
 InputToolbar.defaultProps = {

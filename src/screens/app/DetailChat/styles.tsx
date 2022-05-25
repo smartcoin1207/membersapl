@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {colors, stylesCommon} from '@stylesCommon';
-import {scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,6 +34,43 @@ const styles = StyleSheet.create({
     width: '10%',
     alignItems: 'flex-end',
     justifyContent: 'center',
+  },
+  viewRepMessage: {
+    width: '100%',
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    borderTopWidth: 0.5,
+    borderBottomWidth: 0.5,
+    borderColor: colors.border,
+  },
+  viewIconRepMessage: {
+    width: '15%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  viewTxtRepMessage: {
+    width: '70%',
+    paddingHorizontal: scale(10),
+    paddingVertical: scale(5),
+  },
+  iconReply: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+    tintColor: colors.primary,
+  },
+  iconClose: {
+    tintColor: colors.darkGrayText,
+  },
+  name: {
+    fontSize: 14,
+    color: colors.primary,
+    ...stylesCommon.fontWeight600,
+    marginBottom: verticalScale(5),
+  },
+  content: {
+    fontSize: 12,
+    color: colors.darkGrayText,
+    ...stylesCommon.fontWeight500,
   },
 });
 
