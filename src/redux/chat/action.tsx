@@ -49,3 +49,8 @@ export const getDetailMessageSocketSuccess = (payload: any) => ({
   type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SUCCESS,
   payload,
 });
+
+export const saveMessageReply = (payload: any) => ({
+  type: typeChat.SAVE_MESSAGE_REPLY,
+  payload,
+});

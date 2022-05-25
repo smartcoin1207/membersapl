@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   },
   viewImageNext: {
     width: '15%',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   txtTitle: {
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   txtContentLogout: {
     color: '#EA5A31',
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },
 });

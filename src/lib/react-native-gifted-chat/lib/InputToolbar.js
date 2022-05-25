@@ -19,9 +19,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'flex-end',
     },
-    accessory: {
-        // height: 44,
-    },
 });
 export default class InputToolbar extends React.Component {
     constructor() {
