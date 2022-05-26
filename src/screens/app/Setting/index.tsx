@@ -70,9 +70,7 @@ const Setting = () => {
       });
       await dispatch(saveInfoUser(res?.data?.user_info));
       setImage(null);
-    } catch (error) {
-      // console.log(error)
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {

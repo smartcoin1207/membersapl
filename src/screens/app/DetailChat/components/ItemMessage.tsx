@@ -37,8 +37,6 @@ const ItemMessage = React.memo((props: any) => {
   } = props.currentMessage;
   const [visible, setVisible] = useState(false);
 
-  // console.log(reply_to_message_text, msg_type)
-
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
