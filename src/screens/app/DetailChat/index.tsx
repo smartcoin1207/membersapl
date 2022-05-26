@@ -111,13 +111,7 @@ const DetailChat = (props: any) => {
         renderComposer={renderComposer}
         user={chatUser}
         renderSend={renderSend}
-        renderFooter={() => (
-          <View
-            style={{
-              height: verticalScale(10),
-            }}
-          />
-        )}
+        renderFooter={() => <View style={styles.viewBottom} />}
         listViewProps={{
           scrollEventThrottle: 400,
           onScroll: ({nativeEvent}: any) => {

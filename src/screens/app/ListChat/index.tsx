@@ -7,7 +7,13 @@ import {Item} from './component/Item';
 import {useFocusEffect} from '@react-navigation/native';
 import {debounce} from 'lodash';
 
-import {getRoomList, getUserInfo, saveIdRoomChat, saveMessageReply} from '@redux';
+import {
+  getRoomList,
+  getUserInfo,
+  saveIdRoomChat,
+  saveMessageReply,
+  resetDataChat,
+} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
@@ -28,6 +34,7 @@ const ListChat = () => {
     useCallback(() => {
       dispatch(saveIdRoomChat(null));
       dispatch(saveMessageReply(null));
+      dispatch(resetDataChat());
       dispatch(getRoomList({key: key, company_id: idCompany}));
     }, []),
   );

@@ -27,7 +27,7 @@ import {detailRoomchat, pinFlag, leaveRoomChat, GlobalService} from '@services';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
-import {updateImageRoomChat} from '@services';
+import {updateImageRoomChat, deleteImageRoomChat} from '@services';
 import {colors} from '@stylesCommon';
 
 const InfoRoomChat = (props: any) => {
@@ -131,6 +131,19 @@ const InfoRoomChat = (props: any) => {
       .catch(err => {});
   };
 
+  const deleteAvatar = async () => {
+    try {
+      GlobalService.showLoading();
+      const res = await deleteImageRoomChat({
+        room_id: idRoomChat,
+      });
+      getDetail();
+      GlobalService.hideLoading();
+    } catch (error: any) {
+      GlobalService.hideLoading();
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header title={dataDetail?.name} back imageCenter />
@@ -162,7 +175,9 @@ const InfoRoomChat = (props: any) => {
                   <Image source={iconCamera} />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.buttonDelete}>
+                <TouchableOpacity
+                  style={styles.buttonDelete}
+                  onPress={deleteAvatar}>
                   <Image source={iconDelete} />
                 </TouchableOpacity>
               </View>
@@ -212,7 +227,7 @@ const InfoRoomChat = (props: any) => {
           </ScrollView>
         ) : (
           <View style={styles.marginTop}>
-            <ActivityIndicator size='small' color={colors.border} />
+            <ActivityIndicator size="small" color={colors.border} />
           </View>
         )}
       </View>

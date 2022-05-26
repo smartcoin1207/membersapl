@@ -3,6 +3,7 @@ import {
   getRoomListSuccess,
   getDetailListChatSuccess,
   getDetailMessageSocketSuccess,
+  deleteMessage,
 } from './action';
 
 import {typeChat} from './type';
@@ -45,7 +46,11 @@ export function* getDetailMessageSaga(action: any) {
       message_id: action.payload,
     };
     const result: ResponseGenerator = yield getMessageFromSocket(body);
-    yield put(getDetailMessageSocketSuccess([result?.data?.message]));
+    if (result?.data?.message?.del_flag == 1) {
+      yield put(deleteMessage(result?.data?.message?.id));
+    } else {
+      yield put(getDetailMessageSocketSuccess([result?.data?.message]));
+    }
   } catch (error) {
   } finally {
   }

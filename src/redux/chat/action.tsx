@@ -54,3 +54,7 @@ export const saveMessageReply = (payload: any) => ({
   type: typeChat.SAVE_MESSAGE_REPLY,
   payload,
 });
+
+export const resetDataChat = () => ({
+  type: typeChat.RESET_DATA,
+});

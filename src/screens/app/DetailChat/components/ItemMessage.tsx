@@ -37,8 +37,6 @@ const ItemMessage = React.memo((props: any) => {
   } = props.currentMessage;
   const [visible, setVisible] = useState(false);
 
-  // console.log(reply_to_message_text, msg_type)
-
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
@@ -107,7 +105,7 @@ const ItemMessage = React.memo((props: any) => {
             <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
               {user?._id === user_id ? (
                 <Text style={styles.txtTimeCurent}>
-                  {moment(createdAt).format('HH:mm')}
+                  {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
                 </Text>
               ) : (
                 <View style={styles.viewAvatar}>
@@ -138,7 +136,7 @@ const ItemMessage = React.memo((props: any) => {
               </LinearGradient>
               {user?._id === user_id ? null : (
                 <Text style={styles.txtTime}>
-                  {moment(createdAt).format('HH:mm')}
+                  {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
                 </Text>
               )}
             </TouchableOpacity>

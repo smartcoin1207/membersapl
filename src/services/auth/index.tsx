@@ -9,7 +9,9 @@ const FORGOT_PASSWORD = 'auth/forgot-password';
 const GET_USER_INFO = 'user';
 const CONFIG_NOTI = 'user/setting/notification-status';
 const GET_LIST_COMPANY_LOGIN = 'user/company';
-const SELECT_COMPANY = 'user/select-client'
+const SELECT_COMPANY = 'user/select-client';
+const DELETE_IMAGE_USER = 'user/remove-avatar';
+const DELETE_IMAGE_ROOM_CHAT = 'user/chat/room/remove-avatar';
 
 export const loginApi: any = async (data: any) => {
   const response = await api.post(LOGIN, data);
@@ -58,5 +60,15 @@ export const getListCompany: any = async (params: any) => {
 
 export const selectCompany: any = async (id: any) => {
   const response = await api.get(`${SELECT_COMPANY}/${id}`);
+  return response;
+};
+
+export const deleteImageUser: any = async () => {
+  const response = await api.post(DELETE_IMAGE_USER);
+  return response;
+};
+
+export const deleteImageRoomChat: any = async (data: any) => {
+  const response = await api.post(DELETE_IMAGE_ROOM_CHAT, data);
   return response;
 };

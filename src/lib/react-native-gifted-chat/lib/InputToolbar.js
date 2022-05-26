@@ -1,17 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { StyleSheet, View, Keyboard, } from 'react-native';
+import { StyleSheet, View, Keyboard, Dimensions } from 'react-native';
 import Composer from './Composer';
 import Send from './Send';
 import Actions from './Actions';
 import Color from './Color';
 import { StylePropType } from './utils';
+const heigth = Dimensions.get('window').height
 const styles = StyleSheet.create({
     container: {
         borderTopWidth: StyleSheet.hairlineWidth,
         borderTopColor: Color.defaultColor,
         backgroundColor: Color.white,
-        bottom: 0,
         left: 0,
         right: 0,
     },
@@ -89,6 +89,7 @@ export default class InputToolbar extends React.Component {
         return (<View style={[
             styles.container,
             { position: this.state.position },
+            { bottom: (this.state.position === 'relative' && heigth >= 812) ? 20 : 5 },
             this.props.containerStyle,
         ]}>
             {this.renderAccessory()}

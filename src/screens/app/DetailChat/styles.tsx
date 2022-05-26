@@ -72,6 +72,9 @@ const styles = StyleSheet.create({
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
   },
+  viewBottom:{
+    height: verticalScale(15),
+  }
 });
 
 export {styles};
