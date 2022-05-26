@@ -28,8 +28,9 @@ import {ROUTE_NAME} from '@routeName';
 import {colors} from '@stylesCommon';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
-import {updateImageProfile} from '@services';
+import {updateImageProfile, deleteImageUser, GlobalService} from '@services';
 import {showMessage} from 'react-native-flash-message';
+import {getUserInfo} from '@redux';
 
 const User = () => {
   const dispatch = useDispatch();
@@ -90,6 +91,17 @@ const User = () => {
       .catch(err => {});
   };
 
+  const deleteAvatar = useCallback(async () => {
+    try {
+      GlobalService.showLoading();
+      const res = await deleteImageUser();
+      dispatch(getUserInfo(user?.id));
+      GlobalService.hideLoading();
+    } catch (error: any) {
+      GlobalService.hideLoading();
+    }
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header title="個人設定" imageCenter />
@@ -112,7 +124,9 @@ const User = () => {
                   style={{tintColor: colors.darkGrayText}}
                 />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.buttonDelete}>
+              <TouchableOpacity
+                style={styles.buttonDelete}
+                onPress={deleteAvatar}>
                 <Image
                   source={iconDelete}
                   style={{tintColor: colors.darkGrayText}}

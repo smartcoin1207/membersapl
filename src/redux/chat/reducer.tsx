@@ -57,6 +57,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         messageReply: action.payload,
       };
+    case typeChat.RESET_DATA:
+      return {
+        ...state,
+        detailChat: [],
+      };
     default:
       return state;
   }

@@ -105,6 +105,22 @@ export const useFunction = (props: any) => {
       try {
         GlobalService.showLoading();
         const res = await deleteMessageApi(id, idRoomChat);
+        socket.emit('message_ind', {
+          user_id: user_id,
+          room_id: idRoomChat,
+          task_id: null,
+          to_info: null,
+          level: res?.data?.message_id?.msg_level,
+          message_id: res?.data?.message_id?.id,
+          message_type: res?.data?.message_id?.type,
+          method: 2,
+          // attachment_files: res?.data?.attachmentFiles,
+          stamp_no: res?.data?.message_id?.stamp_no,
+          relation_message_id: res?.data?.message_id?.reply_to_message_id,
+          text: res?.data?.message_id?.message,
+          text2: null,
+          time: res?.data?.message_id?.created_at,
+        });
         dispatch(deleteMessage(id));
         GlobalService.hideLoading();
       } catch (error: any) {
@@ -123,35 +139,49 @@ export const useFunction = (props: any) => {
           data.append('from_id', mes[0]?.user?._id);
           data.append('message', mes[0]?.text);
           const res = await sendMessageApi(data);
-          // socket.emit('message_ind', {
-          //   user_id: mes[0]?.user?._id,
-          //   room_id: idRoomChat,
-          //   task_id: null,
-          //   to_info: null,
-          //   level: res?.data?.data?.level,
-          //   message_id: res?.data?.data?.id,
-          //   message_type: res?.data?.data?.type,
-          //   method: res?.data?.data?.method,
-          //   attachment_files: res?.data?.attachmentFiles,
-          //   stamp_no: res?.data?.data?.stamp_no,
-          //   relation_message_id: res?.data?.data?.reply_to_message_id,
-          //   text: res?.data?.data?.message,
-          //   text2: null,
-          //   time: res?.data?.data?.created_at,
-          // });
+          socket.emit('message_ind', {
+            user_id: mes[0]?.user?._id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: null,
+            time: res?.data?.data?.created_at,
+          });
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
         } catch (error: any) {}
       } else {
         try {
-          console.log(messageReply);
           const data = new FormData();
           data.append('room_id', idRoomChat);
-          data.append('from_id', messageReply?.user?._id);
+          data.append('from_id', user_id);
           data.append('message', mes[0]?.text);
           data.append('reply_to_message_id', messageReply?.id);
           data.append('msg_type', 3);
-          console.log(data);
           const res = await replyMessageApi(data);
+          socket.emit('message_ind', {
+            user_id: mes[0]?.user?._id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: null,
+            time: res?.data?.data?.created_at,
+          });
           dispatch(saveMessageReply(null));
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
         } catch (error: any) {}
