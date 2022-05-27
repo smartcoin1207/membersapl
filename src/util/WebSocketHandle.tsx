@@ -14,26 +14,17 @@ function createAppSocket() {
     socket.on('connect', () => {
       console.log('Connected');
     });
-    socket.on('message_ind', data => {
-      console.log('message_ind', data);
-    });
-    socket.on('ChatGroup_update_ind', data => {
-      console.log('Cuong', data);
-    });
+    socket.on('message_ind', data => {});
+    socket.on('ChatGroup_update_ind', data => {});
     socket.on('new_message_ind', data => {
       if (state?.auth.token) {
         if (data?.user_id !== state?.auth.userInfo.id) {
           if (data?.room_id === state?.chat?.id_roomChat) {
             store.dispatch(getDetailMessageSocket(data?.message_id));
           } else {
-            // store.dispatch(getRoomList({company_id: state?.chat?.idCompany}));
           }
         } else {
-          if (data?.room_id === state?.chat?.id_roomChat) {
-            store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
-          } else {
-            // store.dispatch(getRoomList({company_id: state?.chat?.idCompany}));
-          }
+          store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
         }
       } else {
         null;

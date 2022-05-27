@@ -78,23 +78,10 @@ export function* getDetailMessageSagaCurrent(action: any) {
       message_id: action.payload,
     };
     const result: ResponseGenerator = yield getMessageFromSocket(body);
-    // if (result?.data?.message?.del_flag == 1) {
-    //   yield put(deleteMessage(result?.data?.message?.id));
-    // } else {
-    //   if (result?.data?.message?.medthod === 1) {
-    //     yield put(
-    //       editMessageAction({
-    //         id: result?.data?.message?.id,
-    //         data: result?.data?.message,
-    //       }),
-    //     );
-    //   } else {
-    //     yield put(getDetailMessageSocketSuccess([result?.data?.message]));
-    //   }
-    // }if
     if (result?.data?.message?.msg_type === 10) {
-      // yield put(getRoomList({company_id: state?.chat?.idCompany}));
       NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
+    } else if (result?.data?.message?.msg_type === 4) {
+      yield put(getRoomList({company_id: state?.chat?.idCompany}));
     }
   } catch (error) {
   } finally {
