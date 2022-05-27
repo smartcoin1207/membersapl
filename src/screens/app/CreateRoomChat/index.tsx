@@ -12,9 +12,11 @@ import {Header, AppInput, AppButton} from '@component';
 import {iconClose} from '@images';
 import {colors} from '@stylesCommon';
 import {debounce} from 'lodash';
+import {AppSocket} from '@util';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {getListUser, createRoom, GlobalService, inviteMember} from '@services';
@@ -22,8 +24,10 @@ import {getListUser, createRoom, GlobalService, inviteMember} from '@services';
 const CreateRoomChat = (props: any) => {
   const navigation = useNavigation<any>();
   const {route} = props;
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
 
   const {typeScreen, idRoomchat} = route?.params;
+  const {socket} = AppSocket;
 
   const [name, setName] = useState<any>(null);
   const [listUser, setListUser] = useState<any>([]);
@@ -105,6 +109,22 @@ const CreateRoomChat = (props: any) => {
           user_id: renderIdUser(),
         };
         const result = await inviteMember(body);
+        socket.emit('message_ind', {
+          user_id: user_id,
+          room_id: idRoomchat,
+          task_id: null,
+          to_info: null,
+          level: result?.data?.data?.msg_level,
+          message_id: result?.data?.data?.id,
+          message_type: result?.data?.data?.type,
+          method: result?.data?.data?.method,
+          // attachment_files: res?.data?.attachmentFiles,
+          stamp_no: result?.data?.data?.stamp_no,
+          relation_message_id: result?.data?.data?.reply_to_message_id,
+          text: result?.data?.data?.message,
+          text2: null,
+          time: result?.data?.data?.created_at,
+        });
         navigation.goBack();
         GlobalService.hideLoading();
       } catch (error) {

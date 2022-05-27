@@ -1,11 +1,13 @@
 export type ChatState = {
   roomList: any;
+  pagingListRoom: any;
   detailChat: any;
   pagingDetail: any;
   idCompany: any;
   message_pinned: any;
   id_roomChat: any;
   messageReply: any;
+  messageEdit: any;
 };
 
 export const INITIAL_STATE_CHAT: ChatState = {
@@ -16,4 +18,6 @@ export const INITIAL_STATE_CHAT: ChatState = {
   message_pinned: null,
   id_roomChat: null,
   messageReply: null,
+  messageEdit: null,
+  pagingListRoom: null,
 };

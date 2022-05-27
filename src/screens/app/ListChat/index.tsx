@@ -1,5 +1,12 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {View, Text, TouchableOpacity, FlatList, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+  RefreshControl,
+} from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
@@ -25,17 +32,20 @@ const ListChat = () => {
   let {init, endConnect} = AppSocket;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
-  const listRoom = useSelector((state: any) => state.chat.roomList?.data);
+  const listRoom = useSelector((state: any) => state.chat.roomList);
+  const paging = useSelector((state: any) => state.chat.pagingListRoom);
+
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const user = useSelector((state: any) => state.auth.userInfo);
   const [key, setKey] = useState<string>('');
+  const [page, setPage] = useState(1);
 
   useFocusEffect(
     useCallback(() => {
       dispatch(saveIdRoomChat(null));
       dispatch(saveMessageReply(null));
       dispatch(resetDataChat());
-      dispatch(getRoomList({key: key, company_id: idCompany}));
+      dispatch(getRoomList({key: key, company_id: idCompany, page: 1}));
     }, []),
   );
 
@@ -46,13 +56,25 @@ const ListChat = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (page > 1) {
+      dispatch(getRoomList({key: key, company_id: idCompany, page: page}));
+    }
+  }, [page]);
+
   const debounceText = useCallback(
     debounce(
-      text => dispatch(getRoomList({key: key, company_id: idCompany})),
+      text =>
+        dispatch(getRoomList({key: key, company_id: idCompany, page: page})),
       500,
     ),
     [],
   );
+
+  const onRefresh = useCallback(() => {
+    setPage(1);
+    dispatch(getRoomList({key: key, company_id: idCompany, page: 1}));
+  }, [page]);
 
   const onChangeText = (text: any) => {
     setKey(text);
@@ -64,6 +86,14 @@ const ListChat = () => {
     navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT, {typeScreen: 'CREATE'});
   }, []);
 
+  const handleLoadMore = () => {
+    if (page === paging?.last_page) {
+      null;
+    } else {
+      setPage(prevPage => prevPage + 1);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -71,6 +101,7 @@ const ListChat = () => {
         imageCenter
         onRightFirst={onCreate}
         iconRightFirst={iconAddListChat}
+        styleIconRightFirst={styles.colorIcon}
       />
       <View style={styles.viewContent}>
         <AppInput
@@ -88,6 +119,11 @@ const ListChat = () => {
           keyExtractor={(item, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
+          onEndReachedThreshold={0.01}
+          onEndReached={handleLoadMore}
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onRefresh} />
+          }
         />
       </View>
     </View>

@@ -17,7 +17,9 @@ const Item = React.memo((props: any) => {
         <View style={styles.viewImage}>
           <View style={styles.image}>
             <Image
-              source={item?.icon_image ? item?.icon_image : defaultAvatar}
+              source={
+                item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
+              }
               style={styles.image}
             />
             {/* <View style={styles.viewActive}>
@@ -100,6 +102,7 @@ const styles = StyleSheet.create({
   image: {
     width: moderateScale(51),
     height: moderateScale(51),
+    borderRadius: moderateScale(51 / 2),
   },
   viewActive: {
     width: moderateScale(14),

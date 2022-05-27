@@ -32,6 +32,9 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(18),
   },
+  colorIcon: {
+    tintColor: colors.darkGrayText,
+  },
 });
 
 export {styles};

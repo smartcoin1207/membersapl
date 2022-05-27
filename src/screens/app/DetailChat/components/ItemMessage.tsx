@@ -25,7 +25,7 @@ const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
-  const {deleteMsg, pinMsg, replyMsg} = props;
+  const {deleteMsg, pinMsg, replyMsg, editMsg} = props;
   const {
     user,
     text,
@@ -65,6 +65,12 @@ const ItemMessage = React.memo((props: any) => {
           });
           break;
         case 2:
+          const dataMessageEdit = {
+            id: _id,
+            user: user,
+            text: text,
+          };
+          editMsg(dataMessageEdit);
           break;
         case 3:
           const dataMessageReply = {
@@ -94,7 +100,9 @@ const ItemMessage = React.memo((props: any) => {
       msg_type === 10 ||
       msg_type === 12 ? (
         <View style={styles.viewCenter}>
-          <Text style={styles.txtCenter}>{text}</Text>
+          <Text style={styles.txtCenter} numberOfLines={2}>
+            {text}
+          </Text>
         </View>
       ) : (
         <View
@@ -260,7 +268,7 @@ const styles = StyleSheet.create({
     width: 2,
     height: '100%',
     backgroundColor: 'green',
-    marginRight: scale(10),
+    marginRight: scale(6),
   },
   txtTitleReply: {
     fontSize: moderateScale(10),

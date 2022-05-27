@@ -8,6 +8,8 @@ import {
   pinMessage,
   getDetailMessageSocketSuccess,
   saveMessageReply,
+  saveMessageEdit,
+  editMessageAction,
 } from '@redux';
 import {
   deleteMessageApi,
@@ -16,6 +18,7 @@ import {
   sendMessageApi,
   pinMessageApi,
   replyMessageApi,
+  editMessageApi,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -31,6 +34,7 @@ export const useFunction = (props: any) => {
   const message_pinned = useSelector(
     (state: any) => state.chat?.message_pinned,
   );
+  const message_edit = useSelector((state: any) => state.chat?.messageEdit);
   const messageReply = useSelector((state: any) => state.chat?.messageReply);
 
   const dispatch = useDispatch();
@@ -132,32 +136,7 @@ export const useFunction = (props: any) => {
 
   const sendMessage = useCallback(
     async mes => {
-      if (!messageReply) {
-        try {
-          const data = new FormData();
-          data.append('room_id', idRoomChat);
-          data.append('from_id', mes[0]?.user?._id);
-          data.append('message', mes[0]?.text);
-          const res = await sendMessageApi(data);
-          socket.emit('message_ind', {
-            user_id: mes[0]?.user?._id,
-            room_id: idRoomChat,
-            task_id: null,
-            to_info: null,
-            level: res?.data?.data?.msg_level,
-            message_id: res?.data?.data?.id,
-            message_type: res?.data?.data?.type,
-            method: res?.data?.data?.method,
-            attachment_files: res?.data?.attachmentFiles,
-            stamp_no: res?.data?.data?.stamp_no,
-            relation_message_id: res?.data?.data?.reply_to_message_id,
-            text: res?.data?.data?.message,
-            text2: null,
-            time: res?.data?.data?.created_at,
-          });
-          dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
-        } catch (error: any) {}
-      } else {
+      if (messageReply) {
         try {
           const data = new FormData();
           data.append('room_id', idRoomChat);
@@ -185,9 +164,62 @@ export const useFunction = (props: any) => {
           dispatch(saveMessageReply(null));
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
         } catch (error: any) {}
+      } else if (message_edit) {
+        try {
+          const param = {
+            room_id: idRoomChat,
+            message: mes[0]?.text,
+          };
+          const res = await editMessageApi(message_edit?.id, param);
+          socket.emit('message_ind', {
+            user_id: mes[0]?.user?._id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: null,
+            time: res?.data?.data?.created_at,
+          });
+          dispatch(saveMessageEdit(null));
+          dispatch(
+            editMessageAction({id: res?.data?.data.id, data: res?.data?.data}),
+          );
+        } catch (error: any) {}
+      } else {
+        try {
+          const data = new FormData();
+          data.append('room_id', idRoomChat);
+          data.append('from_id', mes[0]?.user?._id);
+          data.append('message', mes[0]?.text);
+          const res = await sendMessageApi(data);
+          socket.emit('message_ind', {
+            user_id: mes[0]?.user?._id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: null,
+            time: res?.data?.data?.created_at,
+          });
+          dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+        } catch (error: any) {}
       }
     },
-    [messageReply],
+    [messageReply, message_edit],
   );
 
   const updateGimMessage = useCallback(
@@ -220,6 +252,22 @@ export const useFunction = (props: any) => {
     dispatch(saveMessageReply(null));
   }, []);
 
+  const editMessage = useCallback((data: any) => {
+    dispatch(saveMessageEdit(data));
+  }, []);
+
+  const removeEditMessage = useCallback(() => {
+    dispatch(saveMessageEdit(null));
+  }, []);
+
+  useEffect(() => {
+    if (message_edit) {
+      dispatch(saveMessageReply(null));
+    } else if (messageReply) {
+      dispatch(saveMessageEdit(null));
+    }
+  }, [message_edit, messageReply]);
+
   return {
     chatUser,
     idRoomChat,
@@ -237,5 +285,8 @@ export const useFunction = (props: any) => {
     replyMessage,
     messageReply,
     removeReplyMessage,
+    editMessage,
+    removeEditMessage,
+    message_edit,
   };
 };

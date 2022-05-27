@@ -18,6 +18,8 @@ interface HeaderProps {
   onRightSecond?: any;
   iconRightFirst?: any;
   iconRightSecond?: any;
+  styleIconRightSeccond?: any;
+  styleIconRightFirst?: any;
 }
 
 const Header = React.memo((props: HeaderProps) => {
@@ -32,6 +34,8 @@ const Header = React.memo((props: HeaderProps) => {
     onRightSecond,
     iconRightFirst,
     iconRightSecond,
+    styleIconRightSeccond,
+    styleIconRightFirst
   } = props;
 
   const onPressBack = useCallback(() => {
@@ -62,7 +66,7 @@ const Header = React.memo((props: HeaderProps) => {
         <View style={styles.viewCenter}>
           {imageCenter && (
             <Image
-              source={sourceImageCenter ? sourceImageCenter : logoImage}
+              source={sourceImageCenter ? {uri: sourceImageCenter} : logoImage}
               style={
                 sourceImageCenter ? styles.imageCenter : styles.marginRight
               }
@@ -78,7 +82,7 @@ const Header = React.memo((props: HeaderProps) => {
               hitSlop={{...HITSLOP, right: 10}}
               style={styles.buttonRightSecond}
               onPress={onRightSecond}>
-              <Image source={iconRightSecond} style={styles.colorIcon} />
+              <Image source={iconRightSecond} style={[styles.colorIcon, styleIconRightSeccond]} />
             </TouchableOpacity>
           )}
           {onRightFirst && (
@@ -86,7 +90,7 @@ const Header = React.memo((props: HeaderProps) => {
               hitSlop={{...HITSLOP, left: 0}}
               onPress={onRightFirst}
               activeOpacity={1}>
-              <Image source={iconRightFirst} style={styles.colorIcon} />
+              <Image source={iconRightFirst} style={[styles.colorIcon, styleIconRightFirst]} />
             </TouchableOpacity>
           )}
         </View>

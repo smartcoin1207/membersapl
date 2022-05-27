@@ -23,12 +23,23 @@ const ViewItem = React.memo((props: any) => {
       disabled={disabled}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
-          <Image source={sourceImage} />
+          <Image
+            source={sourceImage}
+            style={{tintColor: isLogout ? '#EA5A31' : colors.darkGrayText}}
+          />
         </View>
         <View style={styles.viewTxt}>
           <>
             {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
-            {content ? <Text style={styles.txtContent}>{content}</Text> : null}
+            {content ? (
+              <Text
+                style={[
+                  styles.txtContent,
+                  {color: isLogout ? '#EA5A31' : colors.darkGrayText},
+                ]}>
+                {content}
+              </Text>
+            ) : null}
           </>
         </View>
         <View style={styles.viewImageNext}>
@@ -64,7 +75,7 @@ const styles = StyleSheet.create({
   },
   viewImageNext: {
     width: '15%',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   txtTitle: {
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
     color: colors.border,
   },
   txtContent: {
-    ...stylesCommon.fontWeight500,
+    ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
     marginTop: verticalScale(5),
     color: colors.backgroundTab,

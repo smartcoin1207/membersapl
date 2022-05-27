@@ -1,5 +1,9 @@
 import {io} from 'socket.io-client';
-import {getRoomList, getDetailMessageSocket} from '@redux';
+import {
+  getRoomList,
+  getDetailMessageSocket,
+  getDetailMessageSocketCurrent,
+} from '@redux';
 import {store} from '../redux/store';
 
 function createAppSocket() {
@@ -13,12 +17,23 @@ function createAppSocket() {
     socket.on('message_ind', data => {
       console.log('message_ind', data);
     });
+    socket.on('ChatGroup_update_ind', data => {
+      console.log('Cuong', data);
+    });
     socket.on('new_message_ind', data => {
-      if (data?.user_id !== state?.auth.userInfo.id) {
-        if (data?.room_id === state?.chat?.id_roomChat) {
-          store.dispatch(getDetailMessageSocket(data?.message_id));
+      if (state?.auth.token) {
+        if (data?.user_id !== state?.auth.userInfo.id) {
+          if (data?.room_id === state?.chat?.id_roomChat) {
+            store.dispatch(getDetailMessageSocket(data?.message_id));
+          } else {
+            // store.dispatch(getRoomList({company_id: state?.chat?.idCompany}));
+          }
         } else {
-          store.dispatch(getRoomList({company_id: state?.chat?.idCompany}));
+          if (data?.room_id === state?.chat?.id_roomChat) {
+            store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
+          } else {
+            // store.dispatch(getRoomList({company_id: state?.chat?.idCompany}));
+          }
         }
       } else {
         null;

@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     height: moderateScale(15),
     tintColor: colors.placeholder,
   },
+  colorIcon: {
+    tintColor: colors.darkGrayText,
+  },
 });
 
 export {styles};

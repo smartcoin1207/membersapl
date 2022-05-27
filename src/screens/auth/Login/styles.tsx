@@ -1,8 +1,10 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {stylesCommon, colors} from '@stylesCommon';
-import {ScaledSheet} from 'react-native-size-matters';
+import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
-const styles = ScaledSheet.create({
+const height_screen = Dimensions.get('window').height;
+
+const styles = StyleSheet.create({
   view: {
     ...stylesCommon.viewContainer,
     backgroundColor: colors.background,
@@ -11,39 +13,45 @@ const styles = ScaledSheet.create({
     ...stylesCommon.viewContainer,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: '16@s',
+    paddingHorizontal: scale(16),
     backgroundColor: colors.background,
   },
   image: {
-    width: '119@vs',
-    height: '119@vs',
-    marginTop: '60@vs',
+    width: verticalScale(119),
+    height: verticalScale(119),
+    marginTop: verticalScale(60),
   },
   linearGradient: {
-    marginTop: '30@vs',
-    borderRadius: '10@ms',
+    height:
+      height_screen -
+      verticalScale(30) -
+      verticalScale(60) -
+      verticalScale(119) -
+      verticalScale(40),
+    marginTop: verticalScale(30),
+    borderRadius: moderateScale(10),
     padding: 1,
     backgroundColor: '#FFFFFF',
   },
   viewContent: {
-    borderRadius: '10@ms',
+    borderRadius: moderateScale(10),
     backgroundColor: '#FFFFFF',
     paddingHorizontal: 22,
-    paddingVertical: '40@vs',
+    paddingTop: verticalScale(40),
   },
   txtTitleLogin: {
     ...stylesCommon.fontWeight500,
-    fontSize: '16@ms',
+    fontSize: moderateScale(16),
     color: colors.darkGrayText,
-    marginBottom: '44@vs',
+    marginBottom: verticalScale(44),
   },
   viewBottom: {
-    marginTop: '20@vs',
+    marginTop: verticalScale(20),
     alignItems: 'center',
   },
   txtBottom: {
     color: colors.darkGrayText,
-    fontSize: '16@ms',
+    fontSize: moderateScale(16),
   },
 });
 

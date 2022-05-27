@@ -7,6 +7,7 @@ import {
   iconDetail,
   iconDelete,
   menuReply,
+  menuEdit,
   iconClose,
 } from '@images';
 import {useFunction} from './useFunction';
@@ -23,6 +24,7 @@ import {
   renderComposer,
 } from './components/InputToolbar';
 import {verticalScale} from 'react-native-size-matters';
+import {colors} from '@stylesCommon';
 
 const DetailChat = (props: any) => {
   const {
@@ -40,6 +42,9 @@ const DetailChat = (props: any) => {
     replyMessage,
     messageReply,
     removeReplyMessage,
+    editMessage,
+    removeEditMessage,
+    message_edit,
   } = useFunction(props);
 
   const renderMessage = (props: any) => {
@@ -55,6 +60,9 @@ const DetailChat = (props: any) => {
           }}
           replyMsg={(data: any) => {
             replyMessage(data);
+          }}
+          editMsg={(data: any) => {
+            editMessage(data);
           }}
         />
       </>
@@ -81,7 +89,10 @@ const DetailChat = (props: any) => {
         imageCenter
         iconRightFirst={iconDetail}
         iconRightSecond={iconSearch}
+        styleIconRightFirst={styles.colorIcon}
+        styleIconRightSeccond={styles.colorIcon}
         onRightFirst={navigateToDetail}
+        sourceImageCenter={dataDetail?.icon_image}
         onRightSecond={() => {}}
       />
       {message_pinned?.message && (
@@ -121,7 +132,7 @@ const DetailChat = (props: any) => {
           },
         }}
         renderAccessory={
-          messageReply
+          messageReply || message_edit
             ? () => (
                 <>
                   {messageReply && (
@@ -138,6 +149,24 @@ const DetailChat = (props: any) => {
                       <TouchableOpacity
                         style={styles.viewIconRepMessage}
                         onPress={removeReplyMessage}>
+                        <Image source={iconClose} style={styles.iconClose} />
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  {message_edit && (
+                    <View style={styles.viewRepMessage}>
+                      <View style={styles.viewIconRepMessage}>
+                        <Image source={menuEdit} style={styles.iconReply} />
+                      </View>
+                      <View style={styles.viewTxtRepMessage}>
+                        <Text style={styles.name}>Edit message</Text>
+                        <Text style={styles.content} numberOfLines={2}>
+                          {message_edit?.text}
+                        </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={styles.viewIconRepMessage}
+                        onPress={removeEditMessage}>
                         <Image source={iconClose} style={styles.iconClose} />
                       </TouchableOpacity>
                     </View>

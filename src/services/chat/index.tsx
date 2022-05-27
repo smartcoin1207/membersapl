@@ -16,11 +16,14 @@ const SEND_MESSAGE = 'user/chat/room/send-message';
 const PIN_MESSAGE = 'user/chat/room/pin-message';
 const GET_MESSAGE_FROM_SOCKET = 'user/chat/get_chat_message_info_for_websocket';
 const REPLY_MESSAGE = 'user/chat/room/reply-message';
+const EDIT_MESSAGE = 'user/chat/room/update-message';
 
 export const getRoomListApi: any = async (params: any) => {
-  const {key, company_id} = params;
+  const {key, company_id, page} = params;
   const response = await api.get(
-    `${GET_LIST_ROOM}?company_id=${company_id}&search=${key}`,
+    `${GET_LIST_ROOM}?company_id=${company_id}&page=${
+      page ? page : 1
+    }&search=${key}`,
   );
   return response;
 };
@@ -80,6 +83,11 @@ export const getDetailChatApi: any = async (params: any) => {
 
 export const deleteMessageApi: any = async (idMessage: any, idRoom: any) => {
   const response = api.post(`${DELETE_MESSAGE}/${idMessage}?room_id=${idRoom}`);
+  return response;
+};
+
+export const editMessageApi: any = async (idMessage: any, params: any) => {
+  const response = api.post(`${EDIT_MESSAGE}/${idMessage}`, params);
   return response;
 };
 

@@ -89,7 +89,7 @@ const SelectCompany = () => {
         <View style={styles.viewContentItem}>
           <Text style={styles.txtID}>ID: {item?.id}</Text>
           <Text style={styles.txtName}>{item?.name}</Text>
-          <Text style={styles.txtIDContent}>{item?.post_code}</Text>
+          <Text style={styles.txtIDContent}>{item?.phoneNumber}</Text>
         </View>
       </TouchableOpacity>
     </>
@@ -97,10 +97,10 @@ const SelectCompany = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="検索クライアント" imageCenter />
+      <Header title="クライアント選択" imageCenter />
       <View style={styles.viewContent}>
         <AppInput
-          placeholder="チャット名、メッセージ内容を検索"
+          placeholder="クライアント名を検索"
           onChange={onChangeText}
           value={key}
           styleContainer={styles.containerSearch}

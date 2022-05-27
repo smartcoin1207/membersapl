@@ -5,6 +5,7 @@ import {Header, AppInput, ModalConfirm} from '@component';
 import {iconAddUser, iconAddListChat} from '@images';
 import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
+import {AppSocket} from '@util';
 
 import {getRoomList} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
@@ -14,6 +15,8 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
 const ListUser = (props: any) => {
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
+  const {socket} = AppSocket;
   const {route} = props;
   const {idRoomChat, dataDetail} = route?.params;
   const navigation = useNavigation<any>();
@@ -41,6 +44,22 @@ const ListUser = (props: any) => {
         user_id: idUser,
       };
       const result = await removeUser(body);
+      socket.emit('message_ind', {
+        user_id: result?.data?.user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        to_info: null,
+        level: result?.data?.data?.msg_level,
+        message_id: result?.data?.data?.id,
+        message_type: result?.data?.data?.type,
+        method: result?.data?.data?.method,
+        // attachment_files: res?.data?.attachmentFiles,
+        stamp_no: result?.data?.data?.stamp_no,
+        relation_message_id: result?.data?.data?.reply_to_message_id,
+        text: result?.data?.data?.message,
+        text2: null,
+        time: result?.data?.data?.created_at,
+      });
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch (error) {
@@ -86,6 +105,7 @@ const ListUser = (props: any) => {
         // onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
         iconRightFirst={iconAddUser}
         back
+        styleIconRightFirst={styles.colorIcon}
       />
       <View style={styles.viewContent}>
         <FlatList

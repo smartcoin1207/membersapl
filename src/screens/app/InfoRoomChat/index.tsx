@@ -184,7 +184,7 @@ const InfoRoomChat = (props: any) => {
             </View>
             <ViewItem
               sourceImage={iconEdit}
-              title="表示名"
+              title="チャットグループ名"
               content={dataDetail?.name}
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
@@ -196,7 +196,7 @@ const InfoRoomChat = (props: any) => {
             />
             <ViewItem
               sourceImage={iconDetailRow}
-              title="メールアドレス "
+              title="概要"
               content={dataDetail?.summary_column}
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
