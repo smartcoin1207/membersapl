@@ -15,12 +15,12 @@ const styles = StyleSheet.create({
   },
   txtTitle: {
     ...stylesCommon.fontWeight600,
-    fontSize: 14,
+    fontSize: moderateScale(14),
     color: colors.primary,
   },
   txtContent: {
     ...stylesCommon.fontWeight500,
-    fontSize: 12,
+    fontSize: moderateScale(12),
     color: colors.darkGrayText,
     marginTop: verticalScale(3),
   },
@@ -72,8 +72,11 @@ const styles = StyleSheet.create({
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
   },
-  viewBottom:{
+  viewBottom: {
     height: verticalScale(15),
+  },
+  colorIcon:{
+    tintColor: colors.darkGrayText
   }
 });
 

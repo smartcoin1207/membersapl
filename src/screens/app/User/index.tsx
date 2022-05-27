@@ -68,8 +68,7 @@ const User = () => {
       });
       await dispatch(saveInfoUser(res?.data?.user_info));
       setImage(null);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
@@ -152,6 +151,7 @@ const User = () => {
           <ViewItem
             sourceImage={iconPassword}
             title="パスワード"
+            content="*******"
             onPress={() => {
               navigation.navigate(ROUTE_NAME.CHANGE_PASSWORD);
             }}

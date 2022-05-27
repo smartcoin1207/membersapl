@@ -61,7 +61,7 @@ const Login = () => {
               <View style={styles.linearGradient}>
                 <View style={styles.viewContent}>
                   <Text style={styles.txtTitleLogin}>
-                    すでにメンバーの方はこちらIDとパスワードをご入力の上、ログインしてください。
+                    IDとパスワードをご入力の上、ログインしてください。
                   </Text>
                   <AppInput
                     placeholder="ID"

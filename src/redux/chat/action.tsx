@@ -30,6 +30,11 @@ export const deleteMessage = (payload: any) => ({
   payload,
 });
 
+export const editMessageAction = (payload: any) => ({
+  type: typeChat.EDIT_MESSAGE,
+  payload,
+});
+
 export const pinMessage = (payload: any) => ({
   type: typeChat.PIN_MESSAGE,
   payload,
@@ -45,6 +50,11 @@ export const getDetailMessageSocket = (payload: any) => ({
   payload,
 });
 
+export const getDetailMessageSocketCurrent = (payload: any) => ({
+  type: typeChat.GET_DETAIL_MESSAGE_SOCKET_CURRENT,
+  payload,
+});
+
 export const getDetailMessageSocketSuccess = (payload: any) => ({
   type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SUCCESS,
   payload,
@@ -52,6 +62,11 @@ export const getDetailMessageSocketSuccess = (payload: any) => ({
 
 export const saveMessageReply = (payload: any) => ({
   type: typeChat.SAVE_MESSAGE_REPLY,
+  payload,
+});
+
+export const saveMessageEdit = (payload: any) => ({
+  type: typeChat.SAVE_MESSAGE_EDIT,
   payload,
 });
 

@@ -78,7 +78,7 @@ const ForgotPassword = () => {
                     </Text>
                     <Text style={styles.titleInput}>メンバーID</Text>
                     <AppInput
-                      placeholder="メールアドレス"
+                      placeholder="MB000001"
                       onChange={props.handleChange('login')}
                       value={props.values.login}
                       error={props.errors.login}
