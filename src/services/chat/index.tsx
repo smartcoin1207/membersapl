@@ -17,6 +17,9 @@ const PIN_MESSAGE = 'user/chat/room/pin-message';
 const GET_MESSAGE_FROM_SOCKET = 'user/chat/get_chat_message_info_for_websocket';
 const REPLY_MESSAGE = 'user/chat/room/reply-message';
 const EDIT_MESSAGE = 'user/chat/room/update-message';
+const SEND_REACTION = 'user/chat/room/send-reaction-message';
+const GET_LIST_REACTION = 'user/chat/room/list-reactions';
+const REMOVE_REACTION = 'user/chat/room/remove-reaction-message';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -108,5 +111,20 @@ export const getMessageFromSocket: any = async (body: any) => {
 
 export const replyMessageApi: any = async (body: any) => {
   const response = api.post(REPLY_MESSAGE, body);
+  return response;
+};
+
+export const sendReactionApi: any = async (body: any) => {
+  const response = api.post(SEND_REACTION, body);
+  return response;
+};
+
+export const getListReactionApi: any = async (id: any) => {
+  const response = api.post(`${GET_LIST_REACTION}/${id}`);
+  return response;
+};
+
+export const removeReactionApi: any = async (body: any) => {
+  const response = api.post(REMOVE_REACTION, body);
   return response;
 };

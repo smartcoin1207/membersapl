@@ -16,6 +16,7 @@ import {EditRoomChat} from './app/EditRoomChat';
 import {EditUser} from './app/EditUser';
 import {ChangePassword} from './app/ChangePassword';
 import {ConfigNoti} from './app/ConfigNoti';
+import {ListReaction} from './app/ListReaction';
 
 const screens = {
   //auth
@@ -35,6 +36,7 @@ const screens = {
   EditUser,
   ChangePassword,
   ConfigNoti,
+  ListReaction,
 };
 
 export {screens};
