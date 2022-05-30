@@ -17,10 +17,10 @@ import {
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 
 const MenuFeature = React.memo((props: any) => {
-  const {onActionMenu} = props;
+  const {onActionMenu, onActionReaction} = props;
   const dataFeature = [
     {
-      id: 1,
+      id: 7,
       sourceImage: menuCopy,
       name: 'コピー',
       style: {
@@ -29,7 +29,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 2,
+      id: 8,
       sourceImage: menuEdit,
       name: '編集',
       style: {
@@ -38,7 +38,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 3,
+      id: 9,
       sourceImage: menuReply,
       name: '返信',
       style: {
@@ -47,7 +47,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 4,
+      id: 10,
       sourceImage: menuPinChat,
       name: 'ブックマーク',
       style: {
@@ -56,7 +56,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 5,
+      id: 11,
       sourceImage: menuDelete,
       name: '削除',
       style: {
@@ -68,19 +68,19 @@ const MenuFeature = React.memo((props: any) => {
 
   const dataEmoji = [
     {
-      id: 6,
+      id: 4,
       sourceImage: smile,
     },
     {
-      id: 7,
+      id: 5,
       sourceImage: sad,
     },
     {
-      id: 8,
+      id: 2,
       sourceImage: happy,
     },
     {
-      id: 9,
+      id: 6,
       sourceImage: like,
       style: {
         width: scale(22),
@@ -88,7 +88,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 10,
+      id: 1,
       sourceImage: heart,
       style: {
         width: scale(25),
@@ -96,7 +96,7 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
-      id: 11,
+      id: 3,
       sourceImage: great,
     },
   ];
@@ -114,7 +114,9 @@ const MenuFeature = React.memo((props: any) => {
                 source={item?.sourceImage}
                 style={item?.style ? item?.style : styles.imageFeature}
               />
-              <Text style={styles.txtNameFeature}>{item?.name}</Text>
+              <Text style={styles.txtNameFeature} numberOfLines={1}>
+                {item?.name}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -123,7 +125,10 @@ const MenuFeature = React.memo((props: any) => {
       <View style={styles.viewFeature}>
         {dataEmoji.map((item: any, index: any) => {
           return (
-            <TouchableOpacity style={styles.itemFeature} key={item?.id}>
+            <TouchableOpacity
+              style={styles.itemFeature}
+              key={item?.id}
+              onPress={() => onActionReaction(item?.id)}>
               <Image
                 source={item?.sourceImage}
                 style={item?.style ? item?.style : styles.imageEmoji}

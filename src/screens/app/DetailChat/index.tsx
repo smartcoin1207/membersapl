@@ -45,6 +45,8 @@ const DetailChat = (props: any) => {
     editMessage,
     removeEditMessage,
     message_edit,
+    reactionMessage,
+    navigatiteToListReaction
   } = useFunction(props);
 
   const renderMessage = (props: any) => {
@@ -63,6 +65,12 @@ const DetailChat = (props: any) => {
           }}
           editMsg={(data: any) => {
             editMessage(data);
+          }}
+          onReaction={(data: any, idMsg: any) => {
+            reactionMessage(data, idMsg);
+          }}
+          navigatiteToListReaction={(idMsg: any) => {
+            navigatiteToListReaction(idMsg)
           }}
         />
       </>

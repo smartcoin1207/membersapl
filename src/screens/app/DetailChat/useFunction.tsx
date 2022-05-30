@@ -19,6 +19,7 @@ import {
   pinMessageApi,
   replyMessageApi,
   editMessageApi,
+  sendReactionApi,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -143,7 +144,7 @@ export const useFunction = (props: any) => {
           data.append('from_id', user_id);
           data.append('message', mes[0]?.text);
           data.append('reply_to_message_id', messageReply?.id);
-          data.append('msg_type', 3);
+          // data.append('msg_type', 3);
           const res = await replyMessageApi(data);
           socket.emit('message_ind', {
             user_id: mes[0]?.user?._id,
@@ -260,6 +261,33 @@ export const useFunction = (props: any) => {
     dispatch(saveMessageEdit(null));
   }, []);
 
+  const reactionMessage = useCallback(async (data, id) => {
+    const body = {
+      message_id: id,
+      reaction_no: data,
+    };
+    const res = await sendReactionApi(body);
+    socket.emit('message_ind', {
+      user_id: user_id,
+      room_id: idRoomChat,
+      task_id: null,
+      to_info: null,
+      level: res?.data?.data?.msg_level,
+      message_id: res?.data?.data?.id,
+      message_type: 3,
+      method: res?.data?.data?.method,
+      attachment_files: res?.data?.attachmentFiles,
+      stamp_no: res?.data?.data?.stamp_no,
+      relation_message_id: res?.data?.data?.reply_to_message_id,
+      text: res?.data?.data?.message,
+      text2: null,
+      time: res?.data?.data?.created_at,
+    });
+    dispatch(
+      editMessageAction({id: res?.data?.data.id, data: res?.data?.data}),
+    );
+  }, []);
+
   useEffect(() => {
     if (message_edit) {
       dispatch(saveMessageReply(null));
@@ -267,6 +295,13 @@ export const useFunction = (props: any) => {
       dispatch(saveMessageEdit(null));
     }
   }, [message_edit, messageReply]);
+
+  const navigatiteToListReaction = useCallback(idMsg => {
+    navigation.navigate(ROUTE_NAME.LIST_REACTION, {
+      id: idMsg,
+      room_id: idRoomChat,
+    });
+  }, []);
 
   return {
     chatUser,
@@ -288,5 +323,7 @@ export const useFunction = (props: any) => {
     editMessage,
     removeEditMessage,
     message_edit,
+    reactionMessage,
+    navigatiteToListReaction,
   };
 };

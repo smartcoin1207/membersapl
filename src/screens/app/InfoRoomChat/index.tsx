@@ -137,6 +137,10 @@ const InfoRoomChat = (props: any) => {
       const res = await deleteImageRoomChat({
         room_id: idRoomChat,
       });
+      await showMessage({
+        message: res?.data?.message,
+        type: 'success',
+      });
       getDetail();
       GlobalService.hideLoading();
     } catch (error: any) {
@@ -215,15 +219,16 @@ const InfoRoomChat = (props: any) => {
                   dataDetail: dataDetail,
                 });
               }}
+              hideBorder
             />
-            <ViewItem
+            {/* <ViewItem
               sourceImage={iconLogout}
               content="グループを退出"
               isLogout
               hideBorder
               hideNext
               onClick={onCancelModal}
-            />
+            /> */}
           </ScrollView>
         ) : (
           <View style={styles.marginTop}>

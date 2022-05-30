@@ -93,6 +93,10 @@ const User = () => {
     try {
       GlobalService.showLoading();
       const res = await deleteImageUser();
+      await showMessage({
+        message: res?.data?.message,
+        type: 'success',
+      });
       dispatch(getUserInfo(user?.id));
       GlobalService.hideLoading();
     } catch (error: any) {

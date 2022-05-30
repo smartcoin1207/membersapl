@@ -72,6 +72,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.CONFIG_NOTI}
             component={screens.ConfigNoti}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.LIST_REACTION}
+            component={screens.ListReaction}
+          />
         </>
       );
     }
