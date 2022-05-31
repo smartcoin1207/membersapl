@@ -110,6 +110,16 @@ const styles = StyleSheet.create({
     color: colors.backgroundTab,
     marginTop: verticalScale(8),
   },
+  imageSmall: {
+    width: moderateScale(50),
+    height: moderateScale(50),
+    borderRadius: moderateScale(4),
+    marginHorizontal: moderateScale(2),
+  },
+  viewRowEdit: {
+    flexDirection: 'row',
+    marginTop: verticalScale(5),
+  },
 });
 
 export {styles};

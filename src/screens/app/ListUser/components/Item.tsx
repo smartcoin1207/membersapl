@@ -22,9 +22,11 @@ const Item = React.memo((props: any) => {
               }
               style={styles.image}
             />
-            {/* <View style={styles.viewActive}>
-              <View style={styles.active} />
-            </View> */}
+            {item?.login_status === 1 && (
+              <View style={styles.viewActive}>
+                <View style={styles.active} />
+              </View>
+            )}
           </View>
         </View>
         <View style={styles.viewTxt}>
@@ -112,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: moderateScale(14 / 2),
     position: 'absolute',
-    top: 0,
+    bottom: 0,
     right: 0,
   },
   active: {

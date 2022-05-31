@@ -24,6 +24,9 @@ import {
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {AppSocket} from '@util';
+import ImagePicker from 'react-native-image-crop-picker';
+import {Platform} from 'react-native';
+import {showMessage} from 'react-native-flash-message';
 
 export const useFunction = (props: any) => {
   const {socket} = AppSocket;
@@ -44,6 +47,7 @@ export const useFunction = (props: any) => {
   const [visible, setVisible] = useState(false);
   const [dataDetail, setData] = useState<any>(null);
   const [page, setPage] = useState(1);
+  const [pickFile, setPickFile] = useState(false);
 
   const navigateToDetail = () => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
@@ -61,6 +65,8 @@ export const useFunction = (props: any) => {
       reaction: message?.reactions,
       msg_type: message?.msg_type,
       reply_to_message_text: message?.reply_to_message_text,
+      attachment_files: message?.attachment_files,
+      reply_to_message_files: message?.reply_to_message_files,
     };
   }, []);
 
@@ -144,7 +150,6 @@ export const useFunction = (props: any) => {
           data.append('from_id', user_id);
           data.append('message', mes[0]?.text);
           data.append('reply_to_message_id', messageReply?.id);
-          // data.append('msg_type', 3);
           const res = await replyMessageApi(data);
           socket.emit('message_ind', {
             user_id: mes[0]?.user?._id,
@@ -303,6 +308,78 @@ export const useFunction = (props: any) => {
     });
   }, []);
 
+  const cancelModal = useCallback(() => {
+    setPickFile(!pickFile);
+  }, [pickFile]);
+
+  const chosePhoto = () => {
+    ImagePicker.openPicker({
+      multiple: true,
+    }).then(async images => {
+      const data = new FormData();
+      if (images?.length > 3) {
+        cancelModal();
+        showMessage({
+          message: 'Maximum of 3 photos',
+          type: 'danger',
+        });
+      } else {
+        cancelModal();
+        try {
+          if (images?.length > 0) {
+            GlobalService.showLoading();
+            images?.forEach((item: any) => {
+              const isHEIC =
+                item?.sourceURL?.endsWith('.heic') ||
+                item?.sourceURL?.endsWith('.HEIC');
+              data.append('attachment[]', {
+                fileName: item?.path?.replace(/^.*[\\\/]/, ''),
+                name: item?.path?.replace(/^.*[\\\/]/, ''),
+                width: item?.width,
+                uri: item?.path,
+                path: item?.path,
+                size: item?.size,
+                type:
+                  Platform.OS === 'ios'
+                    ? `image/${
+                        isHEIC
+                          ? item?.path?.split('.')[0] + '.JPG'
+                          : item?.path?.split('.').pop()
+                      }}`
+                    : item?.mime,
+                height: item?.height,
+              });
+            });
+          }
+          data.append('msg_type', 2);
+          data.append('room_id', idRoomChat);
+          data.append('from_id', user_id);
+          const res = await sendMessageApi(data);
+          socket.emit('message_ind', {
+            user_id: user_id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: null,
+            time: res?.data?.data?.created_at,
+          });
+          dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+          GlobalService.hideLoading();
+        } catch (error: any) {
+          GlobalService.hideLoading();
+        }
+      }
+    });
+  };
+
   return {
     chatUser,
     idRoomChat,
@@ -325,5 +402,8 @@ export const useFunction = (props: any) => {
     message_edit,
     reactionMessage,
     navigatiteToListReaction,
+    pickFile,
+    cancelModal,
+    chosePhoto,
   };
 };

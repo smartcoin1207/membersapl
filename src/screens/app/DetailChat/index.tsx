@@ -9,6 +9,7 @@ import {
   menuReply,
   menuEdit,
   iconClose,
+  iconUpload,
 } from '@images';
 import {useFunction} from './useFunction';
 import {Menu} from 'react-native-material-menu';
@@ -16,6 +17,7 @@ import {
   GiftedChat,
   Message,
   LoadEarlier,
+  Actions,
 } from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 import {
@@ -25,6 +27,8 @@ import {
 } from './components/InputToolbar';
 import {verticalScale} from 'react-native-size-matters';
 import {colors} from '@stylesCommon';
+import {ModalPickFile} from './components/ModalPickFile';
+import FastImage from 'react-native-fast-image';
 
 const DetailChat = (props: any) => {
   const {
@@ -46,8 +50,20 @@ const DetailChat = (props: any) => {
     removeEditMessage,
     message_edit,
     reactionMessage,
-    navigatiteToListReaction
+    navigatiteToListReaction,
+    pickFile,
+    cancelModal,
+    chosePhoto,
   } = useFunction(props);
+
+  const renderActions = (props: any) => (
+    <Actions
+      {...props}
+      containerStyle={styles.addBtn}
+      onPressActionButton={cancelModal}
+      icon={() => <Image source={iconUpload} />}
+    />
+  );
 
   const renderMessage = (props: any) => {
     return (
@@ -70,7 +86,7 @@ const DetailChat = (props: any) => {
             reactionMessage(data, idMsg);
           }}
           navigatiteToListReaction={(idMsg: any) => {
-            navigatiteToListReaction(idMsg)
+            navigatiteToListReaction(idMsg);
           }}
         />
       </>
@@ -131,6 +147,7 @@ const DetailChat = (props: any) => {
         user={chatUser}
         renderSend={renderSend}
         renderFooter={() => <View style={styles.viewBottom} />}
+        renderActions={renderActions}
         listViewProps={{
           scrollEventThrottle: 400,
           onScroll: ({nativeEvent}: any) => {
@@ -150,9 +167,22 @@ const DetailChat = (props: any) => {
                       </View>
                       <View style={styles.viewTxtRepMessage}>
                         <Text style={styles.name}>Reply message</Text>
-                        <Text style={styles.content} numberOfLines={2}>
-                          {messageReply?.text}
-                        </Text>
+                        {messageReply?.text ? (
+                          <Text style={styles.content} numberOfLines={2}>
+                            {messageReply?.text}
+                          </Text>
+                        ) : (
+                          <View style={styles.viewRow}>
+                            {messageReply?.attachment_files?.map(
+                              (item: any) => (
+                                <FastImage
+                                  source={{uri: item?.path}}
+                                  style={styles.imageSmall}
+                                />
+                              ),
+                            )}
+                          </View>
+                        )}
                       </View>
                       <TouchableOpacity
                         style={styles.viewIconRepMessage}
@@ -168,9 +198,22 @@ const DetailChat = (props: any) => {
                       </View>
                       <View style={styles.viewTxtRepMessage}>
                         <Text style={styles.name}>Edit message</Text>
-                        <Text style={styles.content} numberOfLines={2}>
-                          {message_edit?.text}
-                        </Text>
+                        {message_edit?.text ? (
+                          <Text style={styles.content} numberOfLines={2}>
+                            {message_edit?.text}
+                          </Text>
+                        ) : (
+                          <View style={styles.viewRow}>
+                            {message_edit?.attachment_files?.map(
+                              (item: any) => (
+                                <FastImage
+                                  source={{uri: item?.path}}
+                                  style={styles.imageSmall}
+                                />
+                              ),
+                            )}
+                          </View>
+                        )}
                       </View>
                       <TouchableOpacity
                         style={styles.viewIconRepMessage}
@@ -184,6 +227,12 @@ const DetailChat = (props: any) => {
             : undefined
         }
         bottomOffset={0}
+      />
+      <ModalPickFile
+        visible={pickFile}
+        onCancel={cancelModal}
+        chosePhoto={chosePhoto}
+        choseFile={() => {}}
       />
     </View>
   );

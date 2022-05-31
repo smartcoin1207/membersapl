@@ -21,6 +21,7 @@ import {ROUTE_NAME} from '@routeName';
 import {useNavigation} from '@react-navigation/native';
 import {styles} from './stylesItem';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {MsgFile} from './MsgFile';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -45,7 +46,10 @@ const ItemMessage = React.memo((props: any) => {
     createdAt,
     msg_type,
     reply_to_message_text,
+    attachment_files,
+    reply_to_message_files,
   } = props.currentMessage;
+
   const [visible, setVisible] = useState(false);
 
   const onShowMenu = useCallback(() => {
@@ -84,6 +88,7 @@ const ItemMessage = React.memo((props: any) => {
             id: _id,
             user: user,
             text: text,
+            attachment_files: attachment_files,
           };
           editMsg(dataMessageEdit);
           break;
@@ -92,6 +97,7 @@ const ItemMessage = React.memo((props: any) => {
             id: _id,
             user: user,
             text: text,
+            attachment_files: attachment_files,
           };
           replyMsg(dataMessageReply);
           break;
@@ -156,18 +162,34 @@ const ItemMessage = React.memo((props: any) => {
                 start={{x: 1, y: 0}}
                 end={{x: 0, y: 0}}
                 style={styles.containerChat}>
-                {reply_to_message_text && (
+                {reply_to_message_text || reply_to_message_files?.length > 0 ? (
                   <View style={styles.viewReply}>
                     <View style={styles.viewColumn} />
                     <View>
                       <Text style={styles.txtTitleReply}>Reply message</Text>
-                      <Text style={styles.txtContentReply} numberOfLines={1}>
-                        {reply_to_message_text}
-                      </Text>
+                      {reply_to_message_text && (
+                        <Text style={styles.txtContentReply} numberOfLines={1}>
+                          {reply_to_message_text}
+                        </Text>
+                      )}
+                      {reply_to_message_files?.length > 0 && (
+                        <View style={styles.viewRowEdit}>
+                          {reply_to_message_files?.map((item: any) => (
+                            <FastImage
+                              source={{uri: item?.path}}
+                              style={styles.imageSmall}
+                            />
+                          ))}
+                        </View>
+                      )}
                     </View>
                   </View>
+                ) : null}
+                {msg_type === 2 ? (
+                  <MsgFile data={attachment_files} />
+                ) : (
+                  <Text style={styles.txtMessage}>{text}</Text>
                 )}
-                <Text style={styles.txtMessage}>{text}</Text>
               </LinearGradient>
               {user?._id === user_id ? null : (
                 <Text style={styles.txtTime}>

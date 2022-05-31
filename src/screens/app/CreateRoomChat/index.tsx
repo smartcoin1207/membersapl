@@ -109,7 +109,6 @@ const CreateRoomChat = (props: any) => {
           user_id: renderIdUser(),
         };
         const result = await inviteMember(body);
-        console.log(result);
         socket.emit('message_ind', {
           user_id: user_id,
           room_id: idRoomchat,
