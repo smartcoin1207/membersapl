@@ -16,12 +16,14 @@ import {AppSocket} from '@util';
 
 import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {getDetailMessageSocketSuccess} from '@redux';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {getListUser, createRoom, GlobalService, inviteMember} from '@services';
 
 const CreateRoomChat = (props: any) => {
+  const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const {route} = props;
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
@@ -125,6 +127,7 @@ const CreateRoomChat = (props: any) => {
           text2: null,
           time: result?.data?.data?.created_at,
         });
+        dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
         navigation.goBack();
         GlobalService.hideLoading();
       } catch (error) {

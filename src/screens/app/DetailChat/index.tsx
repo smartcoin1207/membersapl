@@ -178,6 +178,7 @@ const DetailChat = (props: any) => {
                                 <FastImage
                                   source={{uri: item?.path}}
                                   style={styles.imageSmall}
+                                  key={item?.id}
                                 />
                               ),
                             )}
@@ -209,6 +210,7 @@ const DetailChat = (props: any) => {
                                 <FastImage
                                   source={{uri: item?.path}}
                                   style={styles.imageSmall}
+                                  key = {item?.id}
                                 />
                               ),
                             )}

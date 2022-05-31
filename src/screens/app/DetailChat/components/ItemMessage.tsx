@@ -178,6 +178,7 @@ const ItemMessage = React.memo((props: any) => {
                             <FastImage
                               source={{uri: item?.path}}
                               style={styles.imageSmall}
+                              key={item?.id}
                             />
                           ))}
                         </View>
