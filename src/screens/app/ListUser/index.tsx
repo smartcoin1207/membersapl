@@ -7,7 +7,7 @@ import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
 import {AppSocket} from '@util';
 
-import {getRoomList} from '@redux';
+import {getRoomList, getDetailMessageSocketSuccess} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {getListUser, GlobalService, removeUser} from '@services';
 
@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
 const ListUser = (props: any) => {
+  const dispatch = useDispatch();
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const {socket} = AppSocket;
   const {route} = props;
@@ -60,6 +61,7 @@ const ListUser = (props: any) => {
         text2: null,
         time: result?.data?.data?.created_at,
       });
+      dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch (error) {
