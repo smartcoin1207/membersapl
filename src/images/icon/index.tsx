@@ -21,6 +21,7 @@ const iconDocument = require('./IconDocument.png');
 const iconBook = require('./IconBook.png');
 const iconAddUser = require('./IconAddUser.png');
 const iconSend = require('./IconSend.png');
+const iconUpload = require('./UpFile.png');
 
 export {
   iconBack,
@@ -45,5 +46,6 @@ export {
   iconDocument,
   iconBook,
   iconAddUser,
-  iconSend
+  iconSend,
+  iconUpload
 };

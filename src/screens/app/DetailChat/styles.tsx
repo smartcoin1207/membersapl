@@ -75,9 +75,19 @@ const styles = StyleSheet.create({
   viewBottom: {
     height: verticalScale(15),
   },
-  colorIcon:{
-    tintColor: colors.darkGrayText
-  }
+  colorIcon: {
+    tintColor: colors.darkGrayText,
+  },
+  addBtn: {},
+  imageSmall: {
+    width: moderateScale(50),
+    height: moderateScale(50),
+    borderRadius: moderateScale(4),
+    marginHorizontal: moderateScale(2),
+  },
+  viewRow: {
+    flexDirection: 'row',
+  },
 });
 
 export {styles};
