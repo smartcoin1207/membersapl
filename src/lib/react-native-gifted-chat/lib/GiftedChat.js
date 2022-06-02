@@ -297,7 +297,7 @@ class GiftedChat extends React.Component {
     }
     getMinInputToolbarHeight() {
         return this.props.renderAccessory
-            ? this.props.minInputToolbarHeight * 2
+            ? this.props.minInputToolbarHeight
             : this.props.minInputToolbarHeight;
     }
     calculateInputToolbarHeight(composerHeight) {

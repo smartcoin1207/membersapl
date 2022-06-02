@@ -23,19 +23,17 @@ export default class Send extends Component {
         super(...arguments);
         this.handleOnPress = () => {
             const { text, onSend } = this.props;
-            if (text && onSend) {
-                onSend({ text: text.trim() }, true);
-            }
+            onSend({ text: text.trim() }, true);
         };
     }
     render() {
         const { text, containerStyle, children, textStyle, label, alwaysShowSend, disabled, sendButtonProps, } = this.props;
         if (alwaysShowSend || (text && text.trim().length > 0)) {
             return (<TouchableOpacity testID='send' accessible accessibilityLabel='send' style={[styles.container, containerStyle]} onPress={this.handleOnPress} accessibilityTraits='button' disabled={disabled} {...sendButtonProps}>
-          <View>
-            {children || <Text style={[styles.text, textStyle]}>{label}</Text>}
-          </View>
-        </TouchableOpacity>);
+                <View>
+                    {children || <Text style={[styles.text, textStyle]}>{label}</Text>}
+                </View>
+            </TouchableOpacity>);
         }
         return <View />;
     }

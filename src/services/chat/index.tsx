@@ -78,9 +78,11 @@ export const updateImageRoomChat: any = async (body: any) => {
 };
 
 export const getDetailChatApi: any = async (params: any) => {
-  const {id, page} = params;
+  const {id, page, key} = params;
   const response = api.get(
-    `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}`,
+    key?.length > 0
+      ? `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}&key=${key ? key : ''}`
+      : `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}`,
   );
   return response;
 };

@@ -121,8 +121,23 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(5),
   },
   imageStamp: {
-    width: moderateScale(60),
-    height: moderateScale(60),
+    width: moderateScale(120),
+    height: moderateScale(120),
+  },
+  imageFile: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+    marginRight: scale(5)
+  },
+  txtNameFile: {
+    fontSize: moderateScale(12),
+    color: colors.border,
+    ...stylesCommon.fontWeight600,
+    marginLeft: scale(5),
+  },
+  viewRowFile: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

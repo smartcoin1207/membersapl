@@ -61,7 +61,7 @@ const ListUser = (props: any) => {
         text2: null,
         time: result?.data?.data?.created_at,
       });
-      dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
+      // dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch (error) {
