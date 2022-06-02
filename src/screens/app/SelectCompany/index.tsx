@@ -12,7 +12,7 @@ import {Header, AppInput, AppButton} from '@component';
 import {iconSearch, iconAddListChat} from '@images';
 import {useFocusEffect} from '@react-navigation/native';
 import {debounce} from 'lodash';
-import {saveIdCompany} from '@redux';
+import {saveIdCompany, getUserInfo} from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -42,6 +42,7 @@ const SelectCompany = () => {
       backAction,
     );
     getListCompanyApi();
+    dispatch(getUserInfo(user?.id));
     return () => backHandler.remove();
   }, []);
 
@@ -89,7 +90,7 @@ const SelectCompany = () => {
         <View style={styles.viewContentItem}>
           <Text style={styles.txtID}>ID: {item?.id}</Text>
           <Text style={styles.txtName}>{item?.name}</Text>
-          <Text style={styles.txtIDContent}>{item?.phoneNumber}</Text>
+          <Text style={styles.txtIDContent}>{item?.phone}</Text>
         </View>
       </TouchableOpacity>
     </>

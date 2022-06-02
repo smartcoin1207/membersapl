@@ -33,8 +33,10 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
 import {updateImageProfile} from '@services';
 import {showMessage} from 'react-native-flash-message';
+import {AppSocket} from '@util';
 
 const Setting = () => {
+  const {endConnect} = AppSocket;
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state?.auth?.userInfo);
 
@@ -47,6 +49,7 @@ const Setting = () => {
   }, [modal]);
 
   const onLogout = useCallback(() => {
+    endConnect();
     onCancelModal();
     dispatch(logOut());
   }, [modal]);

@@ -65,6 +65,16 @@ export default class InputToolbar extends React.Component {
         }
         return null;
     }
+    renderActionsRight() {
+        const { containerStyle, ...props } = this.props;
+        if (this.props.renderActionsRight) {
+            return this.props.renderActionsRight(props);
+        }
+        else if (this.props.onPressActionButton) {
+            return <Actions {...props} />;
+        }
+        return null;
+    }
     renderSend() {
         if (this.props.renderSend) {
             return this.props.renderSend(this.props);
@@ -97,6 +107,7 @@ export default class InputToolbar extends React.Component {
                 {this.renderActions()}
                 {this.renderComposer()}
                 {this.renderSend()}
+                {this.renderActionsRight()}
             </View>
         </View>);
     }
@@ -104,6 +115,7 @@ export default class InputToolbar extends React.Component {
 InputToolbar.defaultProps = {
     renderAccessory: null,
     renderActions: null,
+    renderActionsRight: null,
     renderSend: null,
     renderComposer: null,
     containerStyle: {},
@@ -114,6 +126,7 @@ InputToolbar.defaultProps = {
 InputToolbar.propTypes = {
     renderAccessory: PropTypes.func,
     renderActions: PropTypes.func,
+    renderActionsRight: PropTypes.func,
     renderSend: PropTypes.func,
     renderComposer: PropTypes.func,
     onPressActionButton: PropTypes.func,

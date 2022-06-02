@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
@@ -48,6 +49,7 @@ const ItemMessage = React.memo((props: any) => {
     reply_to_message_text,
     attachment_files,
     reply_to_message_files,
+    stamp_icon,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -126,12 +128,12 @@ const ItemMessage = React.memo((props: any) => {
 
   return (
     <>
-      {msg_type === 11 ||
-      msg_type === 4 ||
-      msg_type === 5 ||
-      msg_type === 9 ||
-      msg_type === 10 ||
-      msg_type === 12 ? (
+      {msg_type == 11 ||
+      msg_type == 4 ||
+      msg_type == 5 ||
+      msg_type == 9 ||
+      msg_type == 10 ||
+      msg_type == 12 ? (
         <View style={styles.viewCenter}>
           <Text style={styles.txtCenter} numberOfLines={2}>
             {text}
@@ -140,59 +142,70 @@ const ItemMessage = React.memo((props: any) => {
       ) : (
         <View
           style={
-            user?._id === user_id ? styles.containerCurrent : styles.container
+            user?._id == user_id ? styles.containerCurrent : styles.container
           }>
           <>
-            <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
-              {user?._id === user_id ? (
+            <TouchableOpacity
+              style={styles.chat}
+              onPress={onShowMenu}
+              disabled={msg_type == 1}>
+              {user?._id == user_id ? (
                 <Text style={styles.txtTimeCurent}>
                   {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
                 </Text>
               ) : (
                 <View style={styles.viewAvatar}>
-                  <FastImage
-                    style={styles.image}
-                    source={{uri: user?.avatar}}
-                  />
+                  <Image style={styles.image} source={{uri: user?.avatar}} />
                   <View style={{flex: 1}} />
                 </View>
               )}
-              <LinearGradient
-                colors={user?._id === user_id ? colorCurrent : color}
-                start={{x: 1, y: 0}}
-                end={{x: 0, y: 0}}
-                style={styles.containerChat}>
-                {reply_to_message_text || reply_to_message_files?.length > 0 ? (
-                  <View style={styles.viewReply}>
-                    <View style={styles.viewColumn} />
-                    <View>
-                      <Text style={styles.txtTitleReply}>Reply message</Text>
-                      {reply_to_message_text && (
-                        <Text style={styles.txtContentReply} numberOfLines={1}>
-                          {reply_to_message_text}
-                        </Text>
-                      )}
-                      {reply_to_message_files?.length > 0 && (
-                        <View style={styles.viewRowEdit}>
-                          {reply_to_message_files?.map((item: any) => (
-                            <FastImage
-                              source={{uri: item?.path}}
-                              style={styles.imageSmall}
-                              key={item?.id}
-                            />
-                          ))}
-                        </View>
-                      )}
-                    </View>
-                  </View>
-                ) : null}
-                {msg_type === 2 ? (
-                  <MsgFile data={attachment_files} />
+              <>
+                {msg_type == 1 ? (
+                  <Image source={{uri: stamp_icon}} style={styles.imageStamp} />
                 ) : (
-                  <Text style={styles.txtMessage}>{text}</Text>
+                  <LinearGradient
+                    colors={user?._id == user_id ? colorCurrent : color}
+                    start={{x: 1, y: 0}}
+                    end={{x: 0, y: 0}}
+                    style={styles.containerChat}>
+                    {reply_to_message_text ||
+                    reply_to_message_files?.length > 0 ? (
+                      <View style={styles.viewReply}>
+                        <View style={styles.viewColumn} />
+                        <View>
+                          <Text style={styles.txtTitleReply}>
+                            Reply message
+                          </Text>
+                          {reply_to_message_text && (
+                            <Text
+                              style={styles.txtContentReply}
+                              numberOfLines={1}>
+                              {reply_to_message_text}
+                            </Text>
+                          )}
+                          {reply_to_message_files?.length > 0 && (
+                            <View style={styles.viewRowEdit}>
+                              {reply_to_message_files?.map((item: any) => (
+                                <Image
+                                  source={{uri: item?.path}}
+                                  style={styles.imageSmall}
+                                  key={item?.id}
+                                />
+                              ))}
+                            </View>
+                          )}
+                        </View>
+                      </View>
+                    ) : null}
+                    {msg_type == 2 ? (
+                      <MsgFile data={attachment_files} />
+                    ) : (
+                      <Text style={styles.txtMessage}>{text}</Text>
+                    )}
+                  </LinearGradient>
                 )}
-              </LinearGradient>
-              {user?._id === user_id ? null : (
+              </>
+              {user?._id == user_id ? null : (
                 <Text style={styles.txtTime}>
                   {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
                 </Text>

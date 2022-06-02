@@ -20,11 +20,13 @@ import {
   replyMessageApi,
   editMessageApi,
   sendReactionApi,
+  sendLabelApi,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {AppSocket} from '@util';
 import ImagePicker from 'react-native-image-crop-picker';
+import DocumentPicker from 'react-native-document-picker';
 import {Platform} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 
@@ -67,6 +69,7 @@ export const useFunction = (props: any) => {
       reply_to_message_text: message?.reply_to_message_text,
       attachment_files: message?.attachment_files,
       reply_to_message_files: message?.reply_to_message_files,
+      stamp_icon: message?.stamp_icon,
     };
   }, []);
 
@@ -380,6 +383,88 @@ export const useFunction = (props: any) => {
     });
   };
 
+  const choseFile = () => {
+    DocumentPicker.pickMultiple({
+      presentationStyle: 'fullScreen',
+      copyTo: 'cachesDirectory',
+    }).then(async result => {
+      const data = new FormData();
+      cancelModal();
+      try {
+        if (result?.length > 0) {
+          GlobalService.showLoading();
+          result?.forEach((item: any) => {
+            data.append('attachment[]', {
+              name:
+                Platform.OS === 'ios'
+                  ? item?.uri?.replace('file://', '')
+                  : item?.fileCopyUri,
+              type: item?.type,
+              uri:
+                Platform.OS === 'ios'
+                  ? item?.uri?.replace('file://', '')
+                  : item?.fileCopyUri,
+            });
+          });
+        }
+        data.append('msg_type', 2);
+        data.append('room_id', idRoomChat);
+        data.append('from_id', user_id);
+        const res = await sendMessageApi(data);
+        socket.emit('message_ind', {
+          user_id: user_id,
+          room_id: idRoomChat,
+          task_id: null,
+          to_info: null,
+          level: res?.data?.data?.msg_level,
+          message_id: res?.data?.data?.id,
+          message_type: res?.data?.data?.type,
+          method: res?.data?.data?.method,
+          attachment_files: res?.data?.attachmentFiles,
+          stamp_no: res?.data?.data?.stamp_no,
+          relation_message_id: res?.data?.data?.reply_to_message_id,
+          text: res?.data?.data?.message,
+          text2: null,
+          time: res?.data?.data?.created_at,
+        });
+        dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+        GlobalService.hideLoading();
+      } catch (error) {
+        GlobalService.hideLoading();
+      }
+    });
+  };
+
+  const sendLabel = async (stamp_no: any) => {
+    try {
+      const data = new FormData();
+      data.append('room_id', idRoomChat);
+      data.append('from_id', user_id);
+      data.append('msg_level', 0);
+      data.append('msg_type', 1);
+      data.append('method', 0);
+      data.append('stamp_no', stamp_no);
+      const res = await sendLabelApi(data);
+      socket.emit('message_ind', {
+        user_id: user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        to_info: null,
+        level: res?.data?.data?.msg_level,
+        message_id: res?.data?.data?.id,
+        message_type: res?.data?.data?.type,
+        method: res?.data?.data?.method,
+        attachment_files: res?.data?.attachmentFiles,
+        stamp_no: res?.data?.data?.stamp_no,
+        relation_message_id: res?.data?.data?.reply_to_message_id,
+        text: res?.data?.data?.message,
+        text2: null,
+        time: res?.data?.data?.created_at,
+      });
+      dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+    } catch (error: any) {}
+  };
+
   return {
     chatUser,
     idRoomChat,
@@ -405,5 +490,7 @@ export const useFunction = (props: any) => {
     pickFile,
     cancelModal,
     chosePhoto,
+    choseFile,
+    sendLabel,
   };
 };

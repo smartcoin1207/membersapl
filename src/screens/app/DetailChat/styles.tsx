@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   viewRow: {
     flexDirection: 'row',
   },
+  buttonRight: {marginRight: 16, marginLeft: 0},
 });
 
 export {styles};
