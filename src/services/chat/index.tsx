@@ -20,6 +20,7 @@ const EDIT_MESSAGE = 'user/chat/room/update-message';
 const SEND_REACTION = 'user/chat/room/send-reaction-message';
 const GET_LIST_REACTION = 'user/chat/room/list-reactions';
 const REMOVE_REACTION = 'user/chat/room/remove-reaction-message';
+const SEND_LABEL = 'user/chat/room/send-label-message';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -126,5 +127,10 @@ export const getListReactionApi: any = async (id: any) => {
 
 export const removeReactionApi: any = async (body: any) => {
   const response = api.post(REMOVE_REACTION, body);
+  return response;
+};
+
+export const sendLabelApi: any = async (body: any) => {
+  const response = api.post(SEND_LABEL, body);
   return response;
 };

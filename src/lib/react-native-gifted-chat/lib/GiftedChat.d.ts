@@ -91,6 +91,7 @@ export interface GiftedChatProps<TMessage extends IMessage = IMessage> {
     renderInputToolbar?(props: InputToolbar['props']): React.ReactNode;
     renderComposer?(props: Composer['props']): React.ReactNode;
     renderActions?(props: Actions['props']): React.ReactNode;
+    renderActionsRight?(props: Actions['props']): React.ReactNode;
     renderSend?(props: Send['props']): React.ReactNode;
     renderAccessory?(props: InputToolbar['props']): React.ReactNode;
     onPressActionButton?(): void;
@@ -161,6 +162,7 @@ declare class GiftedChat<TMessage extends IMessage = IMessage> extends React.Com
         renderInputToolbar: null;
         renderComposer: null;
         renderActions: null;
+        renderActionsRight: null;
         renderSend: null;
         renderAccessory: null;
         isKeyboardInternallyHandled: boolean;
@@ -223,6 +225,7 @@ declare class GiftedChat<TMessage extends IMessage = IMessage> extends React.Com
         renderInputToolbar: PropTypes.Requireable<(...args: any[]) => any>;
         renderComposer: PropTypes.Requireable<(...args: any[]) => any>;
         renderActions: PropTypes.Requireable<(...args: any[]) => any>;
+        renderActionsRight: PropTypes.Requireable<(...args: any[]) => any>;
         renderSend: PropTypes.Requireable<(...args: any[]) => any>;
         renderAccessory: PropTypes.Requireable<(...args: any[]) => any>;
         onPressActionButton: PropTypes.Requireable<(...args: any[]) => any>;

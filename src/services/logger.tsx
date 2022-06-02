@@ -1,4 +1,4 @@
-const SHOW_LOG_REQUEST = false;
+const SHOW_LOG_REQUEST = true;
 
 export function describeSuccessResponse(response: any) {
   if (!SHOW_LOG_REQUEST) {

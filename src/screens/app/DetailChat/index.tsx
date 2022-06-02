@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React from 'react';
 import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
@@ -10,23 +10,16 @@ import {
   menuEdit,
   iconClose,
   iconUpload,
+  iconLike,
 } from '@images';
 import {useFunction} from './useFunction';
-import {Menu} from 'react-native-material-menu';
-import {
-  GiftedChat,
-  Message,
-  LoadEarlier,
-  Actions,
-} from '../../../lib/react-native-gifted-chat';
+import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
 import {
   renderSend,
   renderInputToolbar,
   renderComposer,
 } from './components/InputToolbar';
-import {verticalScale} from 'react-native-size-matters';
-import {colors} from '@stylesCommon';
 import {ModalPickFile} from './components/ModalPickFile';
 import FastImage from 'react-native-fast-image';
 
@@ -54,6 +47,8 @@ const DetailChat = (props: any) => {
     pickFile,
     cancelModal,
     chosePhoto,
+    choseFile,
+    sendLabel,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -62,6 +57,15 @@ const DetailChat = (props: any) => {
       containerStyle={styles.addBtn}
       onPressActionButton={cancelModal}
       icon={() => <Image source={iconUpload} />}
+    />
+  );
+
+  const renderActionsRight = (props: any) => (
+    <Actions
+      {...props}
+      containerStyle={styles.buttonRight}
+      onPressActionButton={() => sendLabel(1)}
+      icon={() => <Image source={iconLike} />}
     />
   );
 
@@ -148,6 +152,7 @@ const DetailChat = (props: any) => {
         renderSend={renderSend}
         renderFooter={() => <View style={styles.viewBottom} />}
         renderActions={renderActions}
+        renderActionsRight={renderActionsRight}
         listViewProps={{
           scrollEventThrottle: 400,
           onScroll: ({nativeEvent}: any) => {
@@ -210,7 +215,7 @@ const DetailChat = (props: any) => {
                                 <FastImage
                                   source={{uri: item?.path}}
                                   style={styles.imageSmall}
-                                  key = {item?.id}
+                                  key={item?.id}
                                 />
                               ),
                             )}
@@ -234,7 +239,7 @@ const DetailChat = (props: any) => {
         visible={pickFile}
         onCancel={cancelModal}
         chosePhoto={chosePhoto}
-        choseFile={() => {}}
+        choseFile={choseFile}
       />
     </View>
   );

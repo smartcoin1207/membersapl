@@ -34,7 +34,6 @@ const ModalPickFile = React.memo((prop: any) => {
             onPress={choseFile}
             styleButton={styles.button}
             styleTitle={styles.txtTitle}
-            disabled
           />
           <AppButton
             title="Cancel"

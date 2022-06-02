@@ -120,6 +120,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(5),
   },
+  imageStamp: {
+    width: moderateScale(60),
+    height: moderateScale(60),
+  },
 });
 
 export {styles};

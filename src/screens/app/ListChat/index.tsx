@@ -29,7 +29,7 @@ import {ROUTE_NAME} from '@routeName';
 import {AppSocket} from '@util';
 
 const ListChat = () => {
-  let {init, endConnect} = AppSocket;
+  let {endConnect, init} = AppSocket;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList);

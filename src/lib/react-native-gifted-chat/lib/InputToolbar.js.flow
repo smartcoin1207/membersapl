@@ -18,6 +18,7 @@ export type InputToolbarProps = $ReadOnly<{|
   accessoryStyle?: ViewStyleProp,
   renderAccessory?: InputToolbarProps => React.Node,
   renderActions?: ActionsProps => React.Node,
+  renderActionsRight?: ActionsProps => React.Node,
   renderSend?: SendProps => React.Node,
   renderComposer?: ComposerProps => React.Node,
   onPressActionButton: () => void,
