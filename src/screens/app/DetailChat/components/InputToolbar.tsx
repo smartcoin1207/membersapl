@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderTopWidth: 0,
     marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
+    paddingTop: 8,
   },
   inputMessage: {
     color: '#222B45',

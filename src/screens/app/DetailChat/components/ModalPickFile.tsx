@@ -1,9 +1,18 @@
 import React from 'react';
-import {View, StyleSheet, Modal} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Modal,
+  Text,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import {AppButton} from '@component';
+import {iconClose} from '@images';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {colors, stylesCommon} from '@stylesCommon';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {HITSLOP} from '@util';
 
 const ModalPickFile = React.memo((prop: any) => {
   const {choseFile, onCancel, chosePhoto, visible} = prop;
@@ -23,6 +32,15 @@ const ModalPickFile = React.memo((prop: any) => {
           onStartShouldSetResponder={closeModal}
         />
         <View style={styles.container}>
+          <View style={styles.viewHeader}>
+            <TouchableOpacity
+              style={styles.buttonClose}
+              hitSlop={HITSLOP}
+              onPress={closeModal}>
+              <Image source={iconClose} style={styles.icon} />
+            </TouchableOpacity>
+            <Text style={styles.txtHeader}>Select file</Text>
+          </View>
           <AppButton
             title="Choose a photo / video"
             onPress={chosePhoto}
@@ -32,13 +50,7 @@ const ModalPickFile = React.memo((prop: any) => {
           <AppButton
             title="Select file"
             onPress={choseFile}
-            styleButton={styles.button}
-            styleTitle={styles.txtTitle}
-          />
-          <AppButton
-            title="Cancel"
-            onPress={closeModal}
-            styleButton={styles.button}
+            styleButton={[styles.button, {borderBottomWidth: 0}]}
             styleTitle={styles.txtTitle}
           />
         </View>
@@ -56,39 +68,48 @@ const styles = StyleSheet.create({
   },
   container: {
     width: '100%',
-    backgroundColor: 'transparent',
     borderRadius: moderateScale(4),
     alignItems: 'center',
     paddingHorizontal: scale(16),
     paddingBottom: getBottomSpace() + 20,
+    backgroundColor: '#FFFFFF',
   },
   viewOut: {
     width: '100%',
     height: '100%',
     backgroundColor: 'transparent',
   },
+  viewHeader: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: verticalScale(25),
+    flexDirection: 'row',
+  },
   txtHeader: {
-    marginTop: verticalScale(14),
     fontSize: moderateScale(18),
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight600,
     textAlign: 'center',
   },
-  viewButton: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: verticalScale(30),
-  },
   button: {
     width: '100%',
-    marginTop: verticalScale(12),
     backgroundColor: '#FFFFFF',
-    height: moderateScale(50),
+    borderBottomWidth: 1,
+    paddingVertical: verticalScale(20),
+    borderColor: colors.border,
   },
   txtTitle: {
     fontSize: moderateScale(16),
     color: colors.darkGrayText,
+    ...stylesCommon.fontWeight600,
+  },
+  icon: {
+    tintColor: colors.darkGrayText,
+  },
+  buttonClose: {
+    position: 'absolute',
+    left: 0,
   },
 });
 
