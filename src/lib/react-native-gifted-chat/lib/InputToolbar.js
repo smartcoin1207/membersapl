@@ -25,6 +25,7 @@ export default class InputToolbar extends React.Component {
         super(...arguments);
         this.state = {
             position: 'absolute',
+            heightInput: 0,
         };
         this.keyboardWillShowListener = undefined;
         this.keyboardWillHideListener = undefined;
@@ -89,27 +90,36 @@ export default class InputToolbar extends React.Component {
     }
     renderAccessory() {
         if (this.props.renderAccessory) {
-            return (<View style={[styles.accessory, this.props.accessoryStyle]}>
+            return (<View style={[styles.accessory, this.props.accessoryStyle, { position: 'absolute' },
+            { bottom: this.state.heightInput }]}>
                 {this.props.renderAccessory(this.props)}
             </View>);
         }
         return null;
     }
     render() {
-        return (<View style={[
-            styles.container,
-            { position: this.state.position },
-            { bottom: (this.state.position === 'relative' && heigth >= 812) ? 20 : 5 },
-            this.props.containerStyle,
-        ]}>
-            {this.renderAccessory()}
-            <View style={[styles.primary, this.props.primaryStyle]}>
-                {this.renderActions()}
-                {this.renderComposer()}
-                {this.renderSend()}
-                {this.renderActionsRight()}
-            </View>
-        </View>);
+        return (
+            <>
+                <View style={[
+                    styles.container,
+                    { position: this.state.position },
+                    { bottom: (this.state.position === 'relative' && heigth >= 812) ? 20 : 5 },
+                    this.props.containerStyle,
+                ]}>
+                    {this.renderAccessory()}
+                    <View style={[styles.primary, this.props.primaryStyle]}
+                        onLayout={(event) => {
+                            this.setState({ heightInput: event?.nativeEvent?.layout?.height })
+                        }}
+                    >
+                        {this.renderActions()}
+                        {this.renderComposer()}
+                        {this.renderSend()}
+                        {this.renderActionsRight()}
+                    </View>
+                </View>
+            </>
+        );
     }
 }
 InputToolbar.defaultProps = {

@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  containerMessage: {
+    backgroundColor: '#FFFFFF',
+  },
   txtTitle: {
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(14),
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
   },
   viewBottom: {
-    height: verticalScale(15),
+    height: verticalScale(25),
   },
   colorIcon: {
     tintColor: colors.darkGrayText,
@@ -87,8 +90,13 @@ const styles = StyleSheet.create({
   },
   viewRow: {
     flexDirection: 'row',
+    marginTop: verticalScale(5),
   },
   buttonRight: {marginRight: 16, marginLeft: 0},
+  imageFile: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+  },
 });
 
 export {styles};

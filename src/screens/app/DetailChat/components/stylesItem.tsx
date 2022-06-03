@@ -121,8 +121,8 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(5),
   },
   imageStamp: {
-    width: moderateScale(120),
-    height: moderateScale(120),
+    width: moderateScale(100),
+    height: moderateScale(100),
   },
   imageFile: {
     width: moderateScale(25),

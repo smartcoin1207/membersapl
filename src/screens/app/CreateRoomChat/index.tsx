@@ -162,10 +162,9 @@ const CreateRoomChat = (props: any) => {
             alwaysBounceVertical={false}
             style={styles.viewForm}
             showsVerticalScrollIndicator={false}>
-            <Text style={styles.txtTitle}>テキストテキストテキスト。</Text>
             {typeScreen === 'CREATE' && (
               <AppInput
-                placeholder="名称"
+                placeholder="グループ名"
                 onChange={onChange}
                 value={name}
                 maxLength={150}
@@ -193,7 +192,7 @@ const CreateRoomChat = (props: any) => {
                 style={styles.input}
                 onChangeText={onSearchName}
                 value={key}
-                placeholder={listUser?.length > 0 ? '' : '名称'}
+                placeholder={listUser?.length > 0 ? '' : 'メンバー検索'}
                 placeholderTextColor={colors.placeholder}
                 onSubmitEditing={() => onSearch(key)}
                 returnKeyType="search"

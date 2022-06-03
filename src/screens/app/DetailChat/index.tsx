@@ -11,6 +11,7 @@ import {
   iconClose,
   iconUpload,
   iconLike,
+  iconFile,
 } from '@images';
 import {useFunction} from './useFunction';
 import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
@@ -25,6 +26,7 @@ import FastImage from 'react-native-fast-image';
 import {ModalStamp} from './components/ModalStamp';
 import {ModalReply} from './components/ModalReply';
 import {ModalEdit} from './components/ModalEdit';
+import {ModalPin} from './components/ModalPin';
 
 const DetailChat = (props: any) => {
   const {
@@ -55,6 +57,9 @@ const DetailChat = (props: any) => {
     searchMessage,
     showModalStamp,
     modalStamp,
+    giftedChatRef,
+    text,
+    setTextInput,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -129,25 +134,17 @@ const DetailChat = (props: any) => {
         sourceImageCenter={dataDetail?.icon_image}
         onRightSecond={searchMessage}
       />
-      {message_pinned?.message && (
-        <View style={styles.viewPinMessage}>
-          <View style={styles.viewContent}>
-            <Text style={styles.txtTitle}>Pinned message</Text>
-            <Text style={styles.txtContent} numberOfLines={2}>
-              {message_pinned?.message}
-            </Text>
-          </View>
-          <TouchableOpacity
-            style={styles.viewIcon}
-            onPress={() => {
-              updateGimMessage(message_pinned?.id, 0);
-            }}>
-            <Image source={iconDelete} style={styles.iconDelete} />
-          </TouchableOpacity>
-        </View>
+      {message_pinned?.id && (
+        <ModalPin
+          updateGimMessage={(id: any, value: any) =>
+            updateGimMessage(id, value)
+          }
+        />
       )}
       <GiftedChat
-        // text = 'hello'
+        text={text}
+        ref={giftedChatRef}
+        onInputTextChanged={text => setTextInput(text)}
         messages={getConvertedMessages(listChat)}
         onSend={(messages: any) => {
           if (messages[0]?.text?.length === 0) {
@@ -191,6 +188,7 @@ const DetailChat = (props: any) => {
             : undefined
         }
         bottomOffset={0}
+        messagesContainerStyle={styles.containerMessage}
       />
       <ModalPickFile
         visible={pickFile}

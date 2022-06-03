@@ -1,6 +1,6 @@
 import {defaultAvatar} from '@images';
 import moment from 'moment';
-import React, {useMemo, useEffect, useState, useCallback} from 'react';
+import React, {useMemo, useEffect, useState, useCallback, useRef} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   getDetailListChat,
@@ -33,6 +33,7 @@ import {showMessage} from 'react-native-flash-message';
 export const useFunction = (props: any) => {
   const {socket} = AppSocket;
 
+  const giftedChatRef = useRef<any>(null);
   const navigation = useNavigation<any>();
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const listChat = useSelector((state: any) => state.chat?.detailChat);
@@ -51,6 +52,7 @@ export const useFunction = (props: any) => {
   const [page, setPage] = useState(1);
   const [pickFile, setPickFile] = useState(false);
   const [modalStamp, setShowModalStamp] = useState(false);
+  const [text, setText] = useState('');
 
   const navigateToDetail = useCallback(() => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
@@ -116,6 +118,12 @@ export const useFunction = (props: any) => {
       setShowModalStamp(false);
     }
   }, [message_edit, messageReply]);
+
+  useEffect(() => {
+    if (!message_edit) {
+      setText('');
+    }
+  }, [message_edit]);
 
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
@@ -235,6 +243,10 @@ export const useFunction = (props: any) => {
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
         } catch (error: any) {}
       }
+      giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+        animated: true,
+        index: 0,
+      });
     },
     [messageReply, message_edit],
   );
@@ -270,6 +282,7 @@ export const useFunction = (props: any) => {
   }, []);
 
   const editMessage = useCallback((data: any) => {
+    setText(data?.text);
     dispatch(saveMessageEdit(data));
   }, []);
 
@@ -489,6 +502,13 @@ export const useFunction = (props: any) => {
     }
   }, [modalStamp]);
 
+  const setTextInput = React.useCallback(
+    value => {
+      setText(value);
+    },
+    [text],
+  );
+
   return {
     chatUser,
     idRoomChat,
@@ -519,5 +539,8 @@ export const useFunction = (props: any) => {
     searchMessage,
     showModalStamp,
     modalStamp,
+    giftedChatRef,
+    text,
+    setTextInput,
   };
 };
