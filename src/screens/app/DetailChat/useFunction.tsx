@@ -50,10 +50,11 @@ export const useFunction = (props: any) => {
   const [dataDetail, setData] = useState<any>(null);
   const [page, setPage] = useState(1);
   const [pickFile, setPickFile] = useState(false);
+  const [modalStamp, setShowModalStamp] = useState(false);
 
-  const navigateToDetail = () => {
+  const navigateToDetail = useCallback(() => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
-  };
+  }, [idRoomChat]);
 
   const convertDataMessage = useCallback((message: any) => {
     return {
@@ -110,6 +111,12 @@ export const useFunction = (props: any) => {
     }, []),
   );
 
+  useEffect(() => {
+    if (message_edit || messageReply) {
+      setShowModalStamp(false);
+    }
+  }, [message_edit, messageReply]);
+
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
   }, [visible]);
@@ -146,6 +153,7 @@ export const useFunction = (props: any) => {
 
   const sendMessage = useCallback(
     async mes => {
+      setShowModalStamp(false);
       if (messageReply) {
         try {
           const data = new FormData();
@@ -436,6 +444,7 @@ export const useFunction = (props: any) => {
   };
 
   const sendLabel = async (stamp_no: any) => {
+    setShowModalStamp(false);
     try {
       const data = new FormData();
       data.append('room_id', idRoomChat);
@@ -465,6 +474,21 @@ export const useFunction = (props: any) => {
     } catch (error: any) {}
   };
 
+  const searchMessage = useCallback(() => {
+    navigation.navigate(ROUTE_NAME.SEARCH_MESSAGE, {idRoomChat: idRoomChat});
+  }, [idRoomChat]);
+
+  const showModalStamp = useCallback(() => {
+    setShowModalStamp(!modalStamp);
+  }, [modalStamp]);
+
+  useEffect(() => {
+    if (modalStamp === true) {
+      removeReplyMessage();
+      removeEditMessage();
+    }
+  }, [modalStamp]);
+
   return {
     chatUser,
     idRoomChat,
@@ -492,5 +516,8 @@ export const useFunction = (props: any) => {
     chosePhoto,
     choseFile,
     sendLabel,
+    searchMessage,
+    showModalStamp,
+    modalStamp,
   };
 };

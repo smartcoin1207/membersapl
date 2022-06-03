@@ -1,19 +1,33 @@
 import React from 'react';
 import {Image, StyleSheet, Platform, View, Text} from 'react-native';
 import {InputToolbar, Actions, Composer, Send} from 'react-native-gifted-chat';
-import {iconSend} from '@images';
+import {iconSend, iconEmoji} from '@images';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {colors} from '@stylesCommon';
 import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
-export const renderSend = (props: any) => (
-  <Send
-    {...props}
-    disabled={!props.text.trim()}
-    containerStyle={styles.sendBtn}>
-    <Image source={iconSend} style={styles.iconStyle} resizeMode="contain" />
-  </Send>
-);
+export const renderSend = (props: any) => {
+  return (
+    <Send
+      {...props}
+      // disabled={!props.text.trim()}
+      containerStyle={styles.sendBtn}>
+      {props.text?.length > 0 ? (
+        <Image
+          source={iconSend}
+          style={styles.iconStyle}
+          resizeMode="contain"
+        />
+      ) : (
+        <Image
+          source={iconEmoji}
+          style={styles.iconEmojiStyle}
+          resizeMode="contain"
+        />
+      )}
+    </Send>
+  );
+};
 
 export const renderInputToolbar = (props: any) => {
   return (
@@ -66,5 +80,11 @@ const styles = StyleSheet.create({
     paddingRight: scale(43),
     borderWidth: 1,
     borderColor: '#989898',
+  },
+  iconEmojiStyle: {
+    width: 29,
+    height: 29,
+    alignSelf: 'center',
+    flex: 1,
   },
 });

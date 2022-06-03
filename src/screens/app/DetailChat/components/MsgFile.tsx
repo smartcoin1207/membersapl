@@ -10,7 +10,7 @@ import {
 import FastImage from 'react-native-fast-image';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 import Video from 'react-native-video';
-import {iconPlay, iconPdf, iconDoc, iconXls} from '@images';
+import {iconPlay, iconPdf, iconDoc, iconXls, iconFile} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 
 const MsgFile = React.memo((props: any) => {
@@ -24,7 +24,7 @@ const MsgFile = React.memo((props: any) => {
     return (
       <>
         {item?.type == 4 && (
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => openFile(item?.path)}>
             <Image
               source={{uri: item?.path}}
               style={styles.image}
@@ -33,18 +33,13 @@ const MsgFile = React.memo((props: any) => {
           </TouchableOpacity>
         )}
         {item?.type == 7 && (
-          <TouchableOpacity style={styles.viewCenter}>
-            <Video
-              paused={true}
-              resizeMode="cover"
-              source={{uri: item?.path}}
-              style={styles.image}
-              volume={5}
-              ignoreSilentSwitch="ignore"
-            />
-            <View style={styles.viewIconPlay}>
-              <Image source={iconPlay} style={styles.iconPlay} />
-            </View>
+          <TouchableOpacity
+            style={styles.viewRow}
+            onPress={() => openFile(item?.path)}>
+            <Image source={iconFile} style={styles.iconFile} />
+            <Text style={styles.txtTitleFile} numberOfLines={1}>
+              {item?.name}
+            </Text>
           </TouchableOpacity>
         )}
         {item?.type == 2 && (
@@ -129,6 +124,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(12),
     marginLeft: scale(5),
+    width: '80%',
   },
 });
 

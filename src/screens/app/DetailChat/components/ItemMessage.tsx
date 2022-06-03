@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
-import {defaultAvatar} from '@images';
+import {iconFile} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
 import moment from 'moment';
@@ -186,11 +186,21 @@ const ItemMessage = React.memo((props: any) => {
                           {reply_to_message_files?.length > 0 && (
                             <View style={styles.viewRowEdit}>
                               {reply_to_message_files?.map((item: any) => (
-                                <Image
-                                  source={{uri: item?.path}}
-                                  style={styles.imageSmall}
-                                  key={item?.id}
-                                />
+                                <>
+                                  {item?.type == 4 ? (
+                                    <Image
+                                      source={{uri: item?.path}}
+                                      style={styles.imageSmall}
+                                      key={item?.id}
+                                    />
+                                  ) : (
+                                    <Image
+                                      source={iconFile}
+                                      style={styles.imageFile}
+                                      key={item?.id}
+                                    />
+                                  )}
+                                </>
                               ))}
                             </View>
                           )}

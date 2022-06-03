@@ -22,6 +22,9 @@ import {
 } from './components/InputToolbar';
 import {ModalPickFile} from './components/ModalPickFile';
 import FastImage from 'react-native-fast-image';
+import {ModalStamp} from './components/ModalStamp';
+import {ModalReply} from './components/ModalReply';
+import {ModalEdit} from './components/ModalEdit';
 
 const DetailChat = (props: any) => {
   const {
@@ -49,6 +52,9 @@ const DetailChat = (props: any) => {
     chosePhoto,
     choseFile,
     sendLabel,
+    searchMessage,
+    showModalStamp,
+    modalStamp,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -121,7 +127,7 @@ const DetailChat = (props: any) => {
         styleIconRightSeccond={styles.colorIcon}
         onRightFirst={navigateToDetail}
         sourceImageCenter={dataDetail?.icon_image}
-        onRightSecond={() => {}}
+        onRightSecond={searchMessage}
       />
       {message_pinned?.message && (
         <View style={styles.viewPinMessage}>
@@ -141,10 +147,16 @@ const DetailChat = (props: any) => {
         </View>
       )}
       <GiftedChat
+        // text = 'hello'
         messages={getConvertedMessages(listChat)}
         onSend={(messages: any) => {
-          sendMessage(messages);
+          if (messages[0]?.text?.length === 0) {
+            showModalStamp();
+          } else {
+            sendMessage(messages);
+          }
         }}
+        alwaysShowSend={true}
         renderMessage={renderMessage}
         renderInputToolbar={renderInputToolbar}
         renderComposer={renderComposer}
@@ -162,72 +174,17 @@ const DetailChat = (props: any) => {
           },
         }}
         renderAccessory={
-          messageReply || message_edit
+          messageReply || message_edit || modalStamp === true
             ? () => (
                 <>
-                  {messageReply && (
-                    <View style={styles.viewRepMessage}>
-                      <View style={styles.viewIconRepMessage}>
-                        <Image source={menuReply} style={styles.iconReply} />
-                      </View>
-                      <View style={styles.viewTxtRepMessage}>
-                        <Text style={styles.name}>Reply message</Text>
-                        {messageReply?.text ? (
-                          <Text style={styles.content} numberOfLines={2}>
-                            {messageReply?.text}
-                          </Text>
-                        ) : (
-                          <View style={styles.viewRow}>
-                            {messageReply?.attachment_files?.map(
-                              (item: any) => (
-                                <FastImage
-                                  source={{uri: item?.path}}
-                                  style={styles.imageSmall}
-                                  key={item?.id}
-                                />
-                              ),
-                            )}
-                          </View>
-                        )}
-                      </View>
-                      <TouchableOpacity
-                        style={styles.viewIconRepMessage}
-                        onPress={removeReplyMessage}>
-                        <Image source={iconClose} style={styles.iconClose} />
-                      </TouchableOpacity>
-                    </View>
-                  )}
-                  {message_edit && (
-                    <View style={styles.viewRepMessage}>
-                      <View style={styles.viewIconRepMessage}>
-                        <Image source={menuEdit} style={styles.iconReply} />
-                      </View>
-                      <View style={styles.viewTxtRepMessage}>
-                        <Text style={styles.name}>Edit message</Text>
-                        {message_edit?.text ? (
-                          <Text style={styles.content} numberOfLines={2}>
-                            {message_edit?.text}
-                          </Text>
-                        ) : (
-                          <View style={styles.viewRow}>
-                            {message_edit?.attachment_files?.map(
-                              (item: any) => (
-                                <FastImage
-                                  source={{uri: item?.path}}
-                                  style={styles.imageSmall}
-                                  key={item?.id}
-                                />
-                              ),
-                            )}
-                          </View>
-                        )}
-                      </View>
-                      <TouchableOpacity
-                        style={styles.viewIconRepMessage}
-                        onPress={removeEditMessage}>
-                        <Image source={iconClose} style={styles.iconClose} />
-                      </TouchableOpacity>
-                    </View>
+                  {messageReply && <ModalReply />}
+                  {message_edit && <ModalEdit />}
+                  {modalStamp && (
+                    <ModalStamp
+                      onChose={(value: any) => {
+                        sendLabel(value);
+                      }}
+                    />
                   )}
                 </>
               )
