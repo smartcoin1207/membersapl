@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, Image, TouchableOpacity, Dimensions} from 'react-native';
 import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
 import {chatStamp2, chatStamp3, chatStamp4} from '@images';
 
@@ -43,7 +43,7 @@ const ModalStamp = React.memo((props: any) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    width: '100%',
+    width: Dimensions.get('window').width,
     backgroundColor: '#FFFFFF',
     paddingVertical: verticalScale(4),
     alignItems: 'center',

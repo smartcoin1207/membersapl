@@ -90,12 +90,12 @@ const SearchMessage = (props: any) => {
           icon={iconSearch}
           styleIcon={styles.icon}
         />
-        {total && (
+        {total ? (
           <View style={styles.viewRow}>
             <Text style={styles.txtTitleTotal}>結果: </Text>
             <Text style={styles.txtTotal}>{total} メッセージ</Text>
           </View>
-        )}
+        ) : null}
         <FlatList
           data={listMessage}
           renderItem={renderItem}

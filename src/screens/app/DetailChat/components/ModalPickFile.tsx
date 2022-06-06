@@ -39,16 +39,16 @@ const ModalPickFile = React.memo((prop: any) => {
               onPress={closeModal}>
               <Image source={iconClose} style={styles.icon} />
             </TouchableOpacity>
-            <Text style={styles.txtHeader}>Select file</Text>
+            <Text style={styles.txtHeader}>ファイルを選ぶ</Text>
           </View>
           <AppButton
-            title="Choose a photo / video"
+            title="写真/ビデオを選択してください"
             onPress={chosePhoto}
             styleButton={styles.button}
             styleTitle={styles.txtTitle}
           />
           <AppButton
-            title="Select file"
+            title="ファイルを選ぶ"
             onPress={choseFile}
             styleButton={[styles.button, {borderBottomWidth: 0}]}
             styleTitle={styles.txtTitle}

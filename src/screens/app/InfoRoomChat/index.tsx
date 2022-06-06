@@ -121,7 +121,7 @@ const InfoRoomChat = (props: any) => {
 
   const upLoadImage = () => {
     ImagePicker.openPicker({
-      cropping: true,
+      cropping: false,
       width: verticalScale(126),
       height: verticalScale(126),
     })
@@ -160,6 +160,7 @@ const InfoRoomChat = (props: any) => {
                   <Image
                     source={{uri: dataDetail?.icon_image}}
                     style={styles.avatar}
+                    resizeMode='cover'
                   />
                 ) : (
                   <Image source={defaultAvatar} style={styles.avatar} />
@@ -169,7 +170,7 @@ const InfoRoomChat = (props: any) => {
                   onPress={onGhimRoomChat}>
                   <Image
                     source={iconPin}
-                    style={activePin === false ? styles.inActive : null}
+                    style={[activePin === false ? styles.inActive : styles.active]}
                   />
                 </TouchableOpacity>
 

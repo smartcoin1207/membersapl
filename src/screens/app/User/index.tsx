@@ -79,7 +79,7 @@ const User = () => {
 
   const upLoadImage = () => {
     ImagePicker.openPicker({
-      cropping: true,
+      cropping: false,
       width: verticalScale(126),
       height: verticalScale(126),
     })
@@ -114,7 +114,11 @@ const User = () => {
             style={styles.viewHeader}>
             <View style={styles.viewAvatar}>
               {user?.icon_image ? (
-                <Image source={{uri: user?.icon_image}} style={styles.avatar} />
+                <Image
+                  source={{uri: user?.icon_image}}
+                  style={styles.avatar}
+                  resizeMode="cover"
+                />
               ) : (
                 <Image source={defaultAvatar} style={styles.avatar} />
               )}

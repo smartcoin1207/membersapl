@@ -67,6 +67,14 @@ const styles = StyleSheet.create({
   },
   inActive: {
     tintColor: '#989898',
+    width: moderateScale(19),
+    height: moderateScale(24),
+    marginLeft: scale(8)
+  },
+  active: {
+    width: moderateScale(19),
+    height: moderateScale(24),
+    marginLeft: scale(8)
   },
   marginTop: {
     marginTop: verticalScale(20),

@@ -23,6 +23,7 @@ import {useNavigation} from '@react-navigation/native';
 import {styles} from './stylesItem';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {MsgFile} from './MsgFile';
+import {isSameDay} from '@util';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -51,7 +52,7 @@ const ItemMessage = React.memo((props: any) => {
     reply_to_message_files,
     stamp_icon,
   } = props.currentMessage;
-
+  
   const [visible, setVisible] = useState(false);
 
   const onShowMenu = useCallback(() => {
@@ -126,6 +127,20 @@ const ItemMessage = React.memo((props: any) => {
     return total + course.count;
   }, 0);
 
+  const renderDay = () => {
+    const {currentMessage, previousMessage} = props;
+    if (currentMessage && !isSameDay(currentMessage, previousMessage)) {
+      return (
+        <View style={styles.viewCenter}>
+          <Text style={styles.txtDateCenter} numberOfLines={2}>
+            {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('DD/MM/YYYY')}
+          </Text>
+        </View>
+      );
+    }
+    return null;
+  };
+
   return (
     <>
       {msg_type == 11 ||
@@ -140,113 +155,118 @@ const ItemMessage = React.memo((props: any) => {
           </Text>
         </View>
       ) : (
-        <View
-          style={
-            user?._id == user_id ? styles.containerCurrent : styles.container
-          }>
-          <>
-            <TouchableOpacity
-              style={styles.chat}
-              onPress={onShowMenu}
-              disabled={msg_type == 1}>
-              {user?._id == user_id ? (
-                <Text style={styles.txtTimeCurent}>
-                  {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
-                </Text>
-              ) : (
-                <View style={styles.viewAvatar}>
-                  <Image style={styles.image} source={{uri: user?.avatar}} />
-                  <View style={{flex: 1}} />
-                </View>
-              )}
-              <>
-                {msg_type == 1 ? (
-                  <Image source={{uri: stamp_icon}} style={styles.imageStamp} />
-                ) : (
-                  <LinearGradient
-                    colors={user?._id == user_id ? colorCurrent : color}
-                    start={{x: 1, y: 0}}
-                    end={{x: 0, y: 0}}
-                    style={styles.containerChat}>
-                    {reply_to_message_text ||
-                    reply_to_message_files?.length > 0 ? (
-                      <View style={styles.viewReply}>
-                        <View style={styles.viewColumn} />
-                        <View>
-                          <Text style={styles.txtTitleReply}>
-                            Reply message
-                          </Text>
-                          {reply_to_message_text && (
-                            <Text
-                              style={styles.txtContentReply}
-                              numberOfLines={1}>
-                              {reply_to_message_text}
-                            </Text>
-                          )}
-                          {reply_to_message_files?.length > 0 && (
-                            <View style={styles.viewRowEdit}>
-                              {reply_to_message_files?.map((item: any) => (
-                                <>
-                                  {item?.type == 4 ? (
-                                    <Image
-                                      source={{uri: item?.path}}
-                                      style={styles.imageSmall}
-                                      key={item?.id}
-                                    />
-                                  ) : (
-                                    <Image
-                                      source={iconFile}
-                                      style={styles.imageFile}
-                                      key={item?.id}
-                                    />
-                                  )}
-                                </>
-                              ))}
-                            </View>
-                          )}
-                        </View>
-                      </View>
-                    ) : null}
-                    {msg_type == 2 ? (
-                      <MsgFile data={attachment_files} />
-                    ) : (
-                      <Text style={styles.txtMessage}>{text}</Text>
-                    )}
-                  </LinearGradient>
-                )}
-              </>
-              {user?._id == user_id ? null : (
-                <Text style={styles.txtTime}>
-                  {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
-                </Text>
-              )}
-            </TouchableOpacity>
-            {reaction?.length > 0 && (
+        <>
+          {renderDay()}
+          <View
+            style={
+              user?._id == user_id ? styles.containerCurrent : styles.container
+            }>
+            <>
               <TouchableOpacity
-                style={styles.viewReaction}
-                onPress={() => navigateToList(_id)}>
-                <View style={styles.reaction}>
-                  <Reaction reaction={reaction} />
-                  {countReaction > 1 && (
-                    <Text style={styles.txtLengthReaction}>
-                      {countReaction}
-                    </Text>
+                style={styles.chat}
+                onPress={onShowMenu}
+                disabled={msg_type == 1}>
+                {user?._id == user_id ? (
+                  <Text style={styles.txtTimeCurent}>
+                    {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
+                  </Text>
+                ) : (
+                  <View style={styles.viewAvatar}>
+                    <Image style={styles.image} source={{uri: user?.avatar}} />
+                    <View style={{flex: 1}} />
+                  </View>
+                )}
+                <>
+                  {msg_type == 1 ? (
+                    <Image
+                      source={{uri: stamp_icon}}
+                      style={styles.imageStamp}
+                    />
+                  ) : (
+                    <LinearGradient
+                      colors={user?._id == user_id ? colorCurrent : color}
+                      start={{x: 1, y: 0}}
+                      end={{x: 0, y: 0}}
+                      style={styles.containerChat}>
+                      {reply_to_message_text ||
+                      reply_to_message_files?.length > 0 ? (
+                        <View style={styles.viewReply}>
+                          <View style={styles.viewColumn} />
+                          <View>
+                            <Text style={styles.txtTitleReply}>
+                              Reply message
+                            </Text>
+                            {reply_to_message_text && (
+                              <Text
+                                style={styles.txtContentReply}
+                                numberOfLines={1}>
+                                {reply_to_message_text}
+                              </Text>
+                            )}
+                            {reply_to_message_files?.length > 0 && (
+                              <View style={styles.viewRowEdit}>
+                                {reply_to_message_files?.map((item: any) => (
+                                  <View key={item?.id}>
+                                    {item?.type == 4 ? (
+                                      <Image
+                                        source={{uri: item?.path}}
+                                        style={styles.imageSmall}
+                                      />
+                                    ) : (
+                                      <Image
+                                        source={iconFile}
+                                        style={styles.imageFile}
+                                      />
+                                    )}
+                                  </View>
+                                ))}
+                              </View>
+                            )}
+                          </View>
+                        </View>
+                      ) : null}
+                      {msg_type == 2 ? (
+                        <MsgFile data={attachment_files} />
+                      ) : (
+                        <Text style={styles.txtMessage}>{text}</Text>
+                      )}
+                    </LinearGradient>
                   )}
-                </View>
+                </>
+                {user?._id == user_id ? null : (
+                  <Text style={styles.txtTime}>
+                    {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
+                  </Text>
+                )}
               </TouchableOpacity>
-            )}
-          </>
-          <Menu
-            style={styles.containerMenu}
-            visible={visible}
-            onRequestClose={onShowMenu}
-            key={1}>
-            <MenuFeature
-              onActionMenu={(value: any) => onActionMenu(value)}
-              onActionReaction={(value: any) => onActionReaction(value)}
-            />
-          </Menu>
-        </View>
+              {reaction?.length > 0 && (
+                <TouchableOpacity
+                  style={styles.viewReaction}
+                  onPress={() => navigateToList(_id)}>
+                  <View style={styles.reaction}>
+                    <Reaction reaction={reaction} />
+                    {countReaction > 1 && (
+                      <Text style={styles.txtLengthReaction}>
+                        {countReaction}
+                      </Text>
+                    )}
+                  </View>
+                </TouchableOpacity>
+              )}
+            </>
+            <Menu
+              style={styles.containerMenu}
+              visible={visible}
+              onRequestClose={onShowMenu}
+              key={1}>
+              <MenuFeature
+                userId = {user?._id}
+                onActionMenu={(value: any) => onActionMenu(value)}
+                onActionReaction={(value: any) => onActionReaction(value)}
+              />
+            </Menu>
+          </View>
+        </>
       )}
     </>
   );

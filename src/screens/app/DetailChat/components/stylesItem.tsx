@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   imageFile: {
     width: moderateScale(25),
     height: moderateScale(25),
-    marginRight: scale(5)
+    marginRight: scale(5),
   },
   txtNameFile: {
     fontSize: moderateScale(12),
@@ -138,6 +138,13 @@ const styles = StyleSheet.create({
   viewRowFile: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  txtDateCenter: {
+    fontSize: moderateScale(14),
+    color: colors.border,
+    ...stylesCommon.fontWeight600,
+    marginVertical: verticalScale(8),
+    textAlign: 'center',
   },
 });
 
