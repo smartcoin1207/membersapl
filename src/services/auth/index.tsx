@@ -12,6 +12,7 @@ const GET_LIST_COMPANY_LOGIN = 'user/company';
 const SELECT_COMPANY = 'user/select-client';
 const DELETE_IMAGE_USER = 'user/remove-avatar';
 const DELETE_IMAGE_ROOM_CHAT = 'user/chat/room/remove-avatar';
+const REGISTER_TOKENFIR = 'user/save-token';
 
 export const loginApi: any = async (data: any) => {
   const response = await api.post(LOGIN, data);
@@ -70,5 +71,10 @@ export const deleteImageUser: any = async () => {
 
 export const deleteImageRoomChat: any = async (data: any) => {
   const response = await api.post(DELETE_IMAGE_ROOM_CHAT, data);
+  return response;
+};
+
+export const registerToken: any = async (data: any) => {
+  const response = await api.post(REGISTER_TOKENFIR, data);
   return response;
 };

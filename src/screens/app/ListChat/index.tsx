@@ -26,10 +26,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
-import {AppSocket} from '@util';
+import {AppSocket, AppNotification} from '@util';
 
 const ListChat = () => {
   let {endConnect, init} = AppSocket;
+  let {initFB} = AppNotification;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const listRoom = useSelector((state: any) => state.chat.roomList);
@@ -50,6 +51,7 @@ const ListChat = () => {
   );
 
   useEffect(() => {
+    initFB();
     if (user?.id) {
       init();
       dispatch(getUserInfo(user?.id));
@@ -65,7 +67,7 @@ const ListChat = () => {
   const debounceText = useCallback(
     debounce(
       text =>
-        dispatch(getRoomList({key: key, company_id: idCompany, page: page})),
+        dispatch(getRoomList({key: text, company_id: idCompany, page: page})),
       500,
     ),
     [],

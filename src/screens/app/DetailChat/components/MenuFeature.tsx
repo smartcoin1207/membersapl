@@ -15,9 +15,11 @@ import {
   menuReply,
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 
 const MenuFeature = React.memo((props: any) => {
-  const {onActionMenu, onActionReaction} = props;
+  const {onActionMenu, onActionReaction, userId} = props;
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const dataFeature = [
     {
       id: 7,
@@ -27,6 +29,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(18),
         height: scale(22),
       },
+      isShow: true,
     },
     {
       id: 8,
@@ -36,6 +39,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
+      isShow: userId == user_id ? true : false,
     },
     {
       id: 9,
@@ -45,6 +49,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
+      isShow: true,
     },
     {
       id: 10,
@@ -54,6 +59,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
+      isShow: true,
     },
     {
       id: 11,
@@ -63,6 +69,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
+      isShow: userId == user_id ? true : false,
     },
   ];
 
@@ -106,18 +113,22 @@ const MenuFeature = React.memo((props: any) => {
       <View style={styles.viewFeature}>
         {dataFeature.map((item: any, index: any) => {
           return (
-            <TouchableOpacity
-              key={item?.id}
-              style={styles.itemFeature}
-              onPress={() => onActionMenu(item?.id)}>
-              <Image
-                source={item?.sourceImage}
-                style={item?.style ? item?.style : styles.imageFeature}
-              />
-              <Text style={styles.txtNameFeature} numberOfLines={1}>
-                {item?.name}
-              </Text>
-            </TouchableOpacity>
+            <>
+              {item?.isShow === true ? (
+                <TouchableOpacity
+                  key={item?.id}
+                  style={styles.itemFeature}
+                  onPress={() => onActionMenu(item?.id)}>
+                  <Image
+                    source={item?.sourceImage}
+                    style={item?.style ? item?.style : styles.imageFeature}
+                  />
+                  <Text style={styles.txtNameFeature} numberOfLines={1}>
+                    {item?.name}
+                  </Text>
+                </TouchableOpacity>
+              ) : null}
+            </>
           );
         })}
       </View>

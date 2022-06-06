@@ -31,7 +31,6 @@ import {ModalPin} from './components/ModalPin';
 const DetailChat = (props: any) => {
   const {
     chatUser,
-    idRoomChat,
     getConvertedMessages,
     listChat,
     deleteMsg,
@@ -43,9 +42,7 @@ const DetailChat = (props: any) => {
     onLoadMore,
     replyMessage,
     messageReply,
-    removeReplyMessage,
     editMessage,
-    removeEditMessage,
     message_edit,
     reactionMessage,
     navigatiteToListReaction,
@@ -60,6 +57,7 @@ const DetailChat = (props: any) => {
     giftedChatRef,
     text,
     setTextInput,
+    // onLoadNext,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -167,6 +165,9 @@ const DetailChat = (props: any) => {
           onScroll: ({nativeEvent}: any) => {
             if (isCloseToTop(nativeEvent)) {
               onLoadMore();
+            } else if(nativeEvent?.contentOffset?.y === 0){
+              // alert('hello')
+              // onLoadNext();
             }
           },
         }}

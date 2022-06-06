@@ -40,7 +40,11 @@ export function* getDetailChatSaga(action: any) {
       page: action?.payload.page,
     };
     const result: ResponseGenerator = yield getDetailChatApi(param);
-    yield put(getDetailListChatSuccess(result?.data));
+    const data = {
+      ...result?.data,
+      position: action?.position,
+    };
+    yield put(getDetailListChatSuccess(data));
   } catch (error) {
   } finally {
   }

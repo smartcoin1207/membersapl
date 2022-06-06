@@ -396,6 +396,10 @@ export const useFunction = (props: any) => {
             time: res?.data?.data?.created_at,
           });
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+          giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+            animated: true,
+            index: 0,
+          });
           GlobalService.hideLoading();
         } catch (error: any) {
           GlobalService.hideLoading();
@@ -449,6 +453,10 @@ export const useFunction = (props: any) => {
           time: res?.data?.data?.created_at,
         });
         dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+        giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+          animated: true,
+          index: 0,
+        });
         GlobalService.hideLoading();
       } catch (error) {
         GlobalService.hideLoading();
@@ -484,6 +492,10 @@ export const useFunction = (props: any) => {
         time: res?.data?.data?.created_at,
       });
       dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+      giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+        animated: true,
+        index: 0,
+      });
     } catch (error: any) {}
   };
 
