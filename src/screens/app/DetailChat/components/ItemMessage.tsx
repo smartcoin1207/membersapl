@@ -1,5 +1,5 @@
 import {colors, stylesCommon} from '@stylesCommon';
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {
   View,
   Text,
@@ -39,6 +39,7 @@ const ItemMessage = React.memo((props: any) => {
     editMsg,
     onReaction,
     navigatiteToListReaction,
+    listUser,
   } = props;
   const {
     user,
@@ -52,7 +53,7 @@ const ItemMessage = React.memo((props: any) => {
     reply_to_message_files,
     stamp_icon,
   } = props.currentMessage;
-  
+
   const [visible, setVisible] = useState(false);
 
   const onShowMenu = useCallback(() => {
@@ -141,6 +142,31 @@ const ItemMessage = React.memo((props: any) => {
     return null;
   };
 
+  const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
+    let textBold = null;
+    let textCut = null;
+    joinedUsers.forEach((joinedUser: any) => {
+      let mentionText = `@${joinedUser?.first_name.replace(
+        ' ',
+        '',
+      )}${joinedUser?.last_name?.replace(' ', '')}`;
+      if (text?.includes(mentionText)) {
+        textBold = mentionText;
+        textCut = text?.replace(new RegExp(mentionText, 'g'), '');
+      }
+    });
+    if (textBold) {
+      return (
+        <Text style={styles.txtMessage}>
+          {textBold ? <Text style={styles.txtBold}>{textBold} </Text> : null}
+          {textCut}
+        </Text>
+      );
+    } else {
+      return <Text style={styles.txtMessage}>{text}</Text>;
+    }
+  }, []);
+
   return (
     <>
       {msg_type == 11 ||
@@ -228,7 +254,7 @@ const ItemMessage = React.memo((props: any) => {
                       {msg_type == 2 ? (
                         <MsgFile data={attachment_files} />
                       ) : (
-                        <Text style={styles.txtMessage}>{text}</Text>
+                        <>{convertMentionToLink(text, listUser)}</>
                       )}
                     </LinearGradient>
                   )}
@@ -260,7 +286,7 @@ const ItemMessage = React.memo((props: any) => {
               onRequestClose={onShowMenu}
               key={1}>
               <MenuFeature
-                userId = {user?._id}
+                userId={user?._id}
                 onActionMenu={(value: any) => onActionMenu(value)}
                 onActionReaction={(value: any) => onActionReaction(value)}
               />

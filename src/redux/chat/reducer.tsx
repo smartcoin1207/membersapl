@@ -1,5 +1,6 @@
 import {typeChat} from './type';
 import {INITIAL_STATE_CHAT} from './state';
+import {convertArrUnique} from '@util';
 
 export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
   switch (action.type) {
@@ -24,8 +25,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         detailChat:
           page === 1
-            ? action.payload.room_messages.data
-            : state.detailChat.concat(action.payload.room_messages.data),
+            ? convertArrUnique(action.payload.room_messages.data, 'id')
+            : convertArrUnique(
+                state.detailChat.concat(action.payload.room_messages.data),
+                'id',
+              ),
         pagingDetail: action.payload.room_messages.paging,
         message_pinned: action.payload.message_pinned,
       };
@@ -83,6 +87,19 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
       return {
         ...state,
         detailChat: [],
+        pagingDetail: null,
+        id_messageSearch: null,
+      };
+    case typeChat.RESULT_SEARCH_MESSAGE:
+      return {
+        ...state,
+        detailChat: action.payload.data,
+        pagingDetail: action.payload.paging,
+      };
+    case typeChat.SAVE_MESSAGE_SEARCH:
+      return {
+        ...state,
+        id_messageSearch: action.payload,
       };
     default:
       return state;

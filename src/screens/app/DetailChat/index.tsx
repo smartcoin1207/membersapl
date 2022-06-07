@@ -23,13 +23,16 @@ import {
 } from './components/InputToolbar';
 import {ModalPickFile} from './components/ModalPickFile';
 import FastImage from 'react-native-fast-image';
+
 import {ModalStamp} from './components/ModalStamp';
 import {ModalReply} from './components/ModalReply';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPin} from './components/ModalPin';
+import {ModalTagName} from './components/ModalTagName';
 
 const DetailChat = (props: any) => {
   const {
+    idRoomChat,
     chatUser,
     getConvertedMessages,
     listChat,
@@ -58,6 +61,10 @@ const DetailChat = (props: any) => {
     text,
     setTextInput,
     // onLoadNext,
+    showHideModalTagName,
+    setShowTag,
+    showTagModal,
+    listUser,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -101,6 +108,7 @@ const DetailChat = (props: any) => {
           navigatiteToListReaction={(idMsg: any) => {
             navigatiteToListReaction(idMsg);
           }}
+          listUser={listUser}
         />
       </>
     );
@@ -165,16 +173,46 @@ const DetailChat = (props: any) => {
           onScroll: ({nativeEvent}: any) => {
             if (isCloseToTop(nativeEvent)) {
               onLoadMore();
-            } else if(nativeEvent?.contentOffset?.y === 0){
-              // alert('hello')
-              // onLoadNext();
+            } else if (nativeEvent?.contentOffset?.y === 0) {
+            }
+          },
+          onScrollToIndexFailed: (info: any) => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex(
+                {
+                  animated: true,
+                  index: info?.index,
+                },
+              );
+            });
+          },
+        }}
+        textInputProps={{
+          onKeyPress: ({nativeEvent}: any) => {
+            if (nativeEvent?.key === '@') {
+              showHideModalTagName();
+            } else {
+              setShowTag(false);
             }
           },
         }}
         renderAccessory={
-          messageReply || message_edit || modalStamp === true
+          messageReply ||
+          message_edit ||
+          modalStamp === true ||
+          showTagModal === true
             ? () => (
                 <>
+                  {showTagModal && (
+                    <ModalTagName
+                      idRoomChat={idRoomChat}
+                      choseUser={(value: any) => {
+                        setTextInput(`${text}${value}`);
+                        setShowTag(false);
+                      }}
+                    />
+                  )}
                   {messageReply && <ModalReply />}
                   {message_edit && <ModalEdit />}
                   {modalStamp && (

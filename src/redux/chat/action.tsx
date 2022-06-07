@@ -73,3 +73,18 @@ export const saveMessageEdit = (payload: any) => ({
 export const resetDataChat = () => ({
   type: typeChat.RESET_DATA,
 });
+
+export const fetchResultMessageAction = (payload: any) => ({
+  type: typeChat.FETCH_RESULT_SEARCH_MESSAGE,
+  payload,
+});
+
+export const fetchResultMessageSuccess = (payload: any) => ({
+  type: typeChat.RESULT_SEARCH_MESSAGE,
+  payload,
+});
+
+export const saveIdMessageSearch = (payload: any) => ({
+  type: typeChat.SAVE_MESSAGE_SEARCH,
+  payload,
+})

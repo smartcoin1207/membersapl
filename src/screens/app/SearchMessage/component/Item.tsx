@@ -6,10 +6,10 @@ import {iconNext, defaultAvatar, iconPin} from '@images';
 import FastImage from 'react-native-fast-image';
 
 const Item = React.memo((props: any) => {
-  const {item} = props;
+  const {item, onClickItem} = props;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress = {onClickItem}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <View style={styles.image}>
@@ -37,7 +37,7 @@ const Item = React.memo((props: any) => {
           </>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 });
 

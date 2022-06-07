@@ -6,6 +6,8 @@ import {
   deleteMessage,
   editMessageAction,
   getRoomList,
+  fetchResultMessageSuccess,
+  saveIdMessageSearch,
 } from './action';
 
 import {typeChat} from './type';
@@ -13,15 +15,18 @@ import {
   getRoomListApi,
   getDetailChatApi,
   getMessageFromSocket,
+  getResultSearchMessage,
 } from '@services';
 
 import {NavigationUtils} from '@navigation';
 import {ROUTE_NAME} from '@routeName';
 import {store} from '../store';
+import {convertArrUnique} from '@util';
 
 interface ResponseGenerator {
   result?: any;
   data?: any;
+  code?: any;
 }
 
 export function* getRoomListSaga(action: any) {
@@ -40,11 +45,7 @@ export function* getDetailChatSaga(action: any) {
       page: action?.payload.page,
     };
     const result: ResponseGenerator = yield getDetailChatApi(param);
-    const data = {
-      ...result?.data,
-      position: action?.position,
-    };
-    yield put(getDetailListChatSuccess(data));
+    yield put(getDetailListChatSuccess(result?.data));
   } catch (error) {
   } finally {
   }
@@ -92,6 +93,37 @@ export function* getDetailMessageSagaCurrent(action: any) {
   }
 }
 
+export function* fetchResultMessage(action: any) {
+  try {
+    const body = {
+      id_room: action.payload.id_room,
+      id_message: action.payload.id_message,
+    };
+    const res: ResponseGenerator = yield getResultSearchMessage(body);
+    if (res?.code === 200) {
+      const param = {
+        id: action.payload.id_room,
+        page: res?.data.pages,
+      };
+      const result: ResponseGenerator = yield getDetailChatApi(param);
+      const valueSave = {
+        data: convertArrUnique(
+          res?.data?.room_messages?.data.concat(
+            result?.data?.room_messages?.data,
+          ),
+          'id',
+        ),
+        paging: result?.data?.room_messages?.paging,
+      };
+      yield put(fetchResultMessageSuccess(valueSave));
+      yield put(saveIdMessageSearch(action.payload.id_message));
+      NavigationUtils.goBack();
+    }
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* chatSaga() {
   yield takeEvery(typeChat.GET_ROOM_LIST, getRoomListSaga);
   yield takeEvery(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
@@ -100,4 +132,5 @@ export function* chatSaga() {
     typeChat.GET_DETAIL_MESSAGE_SOCKET_CURRENT,
     getDetailMessageSagaCurrent,
   );
+  yield takeEvery(typeChat.FETCH_RESULT_SEARCH_MESSAGE, fetchResultMessage);
 }

@@ -21,6 +21,7 @@ const SEND_REACTION = 'user/chat/room/send-reaction-message';
 const GET_LIST_REACTION = 'user/chat/room/list-reactions';
 const REMOVE_REACTION = 'user/chat/room/remove-reaction-message';
 const SEND_LABEL = 'user/chat/room/send-label-message';
+const GET_RESULT_SEARCH_MESSAGE = 'user/chat/room'
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -136,3 +137,12 @@ export const sendLabelApi: any = async (body: any) => {
   const response = api.post(SEND_LABEL, body);
   return response;
 };
+
+export const getResultSearchMessage: any = async (params: any) => {
+  const {id_room, id_message} = params;
+  const response = api.get(
+    `${GET_RESULT_SEARCH_MESSAGE}/${id_room}/messages-after-from-id?message_from_id=${id_message}`,
+  );
+  return response;
+};
+

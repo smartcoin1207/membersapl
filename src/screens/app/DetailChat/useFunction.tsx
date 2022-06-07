@@ -21,6 +21,7 @@ import {
   editMessageApi,
   sendReactionApi,
   sendLabelApi,
+  getListUser,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -43,16 +44,43 @@ export const useFunction = (props: any) => {
   );
   const message_edit = useSelector((state: any) => state.chat?.messageEdit);
   const messageReply = useSelector((state: any) => state.chat?.messageReply);
+  const idMessageSearch = useSelector(
+    (state: any) => state.chat?.id_messageSearch,
+  );
 
   const dispatch = useDispatch();
   const {route} = props;
   const {idRoomChat} = route?.params;
   const [visible, setVisible] = useState(false);
   const [dataDetail, setData] = useState<any>(null);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState<any>(1);
   const [pickFile, setPickFile] = useState(false);
   const [modalStamp, setShowModalStamp] = useState(false);
   const [text, setText] = useState('');
+  const [showTagModal, setShowTag] = useState(false);
+  const [listUser, setListUser] = useState([]);
+
+  const navigateToMessage = useCallback(
+    idMessageSearch => {
+      const index = listChat.findIndex(
+        (element: any) => element?.id == idMessageSearch,
+      );
+      if (index) {
+        giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+          animated: true,
+          index: index,
+        });
+      }
+    },
+    [listChat],
+  );
+
+  useEffect(() => {
+    if (idMessageSearch) {
+      setPage(pagging?.current_page);
+      navigateToMessage(idMessageSearch);
+    }
+  }, [idMessageSearch]);
 
   const navigateToDetail = useCallback(() => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
@@ -158,6 +186,10 @@ export const useFunction = (props: any) => {
     },
     [idRoomChat],
   );
+
+  const showHideModalTagName = useCallback(() => {
+    setShowTag(!showTagModal);
+  }, [showTagModal]);
 
   const sendMessage = useCallback(
     async mes => {
@@ -267,7 +299,7 @@ export const useFunction = (props: any) => {
 
   const onLoadMore = useCallback(() => {
     if (page !== pagging?.last_page) {
-      setPage(prevPage => prevPage + 1);
+      setPage((prevPage: any) => prevPage + 1);
     } else {
       null;
     }
@@ -521,6 +553,19 @@ export const useFunction = (props: any) => {
     [text],
   );
 
+  const getUserListChat = async () => {
+    try {
+      const result = await getListUser({room_id: idRoomChat});
+      setListUser(result?.data?.users?.data);
+    } catch {
+      (error: any) => {};
+    }
+  };
+
+  useEffect(() => {
+    getUserListChat();
+  }, [showTagModal]);
+
   return {
     chatUser,
     idRoomChat,
@@ -554,5 +599,9 @@ export const useFunction = (props: any) => {
     giftedChatRef,
     text,
     setTextInput,
+    showHideModalTagName,
+    setShowTag,
+    showTagModal,
+    listUser,
   };
 };
