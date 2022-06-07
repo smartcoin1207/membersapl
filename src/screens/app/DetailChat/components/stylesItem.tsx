@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     marginLeft: scale(2),
   },
   txtMessage: {
-    fontSize: moderateScale(16),
+    fontSize: moderateScale(14),
     ...stylesCommon.fontWeight500,
     color: colors.darkGrayText,
   },
@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(8),
     textAlign: 'center',
   },
+  txtBold:{fontWeight: 'bold', fontSize: moderateScale(16)}
 });
 
 export {styles};

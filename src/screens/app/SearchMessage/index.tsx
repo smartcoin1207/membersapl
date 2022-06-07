@@ -7,9 +7,12 @@ import {debounce} from 'lodash';
 import {useSelector} from 'react-redux';
 import {Item} from './component/Item';
 import {getDetailChatApi} from '@services';
+import {useDispatch} from 'react-redux';
+import {fetchResultMessageAction} from '@redux';
 
 const SearchMessage = (props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
+  const dispatch = useDispatch();
   const {route} = props;
   const {idRoomChat} = route?.params;
   const [key, setKey] = useState<string>('');
@@ -75,7 +78,17 @@ const SearchMessage = (props: any) => {
     }
   }, [page, lastPage]);
 
-  const renderItem = ({item}: any) => <Item item={item} />;
+  const onClickItem = (value: any) => {
+    const body = {
+      id_room: idRoomChat,
+      id_message: value?.id,
+    };
+    dispatch(fetchResultMessageAction(body));
+  };
+
+  const renderItem = ({item}: any) => (
+    <Item item={item} onClickItem={() => onClickItem(item)} />
+  );
 
   return (
     <View style={styles.container}>
