@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
-import {iconFile} from '@images';
+import {iconFile, iconPdf, iconDoc, iconXls} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
 import moment from 'moment';
@@ -167,6 +167,20 @@ const ItemMessage = React.memo((props: any) => {
     }
   }, []);
 
+  const renderImgaeFile = useCallback((typeFile: any) => {
+    
+    switch (typeFile) {
+      case '2':
+        return iconPdf;
+      case '5':
+        return iconDoc;
+      case '3':
+        return iconXls;
+      default:
+        return iconFile;
+    }
+  }, []);
+
   return (
     <>
       {msg_type == 11 ||
@@ -220,7 +234,7 @@ const ItemMessage = React.memo((props: any) => {
                           <View style={styles.viewColumn} />
                           <View>
                             <Text style={styles.txtTitleReply}>
-                              Reply message
+                              返信メッセージ
                             </Text>
                             {reply_to_message_text && (
                               <Text
@@ -240,7 +254,7 @@ const ItemMessage = React.memo((props: any) => {
                                       />
                                     ) : (
                                       <Image
-                                        source={iconFile}
+                                        source={renderImgaeFile(item?.type)}
                                         style={styles.imageFile}
                                       />
                                     )}

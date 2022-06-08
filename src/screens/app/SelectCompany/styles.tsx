@@ -22,11 +22,12 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: verticalScale(10),
     fontSize: moderateScale(14),
+    ...stylesCommon.fontWeight500,
   },
   icon: {
     width: moderateScale(15),
     height: moderateScale(15),
-    tintColor: colors.placeholder,
+    tintColor: colors.border,
   },
   viewBottom: {
     paddingHorizontal: scale(16),

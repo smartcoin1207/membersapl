@@ -1,7 +1,14 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {menuReply, iconClose, iconFile} from '@images';
+import {
+  menuReply,
+  iconClose,
+  iconFile,
+  iconPdf,
+  iconDoc,
+  iconXls,
+} from '@images';
 import FastImage from 'react-native-fast-image';
 import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -14,13 +21,27 @@ const ModalEdit = React.memo(() => {
     dispatch(saveMessageEdit(null));
   }, []);
 
+  const renderImgaeFile = useCallback((typeFile: any) => {
+    
+    switch (typeFile) {
+      case '2':
+        return iconPdf;
+      case '5':
+        return iconDoc;
+      case '3':
+        return iconXls;
+      default:
+        return iconFile;
+    }
+  }, []);
+
   return (
     <View style={styles.viewRepMessage}>
       <View style={styles.viewIconRepMessage}>
         <Image source={menuReply} style={styles.iconReply} />
       </View>
       <View style={styles.viewTxtRepMessage}>
-        <Text style={styles.name}>Edit message</Text>
+        <Text style={styles.name}>メッセージの編集</Text>
         {message_edit?.text ? (
           <Text style={styles.content} numberOfLines={2}>
             {message_edit?.text}
@@ -28,21 +49,19 @@ const ModalEdit = React.memo(() => {
         ) : (
           <View style={styles.viewRow}>
             {message_edit?.attachment_files?.map((item: any) => (
-              <>
+              <View key={item?.id}>
                 {item?.type == 4 ? (
                   <FastImage
                     source={{uri: item?.path}}
                     style={styles.imageSmall}
-                    key={item?.id}
                   />
                 ) : (
                   <Image
-                    source={iconFile}
+                    source={renderImgaeFile(item?.type)}
                     style={styles.imageFile}
-                    key={item?.id}
                   />
                 )}
-              </>
+              </View>
             ))}
           </View>
         )}

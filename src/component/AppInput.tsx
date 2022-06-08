@@ -83,6 +83,7 @@ const styles = ScaledSheet.create({
   },
   icon: {
     marginRight: '9@s',
+    tintColor: colors.border
   },
 });
 
