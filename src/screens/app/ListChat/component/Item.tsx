@@ -1,9 +1,17 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext, defaultAvatar, iconPin} from '@images';
+import {
+  iconNext,
+  defaultAvatar,
+  iconPin,
+  iconFile,
+  iconPdf,
+  iconDoc,
+  iconXls,
+} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import FastImage from 'react-native-fast-image';
@@ -20,6 +28,20 @@ const Item = React.memo((props: any) => {
     await dispatch(saveIdRoomChat(item?.id));
     navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {idRoomChat: item?.id});
   };
+
+  const renderImgaeFile = useCallback((typeFile: any) => {
+    
+    switch (typeFile) {
+      case '2':
+        return iconPdf;
+      case '5':
+        return iconDoc;
+      case '3':
+        return iconXls;
+      default:
+        return iconFile;
+    }
+  }, []);
 
   return (
     <TouchableOpacity style={styles.container} onPress={navigateDetail}>
@@ -42,9 +64,30 @@ const Item = React.memo((props: any) => {
             <Text style={styles.txtContent} numberOfLines={1}>
               {item?.name}
             </Text>
-            <Text style={styles.txtTitle} numberOfLines={2}>
-              {item?.lastMessageJoin?.message}
-            </Text>
+            {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
+              <View style={styles.viewRow}>
+                {item?.lastMessageJoin?.attachment_files?.map((item: any) => (
+                  <View key={item?.id}>
+                    {item?.type == 4 ? (
+                      <FastImage
+                        source={{uri: item?.path}}
+                        style={styles.imageSmall}
+                      />
+                    ) : (
+                      <Image
+                        source={renderImgaeFile(item?.type)}
+                        style={styles.imageFile}
+                      />
+                    )}
+                  </View>
+                ))}
+              </View>
+            ) : null}
+            {item?.lastMessageJoin?.message ? (
+              <Text style={styles.txtTitle} numberOfLines={2}>
+                {item?.lastMessageJoin?.message}
+              </Text>
+            ) : null}
           </>
         </View>
         <View
@@ -95,6 +138,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(12),
     color: colors.border,
+    marginTop: scale(10),
   },
   txtContent: {
     ...stylesCommon.fontWeight600,
@@ -128,6 +172,20 @@ const styles = StyleSheet.create({
     height: moderateScale(12),
     borderRadius: moderateScale(12 / 2),
     backgroundColor: colors.active,
+  },
+  viewRow: {
+    flexDirection: 'row',
+    marginTop: verticalScale(10),
+  },
+  imageSmall: {
+    width: moderateScale(30),
+    height: moderateScale(30),
+    borderRadius: moderateScale(4),
+    marginHorizontal: moderateScale(2),
+  },
+  imageFile: {
+    width: moderateScale(25),
+    height: moderateScale(25),
   },
 });
 

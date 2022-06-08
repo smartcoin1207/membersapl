@@ -44,7 +44,11 @@ const ConfigNoti = () => {
 
   return (
     <View style={styles.container}>
-      <Header title="Notification Settings" imageCenter back />
+      <Header
+        title="通知設定"
+        imageCenter
+        back
+      />
       <View style={styles.viewContent}>
         <View style={styles.item}>
           <Toggle

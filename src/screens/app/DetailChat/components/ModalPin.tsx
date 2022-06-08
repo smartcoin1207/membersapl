@@ -1,7 +1,15 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {menuReply, iconClose, iconFile, iconDelete} from '@images';
+import {
+  menuReply,
+  iconClose,
+  iconFile,
+  iconDelete,
+  iconPdf,
+  iconDoc,
+  iconXls,
+} from '@images';
 import FastImage from 'react-native-fast-image';
 import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -12,10 +20,24 @@ const ModalPin = React.memo((props: any) => {
     (state: any) => state.chat?.message_pinned,
   );
 
+  const renderImgaeFile = useCallback((typeFile: any) => {
+    
+    switch (typeFile) {
+      case '2':
+        return iconPdf;
+      case '5':
+        return iconDoc;
+      case '3':
+        return iconXls;
+      default:
+        return iconFile;
+    }
+  }, []);
+
   return (
     <View style={styles.viewPinMessage}>
       <View style={styles.viewContent}>
-        <Text style={styles.txtTitle}>Pinned message</Text>
+        <Text style={styles.txtTitle}>固定されたメッセージ</Text>
         {message_pinned?.message && (
           <Text style={styles.txtContent} numberOfLines={2}>
             {message_pinned?.message}
@@ -32,7 +54,7 @@ const ModalPin = React.memo((props: any) => {
                 />
               ) : (
                 <Image
-                  source={iconFile}
+                  source={renderImgaeFile(item?.type)}
                   style={styles.imageFile}
                   key={item?.id}
                 />

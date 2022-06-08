@@ -2,18 +2,18 @@
 import * as yup from 'yup';
 export const validateForm = () => {
   return {
-    login: yup.string().required('This field is required'),
-    current_password: yup.string().required('This field is required'),
-    password: yup.string().required('This field is required'),
-    first_name: yup.string().required('This field is required'),
-    last_name: yup.string().required('This field is required'),
+    login: yup.string().required('この項目は必須です'),
+    current_password: yup.string().required('この項目は必須です'),
+    password: yup.string().required('この項目は必須です'),
+    first_name: yup.string().required('この項目は必須です'),
+    last_name: yup.string().required('この項目は必須です'),
     email: yup
       .string()
-      .required('This field is required')
+      .required('この項目は必須です')
       .email('Email is not valid'),
     confirmPassword: yup
       .string()
-      .required('This field is required')
+      .required('この項目は必須です')
       // .min(VALIDATE.minPassLength, trans("validate.minConfirmPassError"))
       // .max(VALIDATE.maxPassLength, trans("validate.maxConfirmPassError"))
       .oneOf(
@@ -23,17 +23,17 @@ export const validateForm = () => {
 
     fullname: yup
       .string()
-      .required('This field is required')
+      .required('この項目は必須です')
       .max(100, 'Full name may not be greater than 100 characters'),
     phone: yup
       .string()
-      .required('This field is required')
+      .required('この項目は必須です')
       .min(7, 'Phone must be at least 7 characters')
       .max(11, 'Phone may not be greater than 11 characters'),
-    prefix: yup.string().required('This field is required'),
-    is_volunteer: yup.number().required('This field is required'),
-    dob: yup.string().required('This field is required'),
-    location: yup.string().required('This field is required'),
-    language: yup.string().required('This field is required'),
+    prefix: yup.string().required('この項目は必須です'),
+    is_volunteer: yup.number().required('この項目は必須です'),
+    dob: yup.string().required('この項目は必須です'),
+    location: yup.string().required('この項目は必須です'),
+    language: yup.string().required('この項目は必須です'),
   };
 };
