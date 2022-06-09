@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Linking,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
@@ -23,7 +24,8 @@ import {useNavigation} from '@react-navigation/native';
 import {styles} from './stylesItem';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {MsgFile} from './MsgFile';
-import {isSameDay} from '@util';
+import {isSameDay, validateLink} from '@util';
+import HighlightText from '@sanar/react-native-highlight-text';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -143,32 +145,20 @@ const ItemMessage = React.memo((props: any) => {
   };
 
   const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
-    let textBold = null;
-    let textCut = null;
+    let textBold: any = [];
     joinedUsers.forEach((joinedUser: any) => {
       let mentionText = `@${joinedUser?.first_name.replace(
         ' ',
         '',
       )}${joinedUser?.last_name?.replace(' ', '')}`;
       if (text?.includes(mentionText)) {
-        textBold = mentionText;
-        textCut = text?.replace(new RegExp(mentionText, 'g'), '');
+        textBold = textBold?.concat(mentionText);
       }
     });
-    if (textBold) {
-      return (
-        <Text style={styles.txtMessage}>
-          {textBold ? <Text style={styles.txtBold}>{textBold} </Text> : null}
-          {textCut}
-        </Text>
-      );
-    } else {
-      return <Text style={styles.txtMessage}>{text}</Text>;
-    }
+    return textBold;
   }, []);
 
   const renderImgaeFile = useCallback((typeFile: any) => {
-    
     switch (typeFile) {
       case '2':
         return iconPdf;
@@ -178,6 +168,17 @@ const ItemMessage = React.memo((props: any) => {
         return iconXls;
       default:
         return iconFile;
+    }
+  }, []);
+
+  const styleLink = {
+    color: validateLink(text) ? 'blue' : colors.darkGrayText,
+  };
+
+  const onClickText = useCallback(() => {
+    if (validateLink(text)) {
+      Linking.openURL(text);
+    } else {
     }
   }, []);
 
@@ -196,12 +197,12 @@ const ItemMessage = React.memo((props: any) => {
         </View>
       ) : (
         <>
-          {renderDay()}
           <View
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
             }>
             <>
+              {renderDay()}
               <TouchableOpacity
                 style={styles.chat}
                 onPress={onShowMenu}
@@ -268,7 +269,14 @@ const ItemMessage = React.memo((props: any) => {
                       {msg_type == 2 ? (
                         <MsgFile data={attachment_files} />
                       ) : (
-                        <>{convertMentionToLink(text, listUser)}</>
+                        <HighlightText
+                          highlightStyle={styles.txtBold}
+                          //@ts-ignore
+                          searchWords={convertMentionToLink(text, listUser)}
+                          textToHighlight={text}
+                          style={[styles.txtMessage, styleLink]}
+                          onPress={onClickText}
+                        />
                       )}
                     </LinearGradient>
                   )}

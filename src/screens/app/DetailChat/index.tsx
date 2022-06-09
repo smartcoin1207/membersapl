@@ -190,8 +190,8 @@ const DetailChat = (props: any) => {
         }}
         textInputProps={{
           onKeyPress: ({nativeEvent}: any) => {
-            if (nativeEvent?.key === '@') {
-              showHideModalTagName();
+            if (nativeEvent?.key?.trim() === '@') {
+              setShowTag(true);
             } else {
               setShowTag(false);
             }

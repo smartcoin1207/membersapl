@@ -86,7 +86,7 @@ export const useFunction = (props: any) => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   }, [idRoomChat]);
 
-  const convertDataMessage = useCallback((message: any) => {
+  const convertDataMessage = useCallback((message: any, index: any) => {
     return {
       _id: message?.id,
       text: message?.message,
@@ -101,12 +101,13 @@ export const useFunction = (props: any) => {
       attachment_files: message?.attachment_files,
       reply_to_message_files: message?.reply_to_message_files,
       stamp_icon: message?.stamp_icon,
+      index: index
     };
   }, []);
 
   const getConvertedMessages = useCallback((msgs: any) => {
-    return msgs?.map((item: any) => {
-      return convertDataMessage(item);
+    return msgs?.map((item: any, index: any,) => {
+      return convertDataMessage(item, index);
     });
   }, []);
 

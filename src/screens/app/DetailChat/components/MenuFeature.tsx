@@ -113,10 +113,9 @@ const MenuFeature = React.memo((props: any) => {
       <View style={styles.viewFeature}>
         {dataFeature.map((item: any, index: any) => {
           return (
-            <>
+            <View key={item?.id}>
               {item?.isShow === true ? (
                 <TouchableOpacity
-                  key={item?.id}
                   style={styles.itemFeature}
                   onPress={() => onActionMenu(item?.id)}>
                   <Image
@@ -128,7 +127,7 @@ const MenuFeature = React.memo((props: any) => {
                   </Text>
                 </TouchableOpacity>
               ) : null}
-            </>
+            </View>
           );
         })}
       </View>
