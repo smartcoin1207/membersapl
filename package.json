@@ -17,6 +17,7 @@
     "@react-navigation/bottom-tabs": "^6.3.1",
     "@react-navigation/native": "^6.0.10",
     "@react-navigation/native-stack": "^6.6.2",
+    "@sanar/react-native-highlight-text": "^1.0.2",
     "@types/lodash": "^4.14.182",
     "@types/react-native-video": "^5.0.13",
     "@types/redux-logger": "^3.0.9",

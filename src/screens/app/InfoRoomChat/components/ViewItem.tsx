@@ -1,9 +1,17 @@
-import React from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
+import React, {useCallback} from 'react';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  Linking,
+} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext} from '@images';
+import {validateLink} from '@util';
 
 const ViewItem = React.memo((props: any) => {
   const {
@@ -16,6 +24,14 @@ const ViewItem = React.memo((props: any) => {
     onClick,
     disabled,
   } = props;
+
+  const onClickContent = useCallback(() => {
+    if (validateLink(content)) {
+      Linking.openURL(content);
+    } else {
+    }
+  }, []);
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -36,7 +52,8 @@ const ViewItem = React.memo((props: any) => {
                 style={[
                   styles.txtContent,
                   {color: isLogout ? '#EA5A31' : colors.darkGrayText},
-                ]}>
+                ]}
+                onPress={onClickContent}>
                 {content}
               </Text>
             ) : null}

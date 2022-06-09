@@ -138,12 +138,12 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(12),
     color: colors.border,
-    marginTop: scale(10),
+    marginTop: scale(5),
   },
   txtContent: {
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(14),
-    marginTop: verticalScale(5),
+    marginTop: verticalScale(3),
     color: colors.backgroundTab,
   },
   txtContentLogout: {
