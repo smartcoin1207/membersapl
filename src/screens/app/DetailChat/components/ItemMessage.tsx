@@ -26,10 +26,12 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {MsgFile} from './MsgFile';
 import {isSameDay, validateLink} from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
+import {ViewUserSeen} from './viewUserSeen';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
 const width = Dimensions.get('window').width;
+const data = [1, 2, 3];
 
 const ItemMessage = React.memo((props: any) => {
   const navigation = useNavigation<any>();
@@ -54,6 +56,8 @@ const ItemMessage = React.memo((props: any) => {
     attachment_files,
     reply_to_message_files,
     stamp_icon,
+    users_seen,
+    stamp_no,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -182,6 +186,10 @@ const ItemMessage = React.memo((props: any) => {
     }
   }, []);
 
+  const onClickDetailSeen = useCallback(() => {
+    navigation.navigate(ROUTE_NAME.USER_SEEN, {id: _id});
+  }, []);
+
   return (
     <>
       {msg_type == 11 ||
@@ -221,7 +229,11 @@ const ItemMessage = React.memo((props: any) => {
                   {msg_type == 1 ? (
                     <Image
                       source={{uri: stamp_icon}}
-                      style={styles.imageStamp}
+                      style={
+                        stamp_no === 1
+                          ? styles.imageStamp
+                          : styles.imageStampBig
+                      }
                     />
                   ) : (
                     <LinearGradient
@@ -275,7 +287,7 @@ const ItemMessage = React.memo((props: any) => {
                           searchWords={convertMentionToLink(text, listUser)}
                           textToHighlight={text}
                           style={[styles.txtMessage, styleLink]}
-                          onPress={onClickText}
+                          onPress={validateLink(text) ? onClickText : undefined}
                         />
                       )}
                     </LinearGradient>
@@ -313,6 +325,19 @@ const ItemMessage = React.memo((props: any) => {
                 onActionReaction={(value: any) => onActionReaction(value)}
               />
             </Menu>
+            {users_seen?.length > 0 ? (
+              <TouchableOpacity
+                style={
+                  user?._id == user_id
+                    ? styles.viewSeenCurrent
+                    : styles.viewSeen
+                }
+                onPress={onClickDetailSeen}>
+                {users_seen?.map((item: any, index: any) => {
+                  return <ViewUserSeen item={item} index={index} key={index} />;
+                })}
+              </TouchableOpacity>
+            ) : null}
           </View>
         </>
       )}

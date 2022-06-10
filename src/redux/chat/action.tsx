@@ -88,3 +88,8 @@ export const saveIdMessageSearch = (payload: any) => ({
   type: typeChat.SAVE_MESSAGE_SEARCH,
   payload,
 })
+
+export const updateMessageSeen = (payload: any) => ({
+  type: typeChat.UPDATE_MESSAGE_SEEN,
+  payload,
+})

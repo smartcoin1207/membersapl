@@ -16,12 +16,14 @@ import {
   getDetailChatApi,
   getMessageFromSocket,
   getResultSearchMessage,
+  registerLastMessage,
 } from '@services';
 
 import {NavigationUtils} from '@navigation';
 import {ROUTE_NAME} from '@routeName';
 import {store} from '../store';
 import {convertArrUnique} from '@util';
+import {AppSocket} from '@util';
 
 interface ResponseGenerator {
   result?: any;
@@ -124,6 +126,25 @@ export function* fetchResultMessage(action: any) {
   }
 }
 
+function* updateMessageSeenSaga(action: any) {
+  const state = store.getState();
+  const user_id = state?.auth?.userInfo.id;
+  const {socket} = AppSocket;
+  try {
+    const body = {
+      id_room: action.payload.id_room,
+      id_message: action.payload.id_message,
+    };
+    const result: ResponseGenerator = yield registerLastMessage(body);
+    yield socket.emit('new_message_conf', {
+      user_id: user_id,
+      room_id: action.payload.id_room,
+      task_id: null,
+      message_id: action.payload.id_message,
+    });
+  } catch (error: any) {}
+}
+
 export function* chatSaga() {
   yield takeEvery(typeChat.GET_ROOM_LIST, getRoomListSaga);
   yield takeEvery(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
@@ -133,4 +154,5 @@ export function* chatSaga() {
     getDetailMessageSagaCurrent,
   );
   yield takeEvery(typeChat.FETCH_RESULT_SEARCH_MESSAGE, fetchResultMessage);
+  yield takeEvery(typeChat.UPDATE_MESSAGE_SEEN, updateMessageSeenSaga);
 }

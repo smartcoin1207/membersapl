@@ -151,7 +151,7 @@ const CreateRoomChat = (props: any) => {
   return (
     <View style={styles.container}>
       <Header
-        title="新規グループ"
+        title={typeScreen === 'CREATE' ? '新規グループ' : 'メンバー追加'}
         imageCenter
         iconRightFirst={iconClose}
         onRightFirst={onBack}
@@ -192,7 +192,7 @@ const CreateRoomChat = (props: any) => {
                 style={styles.input}
                 onChangeText={onSearchName}
                 value={key}
-                placeholder={listUser?.length > 0 ? '' : 'メンバー検索'}
+                placeholder={listUser?.length > 0 ? '' : '名前'}
                 placeholderTextColor={colors.placeholder}
                 onSubmitEditing={() => onSearch(key)}
                 returnKeyType="search"
@@ -213,7 +213,9 @@ const CreateRoomChat = (props: any) => {
               })}
             </ScrollView>
             <AppButton
-              title="グループを追加"
+              title={
+                typeScreen === 'CREATE' ? 'グループを追加' : 'メンバーを追加'
+              }
               onPress={handleSubmit}
               styleButton={styles.button}
               disabled={validateDisabled()}
