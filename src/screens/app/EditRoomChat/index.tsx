@@ -65,7 +65,7 @@ const EditRoomChat = (props: any) => {
   return (
     <View style={styles.container}>
       <Header
-        title="新規グループ"
+        title={type === 'name' ? 'グループ名' : '概要'}
         imageCenter
         iconRightFirst={iconClose}
         onRightFirst={onBack}
@@ -89,9 +89,9 @@ const EditRoomChat = (props: any) => {
             )}
             {type === 'content' && (
               <>
-                <Text style={styles.txtTitle}>説明</Text>
+                <Text style={styles.txtTitle}>概要</Text>
                 <AppInput
-                  placeholder="名称"
+                  placeholder="概要"
                   onChange={onChangeContent}
                   value={content}
                   multiline={true}
@@ -101,7 +101,7 @@ const EditRoomChat = (props: any) => {
               </>
             )}
             <AppButton
-              title="グループを追加"
+              title={type === 'name' ? 'グループ名を変更' : '概要を変更'}
               onPress={handleSubmit}
               styleButton={styles.button}
             />

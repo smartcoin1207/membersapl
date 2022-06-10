@@ -68,16 +68,16 @@ const EditUser = (props: any) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  <Text style={styles.txtTitle}>姓</Text>
+                  <Text style={styles.txtTitle}>名</Text>
                   <AppInput
-                    placeholder="姓"
+                    placeholder="名"
                     onChange={props.handleChange('first_name')}
                     value={props.values.first_name}
                     error={props.errors.first_name}
                   />
-                  <Text style={styles.txtTitle}>名</Text>
+                  <Text style={styles.txtTitle}>姓</Text>
                   <AppInput
-                    placeholder="名"
+                    placeholder="姓"
                     onChange={props.handleChange('last_name')}
                     value={props.values.last_name}
                     error={props.errors.last_name}

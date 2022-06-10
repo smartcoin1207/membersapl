@@ -121,6 +121,10 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(5),
   },
   imageStamp: {
+    width: moderateScale(30),
+    height: moderateScale(30),
+  },
+  imageStampBig:{
     width: moderateScale(100),
     height: moderateScale(100),
   },
@@ -149,6 +153,15 @@ const styles = StyleSheet.create({
   txtBold:{fontWeight: 'bold', fontSize: moderateScale(16)},
   bottomMenu:{
    marginTop: verticalScale(-100)
+  },
+  viewSeenCurrent:{
+    flexDirection: 'row',
+    marginTop: verticalScale(5)
+  },
+  viewSeen:{
+    marginLeft: scale(27 + 7),
+    flexDirection: 'row',
+    marginTop: verticalScale(5)
   }
 });
 

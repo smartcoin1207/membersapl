@@ -10,6 +10,7 @@ import {
   saveMessageReply,
   saveMessageEdit,
   editMessageAction,
+  updateMessageSeen,
 } from '@redux';
 import {
   deleteMessageApi,
@@ -87,6 +88,7 @@ export const useFunction = (props: any) => {
   }, [idRoomChat]);
 
   const convertDataMessage = useCallback((message: any, index: any) => {
+    console.log(message)
     return {
       _id: message?.id,
       text: message?.message,
@@ -101,12 +103,14 @@ export const useFunction = (props: any) => {
       attachment_files: message?.attachment_files,
       reply_to_message_files: message?.reply_to_message_files,
       stamp_icon: message?.stamp_icon,
-      index: index
+      stamp_no: message?.stamp_no,
+      index: index,
+      users_seen: message?.users_seen,
     };
   }, []);
 
   const getConvertedMessages = useCallback((msgs: any) => {
-    return msgs?.map((item: any, index: any,) => {
+    return msgs?.map((item: any, index: any) => {
       return convertDataMessage(item, index);
     });
   }, []);
@@ -139,8 +143,19 @@ export const useFunction = (props: any) => {
   useFocusEffect(
     useCallback(() => {
       getDetail();
+      // registerLastMsg();
     }, []),
   );
+
+  useEffect(() => {
+    if (listChat?.length > 0) {
+      const data = {
+        id_room: idRoomChat,
+        id_message: listChat[0]?.id,
+      };
+      dispatch(updateMessageSeen(data));
+    }
+  }, [listChat]);
 
   useEffect(() => {
     if (message_edit || messageReply) {
@@ -194,6 +209,7 @@ export const useFunction = (props: any) => {
 
   const sendMessage = useCallback(
     async mes => {
+      setShowTag(false);
       setShowModalStamp(false);
       if (messageReply) {
         try {
@@ -498,6 +514,7 @@ export const useFunction = (props: any) => {
   };
 
   const sendLabel = async (stamp_no: any) => {
+    setShowTag(false);
     setShowModalStamp(false);
     try {
       const data = new FormData();

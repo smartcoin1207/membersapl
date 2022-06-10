@@ -18,6 +18,7 @@ import {ChangePassword} from './app/ChangePassword';
 import {ConfigNoti} from './app/ConfigNoti';
 import {ListReaction} from './app/ListReaction';
 import {SearchMessage} from './app/SearchMessage';
+import {UserSeen} from './app/UserSeen';
 
 const screens = {
   //auth
@@ -39,6 +40,7 @@ const screens = {
   ConfigNoti,
   ListReaction,
   SearchMessage,
+  UserSeen
 };
 
 export {screens};

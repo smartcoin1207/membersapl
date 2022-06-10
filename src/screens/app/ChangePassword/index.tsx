@@ -79,17 +79,17 @@ const ChangePassword = (props: any) => {
                     error={props.errors.current_password}
                     secureTextEntry={true}
                   />
-                  <Text style={styles.txtTitle}>パスワード</Text>
+                  <Text style={styles.txtTitle}>新しいパスワード</Text>
                   <AppInput
-                    placeholder="パスワード"
+                    placeholder="新しいパスワード"
                     onChange={props.handleChange('password')}
                     value={props.values.password}
                     error={props.errors.password}
                     secureTextEntry={true}
                   />
-                  <Text style={styles.txtTitle}>パスワードを認証する</Text>
+                  <Text style={styles.txtTitle}>新しいパスワードを確認</Text>
                   <AppInput
-                    placeholder="パスワードを認証する"
+                    placeholder="新しいパスワードを確認"
                     onChange={props.handleChange('password_confirmation')}
                     value={props.values.password_confirmation}
                     error={props.errors.password_confirmation}

@@ -53,7 +53,7 @@ const ViewItem = React.memo((props: any) => {
                   styles.txtContent,
                   {color: isLogout ? '#EA5A31' : colors.darkGrayText},
                 ]}
-                onPress={onClickContent}>
+                onPress={validateLink(content) ? onClickContent : undefined}>
                 {content}
               </Text>
             ) : null}

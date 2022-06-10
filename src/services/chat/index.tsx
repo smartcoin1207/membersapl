@@ -21,7 +21,9 @@ const SEND_REACTION = 'user/chat/room/send-reaction-message';
 const GET_LIST_REACTION = 'user/chat/room/list-reactions';
 const REMOVE_REACTION = 'user/chat/room/remove-reaction-message';
 const SEND_LABEL = 'user/chat/room/send-label-message';
-const GET_RESULT_SEARCH_MESSAGE = 'user/chat/room'
+const GET_RESULT_SEARCH_MESSAGE = 'user/chat/room';
+const REGISTER_LAST_MESSAGE = 'user/chat/room';
+const GET_LIST_USER_SEEN = 'user/chat/room/list-users-seen';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -82,7 +84,9 @@ export const getDetailChatApi: any = async (params: any) => {
   const {id, page, key} = params;
   const response = api.get(
     key?.length > 0
-      ? `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}&key=${key ? key : ''}`
+      ? `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}&key=${
+          key ? key : ''
+        }`
       : `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}`,
   );
   return response;
@@ -146,3 +150,15 @@ export const getResultSearchMessage: any = async (params: any) => {
   return response;
 };
 
+export const registerLastMessage: any = async (data: any) => {
+  const {id_room, id_message} = data;
+  const response = api.post(
+    `${REGISTER_LAST_MESSAGE}/${id_room}/register-last-message-id?message_id=${id_message}`,
+  );
+  return response;
+};
+
+export const getListUserSeen: any = async (id: any) => {
+  const response = api.post(`${GET_LIST_USER_SEEN}/${id}`);
+  return response;
+};
