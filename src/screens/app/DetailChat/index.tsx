@@ -2,17 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
-import {
-  iconSearch,
-  iconDetail,
-  iconDelete,
-  menuReply,
-  menuEdit,
-  iconClose,
-  iconUpload,
-  iconLike,
-  iconFile,
-} from '@images';
+import {iconSearch, iconDetail, iconUpload, iconLike} from '@images';
 import {useFunction} from './useFunction';
 import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
@@ -22,7 +12,7 @@ import {
   renderComposer,
 } from './components/InputToolbar';
 import {ModalPickFile} from './components/ModalPickFile';
-import FastImage from 'react-native-fast-image';
+import {convertString} from '@util';
 
 import {ModalStamp} from './components/ModalStamp';
 import {ModalReply} from './components/ModalReply';
@@ -148,7 +138,7 @@ const DetailChat = (props: any) => {
         />
       )}
       <GiftedChat
-        text={text}
+        text={convertString(text)}
         ref={giftedChatRef}
         onInputTextChanged={text => setTextInput(text)}
         messages={getConvertedMessages(listChat)}

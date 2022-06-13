@@ -101,6 +101,31 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         id_messageSearch: action.payload,
       };
+    case typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN_SUCCESS:
+      const arrayListChat = [...state.detailChat];
+      let dataNew = arrayListChat?.filter(
+        (item: any) => item?.id === action?.payload?.id,
+      );
+      let dataSeen = arrayListChat?.filter(
+        (item: any) => item?.id !== action?.payload?.id,
+      );
+      dataSeen?.forEach((itemData: any, indexData: any) => {
+        let dataUser: any = [];
+        if (itemData?.users_seen?.length > 0) {
+          dataUser = [...itemData?.users_seen];
+          const indexUser = dataUser.findIndex(
+            (element: any) => element?.id == action.payload?.userID,
+          );
+          if (indexUser > -1) {
+            dataUser.splice(indexUser, 1);
+          }
+        }
+        dataSeen[indexData].users_seen = dataUser;
+      });
+      return {
+        ...state,
+        detailChat: dataNew?.concat(dataSeen),
+      };
     default:
       return state;
   }

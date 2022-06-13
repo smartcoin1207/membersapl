@@ -40,6 +40,8 @@ const InfoRoomChat = (props: any) => {
   const [modal, setModal] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
 
+  console.log(dataDetail);
+
   const uploadImageApi = async () => {
     try {
       const data = new FormData();
@@ -160,31 +162,38 @@ const InfoRoomChat = (props: any) => {
                   <Image
                     source={{uri: dataDetail?.icon_image}}
                     style={styles.avatar}
-                    resizeMode='cover'
+                    resizeMode="cover"
                   />
                 ) : (
                   <Image source={defaultAvatar} style={styles.avatar} />
                 )}
+
                 <TouchableOpacity
                   style={styles.buttonGhim}
                   onPress={onGhimRoomChat}>
                   <Image
                     source={iconPin}
-                    style={[activePin === false ? styles.inActive : styles.active]}
+                    style={[
+                      activePin === false ? styles.inActive : styles.active,
+                    ]}
                   />
                 </TouchableOpacity>
 
-                <TouchableOpacity
-                  style={styles.buttonCamera}
-                  onPress={upLoadImage}>
-                  <Image source={iconCamera} />
-                </TouchableOpacity>
+                {dataDetail?.is_host === 1 ? (
+                  <TouchableOpacity
+                    style={styles.buttonCamera}
+                    onPress={upLoadImage}>
+                    <Image source={iconCamera} />
+                  </TouchableOpacity>
+                ) : null}
 
-                <TouchableOpacity
-                  style={styles.buttonDelete}
-                  onPress={deleteAvatar}>
-                  <Image source={iconDelete} />
-                </TouchableOpacity>
+                {dataDetail?.is_host === 1 ? (
+                  <TouchableOpacity
+                    style={styles.buttonDelete}
+                    onPress={deleteAvatar}>
+                    <Image source={iconDelete} />
+                  </TouchableOpacity>
+                ) : null}
               </View>
             </View>
             <ViewItem
@@ -198,6 +207,7 @@ const InfoRoomChat = (props: any) => {
                   type: 'name',
                 });
               }}
+              disabled = {dataDetail?.is_host !== 1}
             />
             <ViewItem
               sourceImage={iconDetailRow}
@@ -210,6 +220,7 @@ const InfoRoomChat = (props: any) => {
                   type: 'content',
                 });
               }}
+              disabled = {dataDetail?.is_host !== 1}
             />
             <ViewItem
               sourceImage={iconUser}
@@ -222,14 +233,16 @@ const InfoRoomChat = (props: any) => {
               }}
               hideBorder
             />
-            {/* <ViewItem
-              sourceImage={iconLogout}
-              content="グループを退出"
-              isLogout
-              hideBorder
-              hideNext
-              onClick={onCancelModal}
-            /> */}
+            {dataDetail?.is_host !== 1 ? (
+              <ViewItem
+                sourceImage={iconLogout}
+                content="グループを退出"
+                isLogout
+                hideBorder
+                hideNext
+                onClick={onCancelModal}
+              />
+            ) : null}
           </ScrollView>
         ) : (
           <View style={styles.marginTop}>

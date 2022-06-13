@@ -88,7 +88,6 @@ export const useFunction = (props: any) => {
   }, [idRoomChat]);
 
   const convertDataMessage = useCallback((message: any, index: any) => {
-    console.log(message)
     return {
       _id: message?.id,
       text: message?.message,
@@ -143,19 +142,18 @@ export const useFunction = (props: any) => {
   useFocusEffect(
     useCallback(() => {
       getDetail();
-      // registerLastMsg();
     }, []),
   );
 
-  useEffect(() => {
-    if (listChat?.length > 0) {
-      const data = {
-        id_room: idRoomChat,
-        id_message: listChat[0]?.id,
-      };
-      dispatch(updateMessageSeen(data));
-    }
-  }, [listChat]);
+  // useEffect(() => {
+  //   if (listChat?.length > 0) {
+  //     const data = {
+  //       id_room: idRoomChat,
+  //       id_message: listChat[0]?.id,
+  //     };
+  //     // dispatch(updateMessageSeen(data));
+  //   }
+  // }, [listChat]);
 
   useEffect(() => {
     if (message_edit || messageReply) {
@@ -523,7 +521,7 @@ export const useFunction = (props: any) => {
       data.append('msg_level', 0);
       data.append('msg_type', 1);
       data.append('method', 0);
-      data.append('stamp_no', stamp_no);
+      data.append('stamp_no', stamp_no); 
       const res = await sendLabelApi(data);
       socket.emit('message_ind', {
         user_id: user_id,

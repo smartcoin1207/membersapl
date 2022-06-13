@@ -24,7 +24,7 @@ import {useNavigation} from '@react-navigation/native';
 import {styles} from './stylesItem';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {MsgFile} from './MsgFile';
-import {isSameDay, validateLink} from '@util';
+import {isSameDay, validateLink, convertString} from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
 import {ViewUserSeen} from './viewUserSeen';
 
@@ -221,13 +221,13 @@ const ItemMessage = React.memo((props: any) => {
                   </Text>
                 ) : (
                   <View style={styles.viewAvatar}>
-                    <Image style={styles.image} source={{uri: user?.avatar}} />
+                    <FastImage style={styles.image} source={{uri: user?.avatar}} />
                     <View style={{flex: 1}} />
                   </View>
                 )}
                 <>
                   {msg_type == 1 ? (
-                    <Image
+                    <FastImage
                       source={{uri: stamp_icon}}
                       style={
                         stamp_no === 1
@@ -261,12 +261,12 @@ const ItemMessage = React.memo((props: any) => {
                                 {reply_to_message_files?.map((item: any) => (
                                   <View key={item?.id}>
                                     {item?.type == 4 ? (
-                                      <Image
+                                      <FastImage
                                         source={{uri: item?.path}}
                                         style={styles.imageSmall}
                                       />
                                     ) : (
-                                      <Image
+                                      <FastImage
                                         source={renderImgaeFile(item?.type)}
                                         style={styles.imageFile}
                                       />
@@ -285,7 +285,7 @@ const ItemMessage = React.memo((props: any) => {
                           highlightStyle={styles.txtBold}
                           //@ts-ignore
                           searchWords={convertMentionToLink(text, listUser)}
-                          textToHighlight={text}
+                          textToHighlight={convertString(text)}
                           style={[styles.txtMessage, styleLink]}
                           onPress={validateLink(text) ? onClickText : undefined}
                         />
