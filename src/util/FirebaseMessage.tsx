@@ -6,6 +6,7 @@ import {Platform} from 'react-native';
 import {getSystemVersion} from 'react-native-device-info';
 import {registerToken} from '@services';
 import {store} from '../redux/store';
+import {convertString} from '@util';
 
 function createAppNotification() {
   let fcmToken = '';
@@ -71,7 +72,7 @@ function createAppNotification() {
         backgroundColor: 'rgba(139, 194, 39, 0.8)',
         duration: 5000,
         message: title,
-        description: bodyMessage,
+        description: convertString(bodyMessage),
         color: '#FFFFFF',
         //@ts-ignore
         onPress: async () => {},
@@ -85,7 +86,7 @@ function createAppNotification() {
     let bodyMessage = '';
     try {
       title = notification.title;
-      bodyMessage = notification.title;
+      bodyMessage = convertString(notification?.title);
     } catch (error) {}
   };
 

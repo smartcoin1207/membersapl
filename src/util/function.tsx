@@ -26,3 +26,24 @@ export function convertArrUnique(arr: any, comp: any) {
 export const validateLink = (text: any) => {
   return LINK_URL_REGEX.test(text);
 };
+
+function replaceAll(str: any, map: any) {
+  for (let key in map) {
+    str = str.replaceAll(key, map[key]);
+  }
+  return str;
+}
+
+export const convertString = (str: any = '') => {
+  let text = '';
+  let rv: any = {};
+  const regex = /%%(.+?)!!/g;
+  const listID = str?.match(regex);
+  if (listID) {
+    listID?.forEach((item: any) => {
+      rv[`${item}`] = '';
+    });
+  }
+  text = replaceAll(str, rv);
+  return text;
+};

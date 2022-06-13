@@ -93,3 +93,13 @@ export const updateMessageSeen = (payload: any) => ({
   type: typeChat.UPDATE_MESSAGE_SEEN,
   payload,
 })
+
+export const getDetailMessageSocketSeen = (payload: any) => ({
+  type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN,
+  payload,
+})
+
+export const getDetailMessageSocketSeenSuccess = (payload: any) => ({
+  type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN_SUCCESS,
+  payload,
+})
