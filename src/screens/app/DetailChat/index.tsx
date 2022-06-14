@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
-import {iconSearch, iconDetail, iconUpload, iconLike} from '@images';
+import {iconSearch, iconUpload, iconLike, iconDetail} from '@images';
 import {useFunction} from './useFunction';
 import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
 import {ItemMessage} from './components/ItemMessage';
@@ -49,12 +49,13 @@ const DetailChat = (props: any) => {
     modalStamp,
     giftedChatRef,
     text,
-    setTextInput,
+    // setTextInput,
     // onLoadNext,
     showHideModalTagName,
     setShowTag,
     showTagModal,
     listUser,
+    setText,
   } = useFunction(props);
 
   const renderActions = (props: any) => (
@@ -124,7 +125,7 @@ const DetailChat = (props: any) => {
         imageCenter
         iconRightFirst={iconDetail}
         iconRightSecond={iconSearch}
-        styleIconRightFirst={styles.colorIcon}
+        styleIconRightFirst={[styles.colorIcon, styles.size]}
         styleIconRightSeccond={styles.colorIcon}
         onRightFirst={navigateToDetail}
         sourceImageCenter={dataDetail?.icon_image}
@@ -138,9 +139,9 @@ const DetailChat = (props: any) => {
         />
       )}
       <GiftedChat
-        text={convertString(text)}
+        text={text}
         ref={giftedChatRef}
-        onInputTextChanged={text => setTextInput(text)}
+        onInputTextChanged={value => setText(value)}
         messages={getConvertedMessages(listChat)}
         onSend={(messages: any) => {
           if (messages[0]?.text?.length === 0) {
@@ -198,7 +199,8 @@ const DetailChat = (props: any) => {
                     <ModalTagName
                       idRoomChat={idRoomChat}
                       choseUser={(value: any) => {
-                        setTextInput(`${text}${value}`);
+                        console.log(text, value);
+                        setText(`${text}${value}`);
                         setShowTag(false);
                       }}
                     />

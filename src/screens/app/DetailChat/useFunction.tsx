@@ -562,12 +562,12 @@ export const useFunction = (props: any) => {
     }
   }, [modalStamp]);
 
-  const setTextInput = React.useCallback(
-    value => {
-      setText(value);
-    },
-    [text],
-  );
+  // const setTextInput = React.useCallback(
+  //   value => {
+  //     setText(value);
+  //   },
+  //   [text],
+  // );
 
   const getUserListChat = async () => {
     try {
@@ -614,10 +614,11 @@ export const useFunction = (props: any) => {
     modalStamp,
     giftedChatRef,
     text,
-    setTextInput,
+    // setTextInput,
     showHideModalTagName,
     setShowTag,
     showTagModal,
     listUser,
+    setText
   };
 };

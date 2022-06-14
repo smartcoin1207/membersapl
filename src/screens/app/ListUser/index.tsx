@@ -1,7 +1,7 @@
 import React, {useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles} from './styles';
-import {Header, AppInput, ModalConfirm} from '@component';
+import {Header, AppInput, ModalConfirm, ModalRemoveUser} from '@component';
 import {iconAddUser, iconAddListChat} from '@images';
 import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
@@ -22,18 +22,16 @@ const ListUser = (props: any) => {
   const {idRoomChat, dataDetail} = route?.params;
   const navigation = useNavigation<any>();
   const [listUser, setListUser] = useState([]);
-  const [nameUser, setNameUser] = useState(null);
+  const [nameUser, setNameUser] = useState<any>(null);
   const [idUser, setIdUser] = useState(null);
   const [modal, setModal] = useState<boolean>(false);
-
-  console.log(dataDetail);
 
   const renderItem = ({item}: any) => (
     <Item
       item={item}
       deleteUser={(value: any) => {
         setIdUser(value?.id);
-        setNameUser(value?.name);
+        setNameUser(`${value?.first_name}${value?.last_name}`);
         onCancelModal();
       }}
       is_host={dataDetail?.is_host}
@@ -120,11 +118,12 @@ const ListUser = (props: any) => {
           showsVerticalScrollIndicator={false}
         />
       </View>
-      <ModalConfirm
+      <ModalRemoveUser
         visible={modal}
         onCancel={onCancelModal}
-        titleHeader="グループからメンバーを削除しますか"
+        titleHeader="グループから削除する"
         onConfirm={onConfirm}
+        nameUser={nameUser}
       />
     </View>
   );

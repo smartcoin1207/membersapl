@@ -170,17 +170,23 @@ function* getDetailMessageSeen(action: any) {
   };
   try {
     const result: ResponseGenerator = yield getMessageFromSocket(body);
-    yield put(
-      editMessageAction({
-        id: result?.data?.message?.id,
-        data: result?.data?.message,
-      }),
-    );
-    const infoEdit = {
-      id: result?.data?.message?.id,
-      userID: action?.payload?.idUser,
-    };
-    yield put(getDetailMessageSocketSeenSuccess(infoEdit));
+    if (result?.data?.message?.del_flag == 1) {
+    } else {
+      if (result?.data?.message?.medthod === 1) {
+      } else {
+        yield put(
+          editMessageAction({
+            id: result?.data?.message?.id,
+            data: result?.data?.message,
+          }),
+        );
+        const infoEdit = {
+          id: result?.data?.message?.id,
+          userID: action?.payload?.idUser,
+        };
+        yield put(getDetailMessageSocketSeenSuccess(infoEdit));
+      }
+    }
   } catch (error: any) {}
 }
 

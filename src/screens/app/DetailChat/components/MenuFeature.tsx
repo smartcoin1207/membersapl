@@ -13,6 +13,12 @@ import {
   menuEdit,
   menuPinChat,
   menuReply,
+  icon1,
+  icon2,
+  icon3,
+  icon4,
+  icon5,
+  icon6,
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -76,19 +82,19 @@ const MenuFeature = React.memo((props: any) => {
   const dataEmoji = [
     {
       id: 4,
-      sourceImage: smile,
+      sourceImage: icon4,
     },
     {
       id: 5,
-      sourceImage: sad,
+      sourceImage: icon5,
     },
     {
       id: 2,
-      sourceImage: happy,
+      sourceImage: icon2,
     },
     {
       id: 6,
-      sourceImage: like,
+      sourceImage: icon6,
       style: {
         width: scale(22),
         height: scale(25),
@@ -96,7 +102,7 @@ const MenuFeature = React.memo((props: any) => {
     },
     {
       id: 1,
-      sourceImage: heart,
+      sourceImage: icon1,
       style: {
         width: scale(25),
         height: scale(22),
@@ -104,7 +110,7 @@ const MenuFeature = React.memo((props: any) => {
     },
     {
       id: 3,
-      sourceImage: great,
+      sourceImage: icon3,
     },
   ];
 
