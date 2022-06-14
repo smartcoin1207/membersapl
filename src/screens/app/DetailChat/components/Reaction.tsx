@@ -1,6 +1,20 @@
 import React, {useCallback} from 'react';
 import {View, Text, Image, StyleSheet} from 'react-native';
-import {iconEdit, like, happy, heart, great, smile, sad} from '@images';
+import {
+  iconEdit,
+  like,
+  happy,
+  heart,
+  great,
+  smile,
+  sad,
+  icon1,
+  icon2,
+  icon3,
+  icon4,
+  icon5,
+  icon6,
+} from '@images';
 import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
 const Reaction = React.memo((props: any) => {
@@ -8,17 +22,17 @@ const Reaction = React.memo((props: any) => {
   const renderSource = useCallback(value => {
     switch (value) {
       case 1:
-        return heart;
+        return icon1;
       case 2:
-        return happy;
+        return icon2;
       case 3:
-        return great;
+        return icon3;
       case 4:
-        return smile;
+        return icon4;
       case 5:
-        return sad;
+        return icon5;
       case 6:
-        return like;
+        return icon6;
     }
   }, []);
 

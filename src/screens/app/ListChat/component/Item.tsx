@@ -15,6 +15,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import FastImage from 'react-native-fast-image';
+import {convertString} from '@util';
 
 import {saveIdRoomChat} from '@redux';
 import {useDispatch} from 'react-redux';
@@ -30,7 +31,6 @@ const Item = React.memo((props: any) => {
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {
-    
     switch (typeFile) {
       case '2':
         return iconPdf;
@@ -54,9 +54,11 @@ const Item = React.memo((props: any) => {
                 item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
               }
             />
-            <View style={styles.viewActive}>
-              <View style={styles.active} />
-            </View>
+            {item?.online_status === true ? (
+              <View style={styles.viewActive}>
+                <View style={styles.active} />
+              </View>
+            ) : null}
           </View>
         </View>
         <View style={styles.viewTxt}>
@@ -85,7 +87,7 @@ const Item = React.memo((props: any) => {
             ) : null}
             {item?.lastMessageJoin?.message ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
-                {item?.lastMessageJoin?.message}
+                {convertString(item?.lastMessageJoin?.message)}
               </Text>
             ) : null}
           </>

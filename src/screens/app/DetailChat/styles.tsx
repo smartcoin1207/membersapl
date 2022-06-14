@@ -81,6 +81,10 @@ const styles = StyleSheet.create({
   colorIcon: {
     tintColor: colors.darkGrayText,
   },
+  size: {
+    width: 23,
+    height: 23,
+  },
   addBtn: {},
   imageSmall: {
     width: moderateScale(50),

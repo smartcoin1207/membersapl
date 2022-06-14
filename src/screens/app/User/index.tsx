@@ -145,7 +145,7 @@ const User = () => {
             title="表示名"
             content={`${user?.first_name} ${user?.last_name}`}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER);
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Name'});
             }}
           />
           <ViewItem
@@ -153,7 +153,7 @@ const User = () => {
             title="メールアドレス "
             content={user?.mail}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER);
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Email'});
             }}
           />
           <ViewItem

@@ -1,7 +1,6 @@
 const iconBack = require('./IconBack.png');
 const iconSearch = require('./IconSearch.png');
 const iconClose = require('./IconClose.png');
-const iconDetail = require('./IconDetail.png');
 const iconCamera = require('./IconCamera.png');
 const iconDelete = require('./IconDelete.png');
 const iconEdit = require('./IconEdit.png');
@@ -29,6 +28,7 @@ const iconXls = require('./IconXls.png');
 const iconLike = require('./IconLike.png');
 const iconFile = require('./IconFile.png');
 const iconEmoji = require('./IconEmoji.png');
+const iconDetail = require('./IconDetail.png');
 
 export {
   iconBack,

@@ -2,7 +2,21 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {View, Text, FlatList, TouchableOpacity} from 'react-native';
 import {styles} from './style';
 import {Header} from '@component';
-import {like, happy, heart, great, smile, sad, defaultAvatar} from '@images';
+import {
+  like,
+  happy,
+  heart,
+  great,
+  smile,
+  sad,
+  defaultAvatar,
+  icon1,
+  icon2,
+  icon3,
+  icon4,
+  icon5,
+  icon6,
+} from '@images';
 import FastImage from 'react-native-fast-image';
 import {useSelector, useDispatch} from 'react-redux';
 import {getListReactionApi, GlobalService, removeReactionApi} from '@services';
@@ -35,17 +49,17 @@ const ListReaction = (props: any) => {
   const renderIcon = useCallback((id: number) => {
     switch (id) {
       case 1:
-        return heart;
+        return icon1;
       case 2:
-        return happy;
+        return icon2;
       case 3:
-        return great;
+        return icon3;
       case 4:
-        return smile;
+        return icon4;
       case 5:
-        return sad;
+        return icon5;
       case 6:
-        return like;
+        return icon6;
     }
   }, []);
 

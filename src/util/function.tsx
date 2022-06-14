@@ -29,7 +29,7 @@ export const validateLink = (text: any) => {
 
 function replaceAll(str: any, map: any) {
   for (let key in map) {
-    str = str.replaceAll(key, map[key]);
+    str = str.split(key).join(map[key]);
   }
   return str;
 }

@@ -4,6 +4,7 @@ import { Platform, StyleSheet, TextInput } from 'react-native';
 import { MIN_COMPOSER_HEIGHT, DEFAULT_PLACEHOLDER } from './Constant';
 import Color from './Color';
 import { StylePropType } from './utils';
+import { convertString } from '@util';
 const styles = StyleSheet.create({
     textInput: {
         flex: 1,
@@ -64,7 +65,7 @@ export default class Composer extends React.Component {
                     },
                 }),
             },
-        ]} autoFocus={this.props.textInputAutoFocus} value={this.props.text} enablesReturnKeyAutomatically underlineColorAndroid='transparent' keyboardAppearance={this.props.keyboardAppearance} {...this.props.textInputProps}/>);
+        ]} autoFocus={this.props.textInputAutoFocus} value={convertString(this.props.text)} enablesReturnKeyAutomatically underlineColorAndroid='transparent' keyboardAppearance={this.props.keyboardAppearance} {...this.props.textInputProps} />);
     }
 }
 Composer.defaultProps = {
