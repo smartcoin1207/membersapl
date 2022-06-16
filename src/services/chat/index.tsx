@@ -24,6 +24,7 @@ const SEND_LABEL = 'user/chat/room/send-label-message';
 const GET_RESULT_SEARCH_MESSAGE = 'user/chat/room';
 const REGISTER_LAST_MESSAGE = 'user/chat/room';
 const GET_LIST_USER_SEEN = 'user/chat/room/list-users-seen';
+const GET_INVITE_LINK = 'user/chat/room/get-invitation-link';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -160,5 +161,10 @@ export const registerLastMessage: any = async (data: any) => {
 
 export const getListUserSeen: any = async (id: any) => {
   const response = api.post(`${GET_LIST_USER_SEEN}/${id}`);
+  return response;
+};
+
+export const getInviteLink: any = async (body: any) => {
+  const response = api.post(GET_INVITE_LINK, body);
   return response;
 };

@@ -6,14 +6,19 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
 const Splash = () => {
-  let token = useSelector((state: any) => state?.auth?.token);
+  const token = useSelector((state: any) => state?.auth?.token);
+  const idCompany = useSelector((state: any) => state.chat.idCompany);
   const navigation = useNavigation<any>();
   var timer: any;
 
   useEffect(() => {
     timer = setTimeout(() => {
       if (token) {
-        navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
+        if (idCompany) {
+          navigation.navigate(ROUTE_NAME.TAB_SCREEN);
+        } else {
+          navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
+        }
       } else {
         navigation.navigate(ROUTE_NAME.LOGIN);
       }

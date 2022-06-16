@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
@@ -49,86 +49,97 @@ const DetailChat = (props: any) => {
     modalStamp,
     giftedChatRef,
     text,
-    // setTextInput,
-    // onLoadNext,
-    showHideModalTagName,
     setShowTag,
     showTagModal,
     listUser,
     setText,
   } = useFunction(props);
 
-  const renderActions = (props: any) => (
-    <Actions
-      {...props}
-      containerStyle={styles.addBtn}
-      onPressActionButton={cancelModal}
-      icon={() => <Image source={iconUpload} />}
-    />
+  const renderActions = useCallback((props: any) => {
+    return (
+      <Actions
+        {...props}
+        containerStyle={styles.addBtn}
+        onPressActionButton={cancelModal}
+        icon={() => <Image source={iconUpload} />}
+      />
+    );
+  }, []);
+
+  const renderActionsRight = useCallback((props: any) => {
+    return (
+      <Actions
+        {...props}
+        containerStyle={styles.buttonRight}
+        onPressActionButton={() => sendLabel(1)}
+        icon={() => <Image source={iconLike} />}
+      />
+    );
+  }, []);
+
+  const renderMessage = useCallback(
+    (props: any) => {
+      return (
+        <>
+          <ItemMessage
+            {...props}
+            deleteMsg={(id: any) => {
+              deleteMsg(id);
+            }}
+            pinMsg={(id: any) => {
+              updateGimMessage(id, 1);
+            }}
+            replyMsg={(data: any) => {
+              replyMessage(data);
+            }}
+            editMsg={(data: any) => {
+              editMessage(data);
+            }}
+            onReaction={(data: any, idMsg: any) => {
+              reactionMessage(data, idMsg);
+            }}
+            navigatiteToListReaction={(idMsg: any) => {
+              navigatiteToListReaction(idMsg);
+            }}
+            listUser={listUser}
+          />
+        </>
+      );
+    },
+    [listUser],
   );
 
-  const renderActionsRight = (props: any) => (
-    <Actions
-      {...props}
-      containerStyle={styles.buttonRight}
-      onPressActionButton={() => sendLabel(1)}
-      icon={() => <Image source={iconLike} />}
-    />
+  const isCloseToTop = useCallback(
+    ({layoutMeasurement, contentOffset, contentSize}: any) => {
+      const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
+      return (
+        contentSize.height - layoutMeasurement.height - paddingToTop <=
+        contentOffset.y
+      );
+    },
+    [],
   );
-
-  const renderMessage = (props: any) => {
-    return (
-      <>
-        <ItemMessage
-          {...props}
-          deleteMsg={(id: any) => {
-            deleteMsg(id);
-          }}
-          pinMsg={(id: any) => {
-            updateGimMessage(id, 1);
-          }}
-          replyMsg={(data: any) => {
-            replyMessage(data);
-          }}
-          editMsg={(data: any) => {
-            editMessage(data);
-          }}
-          onReaction={(data: any, idMsg: any) => {
-            reactionMessage(data, idMsg);
-          }}
-          navigatiteToListReaction={(idMsg: any) => {
-            navigatiteToListReaction(idMsg);
-          }}
-          listUser={listUser}
-        />
-      </>
-    );
-  };
-
-  const isCloseToTop = ({
-    layoutMeasurement,
-    contentOffset,
-    contentSize,
-  }: any) => {
-    const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
-    return (
-      contentSize.height - layoutMeasurement.height - paddingToTop <=
-      contentOffset.y
-    );
-  };
 
   return (
     <View style={styles.container}>
       <Header
         back
-        title={dataDetail?.name}
+        title={
+          dataDetail?.one_one_check?.length > 0
+            ? dataDetail?.one_one_check[0]?.full_name
+            : dataDetail?.name
+        }
         imageCenter
         iconRightFirst={iconDetail}
         iconRightSecond={iconSearch}
         styleIconRightFirst={[styles.colorIcon, styles.size]}
         styleIconRightSeccond={styles.colorIcon}
         onRightFirst={navigateToDetail}
-        sourceImageCenter={dataDetail?.icon_image}
+        sourceImageCenter={
+          dataDetail?.one_one_check?.length > 0
+            ? dataDetail?.one_one_check[0]?.icon_image
+            : dataDetail?.icon_image
+        }
         onRightSecond={searchMessage}
       />
       {message_pinned?.id && (

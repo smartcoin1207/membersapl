@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import {styles} from './styles';
-import {Header, ModalConfirm} from '@component';
+import {Header, ModalConfirm, ModalLink} from '@component';
 import {
   defaultAvatar,
   iconCamera,
@@ -19,6 +19,7 @@ import {
   iconUser,
   iconLogout,
   iconPin,
+  iconUpload,
 } from '@images';
 import {ViewItem} from './components/ViewItem';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -38,7 +39,10 @@ const InfoRoomChat = (props: any) => {
   const [dataDetail, setData] = useState<any>(null);
   const [activePin, setActivePin] = useState<any>(false);
   const [modal, setModal] = useState<boolean>(false);
+  const [modalLink, setModalLink] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
+
+  console.log(dataDetail);
 
   const uploadImageApi = async () => {
     try {
@@ -79,6 +83,10 @@ const InfoRoomChat = (props: any) => {
   const onCancelModal = useCallback(() => {
     setModal(!modal);
   }, [modal]);
+
+  const onCancelModalLink = useCallback(() => {
+    setModalLink(!modalLink);
+  }, [modalLink]);
 
   useFocusEffect(
     useCallback(() => {
@@ -150,20 +158,44 @@ const InfoRoomChat = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <Header title={dataDetail?.name} back imageCenter />
+      <Header
+        title={
+          dataDetail?.one_one_check?.length > 0
+            ? dataDetail?.one_one_check[0]?.full_name
+            : dataDetail?.name
+        }
+        back
+        imageCenter
+      />
       <View style={styles.container}>
         {dataDetail ? (
           <ScrollView>
             <View style={styles.viewHeader}>
               <View style={styles.viewAvatar}>
-                {dataDetail?.icon_image ? (
-                  <Image
-                    source={{uri: dataDetail?.icon_image}}
-                    style={styles.avatar}
-                    resizeMode="cover"
-                  />
+                {dataDetail?.one_one_check?.length > 0 ? (
+                  <>
+                    {dataDetail?.one_one_check[0]?.icon_image ? (
+                      <Image
+                        source={{uri: dataDetail?.one_one_check[0]?.icon_image}}
+                        style={styles.avatar}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <Image source={defaultAvatar} style={styles.avatar} />
+                    )}
+                  </>
                 ) : (
-                  <Image source={defaultAvatar} style={styles.avatar} />
+                  <>
+                    {dataDetail?.icon_image ? (
+                      <Image
+                        source={{uri: dataDetail?.icon_image}}
+                        style={styles.avatar}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <Image source={defaultAvatar} style={styles.avatar} />
+                    )}
+                  </>
                 )}
 
                 <TouchableOpacity
@@ -177,7 +209,7 @@ const InfoRoomChat = (props: any) => {
                   />
                 </TouchableOpacity>
 
-                {dataDetail?.is_host === 1 ? (
+                {dataDetail?.is_host === 1 && !dataDetail?.one_one_check ? (
                   <TouchableOpacity
                     style={styles.buttonCamera}
                     onPress={upLoadImage}>
@@ -185,7 +217,7 @@ const InfoRoomChat = (props: any) => {
                   </TouchableOpacity>
                 ) : null}
 
-                {dataDetail?.is_host === 1 ? (
+                {dataDetail?.is_host === 1 && !dataDetail?.one_one_check ? (
                   <TouchableOpacity
                     style={styles.buttonDelete}
                     onPress={deleteAvatar}>
@@ -194,31 +226,42 @@ const InfoRoomChat = (props: any) => {
                 ) : null}
               </View>
             </View>
+            {dataDetail?.one_one_check?.length > 0 ? null : (
+              <ViewItem
+                sourceImage={iconEdit}
+                title="チャットグループ名"
+                content={dataDetail?.name}
+                onClick={() => {
+                  navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
+                    idRoomChat: idRoomChat,
+                    dataDetail: dataDetail,
+                    type: 'name',
+                  });
+                }}
+                disabled={dataDetail?.is_host !== 1}
+              />
+            )}
+            {dataDetail?.one_one_check?.length > 0 ? null : (
+              <ViewItem
+                sourceImage={iconDetailRow}
+                title="概要"
+                content={dataDetail?.summary_column}
+                onClick={() => {
+                  navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
+                    idRoomChat: idRoomChat,
+                    dataDetail: dataDetail,
+                    type: 'content',
+                  });
+                }}
+                disabled={dataDetail?.is_host !== 1}
+              />
+            )}
             <ViewItem
-              sourceImage={iconEdit}
-              title="チャットグループ名"
-              content={dataDetail?.name}
+              sourceImage={iconUpload}
+              content="チャット招待リンク"
               onClick={() => {
-                navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
-                  idRoomChat: idRoomChat,
-                  dataDetail: dataDetail,
-                  type: 'name',
-                });
+                onCancelModalLink();
               }}
-              disabled = {dataDetail?.is_host !== 1}
-            />
-            <ViewItem
-              sourceImage={iconDetailRow}
-              title="概要"
-              content={dataDetail?.summary_column}
-              onClick={() => {
-                navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
-                  idRoomChat: idRoomChat,
-                  dataDetail: dataDetail,
-                  type: 'content',
-                });
-              }}
-              disabled = {dataDetail?.is_host !== 1}
             />
             <ViewItem
               sourceImage={iconUser}
@@ -253,6 +296,12 @@ const InfoRoomChat = (props: any) => {
         onCancel={onCancelModal}
         titleHeader="本当にログアウトしますか？"
         onConfirm={onLeave}
+      />
+      <ModalLink
+        visible={modalLink}
+        onCancel={onCancelModalLink}
+        titleHeader="チャット招待リンク"
+        idRoomChat={idRoomChat}
       />
     </View>
   );

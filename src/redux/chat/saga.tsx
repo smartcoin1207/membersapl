@@ -19,6 +19,7 @@ import {
   getMessageFromSocket,
   getResultSearchMessage,
   registerLastMessage,
+  GlobalService,
 } from '@services';
 
 import {NavigationUtils} from '@navigation';
@@ -35,10 +36,13 @@ interface ResponseGenerator {
 
 export function* getRoomListSaga(action: any) {
   try {
+    GlobalService.showLoading();
     const result: ResponseGenerator = yield getRoomListApi(action?.payload);
     yield put(getRoomListSuccess(result?.data?.rooms));
   } catch (error) {
+    GlobalService.hideLoading();
   } finally {
+    GlobalService.hideLoading();
   }
 }
 

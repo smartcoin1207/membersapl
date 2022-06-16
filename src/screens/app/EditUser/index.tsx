@@ -44,9 +44,13 @@ const EditUser = (props: any) => {
   }, []);
 
   const handleSubmit = async (value: any) => {
+    const body = {
+      ...value,
+      type: type === 'Email' ? 'email' : 'name',
+    };
     try {
       GlobalService.showLoading();
-      const res = await updateProfile(value);
+      const res = await updateProfile(body);
       dispatch(saveInfoUser(res?.data?.user_info));
       onBack();
       GlobalService.hideLoading();

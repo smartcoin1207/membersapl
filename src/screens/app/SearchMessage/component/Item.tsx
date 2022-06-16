@@ -4,12 +4,13 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext, defaultAvatar, iconPin} from '@images';
 import FastImage from 'react-native-fast-image';
+import {convertString} from '@util';
 
 const Item = React.memo((props: any) => {
   const {item, onClickItem} = props;
 
   return (
-    <TouchableOpacity style={styles.container} onPress = {onClickItem}>
+    <TouchableOpacity style={styles.container} onPress={onClickItem}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
           <View style={styles.image}>
@@ -29,7 +30,7 @@ const Item = React.memo((props: any) => {
               {item?.user_send?.first_name} {item?.user_send?.last_name}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              {item?.message}
+              {convertString(item?.message)}
             </Text>
             <Text style={styles.txtDate} numberOfLines={2}>
               {item?.created_at}
@@ -73,7 +74,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(12),
     color: colors.primary,
-    marginTop: verticalScale(3)
+    marginTop: verticalScale(3),
   },
   txtContent: {
     ...stylesCommon.fontWeight600,
@@ -108,12 +109,12 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(12 / 2),
     backgroundColor: colors.active,
   },
-  txtDate:{
+  txtDate: {
     fontSize: moderateScale(14),
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
-    marginTop: verticalScale(3)
-  }
+    marginTop: verticalScale(3),
+  },
 });
 
 export {Item};
