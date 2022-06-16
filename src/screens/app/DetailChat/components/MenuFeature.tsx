@@ -81,26 +81,6 @@ const MenuFeature = React.memo((props: any) => {
 
   const dataEmoji = [
     {
-      id: 4,
-      sourceImage: icon4,
-    },
-    {
-      id: 5,
-      sourceImage: icon5,
-    },
-    {
-      id: 2,
-      sourceImage: icon2,
-    },
-    {
-      id: 6,
-      sourceImage: icon6,
-      style: {
-        width: scale(22),
-        height: scale(25),
-      },
-    },
-    {
       id: 1,
       sourceImage: icon1,
       style: {
@@ -109,8 +89,28 @@ const MenuFeature = React.memo((props: any) => {
       },
     },
     {
+      id: 2,
+      sourceImage: icon2,
+    },
+    {
       id: 3,
       sourceImage: icon3,
+    },
+    {
+      id: 4,
+      sourceImage: icon4,
+    },
+    {
+      id: 5,
+      sourceImage: icon5,
+    },
+    {
+      id: 6,
+      sourceImage: icon6,
+      style: {
+        width: scale(22),
+        height: scale(25),
+      },
     },
   ];
 

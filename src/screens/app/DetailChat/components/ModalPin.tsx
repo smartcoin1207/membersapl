@@ -21,7 +21,6 @@ const ModalPin = React.memo((props: any) => {
   );
 
   const renderImgaeFile = useCallback((typeFile: any) => {
-    
     switch (typeFile) {
       case '2':
         return iconPdf;
@@ -45,21 +44,19 @@ const ModalPin = React.memo((props: any) => {
         )}
         <View style={styles.viewRow}>
           {message_pinned?.attachment_files?.map((item: any) => (
-            <>
+            <View key={item?.id}>
               {item?.type == 4 ? (
                 <FastImage
                   source={{uri: item?.path}}
                   style={styles.imageSmall}
-                  key={item?.id}
                 />
               ) : (
                 <Image
                   source={renderImgaeFile(item?.type)}
                   style={styles.imageFile}
-                  key={item?.id}
                 />
               )}
-            </>
+            </View>
           ))}
         </View>
       </View>

@@ -1,6 +1,7 @@
 import {put, takeLatest, select} from 'redux-saga/effects';
 
 import {saveToken, saveInfoUser} from './action';
+import {saveIdCompany} from '../chat/action';
 import {typeAuth} from './type';
 import {GlobalService, loginApi, logOutApi, getUserInfoApi} from '@services';
 import {NavigationUtils} from '@navigation';
@@ -29,6 +30,7 @@ export function* logOutSaga(action: any) {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield logOutApi();
     yield put(saveToken(null));
+    yield put(saveIdCompany(null));
     yield NavigationUtils.navigate(ROUTE_NAME.LOGIN);
   } catch (error) {
   } finally {

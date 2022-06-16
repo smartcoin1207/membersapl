@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,15 +15,25 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import FastImage from 'react-native-fast-image';
-import {convertString} from '@util';
+import {convertString, HITSLOP} from '@util';
+import {pinFlag, GlobalService} from '@services';
 
-import {saveIdRoomChat} from '@redux';
-import {useDispatch} from 'react-redux';
+import {saveIdRoomChat, getRoomList} from '@redux';
+import {showMessage} from 'react-native-flash-message';
+import {useSelector, useDispatch} from 'react-redux';
 
 const Item = React.memo((props: any) => {
+  const idCompany = useSelector((state: any) => state.chat.idCompany);
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
   const {item} = props;
+  const [pin, setStatusPin] = useState(0);
+
+  useEffect(() => {
+    if (item?.pin_flag) {
+      setStatusPin(item?.pin_flag);
+    }
+  }, [item?.pin_flag]);
 
   const navigateDetail = async () => {
     await dispatch(saveIdRoomChat(item?.id));
@@ -43,28 +53,57 @@ const Item = React.memo((props: any) => {
     }
   }, []);
 
+  const onGhimRoomChat = useCallback(async () => {
+    try {
+      GlobalService.showLoading();
+      const response = await pinFlag(item?.id, pin == 0 ? 1 : 0);
+      showMessage({
+        message: response?.data?.message,
+        type: 'success',
+      });
+      await dispatch(getRoomList({key: '', company_id: idCompany, page: 1}));
+    } catch {
+      GlobalService.hideLoading();
+    }
+  }, [pin, item, idCompany]);
+
   return (
     <TouchableOpacity style={styles.container} onPress={navigateDetail}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
-          <View style={styles.image}>
-            <FastImage
-              style={styles.image}
-              source={
-                item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
-              }
-            />
-            {item?.online_status === true ? (
-              <View style={styles.viewActive}>
-                <View style={styles.active} />
-              </View>
-            ) : null}
-          </View>
+          {item?.one_one_check?.length > 0 ? (
+            <View style={styles.image}>
+              <FastImage
+                style={styles.image}
+                source={
+                  item?.one_one_check?.length > 0
+                    ? {uri: item?.one_one_check[0]?.icon_image}
+                    : defaultAvatar
+                }
+              />
+            </View>
+          ) : (
+            <View style={styles.image}>
+              <FastImage
+                style={styles.image}
+                source={
+                  item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
+                }
+              />
+              {item?.online_status === true ? (
+                <View style={styles.viewActive}>
+                  <View style={styles.active} />
+                </View>
+              ) : null}
+            </View>
+          )}
         </View>
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
-              {item?.name}
+              {item?.one_one_check?.length > 0
+                ? item?.one_one_check[0]?.full_name
+                : item?.name}
             </Text>
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
@@ -92,15 +131,13 @@ const Item = React.memo((props: any) => {
             ) : null}
           </>
         </View>
-        <View
-          style={[
-            styles.viewImageNext,
-            {
-              justifyContent:
-                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
-            },
-          ]}>
-          {item?.pin_flag == 1 && <Image source={iconPin} />}
+        <View style={styles.viewImageNext}>
+          <TouchableOpacity hitSlop={HITSLOP} onPress={onGhimRoomChat}>
+            <Image
+              source={iconPin}
+              style={{tintColor: pin == 1 ? '#EA5A31' : colors.border}}
+            />
+          </TouchableOpacity>
           <Image source={iconNext} />
         </View>
       </View>
