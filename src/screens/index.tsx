@@ -19,6 +19,7 @@ import {ConfigNoti} from './app/ConfigNoti';
 import {ListReaction} from './app/ListReaction';
 import {SearchMessage} from './app/SearchMessage';
 import {UserSeen} from './app/UserSeen';
+import {SettingCompany} from './app/SettingCompany';
 
 const screens = {
   //auth
@@ -40,7 +41,8 @@ const screens = {
   ConfigNoti,
   ListReaction,
   SearchMessage,
-  UserSeen
+  UserSeen,
+  SettingCompany,
 };
 
 export {screens};

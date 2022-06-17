@@ -42,8 +42,6 @@ const InfoRoomChat = (props: any) => {
   const [modalLink, setModalLink] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
 
-  console.log(dataDetail);
-
   const uploadImageApi = async () => {
     try {
       const data = new FormData();

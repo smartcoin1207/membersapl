@@ -27,11 +27,11 @@ import {MsgFile} from './MsgFile';
 import {isSameDay, validateLink, convertString} from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
 import {ViewUserSeen} from './viewUserSeen';
+import Autolink from 'react-native-autolink';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
 const width = Dimensions.get('window').width;
-const data = [1, 2, 3];
 
 const ItemMessage = React.memo((props: any) => {
   const navigation = useNavigation<any>();
@@ -221,7 +221,10 @@ const ItemMessage = React.memo((props: any) => {
                   </Text>
                 ) : (
                   <View style={styles.viewAvatar}>
-                    <FastImage style={styles.image} source={{uri: user?.avatar}} />
+                    <FastImage
+                      style={styles.image}
+                      source={{uri: user?.avatar}}
+                    />
                     <View style={{flex: 1}} />
                   </View>
                 )}
@@ -281,13 +284,19 @@ const ItemMessage = React.memo((props: any) => {
                       {msg_type == 2 ? (
                         <MsgFile data={attachment_files} />
                       ) : (
-                        <HighlightText
-                          highlightStyle={styles.txtBold}
-                          //@ts-ignore
-                          searchWords={convertMentionToLink(text, listUser)}
-                          textToHighlight={convertString(text)}
-                          style={[styles.txtMessage, styleLink]}
-                          onPress={validateLink(text) ? onClickText : undefined}
+                        <Autolink
+                          text={text}
+                          email
+                          url
+                          renderText={text => (
+                            <HighlightText
+                              highlightStyle={styles.txtBold}
+                              //@ts-ignore
+                              searchWords={convertMentionToLink(text, listUser)}
+                              textToHighlight={convertString(text)}
+                              style={styles.txtMessage}
+                            />
+                          )}
                         />
                       )}
                     </LinearGradient>

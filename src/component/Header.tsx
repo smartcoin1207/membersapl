@@ -106,10 +106,10 @@ const styles = StyleSheet.create({
   viewHeader: {
     ...ifIphoneX(
       {
-        paddingTop: verticalScale(50),
+        paddingTop: verticalScale(40),
       },
       {
-        paddingTop: getStatusBarHeight() + verticalScale(20),
+        paddingTop: getStatusBarHeight() + verticalScale(15),
       },
     ),
     paddingBottom: verticalScale(15),

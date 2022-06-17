@@ -17,7 +17,7 @@ import {
   iconEdit,
   iconEmail,
   iconPassword,
-  iconLogout,
+  iconCompany,
 } from '@images';
 import {ViewItem} from './components/ViewItem';
 import {ModalConfirm} from '@component';
@@ -163,16 +163,15 @@ const User = () => {
             onPress={() => {
               navigation.navigate(ROUTE_NAME.CHANGE_PASSWORD);
             }}
+          />
+          <ViewItem
+            sourceImage={iconCompany}
+            title="クライアント選択"
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.SETTING_COMPANY);
+            }}
             hideBorder
           />
-          {/* <ViewItem
-            sourceImage={iconLogout}
-            content="ログアウト"
-            isLogout
-            hideBorder
-            hideNext
-            onPress={onCancelModal}
-          /> */}
         </ScrollView>
       </View>
       <ModalConfirm

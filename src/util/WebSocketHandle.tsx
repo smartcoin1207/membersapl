@@ -16,9 +16,7 @@ function createAppSocket() {
     socket.connect();
   };
 
-  socket.on('connect', () => {
-    console.log('CONNECTED');
-  });
+  socket.on('connect', () => {});
   socket.on('new_message_ind', data => {
     const state = store.getState();
     if (data?.user_id !== state?.auth?.userInfo?.id) {
@@ -46,9 +44,7 @@ function createAppSocket() {
     }
   });
 
-  socket.on('disconnect', () => {
-    console.log('DISCONNECTED');
-  });
+  socket.on('disconnect', () => {});
 
   const endConnect = () => {
     socket.disconnect();

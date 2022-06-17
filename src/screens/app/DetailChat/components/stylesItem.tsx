@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'flex-start',
     paddingHorizontal: scale(11),
-    marginVertical: verticalScale(6),
+    marginVertical: verticalScale(3),
   },
   containerCurrent: {
     width: '100%',
     alignItems: 'flex-end',
     paddingHorizontal: scale(11),
-    marginVertical: verticalScale(6),
+    marginVertical: verticalScale(3),
   },
   viewCenter: {
     width: '100%',
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     width: moderateScale(30),
     height: moderateScale(30),
   },
-  imageStampBig:{
+  imageStampBig: {
     width: moderateScale(100),
     height: moderateScale(100),
   },
@@ -150,19 +150,19 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(8),
     textAlign: 'center',
   },
-  txtBold:{fontWeight: 'bold', fontSize: moderateScale(16)},
-  bottomMenu:{
-   marginTop: verticalScale(-100)
+  txtBold: {fontWeight: 'bold', fontSize: moderateScale(16)},
+  bottomMenu: {
+    marginTop: verticalScale(-100),
   },
-  viewSeenCurrent:{
+  viewSeenCurrent: {
     flexDirection: 'row',
-    marginTop: verticalScale(5)
+    marginTop: verticalScale(5),
   },
-  viewSeen:{
+  viewSeen: {
     marginLeft: scale(27 + 7),
     flexDirection: 'row',
-    marginTop: verticalScale(5)
-  }
+    marginTop: verticalScale(5),
+  },
 });
 
 export {styles};

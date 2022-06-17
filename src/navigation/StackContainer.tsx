@@ -84,6 +84,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.USER_SEEN}
             component={screens.UserSeen}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.SETTING_COMPANY}
+            component={screens.SettingCompany}
+          />
         </>
       );
     }

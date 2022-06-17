@@ -210,7 +210,6 @@ const DetailChat = (props: any) => {
                     <ModalTagName
                       idRoomChat={idRoomChat}
                       choseUser={(value: any) => {
-                        console.log(text, value);
                         setText(`${text}${value}`);
                         setShowTag(false);
                       }}

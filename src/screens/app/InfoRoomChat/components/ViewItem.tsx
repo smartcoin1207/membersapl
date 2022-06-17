@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {colors, stylesCommon} from '@stylesCommon';
 import {iconNext} from '@images';
 import {validateLink} from '@util';
+import Autolink from 'react-native-autolink';
 
 const ViewItem = React.memo((props: any) => {
   const {
@@ -48,14 +49,20 @@ const ViewItem = React.memo((props: any) => {
           <>
             {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
             {content ? (
-              <Text
-                style={[
-                  styles.txtContent,
-                  {color: isLogout ? '#EA5A31' : colors.darkGrayText},
-                ]}
-                onPress={validateLink(content) ? onClickContent : undefined}>
-                {content}
-              </Text>
+              <Autolink
+                text={content}
+                email
+                url
+                renderText={text => (
+                  <Text
+                    style={[
+                      styles.txtContent,
+                      {color: isLogout ? '#EA5A31' : colors.darkGrayText},
+                    ]}>
+                    {text}
+                  </Text>
+                )}
+              />
             ) : null}
           </>
         </View>

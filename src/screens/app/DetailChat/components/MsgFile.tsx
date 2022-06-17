@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
   View,
   Text,
@@ -7,24 +7,52 @@ import {
   Linking,
   Image,
 } from 'react-native';
-import FastImage from 'react-native-fast-image';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 import Video from 'react-native-video';
 import {iconPlay, iconPdf, iconDoc, iconXls, iconFile} from '@images';
+import {ModalReadFile} from '@component';
 import {colors, stylesCommon} from '@stylesCommon';
+import ImageView from 'react-native-image-viewing';
 
 const MsgFile = React.memo((props: any) => {
   const {data} = props;
 
+  const [modalImage, setModalImage] = useState(false);
+  const [urlModalImage, setUrlModalImage] = useState<any>([]);
+
+  const [dataModalFile, setDataModalFile] = useState({
+    show: false,
+    path: null,
+  });
+
   const openFile = useCallback(url => {
-    Linking.openURL(url);
+    // Linking.openURL(url);
+    setDataModalFile({
+      show: true,
+      path: url,
+    });
   }, []);
+
+  const onCloseModalFile = useCallback(() => {
+    setDataModalFile({
+      show: false,
+      path: null,
+    });
+  }, []);
+
+  const viewImage = useCallback(() => {
+    setModalImage(!modalImage);
+  }, [modalImage]);
 
   const Item = ({item}: any) => {
     return (
       <>
         {item?.type == 4 && (
-          <TouchableOpacity onPress={() => openFile(item?.path)}>
+          <TouchableOpacity
+            onPress={async () => {
+              await setUrlModalImage([{uri: item?.path}]);
+              viewImage();
+            }}>
             <Image
               source={{uri: item?.path}}
               style={styles.image}
@@ -81,6 +109,13 @@ const MsgFile = React.memo((props: any) => {
       {data?.map((item: any, index: any) => {
         return <Item item={item} key={item?.id} />;
       })}
+      <ImageView
+        images={urlModalImage}
+        imageIndex={0}
+        visible={modalImage}
+        onRequestClose={viewImage}
+      />
+      <ModalReadFile data={dataModalFile} onClose={onCloseModalFile} />
     </>
   );
 });

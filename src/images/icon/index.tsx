@@ -29,6 +29,8 @@ const iconLike = require('./IconLike.png');
 const iconFile = require('./IconFile.png');
 const iconEmoji = require('./IconEmoji.png');
 const iconDetail = require('./IconDetail.png');
+const iconCompany = require('./IconCompany.png');
+const iconDowload = require('./IconDowload.png');
 
 export {
   iconBack,
@@ -62,4 +64,6 @@ export {
   iconLike,
   iconFile,
   iconEmoji,
+  iconCompany,
+  iconDowload
 };
