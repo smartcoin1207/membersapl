@@ -22,7 +22,7 @@ const ConfigNoti = () => {
     try {
       let params = {
         status: state1 === true ? 0 : 1,
-        type: 2,
+        type: 1,
       };
       const res = await configNoti(params);
       dispatch(getUserInfo(useId));
@@ -34,7 +34,7 @@ const ConfigNoti = () => {
     try {
       let params = {
         status: state2 === true ? 0 : 1,
-        type: 1,
+        type: 2,
       };
       const res = await configNoti(params);
       dispatch(getUserInfo(useId));

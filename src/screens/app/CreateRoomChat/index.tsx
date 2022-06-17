@@ -94,7 +94,7 @@ const CreateRoomChat = (props: any) => {
       try {
         GlobalService.showLoading();
         const body = {
-          name: name,
+          name: name ? name : '新規グループ',
           user_id: renderIdUser(),
         };
         const result = await createRoom(body);
@@ -138,11 +138,11 @@ const CreateRoomChat = (props: any) => {
 
   const validateDisabled = () => {
     if (typeScreen === 'CREATE') {
-      if (name && name?.length > 0) {
-        return false;
-      } else {
-        return true;
-      }
+      // if (name && name?.length > 0) {
+      //   return false;
+      // } else {
+      //   return true;
+      // }
     } else {
       return false;
     }
