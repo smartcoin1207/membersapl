@@ -22,7 +22,6 @@ const ModalEdit = React.memo(() => {
   }, []);
 
   const renderImgaeFile = useCallback((typeFile: any) => {
-    
     switch (typeFile) {
       case '2':
         return iconPdf;

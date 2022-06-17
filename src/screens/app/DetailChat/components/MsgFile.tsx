@@ -60,7 +60,7 @@ const MsgFile = React.memo((props: any) => {
             />
           </TouchableOpacity>
         )}
-        {item?.type == 7 && (
+        {(item?.type == 7 || item?.type == 1 || item?.type == 6) && (
           <TouchableOpacity
             style={styles.viewRow}
             onPress={() => openFile(item?.path)}>
