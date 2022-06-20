@@ -120,13 +120,13 @@ export const useFunction = (props: any) => {
     };
   }, []);
 
-  const getListChat = () => {
+  const getListChat = useCallback(() => {
     const data = {
       id: idRoomChat,
       page: page,
     };
     dispatch(getDetailListChat(data));
-  };
+  }, [page, idRoomChat]);
 
   useEffect(() => {
     getListChat();
@@ -569,14 +569,14 @@ export const useFunction = (props: any) => {
   //   [text],
   // );
 
-  const getUserListChat = async () => {
+  const getUserListChat = useCallback(async () => {
     try {
       const result = await getListUser({room_id: idRoomChat});
       setListUser(result?.data?.users?.data);
     } catch {
       (error: any) => {};
     }
-  };
+  },[idRoomChat]);
 
   useEffect(() => {
     getUserListChat();

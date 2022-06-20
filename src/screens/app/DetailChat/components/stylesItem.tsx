@@ -57,7 +57,6 @@ const styles = StyleSheet.create({
   viewReaction: {
     marginTop: verticalScale(-10),
     marginLeft: scale(26) + scale(7),
-    marginBottom: verticalScale(10),
     alignItems: 'center',
   },
   reaction: {

@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   Linking,
   Image,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 import Video from 'react-native-video';
@@ -23,12 +25,27 @@ import {colors, stylesCommon} from '@stylesCommon';
 import ImageView from 'react-native-image-viewing';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {HITSLOP} from '@util';
+import RNFetchBlob from 'rn-fetch-blob';
+import CameraRoll from '@react-native-community/cameraroll';
+import {showMessage} from 'react-native-flash-message';
+import {GlobalService} from '@services';
+import FastImage from 'react-native-fast-image';
 
 const MsgFile = React.memo((props: any) => {
   const {data} = props;
 
   const [modalImage, setModalImage] = useState(false);
   const [urlModalImage, setUrlModalImage] = useState<any>([]);
+
+  const hasAndroidPermission = async () => {
+    const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+    const hasPermission = await PermissionsAndroid.check(permission);
+    if (hasPermission) {
+      return true;
+    }
+    const status = await PermissionsAndroid.request(permission);
+    return status === 'granted';
+  };
 
   const [dataModalFile, setDataModalFile] = useState({
     show: false,
@@ -54,8 +71,42 @@ const MsgFile = React.memo((props: any) => {
   }, [modalImage]);
 
   const onDowloadImage = useCallback(async () => {
-    await viewImage();
-  }, [modalImage]);
+    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+      return;
+    } else {
+      await viewImage();
+      GlobalService.showLoading();
+      RNFetchBlob.config({
+        fileCache: true,
+      })
+        .fetch('GET', urlModalImage[0]?.uri)
+        .then(res => {
+          CameraRoll.save(res.data, {type: 'photo'})
+            .then(() => {
+              GlobalService.hideLoading();
+              showMessage({
+                message: 'ダウンロード成功',
+                type: 'success',
+                position: 'bottom',
+              });
+            })
+            .catch(err => {
+              GlobalService.hideLoading();
+              showMessage({
+                message: '処理中にエラーが発生しました',
+                type: 'danger',
+              });
+            });
+        })
+        .catch(error => {
+          GlobalService.hideLoading();
+          showMessage({
+            message: '処理中にエラーが発生しました',
+            type: 'danger',
+          });
+        });
+    }
+  }, [modalImage, urlModalImage]);
 
   const renderHeader = useCallback(() => {
     return (
@@ -80,7 +131,7 @@ const MsgFile = React.memo((props: any) => {
                 await setUrlModalImage([{uri: item?.path}]);
                 viewImage();
               }}>
-              <Image
+              <FastImage
                 source={{uri: item?.path}}
                 style={styles.image}
                 resizeMode="cover"
