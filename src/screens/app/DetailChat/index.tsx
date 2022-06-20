@@ -179,15 +179,17 @@ const DetailChat = (props: any) => {
             }
           },
           onScrollToIndexFailed: (info: any) => {
-            const wait = new Promise(resolve => setTimeout(resolve, 500));
-            wait.then(() => {
-              giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex(
-                {
-                  animated: true,
-                  index: info?.index,
-                },
-              );
-            });
+            if (info?.index >= 0) {
+              const wait = new Promise(resolve => setTimeout(resolve, 500));
+              wait.then(() => {
+                giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex(
+                  {
+                    animated: true,
+                    index: info?.index,
+                  },
+                );
+              });
+            }
           },
         }}
         textInputProps={{

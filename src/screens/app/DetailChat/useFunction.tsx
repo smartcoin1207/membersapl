@@ -66,7 +66,7 @@ export const useFunction = (props: any) => {
       const index = listChat.findIndex(
         (element: any) => element?.id == idMessageSearch,
       );
-      if (index) {
+      if (index && index >= 0) {
         giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
           animated: true,
           index: index,
@@ -521,7 +521,7 @@ export const useFunction = (props: any) => {
       data.append('msg_level', 0);
       data.append('msg_type', 1);
       data.append('method', 0);
-      data.append('stamp_no', stamp_no); 
+      data.append('stamp_no', stamp_no);
       const res = await sendLabelApi(data);
       socket.emit('message_ind', {
         user_id: user_id,
@@ -619,6 +619,6 @@ export const useFunction = (props: any) => {
     setShowTag,
     showTagModal,
     listUser,
-    setText
+    setText,
   };
 };
