@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   Image,
   Linking,
+  Platform,
+  ActivityIndicator,
 } from 'react-native';
 import {AppButton} from '../AppButton';
 import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
@@ -21,6 +23,12 @@ const ModalReadFile = React.memo((prop: any) => {
   const onDowload = useCallback(() => {
     Linking.openURL(data?.path);
   }, [data]);
+
+  const [loading, setLoading] = useState(false);
+
+  const showHideLoading = useCallback(() => {
+    setLoading(!loading);
+  }, [loading]);
 
   return (
     <Modal
@@ -37,7 +45,25 @@ const ModalReadFile = React.memo((prop: any) => {
             <Image source={iconDowload} style={styles.iconDowload} />
           </TouchableOpacity>
         </View>
-        <WebView source={{uri: data?.path}} style={styles.webview} />
+        {loading && Platform?.OS === 'android' ? (
+          <View style={styles.viewLoading}>
+            <ActivityIndicator color={colors.primary} size="large" />
+          </View>
+        ) : null}
+        <WebView
+          source={{
+            uri:
+              Platform?.OS === 'ios'
+                ? data?.path
+                : `http://docs.google.com/gview?embedded=true&url=${data?.path}`,
+          }}
+          style={styles.webview}
+          onLoadEnd={syntheticEvent => {
+            const {nativeEvent} = syntheticEvent;
+            showHideLoading();
+          }}
+          cacheEnabled={true}
+        />
       </View>
     </Modal>
   );
@@ -64,6 +90,11 @@ const styles = StyleSheet.create({
   },
   webview: {
     flex: 1,
+  },
+  viewLoading: {
+    width: '100%',
+    alignItems: 'center',
+    marginTop: verticalScale(20),
   },
 });
 

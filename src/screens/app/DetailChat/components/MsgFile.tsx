@@ -9,10 +9,20 @@ import {
 } from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 import Video from 'react-native-video';
-import {iconPlay, iconPdf, iconDoc, iconXls, iconFile} from '@images';
+import {
+  iconPlay,
+  iconPdf,
+  iconDoc,
+  iconXls,
+  iconFile,
+  iconDowload,
+  iconClose,
+} from '@images';
 import {ModalReadFile} from '@component';
 import {colors, stylesCommon} from '@stylesCommon';
 import ImageView from 'react-native-image-viewing';
+import {getStatusBarHeight} from 'react-native-iphone-x-helper';
+import {HITSLOP} from '@util';
 
 const MsgFile = React.memo((props: any) => {
   const {data} = props;
@@ -26,7 +36,6 @@ const MsgFile = React.memo((props: any) => {
   });
 
   const openFile = useCallback(url => {
-    // Linking.openURL(url);
     setDataModalFile({
       show: true,
       path: url,
@@ -44,65 +53,85 @@ const MsgFile = React.memo((props: any) => {
     setModalImage(!modalImage);
   }, [modalImage]);
 
-  const Item = ({item}: any) => {
+  const onDowloadImage = useCallback(async () => {
+    await viewImage();
+  }, [modalImage]);
+
+  const renderHeader = useCallback(() => {
     return (
-      <>
-        {item?.type == 4 && (
-          <TouchableOpacity
-            onPress={async () => {
-              await setUrlModalImage([{uri: item?.path}]);
-              viewImage();
-            }}>
-            <Image
-              source={{uri: item?.path}}
-              style={styles.image}
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-        )}
-        {(item?.type == 7 || item?.type == 1 || item?.type == 6) && (
-          <TouchableOpacity
-            style={styles.viewRow}
-            onPress={() => openFile(item?.path)}>
-            <Image source={iconFile} style={styles.iconFile} />
-            <Text style={styles.txtTitleFile} numberOfLines={1}>
-              {item?.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-        {item?.type == 2 && (
-          <TouchableOpacity
-            style={styles.viewRow}
-            onPress={() => openFile(item?.path)}>
-            <Image source={iconPdf} style={styles.iconFile} />
-            <Text style={styles.txtTitleFile} numberOfLines={1}>
-              {item?.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-        {item?.type == 5 && (
-          <TouchableOpacity
-            style={styles.viewRow}
-            onPress={() => openFile(item?.path)}>
-            <Image source={iconDoc} style={styles.iconFile} />
-            <Text style={styles.txtTitleFile} numberOfLines={1}>
-              {item?.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-        {item?.type == 3 && (
-          <TouchableOpacity
-            style={styles.viewRow}
-            onPress={() => openFile(item?.path)}>
-            <Image source={iconXls} style={styles.iconFile} />
-            <Text style={styles.txtTitleFile} numberOfLines={1}>
-              {item?.name}
-            </Text>
-          </TouchableOpacity>
-        )}
-      </>
+      <View style={styles.viewHeaderImage}>
+        <TouchableOpacity hitSlop={HITSLOP} onPress={onDowloadImage}>
+          <Image source={iconDowload} style={styles.iconDowload} />
+        </TouchableOpacity>
+        <TouchableOpacity hitSlop={HITSLOP} onPress={viewImage}>
+          <Image source={iconClose} style={styles.iconClose} />
+        </TouchableOpacity>
+      </View>
     );
-  };
+  }, [modalImage]);
+
+  const Item = useCallback(
+    ({item}: any) => {
+      return (
+        <>
+          {item?.type == 4 && (
+            <TouchableOpacity
+              onPress={async () => {
+                await setUrlModalImage([{uri: item?.path}]);
+                viewImage();
+              }}>
+              <Image
+                source={{uri: item?.path}}
+                style={styles.image}
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
+          )}
+          {(item?.type == 7 || item?.type == 1 || item?.type == 6) && (
+            <TouchableOpacity
+              style={styles.viewRow}
+              onPress={() => openFile(item?.path)}>
+              <Image source={iconFile} style={styles.iconFile} />
+              <Text style={styles.txtTitleFile} numberOfLines={1}>
+                {item?.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          {item?.type == 2 && (
+            <TouchableOpacity
+              style={styles.viewRow}
+              onPress={() => openFile(item?.path)}>
+              <Image source={iconPdf} style={styles.iconFile} />
+              <Text style={styles.txtTitleFile} numberOfLines={1}>
+                {item?.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          {item?.type == 5 && (
+            <TouchableOpacity
+              style={styles.viewRow}
+              onPress={() => openFile(item?.path)}>
+              <Image source={iconDoc} style={styles.iconFile} />
+              <Text style={styles.txtTitleFile} numberOfLines={1}>
+                {item?.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+          {item?.type == 3 && (
+            <TouchableOpacity
+              style={styles.viewRow}
+              onPress={() => openFile(item?.path)}>
+              <Image source={iconXls} style={styles.iconFile} />
+              <Text style={styles.txtTitleFile} numberOfLines={1}>
+                {item?.name}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </>
+      );
+    },
+    [modalImage],
+  );
 
   return (
     <>
@@ -114,6 +143,7 @@ const MsgFile = React.memo((props: any) => {
         imageIndex={0}
         visible={modalImage}
         onRequestClose={viewImage}
+        HeaderComponent={renderHeader}
       />
       <ModalReadFile data={dataModalFile} onClose={onCloseModalFile} />
     </>
@@ -160,6 +190,22 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(12),
     marginLeft: scale(5),
     width: '80%',
+  },
+  viewHeaderImage: {
+    width: '100%',
+    marginTop: getStatusBarHeight(),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: scale(16),
+    alignItems: 'center',
+  },
+  iconDowload: {
+    tintColor: '#FFFFFF',
+    width: 25,
+    height: 25,
+  },
+  iconClose: {
+    tintColor: '#FFFFFF',
   },
 });
 
