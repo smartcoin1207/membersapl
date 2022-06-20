@@ -6,6 +6,7 @@ import {
   FlatList,
   TextInput,
   RefreshControl,
+  BackHandler,
 } from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput} from '@component';
@@ -56,6 +57,14 @@ const ListChat = () => {
       init();
       dispatch(getUserInfo(user?.id));
     }
+    const backAction = () => {
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+    return () => backHandler.remove();
   }, []);
 
   useEffect(() => {
@@ -82,7 +91,9 @@ const ListChat = () => {
     setKey(text);
     debounceText(text);
   };
-  const renderItem = ({item}: any) => <Item item={item} />;
+  const renderItem = useCallback(({item}: any) => {
+    return <Item item={item} />;
+  }, []);
 
   const onCreate = useCallback(() => {
     navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT, {typeScreen: 'CREATE'});

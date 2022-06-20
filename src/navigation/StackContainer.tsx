@@ -39,7 +39,11 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             component={screens.SelectCompany}
             options={{gestureEnabled: false}}
           />
-          <Stack.Screen name={ROUTE_NAME.TAB_SCREEN} component={StackTab} />
+          <Stack.Screen
+            name={ROUTE_NAME.TAB_SCREEN}
+            component={StackTab}
+            options={{gestureEnabled: false}}
+          />
           <Stack.Screen
             name={ROUTE_NAME.CREATE_ROOM_CHAT}
             component={screens.CreateRoomChat}

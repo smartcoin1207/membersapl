@@ -30,6 +30,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
 import {updateImageRoomChat, deleteImageRoomChat} from '@services';
 import {colors} from '@stylesCommon';
+import FastImage from 'react-native-fast-image';
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -42,7 +43,7 @@ const InfoRoomChat = (props: any) => {
   const [modalLink, setModalLink] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
 
-  const uploadImageApi = async () => {
+  const uploadImageApi = useCallback(async () => {
     try {
       const data = new FormData();
       const imageUpload = {
@@ -63,7 +64,7 @@ const InfoRoomChat = (props: any) => {
       getDetail();
       setImage(null);
     } catch (error) {}
-  };
+  }, [image, idRoomChat]);
 
   useEffect(() => {
     if (image) {
@@ -114,7 +115,7 @@ const InfoRoomChat = (props: any) => {
     } catch {}
   };
 
-  const onLeave = async () => {
+  const onLeave = useCallback(async () => {
     try {
       onCancelModal();
       const body = {
@@ -123,7 +124,7 @@ const InfoRoomChat = (props: any) => {
       const response = await leaveRoomChat(body);
       navigation.pop(2);
     } catch {}
-  };
+  }, [idRoomChat]);
 
   const upLoadImage = () => {
     ImagePicker.openPicker({
@@ -173,7 +174,7 @@ const InfoRoomChat = (props: any) => {
                 {dataDetail?.one_one_check?.length > 0 ? (
                   <>
                     {dataDetail?.one_one_check[0]?.icon_image ? (
-                      <Image
+                      <FastImage
                         source={{uri: dataDetail?.one_one_check[0]?.icon_image}}
                         style={styles.avatar}
                         resizeMode="cover"
@@ -185,7 +186,7 @@ const InfoRoomChat = (props: any) => {
                 ) : (
                   <>
                     {dataDetail?.icon_image ? (
-                      <Image
+                      <FastImage
                         source={{uri: dataDetail?.icon_image}}
                         style={styles.avatar}
                         resizeMode="cover"
