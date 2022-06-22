@@ -30,10 +30,14 @@ import CameraRoll from '@react-native-community/cameraroll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
 import FastImage from 'react-native-fast-image';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+
+const LINK_URL_VIDEO = /^(http(s)?:\/\/|www\.).*(\.mp4|\.mkv)$/;
 
 const MsgFile = React.memo((props: any) => {
   const {data} = props;
-
+  const navigation = useNavigation<any>();
   const [modalImage, setModalImage] = useState(false);
   const [urlModalImage, setUrlModalImage] = useState<any>([]);
 
@@ -51,13 +55,16 @@ const MsgFile = React.memo((props: any) => {
     show: false,
     path: null,
   });
-
-  const openFile = useCallback(url => {
-    setDataModalFile({
-      show: true,
-      path: url,
-    });
-  }, []);
+  const openFile = (url: any) => {
+    if (!LINK_URL_VIDEO?.test(url)) {
+      setDataModalFile({
+        show: true,
+        path: url,
+      });
+    } else {
+      navigation.navigate(ROUTE_NAME.DETAIL_VIDEO, {url: url});
+    }
+  };
 
   const onCloseModalFile = useCallback(() => {
     setDataModalFile({
@@ -76,18 +83,23 @@ const MsgFile = React.memo((props: any) => {
     } else {
       await viewImage();
       GlobalService.showLoading();
+      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
+      const url = urlModalImage[0]?.uri;
+      const fileName = Date.now();
+      const fileExtention = url.split('.').pop();
+      const fileFullName = fileName + '.' + fileExtention;
       RNFetchBlob.config({
         fileCache: true,
+        path: destinationPath + '/' + fileFullName,
       })
-        .fetch('GET', urlModalImage[0]?.uri)
+        .fetch('GET', url)
         .then(res => {
-          CameraRoll.save(res.data, {type: 'photo'})
+          CameraRoll.save(res?.path(), {type: 'photo'})
             .then(() => {
               GlobalService.hideLoading();
               showMessage({
                 message: 'ダウンロード成功',
                 type: 'success',
-                position: 'bottom',
               });
             })
             .catch(err => {
@@ -230,6 +242,7 @@ const styles = StyleSheet.create({
   viewRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: verticalScale(4),
   },
   iconFile: {
     width: moderateScale(30),
