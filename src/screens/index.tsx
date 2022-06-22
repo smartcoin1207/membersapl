@@ -20,6 +20,7 @@ import {ListReaction} from './app/ListReaction';
 import {SearchMessage} from './app/SearchMessage';
 import {UserSeen} from './app/UserSeen';
 import {SettingCompany} from './app/SettingCompany';
+import {DetailVideo} from './app/DetailVideo';
 
 const screens = {
   //auth
@@ -43,6 +44,7 @@ const screens = {
   SearchMessage,
   UserSeen,
   SettingCompany,
+  DetailVideo
 };
 
 export {screens};

@@ -92,6 +92,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.SETTING_COMPANY}
             component={screens.SettingCompany}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.DETAIL_VIDEO}
+            component={screens.DetailVideo}
+          />
         </>
       );
     }
