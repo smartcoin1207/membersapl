@@ -116,84 +116,44 @@ const DetailVideo = (props: any) => {
   const onDowload = async () => {
     await setPaused(true);
     await setPlayerState(PLAYER_STATES.PAUSED);
-    if (Platform.OS === 'android') {
-      if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-        return;
-      }
-      GlobalService.showLoading();
-      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-      const fileName = Date.now();
-      const fileExtention = url.split('.').pop();
-      const fileFullName = fileName + '.' + fileExtention;
-      RNFetchBlob.config({
-        fileCache: true,
-        path: destinationPath + '/' + fileFullName,
-      })
-        .fetch('GET', url)
-        .then(res => {
-          CameraRoll.save(res?.path(), {type: 'photo'})
-            .then(() => {
-              GlobalService.hideLoading();
-              showMessage({
-                message: 'ダウンロード成功',
-                type: 'success',
-                position: 'bottom',
-              });
-            })
-            .catch(err => {
-              GlobalService.hideLoading();
-              showMessage({
-                message: '処理中にエラーが発生しました',
-                type: 'danger',
-              });
-            });
-        })
-        .catch(error => {
-          GlobalService.hideLoading();
-          showMessage({
-            message: '処理中にエラーが発生しました',
-            type: 'danger',
-          });
-        });
-    } else {
-      GlobalService.showLoading();
-      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-      const fileName = Date.now();
-      const fileExtention = url.split('.').pop();
-      const fileFullName = fileName + '.' + fileExtention;
-      RNFetchBlob.config({
-        fileCache: true,
-        path: destinationPath + '/' + fileFullName,
-      })
-        .fetch('GET', url)
-        .then(res => {
-          console.log(res?.path());
-          CameraRoll.save(res?.path(), {type: 'photo'})
-            .then(() => {
-              GlobalService.hideLoading();
-              showMessage({
-                message: 'ダウンロード成功',
-                type: 'success',
-              });
-            })
-            .catch(err => {
-              console.log(err);
-              GlobalService.hideLoading();
-              showMessage({
-                message: '処理中にエラーが発生しました',
-                type: 'danger',
-              });
-            });
-        })
-        .catch(error => {
-          console.log(error);
-          GlobalService.hideLoading();
-          showMessage({
-            message: '処理中にエラーが発生しました',
-            type: 'danger',
-          });
-        });
+    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+      return;
     }
+    GlobalService.showLoading();
+    const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
+    const fileName = Date.now();
+    const fileExtention = url.split('.').pop();
+    const fileFullName = fileName + '.' + fileExtention;
+    RNFetchBlob.config({
+      fileCache: true,
+      path: destinationPath + '/' + fileFullName,
+    })
+      .fetch('GET', url)
+      .then(res => {
+        CameraRoll.saveToCameraRoll(res?.path(), 'video')
+          .then(() => {
+            GlobalService.hideLoading();
+            showMessage({
+              message: 'ダウンロード成功',
+              type: 'success',
+              position: 'bottom',
+            });
+          })
+          .catch(err => {
+            GlobalService.hideLoading();
+            showMessage({
+              message: '処理中にエラーが発生しました',
+              type: 'danger',
+            });
+          });
+      })
+      .catch(error => {
+        GlobalService.hideLoading();
+        showMessage({
+          message: '処理中にエラーが発生しました',
+          type: 'danger',
+        });
+      });
   };
 
   return (
@@ -250,7 +210,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(16),
     alignItems: 'center',
     position: 'absolute',
-    top: 0,
+    top: getStatusBarHeight(),
   },
   iconDowload: {
     tintColor: '#FFFFFF',

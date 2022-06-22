@@ -145,16 +145,6 @@ export const useFunction = (props: any) => {
     }, []),
   );
 
-  // useEffect(() => {
-  //   if (listChat?.length > 0) {
-  //     const data = {
-  //       id_room: idRoomChat,
-  //       id_message: listChat[0]?.id,
-  //     };
-  //     // dispatch(updateMessageSeen(data));
-  //   }
-  // }, [listChat]);
-
   useEffect(() => {
     if (message_edit || messageReply) {
       setShowModalStamp(false);
