@@ -20,6 +20,7 @@ import RNFetchBlob from 'rn-fetch-blob';
 import CameraRoll from '@react-native-community/cameraroll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
+import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const PLAYER_STATES = {
   PLAYING: 0,
@@ -38,6 +39,12 @@ const DetailVideo = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
   const [paused, setPaused] = useState(true);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PAUSED);
+
+  useEffect(() => {
+    if (Platform.OS === 'ios') {
+      hasIosPermission();
+    }
+  }, []);
 
   const goBack = useCallback(() => {
     setPlayerState(PLAYER_STATES.ENDED);
@@ -87,81 +94,105 @@ const DetailVideo = (props: any) => {
     return status === 'granted';
   };
 
-  const onDowload = async () => {
-    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-      return;
-    } else {
-      await setPaused(true);
-      await setPlayerState(PLAYER_STATES.PAUSED);
-      if (Platform.OS === 'android') {
-        GlobalService.showLoading();
-        const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-        const fileName = Date.now();
-        const fileExtention = url.split('.').pop();
-        const fileFullName = fileName + '.' + fileExtention;
-        RNFetchBlob.config({
-          fileCache: true,
-          path: destinationPath + '/' + fileFullName,
-        })
-          .fetch('GET', url)
-          .then(res => {
-            CameraRoll.save(res?.path(), {type: 'photo'})
-              .then(() => {
-                GlobalService.hideLoading();
-                showMessage({
-                  message: 'ダウンロード成功',
-                  type: 'success',
-                  position: 'bottom',
-                });
-              })
-              .catch(err => {
-                GlobalService.hideLoading();
-                showMessage({
-                  message: '処理中にエラーが発生しました',
-                  type: 'danger',
-                });
-              });
-          })
-          .catch(error => {
-            GlobalService.hideLoading();
-            showMessage({
-              message: '処理中にエラーが発生しました',
-              type: 'danger',
-            });
-          });
-      } else {
-        GlobalService.showLoading();
-        RNFetchBlob.config({
-          fileCache: true,
-        })
-          .fetch('GET', url)
-          .then(res => {
-            console.log(res?.data);
-            CameraRoll.save(res?.data, {type: 'photo'})
-              .then(() => {
-                GlobalService.hideLoading();
-                showMessage({
-                  message: 'ダウンロード成功',
-                  type: 'success',
-                });
-              })
-              .catch(err => {
-                console.log(err);
-                GlobalService.hideLoading();
-                showMessage({
-                  message: '処理中にエラーが発生しました',
-                  type: 'danger',
-                });
-              });
-          })
-          .catch(error => {
-            GlobalService.hideLoading();
-            showMessage({
-              message: '処理中にエラーが発生しました',
-              type: 'danger',
-            });
-          });
+  const hasIosPermission = async () => {
+    if (Platform.OS === 'ios') {
+      try {
+        let readStoragePermission = await check(
+          PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
+        );
+        if (readStoragePermission !== RESULTS.GRANTED) {
+          await request(PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY);
+        }
+        let readLibraryPermission = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        if (readLibraryPermission !== RESULTS.GRANTED) {
+          await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        }
+      } catch (error: any) {
+        return error.toString();
       }
+    }
+  };
+
+  const onDowload = async () => {
+    await setPaused(true);
+    await setPlayerState(PLAYER_STATES.PAUSED);
+    if (Platform.OS === 'android') {
+      if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+        return;
+      }
+      GlobalService.showLoading();
+      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
+      const fileName = Date.now();
+      const fileExtention = url.split('.').pop();
+      const fileFullName = fileName + '.' + fileExtention;
+      RNFetchBlob.config({
+        fileCache: true,
+        path: destinationPath + '/' + fileFullName,
+      })
+        .fetch('GET', url)
+        .then(res => {
+          CameraRoll.save(res?.path(), {type: 'photo'})
+            .then(() => {
+              GlobalService.hideLoading();
+              showMessage({
+                message: 'ダウンロード成功',
+                type: 'success',
+                position: 'bottom',
+              });
+            })
+            .catch(err => {
+              GlobalService.hideLoading();
+              showMessage({
+                message: '処理中にエラーが発生しました',
+                type: 'danger',
+              });
+            });
+        })
+        .catch(error => {
+          GlobalService.hideLoading();
+          showMessage({
+            message: '処理中にエラーが発生しました',
+            type: 'danger',
+          });
+        });
+    } else {
+      GlobalService.showLoading();
+      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
+      const fileName = Date.now();
+      const fileExtention = url.split('.').pop();
+      const fileFullName = fileName + '.' + fileExtention;
+      RNFetchBlob.config({
+        fileCache: true,
+        path: destinationPath + '/' + fileFullName,
+      })
+        .fetch('GET', url)
+        .then(res => {
+          console.log(res?.path());
+          CameraRoll.save(res?.path(), {type: 'photo'})
+            .then(() => {
+              GlobalService.hideLoading();
+              showMessage({
+                message: 'ダウンロード成功',
+                type: 'success',
+              });
+            })
+            .catch(err => {
+              console.log(err);
+              GlobalService.hideLoading();
+              showMessage({
+                message: '処理中にエラーが発生しました',
+                type: 'danger',
+              });
+            });
+        })
+        .catch(error => {
+          console.log(error);
+          GlobalService.hideLoading();
+          showMessage({
+            message: '処理中にエラーが発生しました',
+            type: 'danger',
+          });
+        });
     }
   };
 
