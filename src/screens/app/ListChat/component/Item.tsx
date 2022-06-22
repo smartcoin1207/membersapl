@@ -81,6 +81,11 @@ const Item = React.memo((props: any) => {
                     : defaultAvatar
                 }
               />
+              {item?.one_one_check?.length > 0 ? (
+                <View style={styles.viewActive}>
+                  <View style={styles.active} />
+                </View>
+              ) : null}
             </View>
           ) : (
             <View style={styles.image}>

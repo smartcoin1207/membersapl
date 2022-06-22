@@ -94,7 +94,7 @@ const MsgFile = React.memo((props: any) => {
       })
         .fetch('GET', url)
         .then(res => {
-          CameraRoll.save(res?.path(), {type: 'photo'})
+          CameraRoll.saveToCameraRoll(res?.path(), 'photo')
             .then(() => {
               GlobalService.hideLoading();
               showMessage({

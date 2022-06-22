@@ -209,6 +209,17 @@ const ItemMessage = React.memo((props: any) => {
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
             }>
+            <Menu
+              style={styles.containerMenu}
+              visible={visible}
+              onRequestClose={onShowMenu}
+              key={1}>
+              <MenuFeature
+                userId={user?._id}
+                onActionMenu={(value: any) => onActionMenu(value)}
+                onActionReaction={(value: any) => onActionReaction(value)}
+              />
+            </Menu>
             <>
               {renderDay()}
               <TouchableOpacity
@@ -323,7 +334,7 @@ const ItemMessage = React.memo((props: any) => {
                 </TouchableOpacity>
               )}
             </>
-            <Menu
+            {/* <Menu
               style={styles.containerMenu}
               visible={visible}
               onRequestClose={onShowMenu}
@@ -333,7 +344,7 @@ const ItemMessage = React.memo((props: any) => {
                 onActionMenu={(value: any) => onActionMenu(value)}
                 onActionReaction={(value: any) => onActionReaction(value)}
               />
-            </Menu>
+            </Menu> */}
             {users_seen?.length > 0 ? (
               <TouchableOpacity
                 style={

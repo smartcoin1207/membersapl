@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   containerMenu: {
-    marginTop: verticalScale(5),
+    marginTop: verticalScale(-125),
   },
   viewReaction: {
     marginTop: verticalScale(-10),
