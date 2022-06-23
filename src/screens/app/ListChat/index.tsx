@@ -118,7 +118,7 @@ const ListChat = () => {
       />
       <View style={styles.viewContent}>
         <AppInput
-          placeholder="チャット名、メッセージ内容を検索"
+          placeholder="メッセージ内容を検索"
           onChange={onChangeText}
           value={key}
           styleContainer={styles.containerSearch}

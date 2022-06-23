@@ -95,7 +95,7 @@ const SearchMessage = (props: any) => {
       <Header title="メッセージ検索" back imageCenter />
       <View style={styles.viewContent}>
         <AppInput
-          placeholder="チャット名、メッセージ内容を検索"
+          placeholder="メッセージ内容を検索"
           onChange={onChangeText}
           value={key}
           styleContainer={styles.containerSearch}

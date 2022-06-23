@@ -180,7 +180,8 @@ const CreateRoomChat = (props: any) => {
                         style={styles.viewTxtArray}
                         onPress={() => onDeleteItem(item)}>
                         <Text style={styles.txtArray}>
-                          {item?.first_name} {item?.last_name}
+                          {item?.last_name}
+                          {item?.first_name}
                         </Text>
                         <Image source={iconClose} style={styles.iconClose} />
                       </TouchableOpacity>
@@ -206,7 +207,7 @@ const CreateRoomChat = (props: any) => {
                     style={styles.viewItemResultUser}
                     onPress={() => onAddUser(item)}>
                     <Text>
-                      {item?.first_name} {item?.last_name}
+                      {item?.last_name} {item?.first_name}
                     </Text>
                   </TouchableOpacity>
                 );

@@ -100,7 +100,7 @@ const SettingCompany = () => {
       <Header title="クライアント選択" imageCenter back />
       <View style={styles.viewContent}>
         <AppInput
-          placeholder="クライアント名を検索"
+          placeholder="メッセージ内容を検索"
           onChange={onChangeText}
           value={key}
           styleContainer={styles.containerSearch}

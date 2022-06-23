@@ -1,22 +1,10 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import {View, Text, ScrollView, Image, Platform, Linking} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
 import LinearGradient from 'react-native-linear-gradient';
 import {
   defaultAvatar,
-  iconCamera,
-  iconDelete,
-  iconEdit,
-  iconEmail,
-  iconPassword,
   iconLogout,
   iconBell,
   iconDocument,
@@ -113,7 +101,7 @@ const Setting = () => {
               <Text
                 style={
                   styles.txtName
-                }>{`${user?.first_name} ${user?.last_name}`}</Text>
+                }>{`${user?.last_name} ${user?.first_name}`}</Text>
               <Text style={styles.txtMail}>{user?.mail}</Text>
             </View>
           </LinearGradient>
@@ -127,12 +115,16 @@ const Setting = () => {
           <ViewItem
             sourceImage={iconDocument}
             content="規約と条件"
-            onPress={() => {}}
+            onPress={() => {
+              Linking.openURL('https://mem-bers.jp/term');
+            }}
           />
           <ViewItem
             sourceImage={iconBook}
             content="使い方"
-            onPress={() => {}}
+            onPress={() => {
+              Linking.openURL('https://mem-bers.jp/term');
+            }}
           />
           <ViewItem
             sourceImage={iconLogout}

@@ -31,7 +31,7 @@ const ListUser = (props: any) => {
       item={item}
       deleteUser={(value: any) => {
         setIdUser(value?.id);
-        setNameUser(`${value?.first_name}${value?.last_name}`);
+        setNameUser(`${value?.last_name}${value?.first_name}`);
         onCancelModal();
       }}
       is_host={dataDetail?.is_host}
