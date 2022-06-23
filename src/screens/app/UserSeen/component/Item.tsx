@@ -27,8 +27,7 @@ const Item = React.memo((props: any) => {
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              {item?.first_name}
-              {item?.last_name}
+              {item?.last_name} {item?.first_name}
             </Text>
           </>
         </View>

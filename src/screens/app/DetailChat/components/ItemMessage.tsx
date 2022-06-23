@@ -151,10 +151,10 @@ const ItemMessage = React.memo((props: any) => {
   const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
     let textBold: any = [];
     joinedUsers.forEach((joinedUser: any) => {
-      let mentionText = `@${joinedUser?.first_name.replace(
+      let mentionText = `@${joinedUser?.last_name.replace(
         ' ',
         '',
-      )}${joinedUser?.last_name?.replace(' ', '')}`;
+      )}${joinedUser?.first_name?.replace(' ', '')}`;
       if (text?.includes(mentionText)) {
         textBold = textBold?.concat(mentionText);
       }

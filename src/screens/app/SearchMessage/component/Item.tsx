@@ -27,7 +27,7 @@ const Item = React.memo((props: any) => {
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
-              {item?.user_send?.first_name} {item?.user_send?.last_name}
+              {item?.user_send?.last_name} {item?.user_send?.first_name}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
               {convertString(item?.message)}

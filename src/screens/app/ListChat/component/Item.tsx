@@ -55,16 +55,14 @@ const Item = React.memo((props: any) => {
 
   const onGhimRoomChat = useCallback(async () => {
     try {
-      GlobalService.showLoading();
       const response = await pinFlag(item?.id, pin == 0 ? 1 : 0);
       showMessage({
         message: response?.data?.message,
         type: 'success',
       });
+      setStatusPin(pin == 0 ? 1 : 0);
       await dispatch(getRoomList({key: '', company_id: idCompany, page: 1}));
-    } catch {
-      GlobalService.hideLoading();
-    }
+    } catch {}
   }, [pin, item, idCompany]);
 
   return (
