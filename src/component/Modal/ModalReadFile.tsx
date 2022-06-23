@@ -24,12 +24,6 @@ const ModalReadFile = React.memo((prop: any) => {
     Linking.openURL(data?.path);
   }, [data]);
 
-  const [loading, setLoading] = useState(false);
-
-  const showHideLoading = useCallback(() => {
-    setLoading(!loading);
-  }, [loading]);
-
   return (
     <Modal
       animationType="slide"
@@ -45,11 +39,6 @@ const ModalReadFile = React.memo((prop: any) => {
             <Image source={iconDowload} style={styles.iconDowload} />
           </TouchableOpacity>
         </View>
-        {loading && Platform?.OS === 'android' ? (
-          <View style={styles.viewLoading}>
-            <ActivityIndicator color={colors.primary} size="large" />
-          </View>
-        ) : null}
         <WebView
           source={{
             uri:
@@ -58,10 +47,7 @@ const ModalReadFile = React.memo((prop: any) => {
                 : `http://docs.google.com/gview?embedded=true&url=${data?.path}`,
           }}
           style={styles.webview}
-          onLoadEnd={syntheticEvent => {
-            const {nativeEvent} = syntheticEvent;
-            showHideLoading();
-          }}
+          javaScriptEnabled={true}
           cacheEnabled={true}
         />
       </View>

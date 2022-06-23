@@ -175,17 +175,6 @@ const ItemMessage = React.memo((props: any) => {
     }
   }, []);
 
-  const styleLink = {
-    color: validateLink(text) ? 'blue' : colors.darkGrayText,
-  };
-
-  const onClickText = useCallback(() => {
-    if (validateLink(text)) {
-      Linking.openURL(text);
-    } else {
-    }
-  }, []);
-
   const onClickDetailSeen = useCallback(() => {
     navigation.navigate(ROUTE_NAME.USER_SEEN, {id: _id});
   }, []);

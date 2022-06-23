@@ -29,7 +29,7 @@ import {ROUTE_NAME} from '@routeName';
 import {AppSocket} from '@util';
 import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
-import {Platform} from 'react-native';
+import {Platform, Keyboard} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 
 export const useFunction = (props: any) => {
@@ -566,7 +566,7 @@ export const useFunction = (props: any) => {
     } catch {
       (error: any) => {};
     }
-  },[idRoomChat]);
+  }, [idRoomChat]);
 
   useEffect(() => {
     getUserListChat();

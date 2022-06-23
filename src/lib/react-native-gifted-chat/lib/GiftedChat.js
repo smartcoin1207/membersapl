@@ -23,6 +23,7 @@ import Send from './Send';
 import Time from './Time';
 import GiftedAvatar from './GiftedAvatar';
 import { MIN_COMPOSER_HEIGHT, MAX_COMPOSER_HEIGHT, DEFAULT_PLACEHOLDER, TIME_FORMAT, DATE_FORMAT, } from './Constant';
+
 dayjs.extend(localizedFormat);
 class GiftedChat extends React.Component {
     constructor(props) {
@@ -273,7 +274,7 @@ class GiftedChat extends React.Component {
         this._bottomOffset = value;
     }
     getBottomOffset() {
-        return this._bottomOffset;
+        return getBottomSpace() - 10;
     }
     setIsFirstLayout(value) {
         this._isFirstLayout = value;
@@ -340,9 +341,9 @@ class GiftedChat extends React.Component {
             },
             messagesContainerStyle,
         ]}>
-        <MessageContainer {...messagesContainerProps} invertibleScrollViewProps={this.invertibleScrollViewProps} messages={this.getMessages()} forwardRef={this._messageContainerRef} isTyping={this.props.isTyping}/>
-        {this.renderChatFooter()}
-      </View>);
+            <MessageContainer {...messagesContainerProps} invertibleScrollViewProps={this.invertibleScrollViewProps} messages={this.getMessages()} forwardRef={this._messageContainerRef} isTyping={this.props.isTyping} />
+            {this.renderChatFooter()}
+        </View>);
         return this.props.isKeyboardInternallyHandled ? (<KeyboardAvoidingView enabled>{fragment}</KeyboardAvoidingView>) : (fragment);
     }
     resetInputToolbar() {
@@ -385,7 +386,7 @@ class GiftedChat extends React.Component {
         if (this.props.renderInputToolbar) {
             return this.props.renderInputToolbar(inputToolbarProps);
         }
-        return <InputToolbar {...inputToolbarProps}/>;
+        return <InputToolbar {...inputToolbarProps} />;
     }
     renderChatFooter() {
         if (this.props.renderChatFooter) {
@@ -404,17 +405,17 @@ class GiftedChat extends React.Component {
             const { wrapInSafeArea } = this.props;
             const Wrapper = wrapInSafeArea ? SafeAreaView : View;
             return (<Wrapper style={styles.safeArea}>
-          <ActionSheetProvider ref={(component) => (this._actionSheetRef = component)}>
-            <View style={styles.container} onLayout={this.onMainViewLayout}>
-              {this.renderMessages()}
-              {this.renderInputToolbar()}
-            </View>
-          </ActionSheetProvider>
-        </Wrapper>);
+                <ActionSheetProvider ref={(component) => (this._actionSheetRef = component)}>
+                    <View style={styles.container} onLayout={this.onMainViewLayout}>
+                        {this.renderMessages()}
+                        {this.renderInputToolbar()}
+                    </View>
+                </ActionSheetProvider>
+            </Wrapper>);
         }
         return (<View style={styles.container} onLayout={this.onInitialLayoutViewLayout}>
-        {this.renderLoading()}
-      </View>);
+            {this.renderLoading()}
+        </View>);
     }
 }
 GiftedChat.childContextTypes = {
