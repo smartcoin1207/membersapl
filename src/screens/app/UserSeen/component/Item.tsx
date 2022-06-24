@@ -9,7 +9,7 @@ import {ROUTE_NAME} from '@routeName';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const {item, deleteUser, is_host} = props;
+  const {item, deleteUser} = props;
 
   return (
     <View style={styles.container}>

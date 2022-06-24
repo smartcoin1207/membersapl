@@ -9,7 +9,7 @@ import {ROUTE_NAME} from '@routeName';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const {item, deleteUser, is_host} = props;
+  const {item, deleteUser} = props;
 
   return (
     <View style={styles.container}>
@@ -39,22 +39,20 @@ const Item = React.memo((props: any) => {
             </Text>
           </>
         </View>
-        {is_host === 1 ? (
-          <TouchableOpacity
-            onPress={() => {
-              deleteUser(item);
-            }}
-            style={[
-              styles.viewImageNext,
-              {
-                justifyContent:
-                  item?.pin_flag == 1 ? 'space-between' : 'flex-end',
-              },
-            ]}>
-            {item?.pin_flag == 1 && <Image source={iconPin} />}
-            <Image source={iconRemove} />
-          </TouchableOpacity>
-        ) : null}
+        <TouchableOpacity
+          onPress={() => {
+            deleteUser(item);
+          }}
+          style={[
+            styles.viewImageNext,
+            {
+              justifyContent:
+                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
+            },
+          ]}>
+          {item?.pin_flag == 1 && <Image source={iconPin} />}
+          <Image source={iconRemove} />
+        </TouchableOpacity>
       </View>
     </View>
   );
