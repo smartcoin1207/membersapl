@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {scale, verticalScale, moderateScale, moderateVerticalScale} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
 
 const styles = StyleSheet.create({
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   containerMenu: {
-    marginTop: verticalScale(-125),
+    marginTop: moderateVerticalScale(-125),
   },
   viewReaction: {
     marginTop: verticalScale(-10),
@@ -161,6 +161,17 @@ const styles = StyleSheet.create({
     marginLeft: scale(27 + 7),
     flexDirection: 'row',
     marginTop: verticalScale(5),
+  },
+  imageStampRepLy: {
+    width: moderateScale(45),
+    height: moderateScale(45),
+    marginHorizontal: moderateScale(2),
+  },
+  imageLikeReply: {
+    width: moderateScale(45),
+    height: moderateScale(45),
+    marginHorizontal: moderateScale(2),
+    tintColor: colors.primary,
   },
 });
 

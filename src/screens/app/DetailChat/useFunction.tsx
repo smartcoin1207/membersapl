@@ -101,6 +101,7 @@ export const useFunction = (props: any) => {
       reply_to_message_text: message?.reply_to_message_text,
       attachment_files: message?.attachment_files,
       reply_to_message_files: message?.reply_to_message_files,
+      reply_to_message_stamp: message?.reply_to_message_stamp,
       stamp_icon: message?.stamp_icon,
       stamp_no: message?.stamp_no,
       index: index,

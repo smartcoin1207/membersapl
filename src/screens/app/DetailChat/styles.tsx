@@ -1,6 +1,9 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {isIphoneX} from 'react-native-iphone-x-helper';
+
+const height_screen = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
   },
   viewBottom: {
-    height: verticalScale(25),
+    height: height_screen > 812 ? verticalScale(30) : verticalScale(25),
   },
   colorIcon: {
     tintColor: colors.darkGrayText,

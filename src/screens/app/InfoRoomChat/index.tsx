@@ -208,7 +208,7 @@ const InfoRoomChat = (props: any) => {
                   />
                 </TouchableOpacity>
 
-                {dataDetail?.is_host === 1 && !dataDetail?.one_one_check ? (
+                {!dataDetail?.one_one_check ? (
                   <TouchableOpacity
                     style={styles.buttonCamera}
                     onPress={upLoadImage}>
@@ -216,7 +216,7 @@ const InfoRoomChat = (props: any) => {
                   </TouchableOpacity>
                 ) : null}
 
-                {dataDetail?.is_host === 1 && !dataDetail?.one_one_check ? (
+                {!dataDetail?.one_one_check ? (
                   <TouchableOpacity
                     style={styles.buttonDelete}
                     onPress={deleteAvatar}>
@@ -237,7 +237,6 @@ const InfoRoomChat = (props: any) => {
                     type: 'name',
                   });
                 }}
-                disabled={dataDetail?.is_host !== 1}
               />
             )}
             {dataDetail?.one_one_check?.length > 0 ? null : (
@@ -252,7 +251,6 @@ const InfoRoomChat = (props: any) => {
                     type: 'content',
                   });
                 }}
-                disabled={dataDetail?.is_host !== 1}
               />
             )}
             <ViewItem
@@ -271,18 +269,15 @@ const InfoRoomChat = (props: any) => {
                   dataDetail: dataDetail,
                 });
               }}
-              hideBorder
             />
-            {dataDetail?.is_host !== 1 ? (
-              <ViewItem
-                sourceImage={iconLogout}
-                content="グループを退出"
-                isLogout
-                hideBorder
-                hideNext
-                onClick={onCancelModal}
-              />
-            ) : null}
+            <ViewItem
+              sourceImage={iconLogout}
+              content="グループを退出"
+              isLogout
+              hideBorder
+              hideNext
+              onClick={onCancelModal}
+            />
           </ScrollView>
         ) : (
           <View style={styles.marginTop}>

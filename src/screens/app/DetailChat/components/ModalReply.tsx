@@ -8,6 +8,10 @@ import {
   iconPdf,
   iconDoc,
   iconXls,
+  chatStamp2,
+  chatStamp3,
+  chatStamp4,
+  iconLike,
 } from '@images';
 import FastImage from 'react-native-fast-image';
 import {colors, stylesCommon} from '@stylesCommon';
@@ -23,7 +27,6 @@ const ModalReply = React.memo(() => {
   }, []);
 
   const renderImgaeFile = useCallback((typeFile: any) => {
-    
     switch (typeFile) {
       case '2':
         return iconPdf;
@@ -36,6 +39,19 @@ const ModalReply = React.memo(() => {
     }
   }, []);
 
+  const renderStamp = useCallback(() => {
+    switch (messageReply?.stamp_no) {
+      case 1:
+        return iconLike;
+      case 2:
+        return chatStamp2;
+      case 3:
+        return chatStamp3;
+      case 4:
+        return chatStamp4;
+    }
+  }, [messageReply?.stamp_no]);
+
   return (
     <View style={styles.viewRepMessage}>
       <View style={styles.viewIconRepMessage}>
@@ -47,7 +63,8 @@ const ModalReply = React.memo(() => {
           <Text style={styles.content} numberOfLines={2}>
             {messageReply?.text}
           </Text>
-        ) : (
+        ) : null}
+        {messageReply?.attachment_files?.length > 0 ? (
           <View style={styles.viewRow}>
             {messageReply?.attachment_files?.map((item: any) => (
               <View key={item?.id}>
@@ -65,7 +82,15 @@ const ModalReply = React.memo(() => {
               </View>
             ))}
           </View>
-        )}
+        ) : null}
+        {messageReply?.stamp_no ? (
+          <Image
+            source={renderStamp()}
+            style={
+              messageReply?.stamp_no == 1 ? styles.imageLike : styles.imageStamp
+            }
+          />
+        ) : null}
       </View>
       <TouchableOpacity
         style={styles.viewIconRepMessage}
@@ -119,6 +144,17 @@ const styles = StyleSheet.create({
     height: moderateScale(50),
     borderRadius: moderateScale(4),
     marginHorizontal: moderateScale(2),
+  },
+  imageStamp: {
+    width: moderateScale(45),
+    height: moderateScale(45),
+    marginHorizontal: moderateScale(2),
+  },
+  imageLike: {
+    width: moderateScale(45),
+    height: moderateScale(45),
+    marginHorizontal: moderateScale(2),
+    tintColor: colors.primary,
   },
   iconClose: {
     tintColor: colors.darkGrayText,

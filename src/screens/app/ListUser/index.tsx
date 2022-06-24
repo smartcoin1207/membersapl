@@ -34,7 +34,6 @@ const ListUser = (props: any) => {
         setNameUser(`${value?.last_name}${value?.first_name}`);
         onCancelModal();
       }}
-      is_host={dataDetail?.is_host}
     />
   );
 
@@ -104,8 +103,7 @@ const ListUser = (props: any) => {
       <Header
         title="メンバー"
         imageCenter
-        // onRightFirst={onCreate}
-        onRightFirst={dataDetail?.is_host === 1 ? onCreate : null}
+        onRightFirst={onCreate}
         iconRightFirst={iconAddUser}
         back
         styleIconRightFirst={styles.colorIcon}

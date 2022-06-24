@@ -24,7 +24,7 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 const MenuFeature = React.memo((props: any) => {
-  const {onActionMenu, onActionReaction, userId} = props;
+  const {onActionMenu, onActionReaction, userId, msg_type} = props;
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const dataFeature = [
     {
@@ -35,7 +35,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(18),
         height: scale(22),
       },
-      isShow: true,
+      isShow: msg_type == 1 ? false : true,
     },
     {
       id: 8,
@@ -45,7 +45,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
-      isShow: userId == user_id ? true : false,
+      isShow: (userId == user_id && msg_type !== 1) ? true : false,
     },
     {
       id: 9,
@@ -65,7 +65,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
-      isShow: true,
+      isShow: msg_type !== 1 ? true : false,
     },
     {
       id: 11,

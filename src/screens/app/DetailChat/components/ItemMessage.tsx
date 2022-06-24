@@ -55,6 +55,7 @@ const ItemMessage = React.memo((props: any) => {
     reply_to_message_text,
     attachment_files,
     reply_to_message_files,
+    reply_to_message_stamp,
     stamp_icon,
     users_seen,
     stamp_no,
@@ -108,6 +109,7 @@ const ItemMessage = React.memo((props: any) => {
             user: user,
             text: text,
             attachment_files: attachment_files,
+            stamp_no: stamp_no,
           };
           replyMsg(dataMessageReply);
           break;
@@ -198,23 +200,21 @@ const ItemMessage = React.memo((props: any) => {
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
             }>
-            <Menu
-              style={styles.containerMenu}
-              visible={visible}
-              onRequestClose={onShowMenu}
-              key={1}>
-              <MenuFeature
-                userId={user?._id}
-                onActionMenu={(value: any) => onActionMenu(value)}
-                onActionReaction={(value: any) => onActionReaction(value)}
-              />
-            </Menu>
             <>
               {renderDay()}
-              <TouchableOpacity
-                style={styles.chat}
-                onPress={onShowMenu}
-                disabled={msg_type == 1}>
+              <Menu
+                style={styles.containerMenu}
+                visible={visible}
+                onRequestClose={onShowMenu}
+                key={1}>
+                <MenuFeature
+                  userId={user?._id}
+                  onActionMenu={(value: any) => onActionMenu(value)}
+                  onActionReaction={(value: any) => onActionReaction(value)}
+                  msg_type={msg_type}
+                />
+              </Menu>
+              <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
                 {user?._id == user_id ? (
                   <Text style={styles.txtTimeCurent}>
                     {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
@@ -245,21 +245,22 @@ const ItemMessage = React.memo((props: any) => {
                       end={{x: 0, y: 0}}
                       style={styles.containerChat}>
                       {reply_to_message_text ||
-                      reply_to_message_files?.length > 0 ? (
+                      reply_to_message_files?.length > 0 ||
+                      reply_to_message_stamp?.stamp_icon ? (
                         <View style={styles.viewReply}>
                           <View style={styles.viewColumn} />
                           <View>
                             <Text style={styles.txtTitleReply}>
                               返信メッセージ
                             </Text>
-                            {reply_to_message_text && (
+                            {reply_to_message_text ? (
                               <Text
                                 style={styles.txtContentReply}
                                 numberOfLines={1}>
                                 {reply_to_message_text}
                               </Text>
-                            )}
-                            {reply_to_message_files?.length > 0 && (
+                            ) : null}
+                            {reply_to_message_files?.length > 0 ? (
                               <View style={styles.viewRowEdit}>
                                 {reply_to_message_files?.map((item: any) => (
                                   <View key={item?.id}>
@@ -277,7 +278,19 @@ const ItemMessage = React.memo((props: any) => {
                                   </View>
                                 ))}
                               </View>
-                            )}
+                            ) : null}
+                            {reply_to_message_stamp?.stamp_icon ? (
+                              <FastImage
+                                source={{
+                                  uri: reply_to_message_stamp?.stamp_icon,
+                                }}
+                                style={
+                                  reply_to_message_stamp?.stamp_no == 1
+                                    ? styles.imageLikeReply
+                                    : styles.imageStampRepLy
+                                }
+                              />
+                            ) : null}
                           </View>
                         </View>
                       ) : null}
