@@ -4,7 +4,7 @@ import {showMessage} from 'react-native-flash-message';
 import {store} from '../redux/store';
 const api = axios.create();
 
-const BASEURL = 'https://member-chat-api.adamo.tech/api';
+const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
 
 api.interceptors.request.use(
   async (config: any) => {

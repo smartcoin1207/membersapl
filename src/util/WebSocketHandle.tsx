@@ -18,11 +18,13 @@ function createAppSocket() {
 
   socket.on('connect', () => {});
   socket.on('new_message_ind', data => {
+    console.log('new_message_ind', data);
     const state = store.getState();
     if (data?.user_id !== state?.auth?.userInfo?.id) {
       if (data?.room_id == state?.chat?.id_roomChat) {
         store.dispatch(getDetailMessageSocket(data?.message_id));
       } else {
+        // store.dispatch(getRoomList({company_id: state?.chat?.idCompany, search: null}));
       }
     } else {
       store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
