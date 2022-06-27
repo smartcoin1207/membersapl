@@ -29,9 +29,11 @@ const GET_INVITE_LINK = 'user/chat/room/get-invitation-link';
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
   const response = await api.get(
-    `${GET_LIST_ROOM}?company_id=${company_id}&page=${
-      page ? page : 1
-    }&search=${key}`,
+    key?.length > 0
+      ? `${GET_LIST_ROOM}?company_id=${company_id}&page=${
+          page ? page : 1
+        }&search=${key}`
+      : `${GET_LIST_ROOM}?company_id=${company_id}&page=${page ? page : 1}`,
   );
   return response;
 };

@@ -116,8 +116,8 @@ const InfoRoomChat = (props: any) => {
   };
 
   const onLeave = useCallback(async () => {
+    onCancelModal();
     try {
-      onCancelModal();
       const body = {
         room_id: idRoomChat,
       };

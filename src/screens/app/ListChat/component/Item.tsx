@@ -169,6 +169,7 @@ const styles = StyleSheet.create({
   viewTxt: {
     width: '65%',
     justifyContent: 'center',
+    paddingRight: scale(10),
   },
   viewImageNext: {
     width: '15%',
