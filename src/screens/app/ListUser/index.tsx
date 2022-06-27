@@ -61,6 +61,14 @@ const ListUser = (props: any) => {
         text2: null,
         time: result?.data?.data?.created_at,
       });
+      socket.emit('ChatGroup_update_ind', {
+        user_id: user_id,
+        room_id: result?.data?.data?.id,
+        member_info: {
+          type: 11,
+          ids: [idUser],
+        },
+      });
       // dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
       getListUserOfRoom();
       GlobalService.hideLoading();

@@ -74,7 +74,8 @@ const Item = React.memo((props: any) => {
               <FastImage
                 style={styles.image}
                 source={
-                  item?.one_one_check?.length > 0
+                  item?.one_one_check?.length > 0 &&
+                  item?.one_one_check[0]?.icon_image
                     ? {uri: item?.one_one_check[0]?.icon_image}
                     : defaultAvatar
                 }
@@ -105,7 +106,7 @@ const Item = React.memo((props: any) => {
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
               {item?.one_one_check?.length > 0
-                ? item?.one_one_check[0]?.full_name
+                ? `${item?.one_one_check[0]?.last_name} ${item?.one_one_check[0]?.last_name}`
                 : item?.name}
             </Text>
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (

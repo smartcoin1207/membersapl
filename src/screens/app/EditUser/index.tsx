@@ -86,16 +86,6 @@ const EditUser = (props: any) => {
                   showsVerticalScrollIndicator={false}>
                   {type === 'Name' ? (
                     <>
-                      <Text style={styles.txtTitle}>名</Text>
-
-                      <AppInput
-                        placeholder="名"
-                        onChange={props.handleChange('first_name')}
-                        //@ts-ignore
-                        value={props.values.first_name}
-                        //@ts-ignore
-                        error={props.errors.first_name}
-                      />
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
                         placeholder="姓"
@@ -104,6 +94,15 @@ const EditUser = (props: any) => {
                         value={props.values.last_name}
                         //@ts-ignore
                         error={props.errors.last_name}
+                      />
+                      <Text style={styles.txtTitle}>名</Text>
+                      <AppInput
+                        placeholder="名"
+                        onChange={props.handleChange('first_name')}
+                        //@ts-ignore
+                        value={props.values.first_name}
+                        //@ts-ignore
+                        error={props.errors.first_name}
                       />
                     </>
                   ) : null}

@@ -127,7 +127,7 @@ const ListReaction = (props: any) => {
           />
         </View>
         <View style={styles.viewContentTxt}>
-          <Text style={styles.txtName}>{item?.user?.full_name}</Text>
+          <Text style={styles.txtName}>{item?.user?.last_name} {item?.user?.first_name}</Text>
           {item?.user_id === user_id && (
             <Text style={styles.txtDelete}>
               削除するにはここをクリックしてください
