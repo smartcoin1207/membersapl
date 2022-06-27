@@ -98,6 +98,14 @@ const CreateRoomChat = (props: any) => {
           user_id: renderIdUser(),
         };
         const result = await createRoom(body);
+        socket.emit('ChatGroup_update_ind', {
+          user_id: user_id,
+          room_id: result?.data?.data?.id,
+          member_info: {
+            type: 11,
+            ids: renderIdUser(),
+          },
+        });
         navigation.goBack();
         GlobalService.hideLoading();
       } catch (error) {
@@ -126,6 +134,14 @@ const CreateRoomChat = (props: any) => {
           text: result?.data?.data?.message,
           text2: null,
           time: result?.data?.data?.created_at,
+        });
+        socket.emit('ChatGroup_update_ind', {
+          user_id: user_id,
+          room_id: idRoomchat,
+          member_info: {
+            type: 11,
+            ids: renderIdUser(),
+          },
         });
         dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
         navigation.goBack();
