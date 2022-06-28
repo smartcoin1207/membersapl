@@ -14,9 +14,9 @@ const ConfigNoti = () => {
   );
   const useId = useSelector((state: any) => state?.auth?.userInfo?.id);
 
-  const [state1, setState1] = useState(user?.mention_flag == 0 ? false : true);
+  const [state1, setState1] = useState(user?.show_message_flag == 0 ? false : true);
   const [state2, setState2] = useState(
-    user?.show_message_flag == 0 ? false : true,
+    user?.mention_flag == 0 ? false : true,
   );
 
   const mentionFlag = async () => {
@@ -54,15 +54,15 @@ const ConfigNoti = () => {
         <View style={styles.item}>
           <Toggle
             title="メッセージ内容をデスクトップ通知に表示する"
-            status={state1}
-            onChange={mentionFlag}
+            status={state2}
+            onChange={showMessage}
           />
         </View>
         <View style={styles.item}>
           <Toggle
             title="自分が宛先の場合のみ通知する"
-            status={state2}
-            onChange={showMessage}
+            status={state1}
+            onChange={mentionFlag}
           />
         </View>
       </View>
