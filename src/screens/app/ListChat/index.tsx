@@ -91,9 +91,9 @@ const ListChat = () => {
     setKey(text);
     debounceText(text);
   };
-  const renderItem = useCallback(({item}: any) => {
-    return <Item item={item} />;
-  }, []);
+  const renderItem = ({item, index}: any) => {
+    return <Item item={item} index={index} />;
+  };
 
   const onCreate = useCallback(() => {
     navigation.navigate(ROUTE_NAME.CREATE_ROOM_CHAT, {typeScreen: 'CREATE'});

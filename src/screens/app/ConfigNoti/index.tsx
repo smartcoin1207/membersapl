@@ -13,6 +13,7 @@ const ConfigNoti = () => {
     (state: any) => state?.auth?.userInfo?.notificaiton_setting,
   );
   const useId = useSelector((state: any) => state?.auth?.userInfo?.id);
+
   const [state1, setState1] = useState(user?.mention_flag == 0 ? false : true);
   const [state2, setState2] = useState(
     user?.show_message_flag == 0 ? false : true,

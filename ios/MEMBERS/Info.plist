@@ -39,16 +39,32 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your applemusic to play music</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your Bluetooth</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your bluetooth to connect bluetooth</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your PhotoLibrary to view calendar</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access the camera and gallery for sharing of some photos, if required by you</string>
+	<key>NSContactsUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your contact to select the contact</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>$(PRODUCT_NAME) would like to access your Location</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access the microphone for making an audio and video call</string>
+	<key>NSMotionUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your motion to view motion</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your PhotoLibrary to select the image</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to access your PhotoLibrary to select the image</string>
+	<key>NSSiriUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your Siri</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>$(PRODUCT_NAME) would like to access your SpeechRecognition</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter-Medium.ttf</string>
