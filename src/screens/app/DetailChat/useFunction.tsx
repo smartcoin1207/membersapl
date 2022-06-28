@@ -460,13 +460,13 @@ export const useFunction = (props: any) => {
             data.append('attachment[]', {
               name:
                 Platform.OS === 'ios'
-                  ? item?.uri?.replace('file://', '')
-                  : item?.fileCopyUri,
+                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                  : decodeURIComponent(item?.fileCopyUri),
               type: item?.type,
               uri:
                 Platform.OS === 'ios'
-                  ? item?.uri?.replace('file://', '')
-                  : item?.fileCopyUri,
+                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                  : decodeURIComponent(item?.fileCopyUri),
             });
           });
         }

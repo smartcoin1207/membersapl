@@ -126,7 +126,7 @@ const DetailChat = (props: any) => {
         back
         title={
           dataDetail?.one_one_check?.length > 0
-            ? dataDetail?.one_one_check[0]?.full_name
+            ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
             : dataDetail?.name
         }
         imageCenter

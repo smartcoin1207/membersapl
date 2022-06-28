@@ -40,6 +40,7 @@ export function* getRoomListSaga(action: any) {
     yield put(getRoomListSuccess(result?.data?.rooms));
   } catch (error) {
   } finally {
+    GlobalService.hideLoading();
   }
 }
 

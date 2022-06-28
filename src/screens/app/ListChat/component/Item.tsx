@@ -26,12 +26,12 @@ const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
-  const {item} = props;
-  const [pin, setStatusPin] = useState(0);
+  const {item, index} = props;
+  const [pin, setStatusPin] = useState<any>(null);
 
   useEffect(() => {
     if (item?.pin_flag) {
-      setStatusPin(item?.pin_flag);
+      setStatusPin(Number(item?.pin_flag));
     }
   }, [item?.pin_flag]);
 
@@ -53,17 +53,19 @@ const Item = React.memo((props: any) => {
     }
   }, []);
 
-  const onGhimRoomChat = useCallback(async () => {
+  const onGhimRoomChat = async () => {
     try {
+      GlobalService.showLoading();
       const response = await pinFlag(item?.id, pin == 0 ? 1 : 0);
       showMessage({
         message: response?.data?.message,
         type: 'success',
       });
-      setStatusPin(pin == 0 ? 1 : 0);
       await dispatch(getRoomList({key: '', company_id: idCompany, page: 1}));
-    } catch {}
-  }, [pin, item, idCompany]);
+    } catch {
+      GlobalService.hideLoading();
+    }
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={navigateDetail}>
@@ -106,7 +108,7 @@ const Item = React.memo((props: any) => {
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
               {item?.one_one_check?.length > 0
-                ? `${item?.one_one_check[0]?.last_name} ${item?.one_one_check[0]?.last_name}`
+                ? `${item?.one_one_check[0]?.last_name} ${item?.one_one_check[0]?.first_name}`
                 : item?.name}
             </Text>
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
