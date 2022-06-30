@@ -6,8 +6,8 @@ import {screens} from '../screens';
 import {ROUTE_NAME} from './routeName';
 import {useSelector} from 'react-redux';
 import StackTab from './StackTab';
-import { AppSocket } from '@util';
-let {init, endConnect } = AppSocket;
+import {AppSocket} from '@util';
+let {init, endConnect} = AppSocket;
 
 const Stack = createNativeStackNavigator();
 
@@ -16,17 +16,17 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
     headerShown: false,
   };
   let token = useSelector((state: any) => state?.auth?.token);
-  // let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
-  // React.useEffect(()=>{
-  //   console.log(ws_token)
-  //   if(ws_token){
-  //     console.log('========',ws_token)
-  //     init(ws_token)
-  //     return () =>{
-  //       endConnect()
-  //     }
-  //   }
-  // }, [ws_token])
+  let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
+  React.useEffect(() => {
+    console.log(ws_token);
+    if (ws_token) {
+      console.log('========', ws_token);
+      init(ws_token);
+      return () => {
+        endConnect();
+      };
+    }
+  }, [ws_token]);
 
   const renderStackApp = () => {
     if (!token) {
