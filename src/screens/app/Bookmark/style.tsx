@@ -1,6 +1,8 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 import {stylesCommon, colors} from '@stylesCommon';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+
+const width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
   container: {
@@ -9,12 +11,15 @@ const styles = StyleSheet.create({
   viewContent: {
     ...stylesCommon.viewContainer,
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: scale(16),
+    alignItems: 'center',
+    // paddingHorizontal: scale(16),
   },
   containerSearch: {
     marginTop: verticalScale(20),
     borderRadius: moderateScale(10),
     paddingHorizontal: scale(13),
+    width: width - scale(32),
+    marginLeft: scale(16),
   },
   input: {
     paddingVertical: verticalScale(10),
@@ -36,19 +41,21 @@ const styles = StyleSheet.create({
   colorIcon: {
     tintColor: colors.darkGrayText,
   },
-  containerMenu: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,
+  viewRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: verticalScale(3),
+    width: width - scale(32),
   },
-  viewOption: {
-    alignItems: 'flex-end',
+  txtTitleTotal: {
+    color: colors.darkGrayText,
+    ...stylesCommon.fontWeight600,
+    fontSize: moderateScale(16),
+  },
+  txtTotal: {
+    color: colors.primary,
+    ...stylesCommon.fontWeight500,
+    fontSize: moderateScale(14),
   },
 });
 

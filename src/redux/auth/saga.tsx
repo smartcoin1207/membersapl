@@ -16,6 +16,7 @@ export function* loginSaga(action: any) {
   try {
     GlobalService.showLoading();
     const result: ResponseGenerator = yield loginApi(action?.payload);
+    console.log(result)
     yield put(saveInfoUser(result?.data?.user_info));
     yield put(saveToken(result?.data?.token));
     yield NavigationUtils.navigate(ROUTE_NAME.SELECT_COMPANY);

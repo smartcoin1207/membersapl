@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,8 @@ import {iconSearch, iconAddListChat} from '@images';
 import {Item} from './component/Item';
 import {useFocusEffect} from '@react-navigation/native';
 import {debounce} from 'lodash';
-
+import {Menu} from 'react-native-material-menu';
+import {MenuOption} from './component/MenuOption';
 import {
   getRoomList,
   getUserInfo,
@@ -23,13 +24,14 @@ import {
   resetDataChat,
 } from '@redux';
 import {useDispatch, useSelector} from 'react-redux';
-
+import {ModalSearchMessage} from './component/ModalSearchMessage';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 
 import {AppSocket, AppNotification} from '@util';
 
 const ListChat = () => {
+  const refInput = useRef<any>(null);
   let {endConnect, init} = AppSocket;
   let {initFB} = AppNotification;
   const dispatch = useDispatch();
@@ -41,6 +43,8 @@ const ListChat = () => {
   const user = useSelector((state: any) => state.auth.userInfo);
   const [key, setKey] = useState<string>('');
   const [page, setPage] = useState(1);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showSearchMessage, setShowSearchMessage] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -107,6 +111,28 @@ const ListChat = () => {
     }
   };
 
+  const onShowOption = useCallback(() => {
+    setShowMenu(!showMenu);
+  }, [showMenu]);
+
+  const onSearchRoom = useCallback(() => {
+    setShowMenu(false);
+    setTimeout(() => {
+      refInput?.current?.focusInput();
+    }, 500);
+  }, []);
+
+  const onSearchMessage = useCallback(() => {
+    setShowMenu(false);
+    setTimeout(() => {
+      setShowSearchMessage(true);
+    }, 500);
+  }, []);
+
+  const onCloseModal = useCallback(() => {
+    setShowSearchMessage(!showSearchMessage);
+  }, [showSearchMessage]);
+
   return (
     <View style={styles.container}>
       <Header
@@ -118,6 +144,7 @@ const ListChat = () => {
       />
       <View style={styles.viewContent}>
         <AppInput
+          ref={refInput}
           placeholder="メッセージ内容を検索"
           onChange={onChangeText}
           value={key}
@@ -125,7 +152,21 @@ const ListChat = () => {
           styleInput={styles.input}
           icon={iconSearch}
           styleIcon={styles.icon}
+          showObtion={true}
+          onShowOption={onShowOption}
         />
+        <View style={styles.viewOption}>
+          <Menu
+            style={styles.containerMenu}
+            visible={showMenu}
+            onRequestClose={onShowOption}
+            key={1}>
+            <MenuOption
+              onSearchRoom={onSearchRoom}
+              onSearchMessage={onSearchMessage}
+            />
+          </Menu>
+        </View>
         <FlatList
           data={listRoom}
           renderItem={renderItem}
@@ -139,6 +180,7 @@ const ListChat = () => {
           }
         />
       </View>
+      <ModalSearchMessage visible={showSearchMessage} onClose={onCloseModal} />
     </View>
   );
 };

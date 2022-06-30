@@ -19,6 +19,7 @@ import {
   icon4,
   icon5,
   icon6,
+  iconBookmark,
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -45,7 +46,7 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
-      isShow: (userId == user_id && msg_type !== 1) ? true : false,
+      isShow: userId == user_id && msg_type !== 1 ? true : false,
     },
     {
       id: 9,
@@ -76,6 +77,17 @@ const MenuFeature = React.memo((props: any) => {
         height: scale(22),
       },
       isShow: userId == user_id ? true : false,
+    },
+    {
+      id: 12,
+      sourceImage: iconBookmark,
+      name: '保存',
+      style: {
+        width: scale(21),
+        height: scale(21),
+        tintColor: '#FFFFFF'
+      },
+      isShow: false
     },
   ];
 

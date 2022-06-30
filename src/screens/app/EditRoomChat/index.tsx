@@ -1,32 +1,33 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text} from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput, AppButton} from '@component';
 import {iconClose} from '@images';
-import {colors} from '@stylesCommon';
-import {debounce} from 'lodash';
-
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {updateInfoRoomchat, GlobalService} from '@services';
+import {updateInfoRoomchat, GlobalService, getListUser} from '@services';
+import {AppSocket} from '@util';
+import {useSelector} from 'react-redux';
 
 const EditRoomChat = (props: any) => {
   const navigation = useNavigation<any>();
   const {route} = props;
-
+  const {socket} = AppSocket;
   const {idRoomChat, dataDetail, type} = route?.params;
-
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const [name, setName] = useState<any>(dataDetail?.name);
   const [content, setContent] = useState<any>(dataDetail?.summary_column);
+  const [listUser, setListUser] = useState([]);
+
+  const convertDataUser = useCallback(() => {
+    //@ts-ignore
+    let data = [];
+    if (listUser && listUser?.length > 0) {
+      listUser?.map((item: any) => data.push(item?.id));
+    }
+    //@ts-ignore
+    return data;
+  }, [listUser]);
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -46,6 +47,17 @@ const EditRoomChat = (props: any) => {
     [content],
   );
 
+  const getListUserOfRoom = async () => {
+    try {
+      const result = await getListUser({room_id: idRoomChat});
+      setListUser(result?.data?.users?.data);
+    } catch (error) {}
+  };
+
+  useEffect(() => {
+    getListUserOfRoom();
+  }, []);
+
   const handleSubmit = async () => {
     try {
       const body = {
@@ -55,6 +67,14 @@ const EditRoomChat = (props: any) => {
       };
       GlobalService.showLoading();
       const response = await updateInfoRoomchat(body);
+      socket.emit('ChatGroup_update_ind', {
+        user_id: user_id,
+        room_id: idRoomChat,
+        member_info: {
+          type: 11,
+          ids: convertDataUser(),
+        },
+      });
       onBack();
       GlobalService.hideLoading();
     } catch {

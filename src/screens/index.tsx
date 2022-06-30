@@ -21,6 +21,7 @@ import {SearchMessage} from './app/SearchMessage';
 import {UserSeen} from './app/UserSeen';
 import {SettingCompany} from './app/SettingCompany';
 import {DetailVideo} from './app/DetailVideo';
+import {Bookmark} from './app/Bookmark';
 
 const screens = {
   //auth
@@ -44,7 +45,8 @@ const screens = {
   SearchMessage,
   UserSeen,
   SettingCompany,
-  DetailVideo
+  DetailVideo,
+  Bookmark,
 };
 
 export {screens};

@@ -53,6 +53,7 @@ const DetailChat = (props: any) => {
     showTagModal,
     listUser,
     setText,
+    bookmarkMessage,
   } = useFunction(props);
 
   const renderActions = useCallback((props: any) => {
@@ -94,6 +95,9 @@ const DetailChat = (props: any) => {
             }}
             editMsg={(data: any) => {
               editMessage(data);
+            }}
+            bookmarkMsg={(data: any) => {
+              bookmarkMessage(data);
             }}
             onReaction={(data: any, idMsg: any) => {
               reactionMessage(data, idMsg);

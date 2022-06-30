@@ -28,20 +28,34 @@ import {detailRoomchat, pinFlag, leaveRoomChat, GlobalService} from '@services';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
-import {updateImageRoomChat, deleteImageRoomChat} from '@services';
+import {updateImageRoomChat, deleteImageRoomChat, getListUser} from '@services';
 import {colors} from '@stylesCommon';
 import FastImage from 'react-native-fast-image';
+import {AppSocket} from '@util';
+import {useSelector} from 'react-redux';
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
   const {idRoomChat} = route?.params;
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const navigation = useNavigation<any>();
-
+  const {socket} = AppSocket;
   const [dataDetail, setData] = useState<any>(null);
   const [activePin, setActivePin] = useState<any>(false);
   const [modal, setModal] = useState<boolean>(false);
   const [modalLink, setModalLink] = useState<boolean>(false);
   const [image, setImage] = useState<any>(null);
+  const [listUser, setListUser] = useState([]);
+
+  const convertDataUser = useCallback(() => {
+    //@ts-ignore
+    let data = [];
+    if (listUser && listUser?.length > 0) {
+      listUser?.map((item: any) => data.push(item?.id));
+    }
+    //@ts-ignore
+    return data;
+  }, [listUser]);
 
   const uploadImageApi = useCallback(async () => {
     try {
@@ -60,6 +74,14 @@ const InfoRoomChat = (props: any) => {
       await showMessage({
         message: res?.data?.message,
         type: 'success',
+      });
+      socket.emit('ChatGroup_update_ind', {
+        user_id: user_id,
+        room_id: idRoomChat,
+        member_info: {
+          type: 11,
+          ids: convertDataUser(),
+        },
       });
       getDetail();
       setImage(null);
@@ -87,9 +109,17 @@ const InfoRoomChat = (props: any) => {
     setModalLink(!modalLink);
   }, [modalLink]);
 
+  const getListUserOfRoom = async () => {
+    try {
+      const result = await getListUser({room_id: idRoomChat});
+      setListUser(result?.data?.users?.data);
+    } catch (error) {}
+  };
+
   useFocusEffect(
     useCallback(() => {
       getDetail();
+      getListUserOfRoom();
     }, []),
   );
 
@@ -148,6 +178,14 @@ const InfoRoomChat = (props: any) => {
         message: res?.data?.message,
         type: 'success',
       });
+      socket.emit('ChatGroup_update_ind', {
+        user_id: user_id,
+        room_id: idRoomChat,
+        member_info: {
+          type: 11,
+          ids: convertDataUser(),
+        },
+      });
       getDetail();
       GlobalService.hideLoading();
     } catch (error: any) {
@@ -160,7 +198,7 @@ const InfoRoomChat = (props: any) => {
       <Header
         title={
           dataDetail?.one_one_check?.length > 0
-            ? dataDetail?.one_one_check[0]?.full_name
+            ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
             : dataDetail?.name
         }
         back

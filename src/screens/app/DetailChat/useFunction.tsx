@@ -29,7 +29,7 @@ import {ROUTE_NAME} from '@routeName';
 import {AppSocket} from '@util';
 import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
-import {Platform, Keyboard} from 'react-native';
+import {Platform, Keyboard, Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 
 export const useFunction = (props: any) => {
@@ -458,10 +458,7 @@ export const useFunction = (props: any) => {
           GlobalService.showLoading();
           result?.forEach((item: any) => {
             data.append('attachment[]', {
-              name:
-                Platform.OS === 'ios'
-                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
-                  : decodeURIComponent(item?.fileCopyUri),
+              name: item?.name,
               type: item?.type,
               uri:
                 Platform.OS === 'ios'
@@ -573,6 +570,13 @@ export const useFunction = (props: any) => {
     getUserListChat();
   }, [showTagModal]);
 
+  const bookmarkMessage = useCallback((data: any) => {
+    try {
+    } catch {
+      (error: any) => {};
+    }
+  }, []);
+
   return {
     chatUser,
     idRoomChat,
@@ -611,5 +615,6 @@ export const useFunction = (props: any) => {
     showTagModal,
     listUser,
     setText,
+    bookmarkMessage,
   };
 };
