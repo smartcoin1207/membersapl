@@ -24,11 +24,22 @@ const ModalSearchMessage = React.memo((prop: any) => {
   const navigation = useNavigation<any>();
   const {visible, onClose} = prop;
   const idCompany = useSelector((state: any) => state.chat.idCompany);
+
   const [key, setKey] = useState<string>('');
   const [listMessage, setList] = useState([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [page, setPage] = useState(1);
+
+  useEffect(() => {
+    if (visible === false) {
+      setList([]);
+      setKey('');
+      setTotal(null);
+      setLastPage(null);
+      setPage(1);
+    }
+  }, [visible]);
 
   const onClickItem = (value: any) => {
     onClose();
@@ -72,7 +83,7 @@ const ModalSearchMessage = React.memo((prop: any) => {
       };
       callApiSearch(params);
     }, 500),
-    [],
+    [idCompany],
   );
 
   const onChangeText = (text: any) => {

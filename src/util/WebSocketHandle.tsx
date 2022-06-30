@@ -6,15 +6,23 @@ import {
   getDetailMessageSocketSeen,
 } from '@redux';
 import {store} from '../redux/store';
-import {EVENT_SOCKET, SOCKET_CONFIG} from '@util';
+import {EVENT_SOCKET} from '@util';
 
 function createAppSocket() {
+  let SOCKET_CONFIG = {
+    autoConnect: false,
+    auth: {
+      token: store.getState()?.auth?.userInfo?.ws_token,
+    },
+  };
   const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
-
   const init = () => {
     socket.connect();
   };
 
+  socket.on(EVENT_SOCKET.CONNECT, () => {
+    console.log('CONNECTED', socket);
+  });
   socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, data => {
     const state = store.getState();
     if (data?.user_id !== state?.auth?.userInfo?.id) {

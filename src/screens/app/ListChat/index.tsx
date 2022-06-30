@@ -89,7 +89,7 @@ const ListChat = () => {
   const onRefresh = useCallback(() => {
     setPage(1);
     dispatch(getRoomList({key: key, company_id: idCompany, page: 1}));
-  }, [page]);
+  }, [page, idCompany]);
 
   const onChangeText = (text: any) => {
     setKey(text);
