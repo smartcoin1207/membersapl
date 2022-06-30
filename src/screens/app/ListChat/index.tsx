@@ -38,7 +38,7 @@ import {
 } from '@redux';
 
 import {EVENT_SOCKET} from '@util';
-import { store } from '../../../redux/store';
+import {store} from '../../../redux/store';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
@@ -56,9 +56,7 @@ const ListChat = () => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showSearchMessage, setShowSearchMessage] = useState<boolean>(false);
 
-let socket = io('');
-
-
+  let socket = io('');
 
   useFocusEffect(
     useCallback(() => {
@@ -70,18 +68,14 @@ let socket = io('');
   );
 
   let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
-  React.useEffect(()=>{
-    console.log(ws_token)
-    if(ws_token){
-      console.log('========',ws_token)
-      init(ws_token)
-      return () =>{
-        endConnect()
-      }
+  React.useEffect(() => {
+    if (ws_token) {
+      init(ws_token);
+      return () => {
+        endConnect();
+      };
     }
-  }, [ws_token])
-
-
+  }, [ws_token]);
 
   useEffect(() => {
     initFB();
@@ -161,21 +155,17 @@ let socket = io('');
     setShowSearchMessage(!showSearchMessage);
   }, [showSearchMessage]);
 
-
-
-
   const init = (token?: string) => {
-    
     let SOCKET_CONFIG = {
       autoConnect: false,
       auth: {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    
+
     socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
-    console.log
+    console.log;
     setTimeout(() => {}, 2000);
   };
 
