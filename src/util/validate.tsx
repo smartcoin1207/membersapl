@@ -18,7 +18,7 @@ export const validateForm = () => {
       // .max(VALIDATE.maxPassLength, trans("validate.maxConfirmPassError"))
       .oneOf(
         [yup.ref('password'), null],
-        'Confirm Password does not match the password',
+        'パスワードがパスワードと一致しないことを確認する',
       ),
 
     fullname: yup
