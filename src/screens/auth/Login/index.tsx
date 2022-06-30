@@ -8,7 +8,7 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {validateForm} from '@util';
 import {useDispatch} from 'react-redux';
-import {demoActionChange, login} from '@redux';
+import {login} from '@redux';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';

@@ -7,6 +7,7 @@ import {
 } from '@redux';
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
+
 let socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443');
 
 function createAppSocket() {
@@ -16,14 +17,17 @@ function createAppSocket() {
   // const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
 
   const init = (token?: string) => {
+    
     let SOCKET_CONFIG = {
       autoConnect: false,
       auth: {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
+    
     socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
+    console.log
     setTimeout(() => {}, 2000);
   };
 

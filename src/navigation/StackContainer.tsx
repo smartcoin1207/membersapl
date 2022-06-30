@@ -15,18 +15,18 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
   const screenOptions = {
     headerShown: false,
   };
-
   let token = useSelector((state: any) => state?.auth?.token);
-  let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
-
-  React.useEffect(()=>{
-    if(ws_token){
-      init(ws_token)
-      return () =>{
-        endConnect()
-      }
-    }
-  }, [ws_token])
+  // let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
+  // React.useEffect(()=>{
+  //   console.log(ws_token)
+  //   if(ws_token){
+  //     console.log('========',ws_token)
+  //     init(ws_token)
+  //     return () =>{
+  //       endConnect()
+  //     }
+  //   }
+  // }, [ws_token])
 
   const renderStackApp = () => {
     if (!token) {
