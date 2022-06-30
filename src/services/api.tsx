@@ -10,9 +10,9 @@ const api = axios.create();
 //adamo api url
 // const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
 //member chat staging api url
-// const BASEURL = 'https://stage.mem-bers.jp/mobile';
+const BASEURL = 'https://stage.mem-bers.jp/mobile';
 //member chat live api url
-const BASEURL = 'https://v3mbs01.sense.co.jp/mobile';
+// const BASEURL = 'https://v3mbs01.sense.co.jp/mobile';
 
 api.interceptors.request.use(
   async (config: any) => {

@@ -10,10 +10,10 @@ const MenuOption = React.memo((props: any) => {
       <TouchableOpacity
         style={[styles.button, {borderBottomWidth: 1, borderColor: '#DDDDDD'}]}
         onPress={onSearchRoom}>
-        <Text style={styles.txtTitle}>部屋名で検索</Text>
+        <Text style={styles.txtTitle}>グループ名</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={onSearchMessage}>
-        <Text style={styles.txtTitle}>メッセージで検索</Text>
+        <Text style={styles.txtTitle}>メッセージ内容を検索</Text>
       </TouchableOpacity>
     </View>
   );
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   container: {},
   button: {
     paddingVertical: verticalScale(12),
-    width: scale(150),
+    width: scale(180),
     paddingLeft: scale(16),
   },
   txtTitle: {
