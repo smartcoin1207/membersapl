@@ -19,8 +19,8 @@ const Login = () => {
   const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const formInitialValues = {
-    login: '',
-    password: '',
+    login: 'MB000842',
+    password: 'password',
   };
   useEffect(() => {
     const backAction = () => {
