@@ -20,6 +20,10 @@ const StackTab = () => {
       />
       <Tab.Screen name={ROUTE_NAME.USER_SCREEN} component={screens.User} />
       <Tab.Screen
+        name={ROUTE_NAME.BOOKMARK_SCREEN}
+        component={screens.Bookmark}
+      />
+      <Tab.Screen
         name={ROUTE_NAME.SETTING_SCREEN}
         component={screens.Setting}
       />

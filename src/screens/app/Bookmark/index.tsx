@@ -12,6 +12,7 @@ import {fetchResultMessageAction} from '@redux';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {showMessage} from 'react-native-flash-message';
+import {useFocusEffect} from '@react-navigation/native';
 
 const Bookmark = (props: any) => {
   const navigation = useNavigation<any>();
@@ -36,13 +37,15 @@ const Bookmark = (props: any) => {
     } catch (error: any) {}
   };
 
-  useEffect(() => {
-    const params = {
-      page: 1,
-      idCompany: idCompany,
-    };
-    callApiSearch(params);
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const params = {
+        page: 1,
+        idCompany: idCompany,
+      };
+      callApiSearch(params);
+    }, []),
+  );
 
   useEffect(() => {
     if (page > 1) {

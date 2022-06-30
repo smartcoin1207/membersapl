@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {ROUTE_NAME} from '../navigation/routeName';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
-import {iconTabChat, iconTabSetting, defaultAvatar} from '@images';
+import {iconTabChat, iconTabSetting, defaultAvatar, menuPinChat} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -32,6 +32,8 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
         return 'チャットグループ';
       case ROUTE_NAME.USER_SCREEN:
         return '個人設定';
+      case ROUTE_NAME.BOOKMARK_SCREEN:
+        return 'ブックマーク';
       case ROUTE_NAME.SETTING_SCREEN:
         return 'その他';
     }
@@ -42,6 +44,8 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
         return iconTabChat;
       case ROUTE_NAME.SETTING_SCREEN:
         return iconTabSetting;
+      case ROUTE_NAME.BOOKMARK_SCREEN:
+        return menuPinChat;
     }
   };
   return (
@@ -79,7 +83,8 @@ const Tabbar: React.FC<Props> = ({state, navigation}) => {
                   color: isFocused ? active_color : inActive_color,
                 },
                 styles.txtLabel,
-              ]}>
+              ]}
+              numberOfLines={1}>
               {renderLabel(route.name)}
             </Text>
           </TouchableOpacity>
@@ -98,7 +103,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   button: {
-    width: width / 3,
+    width: width / 4,
     justifyContent: 'center',
     alignItems: 'center',
   },

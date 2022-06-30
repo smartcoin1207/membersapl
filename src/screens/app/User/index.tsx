@@ -171,13 +171,6 @@ const User = () => {
             onPress={() => {
               navigation.navigate(ROUTE_NAME.SETTING_COMPANY);
             }}
-          />
-          <ViewItem
-            sourceImage={iconBookmark}
-            title="ブックマーク"
-            onPress={() => {
-              navigation.navigate(ROUTE_NAME.BOOKMARK_SCREEN);
-            }}
             hideBorder
           />
         </ScrollView>

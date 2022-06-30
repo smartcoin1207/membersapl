@@ -32,7 +32,7 @@ import {AppSocket, AppNotification} from '@util';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
-  let {endConnect, init} = AppSocket;
+  let {endConnect, onHanleEvent} = AppSocket;
   let {initFB} = AppNotification;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
@@ -58,7 +58,7 @@ const ListChat = () => {
   useEffect(() => {
     initFB();
     if (user?.id) {
-      init();
+      onHanleEvent();
       dispatch(getUserInfo(user?.id));
     }
     const backAction = () => {

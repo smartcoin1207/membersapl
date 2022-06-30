@@ -20,6 +20,7 @@ import {
   icon5,
   icon6,
   iconBookmark,
+  iconPin
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -59,14 +60,15 @@ const MenuFeature = React.memo((props: any) => {
       isShow: true,
     },
     {
-      id: 10,
+      id: 12,
       sourceImage: menuPinChat,
       name: 'ブックマーク',
       style: {
-        width: scale(22),
-        height: scale(22),
+        width: scale(21),
+        height: scale(21),
+        tintColor: '#FFFFFF'
       },
-      isShow: msg_type !== 1 ? true : false,
+      isShow: true
     },
     {
       id: 11,
@@ -79,15 +81,15 @@ const MenuFeature = React.memo((props: any) => {
       isShow: userId == user_id ? true : false,
     },
     {
-      id: 12,
-      sourceImage: iconBookmark,
-      name: '保存',
+      id: 10,
+      sourceImage: iconPin,
+      name: 'ピン留め',
       style: {
-        width: scale(21),
-        height: scale(21),
+        width: scale(22),
+        height: scale(22),
         tintColor: '#FFFFFF'
       },
-      isShow: true
+      isShow: msg_type !== 1 ? true : false,
     },
   ];
 
