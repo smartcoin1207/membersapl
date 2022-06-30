@@ -9,11 +9,16 @@ import {store} from '../redux/store';
 import {EVENT_SOCKET, SOCKET_CONFIG} from '@util';
 
 function createAppSocket() {
-  const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  //socket no auth
+  // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  //socket with auth
+  const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
 
   const init = () => {
     socket.connect();
   };
+
+  socket.on(EVENT_SOCKET.CONNECT, () => {console.log('CONNECTED')});
 
   socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, data => {
     const state = store.getState();
