@@ -6,17 +6,18 @@ import {iconSearch} from '@images';
 import {debounce} from 'lodash';
 import {useSelector} from 'react-redux';
 import {Item} from './component/Item';
-import {getDetailChatApi} from '@services';
+import {getDetailChatApi, listBookmark, deleteBookmark} from '@services';
 import {useDispatch} from 'react-redux';
 import {fetchResultMessageAction} from '@redux';
-
-const idRoomChat = 1;
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {showMessage} from 'react-native-flash-message';
 
 const Bookmark = (props: any) => {
+  const navigation = useNavigation<any>();
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const dispatch = useDispatch();
   const {route} = props;
-  const [key, setKey] = useState<string>('');
   const [listMessage, setList] = useState([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
@@ -24,48 +25,30 @@ const Bookmark = (props: any) => {
 
   const callApiSearch = async (params: any) => {
     try {
-      if (params?.key?.length > 0) {
-        const res = await getDetailChatApi(params);
-        setTotal(res?.data?.room_messages?.paging?.total);
-        setLastPage(res?.data?.room_messages?.paging?.last_page);
-        setList(
-          params?.page === 1
-            ? res?.data?.room_messages?.data
-            : listMessage.concat(res?.data?.room_messages?.data),
-        );
-      } else {
-        setLastPage(null);
-        setList([]);
-        setPage(1);
-        setTotal(null);
-      }
+      const res = await listBookmark(params);
+      setTotal(res?.data?.bookmark_messages?.paging?.total);
+      setLastPage(res?.data?.bookmark_messages?.paging?.last_page);
+      setList(
+        params?.page === 1
+          ? res?.data?.bookmark_messages?.data
+          : listMessage.concat(res?.data?.bookmark_messages?.data),
+      );
     } catch (error: any) {}
   };
 
-  const debounceText = useCallback(
-    debounce(text => {
-      setPage(1);
-      const params = {
-        id: idRoomChat,
-        page: 1,
-        key: text,
-      };
-      callApiSearch(params);
-    }, 500),
-    [],
-  );
-
-  const onChangeText = (text: any) => {
-    setKey(text);
-    debounceText(text);
-  };
+  useEffect(() => {
+    const params = {
+      page: 1,
+      idCompany: idCompany,
+    };
+    callApiSearch(params);
+  }, []);
 
   useEffect(() => {
     if (page > 1) {
       const params = {
-        id: idRoomChat,
         page: page,
-        key: key,
+        idCompany: idCompany,
       };
       callApiSearch(params);
     }
@@ -80,30 +63,39 @@ const Bookmark = (props: any) => {
   }, [page, lastPage]);
 
   const onClickItem = (value: any) => {
-    const body = {
-      id_room: idRoomChat,
-      id_message: value?.id,
-    };
-    dispatch(fetchResultMessageAction(body));
+    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+      idRoomChat: value?.room_id,
+      idMessageSearchListChat: value?.id,
+    });
+  };
+
+  const onDeleteItem = async (value: any) => {
+    try {
+      const res = await deleteBookmark(value?.id);
+      const params = {
+        page: 1,
+        idCompany: idCompany,
+      };
+      callApiSearch(params);
+      showMessage({
+        message: res?.data?.message,
+        type: 'success',
+      });
+    } catch (error: any) {}
   };
 
   const renderItem = ({item}: any) => (
-    <Item item={item} onClickItem={() => onClickItem(item)} />
+    <Item
+      item={item}
+      onClickItem={() => onClickItem(item)}
+      onDeleteItem={() => onDeleteItem(item)}
+    />
   );
 
   return (
     <View style={styles.container}>
       <Header title="ブックマーク" back imageCenter />
       <View style={styles.viewContent}>
-        <AppInput
-          placeholder="メッセージ内容を検索"
-          onChange={onChangeText}
-          value={key}
-          styleContainer={styles.containerSearch}
-          styleInput={styles.input}
-          icon={iconSearch}
-          styleIcon={styles.icon}
-        />
         {total ? (
           <View style={styles.viewRow}>
             <Text style={styles.txtTitleTotal}>結果: </Text>

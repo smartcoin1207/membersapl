@@ -1,13 +1,35 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext, defaultAvatar, iconPin} from '@images';
+import {
+  iconNext,
+  defaultAvatar,
+  iconPin,
+  iconPdf,
+  iconDoc,
+  iconXls,
+  iconFile,
+  iconDelete,
+} from '@images';
 import FastImage from 'react-native-fast-image';
 import {convertString} from '@util';
 
 const Item = React.memo((props: any) => {
-  const {item, onClickItem} = props;
+  const {item, onClickItem, onDeleteItem} = props;
+
+  const renderImgaeFile = useCallback((typeFile: any) => {
+    switch (typeFile) {
+      case '2':
+        return iconPdf;
+      case '5':
+        return iconDoc;
+      case '3':
+        return iconXls;
+      default:
+        return iconFile;
+    }
+  }, []);
 
   return (
     <TouchableOpacity style={styles.container} onPress={onClickItem}>
@@ -29,13 +51,47 @@ const Item = React.memo((props: any) => {
             <Text style={styles.txtContent} numberOfLines={1}>
               {item?.user_send?.last_name} {item?.user_send?.first_name}
             </Text>
-            <Text style={styles.txtTitle} numberOfLines={2}>
-              {convertString(item?.message)}
-            </Text>
+            {item?.message ? (
+              <Text style={styles.txtTitle} numberOfLines={2}>
+                {convertString(item?.message)}{' '}
+              </Text>
+            ) : null}
+            {item?.stamp_no ? (
+              <Image
+                style={
+                  item?.stamp_no == 1 ? styles.imageLike : styles.imageStamp
+                }
+                source={{uri: item?.stamp_icon}}
+              />
+            ) : null}
+            {item?.attachment_files?.length > 0 ? (
+              <View style={styles.viewRow}>
+                {item?.attachment_files?.map((item: any) => (
+                  <View key={item?.id}>
+                    {item?.type == 4 ? (
+                      <FastImage
+                        source={{uri: item?.path}}
+                        style={styles.imageSmall}
+                      />
+                    ) : (
+                      <Image
+                        source={renderImgaeFile(item?.type)}
+                        style={styles.imageFile}
+                      />
+                    )}
+                  </View>
+                ))}
+              </View>
+            ) : null}
             <Text style={styles.txtDate} numberOfLines={2}>
               {item?.created_at}
             </Text>
           </>
+        </View>
+        <View style={styles.viewDelete}>
+          <TouchableOpacity onPress={onDeleteItem}>
+            <Image source={iconDelete} style={styles.imageDelete} />
+          </TouchableOpacity>
         </View>
       </View>
     </TouchableOpacity>
@@ -61,7 +117,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   viewTxt: {
-    width: '80%',
+    width: '70%',
     justifyContent: 'center',
   },
   viewImageNext: {
@@ -114,6 +170,39 @@ const styles = StyleSheet.create({
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
     marginTop: verticalScale(3),
+  },
+  imageStamp: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+    marginHorizontal: moderateScale(2),
+  },
+  imageLike: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+    marginHorizontal: moderateScale(2),
+    tintColor: colors.primary,
+  },
+  viewRow: {
+    flexDirection: 'row',
+    marginTop: verticalScale(10),
+  },
+  imageSmall: {
+    width: moderateScale(30),
+    height: moderateScale(30),
+    borderRadius: moderateScale(4),
+    marginHorizontal: moderateScale(2),
+  },
+  imageFile: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+  },
+  viewDelete: {
+    width: '10%',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  imageDelete: {
+    tintColor: 'red',
   },
 });
 
