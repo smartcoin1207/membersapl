@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     height: scale(20),
   },
   itemFeature: {
-    marginHorizontal: scale(7),
+    marginHorizontal: scale(4),
     justifyContent: 'center',
     alignItems: 'center',
   },
