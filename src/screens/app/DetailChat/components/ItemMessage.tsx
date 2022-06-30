@@ -41,6 +41,7 @@ const ItemMessage = React.memo((props: any) => {
     pinMsg,
     replyMsg,
     editMsg,
+    bookmarkMsg,
     onReaction,
     navigatiteToListReaction,
     listUser,
@@ -118,6 +119,9 @@ const ItemMessage = React.memo((props: any) => {
           break;
         case 11:
           deleteMsg(_id);
+          break;
+        case 12:
+          bookmarkMsg(_id);
           break;
       }
     },

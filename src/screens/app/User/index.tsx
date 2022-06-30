@@ -18,6 +18,7 @@ import {
   iconEmail,
   iconPassword,
   iconCompany,
+  iconBookmark,
 } from '@images';
 import {ViewItem} from './components/ViewItem';
 import {ModalConfirm} from '@component';
@@ -169,6 +170,13 @@ const User = () => {
             title="クライアント選択"
             onPress={() => {
               navigation.navigate(ROUTE_NAME.SETTING_COMPANY);
+            }}
+          />
+          <ViewItem
+            sourceImage={iconBookmark}
+            title="ブックマーク"
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.BOOKMARK_SCREEN);
             }}
             hideBorder
           />

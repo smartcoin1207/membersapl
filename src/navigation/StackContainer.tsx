@@ -96,6 +96,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.DETAIL_VIDEO}
             component={screens.DetailVideo}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.BOOKMARK_SCREEN}
+            component={screens.Bookmark}
+          />
         </>
       );
     }

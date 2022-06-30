@@ -6,18 +6,19 @@ import {
   getDetailMessageSocketSeen,
 } from '@redux';
 import {store} from '../redux/store';
-import {EVENT_SOCKET} from '@util';
+import {EVENT_SOCKET, SOCKET_CONFIG} from '@util';
 
 function createAppSocket() {
-  const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', {
-    autoConnect: false,
-  });
-
+  const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  console.log('Cuong', socket);
   const init = () => {
     socket.connect();
   };
 
-  socket.on(EVENT_SOCKET.CONNECT, () => {});
+  socket.on(EVENT_SOCKET.CONNECT, data => {
+    console.log(data);
+  });
+
   socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, data => {
     const state = store.getState();
     if (data?.user_id !== state?.auth?.userInfo?.id) {
@@ -29,6 +30,10 @@ function createAppSocket() {
       store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
     }
   });
+
+  // socket.on("connect_error", (err) => {
+  //   console.log(`ERROR`, err);
+  // });
 
   socket.on(EVENT_SOCKET.CHAT_GROUP_UPDATE_IND, data => {
     const state = store.getState();

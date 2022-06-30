@@ -5,6 +5,7 @@ import {store} from '../redux/store';
 const api = axios.create();
 
 const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
+// const BASEURL = 'https://stage.mem-bers.jp/mobile'
 
 api.interceptors.request.use(
   async (config: any) => {

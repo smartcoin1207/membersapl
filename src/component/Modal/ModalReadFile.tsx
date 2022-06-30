@@ -41,10 +41,7 @@ const ModalReadFile = React.memo((prop: any) => {
         </View>
         <WebView
           source={{
-            uri:
-              Platform?.OS === 'ios'
-                ? data?.path
-                : `http://docs.google.com/gview?embedded=true&url=${data?.path}`,
+            uri: `http://docs.google.com/gview?embedded=true&url=${data?.path}`,
           }}
           style={styles.webview}
           javaScriptEnabled={true}
