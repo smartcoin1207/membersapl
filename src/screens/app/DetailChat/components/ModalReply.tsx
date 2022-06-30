@@ -17,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {saveMessageReply} from '@redux';
+import {convertString} from '@util';
 
 const ModalReply = React.memo(() => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const ModalReply = React.memo(() => {
         <Text style={styles.name}>返信メッセージ</Text>
         {messageReply?.text ? (
           <Text style={styles.content} numberOfLines={2}>
-            {messageReply?.text}
+            {convertString(messageReply?.text)}
           </Text>
         ) : null}
         {messageReply?.attachment_files?.length > 0 ? (

@@ -15,7 +15,12 @@ function createAppSocket() {
       token: store.getState()?.auth?.userInfo?.ws_token,
     },
   };
-  const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  //socket no auth
+  // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+  //socket with auth
+  const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
+
   const init = () => {
     socket.connect();
   };

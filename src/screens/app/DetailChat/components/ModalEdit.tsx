@@ -13,6 +13,7 @@ import FastImage from 'react-native-fast-image';
 import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {saveMessageEdit} from '@redux';
+import {convertString} from '@util';
 
 const ModalEdit = React.memo(() => {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const ModalEdit = React.memo(() => {
         <Text style={styles.name}>メッセージの編集</Text>
         {message_edit?.text ? (
           <Text style={styles.content} numberOfLines={2}>
-            {message_edit?.text}
+            {convertString(message_edit?.text)}
           </Text>
         ) : (
           <View style={styles.viewRow}>
