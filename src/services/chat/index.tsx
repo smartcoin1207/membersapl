@@ -25,6 +25,8 @@ const GET_RESULT_SEARCH_MESSAGE = 'user/chat/room';
 const REGISTER_LAST_MESSAGE = 'user/chat/room';
 const GET_LIST_USER_SEEN = 'user/chat/room/list-users-seen';
 const GET_INVITE_LINK = 'user/chat/room/get-invitation-link';
+const SEARCH_MESSAGE_LIST_ROOM = 'user/chat/search-message';
+const ADD_BOOKMARK = 'user/chat/room/bookmark';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -168,5 +170,17 @@ export const getListUserSeen: any = async (id: any) => {
 
 export const getInviteLink: any = async (body: any) => {
   const response = api.post(GET_INVITE_LINK, body);
+  return response;
+};
+
+export const searchMessageListRoom: any = async (body: any) => {
+  const response = api.get(
+    `${SEARCH_MESSAGE_LIST_ROOM}?key=${body.key}&page=${body?.page}&company_id=${body.idCompany}`,
+  );
+  return response;
+};
+
+export const addBookmark: any = async (id: any) => {
+  const response = api.post(`${ADD_BOOKMARK}/${id}`);
   return response;
 };

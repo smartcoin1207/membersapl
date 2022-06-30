@@ -37,7 +37,10 @@ const Item = React.memo((props: any) => {
 
   const navigateDetail = async () => {
     await dispatch(saveIdRoomChat(item?.id));
-    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {idRoomChat: item?.id});
+    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+      idRoomChat: item?.id,
+      idMessageSearchListChat: null,
+    });
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {

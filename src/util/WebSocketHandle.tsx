@@ -10,14 +10,10 @@ import {EVENT_SOCKET, SOCKET_CONFIG} from '@util';
 
 function createAppSocket() {
   const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
-  console.log('Cuong', socket);
+
   const init = () => {
     socket.connect();
   };
-
-  socket.on(EVENT_SOCKET.CONNECT, data => {
-    console.log(data);
-  });
 
   socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, data => {
     const state = store.getState();
@@ -30,10 +26,6 @@ function createAppSocket() {
       store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
     }
   });
-
-  // socket.on("connect_error", (err) => {
-  //   console.log(`ERROR`, err);
-  // });
 
   socket.on(EVENT_SOCKET.CHAT_GROUP_UPDATE_IND, data => {
     const state = store.getState();

@@ -143,6 +143,36 @@ export function* fetchResultMessage(action: any) {
   }
 }
 
+export function* fetchResultMessageListRoom(action: any) {
+  try {
+    const body = {
+      id_room: action.payload.id_room,
+      id_message: action.payload.id_message,
+    };
+    const res: ResponseGenerator = yield getResultSearchMessage(body);
+    if (res?.code === 200) {
+      const param = {
+        id: action.payload.id_room,
+        page: res?.data.pages,
+      };
+      const result: ResponseGenerator = yield getDetailChatApi(param);
+      const valueSave = {
+        data: convertArrUnique(
+          res?.data?.room_messages?.data.concat(
+            result?.data?.room_messages?.data,
+          ),
+          'id',
+        ),
+        paging: result?.data?.room_messages?.paging,
+      };
+      yield put(fetchResultMessageSuccess(valueSave));
+      yield put(saveIdMessageSearch(action.payload.id_message));
+    }
+  } catch (error) {
+  } finally {
+  }
+}
+
 function* updateMessageSeenSaga(action: any) {
   const state = store.getState();
   const user_id = state?.auth?.userInfo.id;
@@ -201,6 +231,10 @@ export function* chatSaga() {
     getDetailMessageSagaCurrent,
   );
   yield takeEvery(typeChat.FETCH_RESULT_SEARCH_MESSAGE, fetchResultMessage);
+  yield takeEvery(
+    typeChat.FETCH_RESULT_SEARCH_MESSAGE_LIST_ROOM,
+    fetchResultMessageListRoom,
+  );
   yield takeEvery(typeChat.UPDATE_MESSAGE_SEEN, updateMessageSeenSaga);
   yield takeEvery(
     typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN,

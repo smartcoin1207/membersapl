@@ -32,6 +32,7 @@ const iconDetail = require('./IconDetail.png');
 const iconCompany = require('./IconCompany.png');
 const iconDowload = require('./IconDowload.png');
 const iconBookmark = require('./IconBookmark.png');
+const iconNetWorkErr = require('./netWorkErr.jpg');
 
 export {
   iconBack,
@@ -68,4 +69,5 @@ export {
   iconCompany,
   iconDowload,
   iconBookmark,
+  iconNetWorkErr,
 };
