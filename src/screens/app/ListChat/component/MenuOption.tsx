@@ -10,7 +10,7 @@ const MenuOption = React.memo((props: any) => {
       <TouchableOpacity
         style={[styles.button, {borderBottomWidth: 1, borderColor: '#DDDDDD'}]}
         onPress={onSearchRoom}>
-        <Text style={styles.txtTitle}>グループ名</Text>
+        <Text style={styles.txtTitle}>グループ名で検索</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={onSearchMessage}>
         <Text style={styles.txtTitle}>メッセージ内容を検索</Text>

@@ -145,7 +145,7 @@ const ListChat = () => {
       <View style={styles.viewContent}>
         <AppInput
           ref={refInput}
-          placeholder="メッセージ内容を検索"
+          placeholder="グループ名、メッセージ内容を検索"
           onChange={onChangeText}
           value={key}
           styleContainer={styles.containerSearch}
