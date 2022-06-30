@@ -13,21 +13,30 @@ import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 import {iconSearch} from '@images';
 import {ItemSearchMessage} from './ItemSearch';
 import {debounce} from 'lodash';
-import {getDetailChatApi} from '@services';
+import {searchMessageListRoom} from '@services';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {useSelector} from 'react-redux';
 
 const width = Dimensions.get('window').width;
-const idRoomChat = 1;
 
 const ModalSearchMessage = React.memo((prop: any) => {
+  const navigation = useNavigation<any>();
   const {visible, onClose} = prop;
-
+  const idCompany = useSelector((state: any) => state.chat.idCompany);
   const [key, setKey] = useState<string>('');
   const [listMessage, setList] = useState([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [page, setPage] = useState(1);
 
-  const onClickItem = (value: any) => {};
+  const onClickItem = (value: any) => {
+    onClose();
+    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+      idRoomChat: value?.room_id,
+      idMessageSearchListChat: value?.id,
+    });
+  };
 
   const renderItem = ({item}: any) => (
     <ItemSearchMessage item={item} onClickItem={() => onClickItem(item)} />
@@ -36,13 +45,13 @@ const ModalSearchMessage = React.memo((prop: any) => {
   const callApiSearch = async (params: any) => {
     try {
       if (params?.key?.length > 0) {
-        const res = await getDetailChatApi(params);
-        setTotal(res?.data?.room_messages?.paging?.total);
-        setLastPage(res?.data?.room_messages?.paging?.last_page);
+        const res = await searchMessageListRoom(params);
+        setTotal(res?.data?.search_messages?.paging?.total);
+        setLastPage(res?.data?.search_messages?.paging?.last_page);
         setList(
           params?.page === 1
-            ? res?.data?.room_messages?.data
-            : listMessage.concat(res?.data?.room_messages?.data),
+            ? res?.data?.search_messages?.data
+            : listMessage.concat(res?.data?.search_messages?.data),
         );
       } else {
         setLastPage(null);
@@ -57,9 +66,9 @@ const ModalSearchMessage = React.memo((prop: any) => {
     debounce(text => {
       setPage(1);
       const params = {
-        id: idRoomChat,
         page: 1,
         key: text,
+        idCompany: idCompany,
       };
       callApiSearch(params);
     }, 500),
@@ -74,9 +83,9 @@ const ModalSearchMessage = React.memo((prop: any) => {
   useEffect(() => {
     if (page > 1) {
       const params = {
-        id: idRoomChat,
         page: page,
         key: key,
+        idCompany: idCompany,
       };
       callApiSearch(params);
     }

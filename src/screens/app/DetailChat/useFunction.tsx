@@ -11,6 +11,7 @@ import {
   saveMessageEdit,
   editMessageAction,
   updateMessageSeen,
+  fetchResultMessageActionListRoom,
 } from '@redux';
 import {
   deleteMessageApi,
@@ -23,6 +24,7 @@ import {
   sendReactionApi,
   sendLabelApi,
   getListUser,
+  addBookmark,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -51,7 +53,7 @@ export const useFunction = (props: any) => {
 
   const dispatch = useDispatch();
   const {route} = props;
-  const {idRoomChat} = route?.params;
+  const {idRoomChat, idMessageSearchListChat} = route?.params;
   const [visible, setVisible] = useState(false);
   const [dataDetail, setData] = useState<any>(null);
   const [page, setPage] = useState<any>(1);
@@ -60,6 +62,18 @@ export const useFunction = (props: any) => {
   const [text, setText] = useState('');
   const [showTagModal, setShowTag] = useState(false);
   const [listUser, setListUser] = useState([]);
+
+  useEffect(() => {
+    if (idMessageSearchListChat) {
+      setTimeout(() => {
+        const body = {
+          id_room: idRoomChat,
+          id_message: idMessageSearchListChat,
+        };
+        dispatch(fetchResultMessageActionListRoom(body));
+      }, 1000);
+    }
+  }, [idMessageSearchListChat]);
 
   const navigateToMessage = useCallback(
     idMessageSearch => {
@@ -572,8 +586,17 @@ export const useFunction = (props: any) => {
 
   const bookmarkMessage = useCallback((data: any) => {
     try {
+      GlobalService.showLoading();
+      const rest = addBookmark(data);
+      GlobalService.hideLoading();
+      showMessage({
+        message: 'ブックマークが正常に追加されました',
+        type: 'success',
+      });
     } catch {
-      (error: any) => {};
+      (error: any) => {
+        GlobalService.hideLoading();
+      };
     }
   }, []);
 

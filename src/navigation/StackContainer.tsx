@@ -29,6 +29,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
             name={ROUTE_NAME.FORGOT_PASSWORD}
             component={screens.ForgotPassword}
           />
+          <Stack.Screen
+            name={ROUTE_NAME.NETWORK_ERR}
+            component={screens.NetworkErr}
+          />
         </>
       );
     } else {
@@ -99,6 +103,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
           <Stack.Screen
             name={ROUTE_NAME.BOOKMARK_SCREEN}
             component={screens.Bookmark}
+          />
+          <Stack.Screen
+            name={ROUTE_NAME.NETWORK_ERR}
+            component={screens.NetworkErr}
           />
         </>
       );

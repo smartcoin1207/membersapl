@@ -2,6 +2,9 @@ import axios from 'axios';
 import {describeSuccessResponse, describeErrorResponse} from './logger';
 import {showMessage} from 'react-native-flash-message';
 import {store} from '../redux/store';
+import {NavigationUtils} from '@navigation';
+import {ROUTE_NAME} from '@routeName';
+
 const api = axios.create();
 
 const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
@@ -39,10 +42,14 @@ api.interceptors.response.use(
   },
   function (error) {
     const {message} = error?.response?.data;
-    showMessage({
-      message: message ? message : 'Network Error',
-      type: 'danger',
-    });
+    if (error?.response?.data?.code === 503) {
+      NavigationUtils.navigate(ROUTE_NAME.NETWORK_ERR);
+    } else {
+      showMessage({
+        message: message ? message : 'Network Error',
+        type: 'danger',
+      });
+    }
     describeErrorResponse(error);
     return Promise.reject(error);
   },
