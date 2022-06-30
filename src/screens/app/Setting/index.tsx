@@ -123,7 +123,7 @@ const Setting = () => {
             sourceImage={iconBook}
             content="使い方"
             onPress={() => {
-              Linking.openURL('https://mem-bers.jp/term');
+              Linking.openURL('https://manual.mem-bers.jp');
             }}
           />
           <ViewItem
