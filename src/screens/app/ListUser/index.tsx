@@ -52,7 +52,7 @@ const ListUser = (props: any) => {
         to_info: null,
         level: result?.data?.data?.msg_level,
         message_id: result?.data?.data?.id,
-        message_type: result?.data?.data?.type,
+        message_type: result?.data?.data?.msg_type,
         method: result?.data?.data?.method,
         // attachment_files: res?.data?.attachmentFiles,
         stamp_no: result?.data?.data?.stamp_no,
