@@ -308,13 +308,13 @@ const InfoRoomChat = (props: any) => {
                 onCancelModalLink();
               }}
             />
-            <ViewItem
+            {/* <ViewItem
               sourceImage={iconDocument}
               content="メディア・ファイル・URL"
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.LIST_FILE_IN_ROOM);
               }}
-            />
+            /> */}
             <ViewItem
               sourceImage={iconUser}
               content="メンバー"
