@@ -23,6 +23,7 @@ import {SettingCompany} from './app/SettingCompany';
 import {DetailVideo} from './app/DetailVideo';
 import {Bookmark} from './app/Bookmark';
 import {NetworkErr} from './app/NetworkErr';
+import {ListFileInRoom} from './app/ListFileInRoom';
 
 const screens = {
   //auth
@@ -49,6 +50,7 @@ const screens = {
   DetailVideo,
   Bookmark,
   NetworkErr,
+  ListFileInRoom,
 };
 
 export {screens};

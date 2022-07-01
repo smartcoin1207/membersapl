@@ -31,6 +31,7 @@ export function* logOutSaga(action: any) {
     const result: ResponseGenerator = yield logOutApi();
     yield put(saveToken(null));
     yield put(saveIdCompany(null));
+    yield put(saveInfoUser(null));
     yield NavigationUtils.navigate(ROUTE_NAME.LOGIN);
   } catch (error) {
   } finally {

@@ -126,6 +126,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         detailChat: dataNew?.concat(dataSeen),
       };
+    case typeChat.IS_GET_INFO_ROOM:
+      return {
+        ...state,
+        isGetInfoRoom: action.payload,
+      };
     default:
       return state;
   }

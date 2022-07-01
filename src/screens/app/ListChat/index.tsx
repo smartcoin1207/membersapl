@@ -27,22 +27,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import {ModalSearchMessage} from './component/ModalSearchMessage';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
-
-import {AppSocket, AppNotification} from '@util';
-
-import {io, Socket} from 'socket.io-client';
-import {
-  getDetailMessageSocket,
-  getDetailMessageSocketCurrent,
-  getDetailMessageSocketSeen,
-} from '@redux';
-
-import {EVENT_SOCKET} from '@util';
-import {store} from '../../../redux/store';
+import {AppNotification} from '@util';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
-  let {endConnect, onHanleEvent} = AppSocket;
   let {initFB} = AppNotification;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
@@ -68,7 +56,6 @@ const ListChat = () => {
   useEffect(() => {
     initFB();
     if (user?.id) {
-      // onHanleEvent();
       dispatch(getUserInfo(user?.id));
     }
     const backAction = () => {

@@ -18,7 +18,11 @@ const Item = React.memo((props: any) => {
               style={styles.image}
               source={
                 item?.user_send?.icon_image
-                  ? {uri: item?.user_send?.icon_image}
+                  ? {
+                      uri: item?.user_send?.icon_image,
+                      priority: FastImage.priority.normal,
+                      cache: FastImage.cacheControl.immutable,
+                    }
                   : defaultAvatar
               }
             />

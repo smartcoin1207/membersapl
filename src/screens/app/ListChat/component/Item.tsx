@@ -81,7 +81,11 @@ const Item = React.memo((props: any) => {
                 source={
                   item?.one_one_check?.length > 0 &&
                   item?.one_one_check[0]?.icon_image
-                    ? {uri: item?.one_one_check[0]?.icon_image}
+                    ? {
+                        uri: item?.one_one_check[0]?.icon_image,
+                        priority: FastImage.priority.normal,
+                        cache: FastImage.cacheControl.immutable,
+                      }
                     : defaultAvatar
                 }
               />
@@ -96,7 +100,13 @@ const Item = React.memo((props: any) => {
               <FastImage
                 style={styles.image}
                 source={
-                  item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
+                  item?.icon_image
+                    ? {
+                        uri: item?.icon_image,
+                        priority: FastImage.priority.normal,
+                        cache: FastImage.cacheControl.immutable,
+                      }
+                    : defaultAvatar
                 }
               />
               {item?.online_status === true ? (
@@ -120,7 +130,11 @@ const Item = React.memo((props: any) => {
                   <View key={item?.id}>
                     {item?.type == 4 ? (
                       <FastImage
-                        source={{uri: item?.path}}
+                        source={{
+                          uri: item?.path,
+                          priority: FastImage.priority.normal,
+                          cache: FastImage.cacheControl.immutable,
+                        }}
                         style={styles.imageSmall}
                       />
                     ) : (

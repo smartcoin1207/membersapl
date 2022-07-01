@@ -144,7 +144,11 @@ const MsgFile = React.memo((props: any) => {
                 viewImage();
               }}>
               <FastImage
-                source={{uri: item?.path}}
+                source={{
+                  uri: item?.path,
+                  priority: FastImage.priority.normal,
+                  cache: FastImage.cacheControl.immutable,
+                }}
                 style={styles.image}
                 resizeMode="cover"
               />

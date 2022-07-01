@@ -227,7 +227,11 @@ const ItemMessage = React.memo((props: any) => {
                   <View style={styles.viewAvatar}>
                     <FastImage
                       style={styles.image}
-                      source={{uri: user?.avatar}}
+                      source={{
+                        uri: user?.avatar,
+                        priority: FastImage.priority.normal,
+                        cache: FastImage.cacheControl.immutable,
+                      }}
                     />
                     <View style={{flex: 1}} />
                   </View>
@@ -235,7 +239,11 @@ const ItemMessage = React.memo((props: any) => {
                 <>
                   {msg_type == 1 ? (
                     <FastImage
-                      source={{uri: stamp_icon}}
+                      source={{
+                        uri: stamp_icon,
+                        priority: FastImage.priority.normal,
+                        cache: FastImage.cacheControl.immutable,
+                      }}
                       style={
                         stamp_no === 1
                           ? styles.imageStamp
@@ -270,7 +278,12 @@ const ItemMessage = React.memo((props: any) => {
                                   <View key={item?.id}>
                                     {item?.type == 4 ? (
                                       <FastImage
-                                        source={{uri: item?.path}}
+                                        source={{
+                                          uri: item?.path,
+                                          priority: FastImage.priority.normal,
+                                          cache:
+                                            FastImage.cacheControl.immutable,
+                                        }}
                                         style={styles.imageSmall}
                                       />
                                     ) : (
@@ -287,6 +300,8 @@ const ItemMessage = React.memo((props: any) => {
                               <FastImage
                                 source={{
                                   uri: reply_to_message_stamp?.stamp_icon,
+                                  priority: FastImage.priority.normal,
+                                  cache: FastImage.cacheControl.immutable,
                                 }}
                                 style={
                                   reply_to_message_stamp?.stamp_no == 1

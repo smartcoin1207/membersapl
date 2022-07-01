@@ -12,6 +12,7 @@ import {
   editMessageAction,
   updateMessageSeen,
   fetchResultMessageActionListRoom,
+  isGetInfoRoom,
 } from '@redux';
 import {
   deleteMessageApi,
@@ -51,6 +52,7 @@ export const useFunction = (props: any) => {
   const idMessageSearch = useSelector(
     (state: any) => state.chat?.id_messageSearch,
   );
+  const isGetInfoRoom = useSelector((state: any) => state.chat?.isGetInfoRoom);
 
   const dispatch = useDispatch();
   const {route} = props;
@@ -152,8 +154,15 @@ export const useFunction = (props: any) => {
     try {
       const response = await detailRoomchat(idRoomChat);
       setData(response?.data?.room);
+      dispatch(isGetInfoRoom(false));
     } catch {}
   };
+
+  useEffect(() => {
+    if(isGetInfoRoom === true){
+      getDetail();
+    }
+  }, [isGetInfoRoom])
 
   useFocusEffect(
     useCallback(() => {
@@ -215,7 +224,6 @@ export const useFunction = (props: any) => {
     async mes => {
       setShowTag(false);
       setShowModalStamp(false);
-      console.log('SOCKET GỬI', socket)
       if (messageReply) {
         try {
           const data = new FormData();

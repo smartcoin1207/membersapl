@@ -4,6 +4,7 @@ import {
   getDetailMessageSocket,
   getDetailMessageSocketCurrent,
   getDetailMessageSocketSeen,
+  isGetInfoRoom,
 } from '@redux';
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
@@ -11,12 +12,13 @@ import {EVENT_SOCKET} from '@util';
 //socket no auth
 // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
 //socket with auth
-// const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
+// const socket = io('https://v3mbs-msg01.mem-bers.jp', SOCKET_CONFIG);
+
+let socket = io('', {
+  autoConnect: false,
+});
 
 function createAppSocket() {
-  let socket = io('', {
-    autoConnect: false,
-  });
   const init = (token?: string) => {
     let SOCKET_CONFIG = {
       autoConnect: false,
@@ -48,9 +50,15 @@ function createAppSocket() {
     socket.on(EVENT_SOCKET.CHAT_GROUP_UPDATE_IND, (data: any) => {
       const state = store.getState();
       if (data?.member_info?.ids?.includes(state?.auth?.userInfo?.id)) {
-        store.dispatch(
-          getRoomList({company_id: state?.chat?.idCompany, search: null}),
-        );
+        if (data?.room_id == state?.chat?.id_roomChat) {
+          if (data?.member_info?.type === 5) {
+            store?.dispatch(isGetInfoRoom(true));
+          }
+        } else {
+          store.dispatch(
+            getRoomList({company_id: state?.chat?.idCompany, search: null}),
+          );
+        }
       } else {
       }
     });
@@ -75,9 +83,9 @@ function createAppSocket() {
     socket.disconnect();
   };
 
-  const getSocket = () =>{
+  const getSocket = () => {
     return socket;
-  }
+  };
 
   return {
     init,

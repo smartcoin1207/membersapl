@@ -12,7 +12,7 @@ const api = axios.create();
 //member chat staging api url
 const BASEURL = 'https://stage.mem-bers.jp/mobile';
 //member chat live api url
-// const BASEURL = 'https://v3mbs01.sense.co.jp/mobile';
+// const BASEURL = 'https://mem-bers.jp';
 
 api.interceptors.request.use(
   async (config: any) => {

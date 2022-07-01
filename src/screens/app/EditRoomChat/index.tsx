@@ -72,7 +72,7 @@ const EditRoomChat = (props: any) => {
         user_id: user_id,
         room_id: idRoomChat,
         member_info: {
-          type: 11,
+          type: 5,
           ids: convertDataUser(),
         },
       });
