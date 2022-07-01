@@ -52,7 +52,11 @@ const ModalEdit = React.memo(() => {
               <View key={item?.id}>
                 {item?.type == 4 ? (
                   <FastImage
-                    source={{uri: item?.path}}
+                    source={{
+                      uri: item?.path,
+                      priority: FastImage.priority.normal,
+                      cache: FastImage.cacheControl.immutable,
+                    }}
                     style={styles.imageSmall}
                   />
                 ) : (

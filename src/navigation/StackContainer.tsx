@@ -18,7 +18,6 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
   let token = useSelector((state: any) => state?.auth?.token);
   let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
   React.useEffect(() => {
-    console.log(ws_token);
     if (ws_token) {
       init(ws_token);
       return () => {
@@ -114,6 +113,10 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
           <Stack.Screen
             name={ROUTE_NAME.NETWORK_ERR}
             component={screens.NetworkErr}
+          />
+          <Stack.Screen
+            name={ROUTE_NAME.LIST_FILE_IN_ROOM}
+            component={screens.ListFileInRoom}
           />
         </>
       );

@@ -92,19 +92,24 @@ export const fetchResultMessageSuccess = (payload: any) => ({
 export const saveIdMessageSearch = (payload: any) => ({
   type: typeChat.SAVE_MESSAGE_SEARCH,
   payload,
-})
+});
 
 export const updateMessageSeen = (payload: any) => ({
   type: typeChat.UPDATE_MESSAGE_SEEN,
   payload,
-})
+});
 
 export const getDetailMessageSocketSeen = (payload: any) => ({
   type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN,
   payload,
-})
+});
 
 export const getDetailMessageSocketSeenSuccess = (payload: any) => ({
   type: typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN_SUCCESS,
   payload,
-})
+});
+
+export const isGetInfoRoom = (payload: any) => ({
+  type: typeChat.IS_GET_INFO_ROOM,
+  payload,
+});

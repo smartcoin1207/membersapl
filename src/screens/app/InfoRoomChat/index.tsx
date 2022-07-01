@@ -20,6 +20,7 @@ import {
   iconLogout,
   iconPin,
   iconUpload,
+  iconDocument,
 } from '@images';
 import {ViewItem} from './components/ViewItem';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
@@ -80,7 +81,7 @@ const InfoRoomChat = (props: any) => {
         user_id: user_id,
         room_id: idRoomChat,
         member_info: {
-          type: 11,
+          type: 5,
           ids: convertDataUser(),
         },
       });
@@ -183,7 +184,7 @@ const InfoRoomChat = (props: any) => {
         user_id: user_id,
         room_id: idRoomChat,
         member_info: {
-          type: 11,
+          type: 5,
           ids: convertDataUser(),
         },
       });
@@ -214,7 +215,11 @@ const InfoRoomChat = (props: any) => {
                   <>
                     {dataDetail?.one_one_check[0]?.icon_image ? (
                       <FastImage
-                        source={{uri: dataDetail?.one_one_check[0]?.icon_image}}
+                        source={{
+                          uri: dataDetail?.one_one_check[0]?.icon_image,
+                          priority: FastImage.priority.normal,
+                          cache: FastImage.cacheControl.immutable,
+                        }}
                         style={styles.avatar}
                         resizeMode="cover"
                       />
@@ -226,7 +231,11 @@ const InfoRoomChat = (props: any) => {
                   <>
                     {dataDetail?.icon_image ? (
                       <FastImage
-                        source={{uri: dataDetail?.icon_image}}
+                        source={{
+                          uri: dataDetail?.icon_image,
+                          priority: FastImage.priority.normal,
+                          cache: FastImage.cacheControl.immutable,
+                        }}
                         style={styles.avatar}
                         resizeMode="cover"
                       />
@@ -297,6 +306,13 @@ const InfoRoomChat = (props: any) => {
               content="チャット招待リンク"
               onClick={() => {
                 onCancelModalLink();
+              }}
+            />
+            <ViewItem
+              sourceImage={iconDocument}
+              content="メディア・ファイル・URL"
+              onClick={() => {
+                navigation.navigate(ROUTE_NAME.LIST_FILE_IN_ROOM);
               }}
             />
             <ViewItem

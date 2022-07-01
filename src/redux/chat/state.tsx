@@ -9,6 +9,7 @@ export type ChatState = {
   messageReply: any;
   messageEdit: any;
   id_messageSearch: any;
+  isGetInfoRoom: boolean;
 };
 
 export const INITIAL_STATE_CHAT: ChatState = {
@@ -22,4 +23,5 @@ export const INITIAL_STATE_CHAT: ChatState = {
   messageEdit: null,
   pagingListRoom: null,
   id_messageSearch: null,
+  isGetInfoRoom: false,
 };

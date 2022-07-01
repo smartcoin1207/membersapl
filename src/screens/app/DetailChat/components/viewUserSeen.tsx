@@ -11,7 +11,15 @@ const ViewUserSeen = React.memo((props: any) => {
       {index <= 6 ? (
         <FastImage
           style={styles.container}
-          source={item?.icon_image ? {uri: item?.icon_image} : defaultAvatar}
+          source={
+            item?.icon_image
+              ? {
+                  uri: item?.icon_image,
+                  priority: FastImage.priority.normal,
+                  cache: FastImage.cacheControl.immutable,
+                }
+              : defaultAvatar
+          }
         />
       ) : null}
     </>

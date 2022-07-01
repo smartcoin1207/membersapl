@@ -45,7 +45,15 @@ const ModalTagName = React.memo((props: any) => {
   const renderItem = ({item}: any) => (
     <TouchableOpacity style={styles.viewItem} onPress={() => onChoseUser(item)}>
       <FastImage
-        source={item?.icon_image ? {uri: item?.icon_image} : defaultAvatar}
+        source={
+          item?.icon_image
+            ? {
+                uri: item?.icon_image,
+                priority: FastImage.priority.normal,
+                cache: FastImage.cacheControl.immutable,
+              }
+            : defaultAvatar
+        }
         style={styles.image}
       />
       <Text style={styles.txtTitle} numberOfLines={2}>

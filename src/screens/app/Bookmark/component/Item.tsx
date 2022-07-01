@@ -40,7 +40,11 @@ const Item = React.memo((props: any) => {
               style={styles.image}
               source={
                 item?.user_send?.icon_image
-                  ? {uri: item?.user_send?.icon_image}
+                  ? {
+                      uri: item?.user_send?.icon_image,
+                      priority: FastImage.priority.normal,
+                      cache: FastImage.cacheControl.immutable,
+                    }
                   : defaultAvatar
               }
             />
@@ -70,7 +74,11 @@ const Item = React.memo((props: any) => {
                   <View key={item?.id}>
                     {item?.type == 4 ? (
                       <FastImage
-                        source={{uri: item?.path}}
+                        source={{
+                          uri: item?.path,
+                          priority: FastImage.priority.normal,
+                          cache: FastImage.cacheControl.immutable,
+                        }}
                         style={styles.imageSmall}
                       />
                     ) : (
