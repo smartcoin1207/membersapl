@@ -29,7 +29,8 @@ const CreateRoomChat = (props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
 
   const {typeScreen, idRoomchat} = route?.params;
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
 
   const [name, setName] = useState<any>(null);
   const [listUser, setListUser] = useState<any>([]);

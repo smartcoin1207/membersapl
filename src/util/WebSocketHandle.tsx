@@ -8,16 +8,15 @@ import {
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
 
-let socket = io('', {
-  autoConnect: false,
-});
-
 //socket no auth
 // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
 //socket with auth
 // const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
 
 function createAppSocket() {
+  let socket = io('', {
+    autoConnect: false,
+  });
   const init = (token?: string) => {
     let SOCKET_CONFIG = {
       autoConnect: false,
@@ -25,7 +24,6 @@ function createAppSocket() {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-
     socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
     onHanleEvent(socket);
@@ -77,10 +75,14 @@ function createAppSocket() {
     socket.disconnect();
   };
 
+  const getSocket = () =>{
+    return socket;
+  }
+
   return {
     init,
     endConnect,
-    socket,
+    getSocket,
     onHanleEvent,
   };
 }

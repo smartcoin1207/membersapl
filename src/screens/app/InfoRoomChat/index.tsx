@@ -39,7 +39,8 @@ const InfoRoomChat = (props: any) => {
   const {idRoomChat} = route?.params;
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const navigation = useNavigation<any>();
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
   const [dataDetail, setData] = useState<any>(null);
   const [activePin, setActivePin] = useState<any>(false);
   const [modal, setModal] = useState<boolean>(false);

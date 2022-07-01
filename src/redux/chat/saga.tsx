@@ -176,7 +176,8 @@ export function* fetchResultMessageListRoom(action: any) {
 function* updateMessageSeenSaga(action: any) {
   const state = store.getState();
   const user_id = state?.auth?.userInfo.id;
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
   try {
     const body = {
       id_room: action.payload.id_room,
