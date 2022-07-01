@@ -8,34 +8,34 @@ import {
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
 
-let socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443');
+let socket = io('', {
+  autoConnect: false,
+});
+
+//socket no auth
+// const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+//socket with auth
+// const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
 
 function createAppSocket() {
-  //socket no auth
-  // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
-  //socket with auth
-  // const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
-
   const init = (token?: string) => {
-    
     let SOCKET_CONFIG = {
       autoConnect: false,
       auth: {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    
+
     socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
-    console.log
-    setTimeout(() => {}, 2000);
+    onHanleEvent(socket);
   };
 
-  const onHanleEvent = () => {
+  const onHanleEvent = (socket: any) => {
     socket.on(EVENT_SOCKET.CONNECT, () => {
       console.log('CONNECTED', socket);
     });
-    socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, data => {
+    socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, (data: any) => {
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.room_id == state?.chat?.id_roomChat) {
@@ -47,7 +47,7 @@ function createAppSocket() {
       }
     });
 
-    socket.on(EVENT_SOCKET.CHAT_GROUP_UPDATE_IND, data => {
+    socket.on(EVENT_SOCKET.CHAT_GROUP_UPDATE_IND, (data: any) => {
       const state = store.getState();
       if (data?.member_info?.ids?.includes(state?.auth?.userInfo?.id)) {
         store.dispatch(
@@ -57,7 +57,7 @@ function createAppSocket() {
       }
     });
 
-    socket.on(EVENT_SOCKET.NEW_MESSAGE_CONF, async data => {
+    socket.on(EVENT_SOCKET.NEW_MESSAGE_CONF, async (data: any) => {
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.room_id == state?.chat?.id_roomChat) {
