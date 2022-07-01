@@ -12,7 +12,8 @@ import {useSelector} from 'react-redux';
 const EditRoomChat = (props: any) => {
   const navigation = useNavigation<any>();
   const {route} = props;
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
   const {idRoomChat, dataDetail, type} = route?.params;
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const [name, setName] = useState<any>(dataDetail?.name);

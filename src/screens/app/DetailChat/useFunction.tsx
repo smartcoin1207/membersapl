@@ -35,7 +35,8 @@ import {Platform, Keyboard, Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 
 export const useFunction = (props: any) => {
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
 
   const giftedChatRef = useRef<any>(null);
   const navigation = useNavigation<any>();
@@ -214,6 +215,7 @@ export const useFunction = (props: any) => {
     async mes => {
       setShowTag(false);
       setShowModalStamp(false);
+      console.log('SOCKET GỬI', socket)
       if (messageReply) {
         try {
           const data = new FormData();

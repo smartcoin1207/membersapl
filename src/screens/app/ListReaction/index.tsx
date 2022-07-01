@@ -24,7 +24,8 @@ import {editMessageAction} from '@redux';
 import {AppSocket} from '@util';
 
 const ListReaction = (props: any) => {
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
   const {route} = props;
   const {id, room_id} = route?.params;
   const dispatch = useDispatch();

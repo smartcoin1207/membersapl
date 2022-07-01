@@ -38,7 +38,7 @@ import {
 } from '@redux';
 
 import {EVENT_SOCKET} from '@util';
-import { store } from '../../../redux/store';
+import {store} from '../../../redux/store';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
@@ -68,7 +68,7 @@ const ListChat = () => {
   useEffect(() => {
     initFB();
     if (user?.id) {
-      onHanleEvent();
+      // onHanleEvent();
       dispatch(getUserInfo(user?.id));
     }
     const backAction = () => {

@@ -20,7 +20,6 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
   React.useEffect(() => {
     console.log(ws_token);
     if (ws_token) {
-      console.log('========', ws_token);
       init(ws_token);
       return () => {
         endConnect();

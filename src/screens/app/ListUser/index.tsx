@@ -17,7 +17,8 @@ import {ROUTE_NAME} from '@routeName';
 const ListUser = (props: any) => {
   const dispatch = useDispatch();
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
-  const {socket} = AppSocket;
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
   const {route} = props;
   const {idRoomChat, dataDetail} = route?.params;
   const navigation = useNavigation<any>();
