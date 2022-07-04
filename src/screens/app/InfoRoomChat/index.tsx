@@ -308,7 +308,7 @@ const InfoRoomChat = (props: any) => {
                 onCancelModalLink();
               }}
             />
-            <ViewItem
+            {/* <ViewItem
               sourceImage={iconDocument}
               content="メディア・ファイル・URL"
               onClick={() => {
@@ -316,7 +316,7 @@ const InfoRoomChat = (props: any) => {
                   idRoom_chat: idRoomChat,
                 });
               }}
-            />
+            /> */}
             <ViewItem
               sourceImage={iconUser}
               content="メンバー"

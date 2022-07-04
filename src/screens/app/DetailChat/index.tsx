@@ -176,13 +176,13 @@ const DetailChat = (props: any) => {
         renderActionsRight={renderActionsRight}
         listViewProps={{
           scrollEventThrottle: 400,
-          onScroll: useCallback(({nativeEvent}: any) => {
+          onScroll: ({nativeEvent}: any) => {
             if (isCloseToTop(nativeEvent)) {
               onLoadMore();
             } else if (nativeEvent?.contentOffset?.y === 0) {
             }
-          }, []),
-          onScrollToIndexFailed: useCallback((info: any) => {
+          },
+          onScrollToIndexFailed: (info: any) => {
             if (info?.index >= 0) {
               const wait = new Promise(resolve => setTimeout(resolve, 500));
               wait.then(() => {
@@ -194,7 +194,7 @@ const DetailChat = (props: any) => {
                 );
               });
             }
-          }, []),
+          },
         }}
         textInputProps={{
           onKeyPress: ({nativeEvent}: any) => {

@@ -177,7 +177,11 @@ const ListChat = () => {
           }
         />
       </View>
-      <ModalSearchMessage visible={showSearchMessage} onClose={onCloseModal} />
+      <ModalSearchMessage
+        visible={showSearchMessage}
+        onClose={onCloseModal}
+        keySearch={key}
+      />
     </View>
   );
 };

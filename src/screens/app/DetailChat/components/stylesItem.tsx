@@ -173,6 +173,12 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(2),
     tintColor: colors.primary,
   },
+  txtNameSend:{
+    marginLeft: scale(34),
+    color: colors.border,
+    fontSize: moderateScale(10),
+    ...stylesCommon.fontWeight500,
+  }
 });
 
 export {styles};
