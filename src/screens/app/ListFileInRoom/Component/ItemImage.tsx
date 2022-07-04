@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
   Image,
 } from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -13,7 +14,7 @@ import FastImage from 'react-native-fast-image';
 const width_screen = Dimensions.get('window').width;
 
 const ItemImage = React.memo((props: any) => {
-  const {item} = props;
+  const {item, openFile} = props;
   const [loading, setLoading] = useState<any>(null);
 
   const onLoadStart = useCallback(() => {
@@ -25,11 +26,13 @@ const ItemImage = React.memo((props: any) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => openFile(item?.path)}>
       <FastImage
         style={styles.image}
         source={{
-          uri: item?.source,
+          uri: item?.path,
           priority: FastImage.priority.high,
         }}
         resizeMode="cover"
@@ -41,7 +44,7 @@ const ItemImage = React.memo((props: any) => {
           <ActivityIndicator color={colors.primary} size="small" />
         </View>
       ) : null}
-    </View>
+    </TouchableOpacity>
   );
 });
 

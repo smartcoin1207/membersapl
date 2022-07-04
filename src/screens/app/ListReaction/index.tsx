@@ -124,7 +124,7 @@ const ListReaction = (props: any) => {
               item?.user?.icon_image
                 ? {
                     uri: item?.user?.icon_image,
-                    priority: FastImage.priority.normal,
+                    priority: FastImage.priority.high,
                     cache: FastImage.cacheControl.immutable,
                   }
                 : defaultAvatar

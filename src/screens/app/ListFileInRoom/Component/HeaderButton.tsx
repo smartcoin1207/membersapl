@@ -2,7 +2,6 @@ import {colors, stylesCommon} from '@stylesCommon';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import {
-  verticalScale,
   moderateScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
@@ -20,12 +19,12 @@ const HeaderButton = React.memo((props: any) => {
       <TouchableOpacity
         style={active === 2 ? styles.buttonActive : styles.buttonInactive}
         onPress={() => onActive(2)}>
-        <Text style={styles.txtButton}>メディア</Text>
+        <Text style={styles.txtButton}>ファイル</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={active === 3 ? styles.buttonActive : styles.buttonInactive}
         onPress={() => onActive(3)}>
-        <Text style={styles.txtButton}>メディア</Text>
+        <Text style={styles.txtButton}>URL</Text>
       </TouchableOpacity>
     </View>
   );

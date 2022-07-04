@@ -229,7 +229,7 @@ const ItemMessage = React.memo((props: any) => {
                       style={styles.image}
                       source={{
                         uri: user?.avatar,
-                        priority: FastImage.priority.normal,
+                        priority: FastImage.priority.high,
                         cache: FastImage.cacheControl.immutable,
                       }}
                     />
@@ -241,7 +241,7 @@ const ItemMessage = React.memo((props: any) => {
                     <FastImage
                       source={{
                         uri: stamp_icon,
-                        priority: FastImage.priority.normal,
+                        priority: FastImage.priority.high,
                         cache: FastImage.cacheControl.immutable,
                       }}
                       style={
@@ -280,7 +280,7 @@ const ItemMessage = React.memo((props: any) => {
                                       <FastImage
                                         source={{
                                           uri: item?.path,
-                                          priority: FastImage.priority.normal,
+                                          priority: FastImage.priority.high,
                                           cache:
                                             FastImage.cacheControl.immutable,
                                         }}
@@ -300,7 +300,7 @@ const ItemMessage = React.memo((props: any) => {
                               <FastImage
                                 source={{
                                   uri: reply_to_message_stamp?.stamp_icon,
-                                  priority: FastImage.priority.normal,
+                                  priority: FastImage.priority.high,
                                   cache: FastImage.cacheControl.immutable,
                                 }}
                                 style={

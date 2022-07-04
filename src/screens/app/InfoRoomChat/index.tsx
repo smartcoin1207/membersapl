@@ -217,7 +217,7 @@ const InfoRoomChat = (props: any) => {
                       <FastImage
                         source={{
                           uri: dataDetail?.one_one_check[0]?.icon_image,
-                          priority: FastImage.priority.normal,
+                          priority: FastImage.priority.high,
                           cache: FastImage.cacheControl.immutable,
                         }}
                         style={styles.avatar}
@@ -233,7 +233,7 @@ const InfoRoomChat = (props: any) => {
                       <FastImage
                         source={{
                           uri: dataDetail?.icon_image,
-                          priority: FastImage.priority.normal,
+                          priority: FastImage.priority.high,
                           cache: FastImage.cacheControl.immutable,
                         }}
                         style={styles.avatar}
@@ -312,7 +312,9 @@ const InfoRoomChat = (props: any) => {
               sourceImage={iconDocument}
               content="メディア・ファイル・URL"
               onClick={() => {
-                navigation.navigate(ROUTE_NAME.LIST_FILE_IN_ROOM);
+                navigation.navigate(ROUTE_NAME.LIST_FILE_IN_ROOM, {
+                  idRoom_chat: idRoomChat,
+                });
               }}
             />
             <ViewItem

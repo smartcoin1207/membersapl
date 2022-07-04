@@ -146,7 +146,7 @@ const MsgFile = React.memo((props: any) => {
               <FastImage
                 source={{
                   uri: item?.path,
-                  priority: FastImage.priority.normal,
+                  priority: FastImage.priority.high,
                   cache: FastImage.cacheControl.immutable,
                 }}
                 style={styles.image}

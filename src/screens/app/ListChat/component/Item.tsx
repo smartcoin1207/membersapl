@@ -83,7 +83,7 @@ const Item = React.memo((props: any) => {
                   item?.one_one_check[0]?.icon_image
                     ? {
                         uri: item?.one_one_check[0]?.icon_image,
-                        priority: FastImage.priority.normal,
+                        priority: FastImage.priority.high,
                         cache: FastImage.cacheControl.immutable,
                       }
                     : defaultAvatar
@@ -103,7 +103,7 @@ const Item = React.memo((props: any) => {
                   item?.icon_image
                     ? {
                         uri: item?.icon_image,
-                        priority: FastImage.priority.normal,
+                        priority: FastImage.priority.high,
                         cache: FastImage.cacheControl.immutable,
                       }
                     : defaultAvatar
@@ -132,7 +132,7 @@ const Item = React.memo((props: any) => {
                       <FastImage
                         source={{
                           uri: item?.path,
-                          priority: FastImage.priority.normal,
+                          priority: FastImage.priority.high,
                           cache: FastImage.cacheControl.immutable,
                         }}
                         style={styles.imageSmall}
@@ -147,7 +147,8 @@ const Item = React.memo((props: any) => {
                 ))}
               </View>
             ) : null}
-            {item?.lastMessageJoin?.message ? (
+            {item?.lastMessageJoin?.message &&
+            item?.lastMessageJoin?.message !== 'null' ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
                 {convertString(item?.lastMessageJoin?.message)}
               </Text>

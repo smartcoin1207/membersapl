@@ -1,39 +1,94 @@
-import React from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {StyleSheet, View, Text, FlatList} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {stylesCommon, colors} from '@stylesCommon';
 import {ItemFile} from './ItemFile';
+import {getListFileInroom} from '@services';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {ModalReadFile} from '@component';
 
-const ViewFile = React.memo(() => {
-  const data = [
-    {
-      id: 1,
-      source:
-        'https://member-chat-api.adamo.tech/storage/member/146/a6b51049-1e50-4c41-b347-4c88c774fb15/1655709539-icon_image.JPG',
-    },
-    {
-      id: 2,
-      source:
-        'https://member-chat-api.adamo.tech/storage/member/146/a6b51049-1e50-4c41-b347-4c88c774fb15/1655709539-icon_image.JPG',
-    },
-    {
-      id: 3,
-      source:
-        'https://member-chat-api.adamo.tech/storage/member/146/a6b51049-1e50-4c41-b347-4c88c774fb15/1655709539-icon_image.JPG',
-    },
-  ];
-  const renderItem = ({item}: any) => <ItemFile item={item} />;
+const LINK_URL_VIDEO = /^(http(s)?:\/\/|www\.).*(\.mp4|\.mkv)$/;
+
+const ViewFile = React.memo((props: any) => {
+  const {id} = props;
+  const navigation = useNavigation<any>();
+  const [listFile, setListFile] = useState([]);
+  const [total, setTotal] = useState(null);
+  const [lastPage, setLastPage] = useState(null);
+  const [page, setPage] = useState(1);
+  const [dataModalFile, setDataModalFile] = useState({
+    show: false,
+    path: null,
+  });
+
+  const getData = async (params: any) => {
+    try {
+      const res = await getListFileInroom(params?.id, params?.page);
+      setTotal(res?.data?.files?.total);
+      setLastPage(res?.data?.files?.last_page);
+      setListFile(
+        params?.page === 1
+          ? res?.data?.files?.data
+          : listFile.concat(res?.data?.files?.data),
+      );
+    } catch {}
+  };
+
+  useEffect(() => {
+    const params = {
+      id: id,
+      page: page,
+    };
+    getData(params);
+  }, [page]);
+
+  const handleLoadMore = useCallback(() => {
+    if (page !== lastPage) {
+      setPage(prevPage => prevPage + 1);
+    } else {
+      null;
+    }
+  }, [page, lastPage]);
+
+  const openFile = (url: any) => {
+    if (!LINK_URL_VIDEO?.test(url)) {
+      setDataModalFile({
+        show: true,
+        path: url,
+      });
+    } else {
+      navigation.navigate(ROUTE_NAME.DETAIL_VIDEO, {url: url});
+    }
+  };
+
+  const onCloseModalFile = useCallback(() => {
+    setDataModalFile({
+      show: false,
+      path: null,
+    });
+  }, []);
+
+  const renderItem = ({item}: any) => (
+    <ItemFile
+      item={item}
+      openFile={() => {
+        openFile(item?.path);
+      }}
+    />
+  );
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={listFile}
         renderItem={renderItem}
         showsVerticalScrollIndicator={true}
         ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
-        // onEndReachedThreshold={0.01}
-        // onEndReached={handleLoadMore}
+        onEndReachedThreshold={0.01}
+        onEndReached={handleLoadMore}
         keyExtractor={(item, index) => index.toString()}
       />
+      <ModalReadFile data={dataModalFile} onClose={onCloseModalFile} />
     </View>
   );
 });
