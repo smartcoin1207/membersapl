@@ -22,7 +22,7 @@ const width = Dimensions.get('window').width;
 
 const ModalSearchMessage = React.memo((prop: any) => {
   const navigation = useNavigation<any>();
-  const {visible, onClose} = prop;
+  const {visible, onClose, keySearch} = prop;
   const idCompany = useSelector((state: any) => state.chat.idCompany);
 
   const [key, setKey] = useState<string>('');
@@ -38,6 +38,8 @@ const ModalSearchMessage = React.memo((prop: any) => {
       setTotal(null);
       setLastPage(null);
       setPage(1);
+    } else {
+      setKey(keySearch);
     }
   }, [visible]);
 

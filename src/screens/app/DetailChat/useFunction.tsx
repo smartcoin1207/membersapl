@@ -44,6 +44,7 @@ export const useFunction = (props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const listChat = useSelector((state: any) => state.chat?.detailChat);
   const pagging = useSelector((state: any) => state.chat?.pagingDetail);
+
   const message_pinned = useSelector(
     (state: any) => state.chat?.message_pinned,
   );
@@ -112,6 +113,7 @@ export const useFunction = (props: any) => {
       user: {
         _id: message?.from_id,
         avatar: message?.user_send?.icon_image,
+        name: `${message?.user_send?.last_name}${message?.user_send?.first_name}`,
       },
       reaction: message?.reactions,
       msg_type: message?.msg_type,
@@ -123,6 +125,7 @@ export const useFunction = (props: any) => {
       stamp_no: message?.stamp_no,
       index: index,
       users_seen: message?.users_seen,
+      task: message?.task
     };
   }, []);
 
@@ -159,10 +162,10 @@ export const useFunction = (props: any) => {
   };
 
   useEffect(() => {
-    if(isGetInfoRoom === true){
+    if (isGetInfoRoom === true) {
       getDetail();
     }
-  }, [isGetInfoRoom])
+  }, [isGetInfoRoom]);
 
   useFocusEffect(
     useCallback(() => {

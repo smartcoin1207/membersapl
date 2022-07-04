@@ -20,7 +20,6 @@ import RNFetchBlob from 'rn-fetch-blob';
 import CameraRoll from '@react-native-community/cameraroll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
 
 const PLAYER_STATES = {
   PLAYING: 0,
@@ -39,12 +38,6 @@ const DetailVideo = (props: any) => {
   const [isLoading, setIsLoading] = useState(true);
   const [paused, setPaused] = useState(true);
   const [playerState, setPlayerState] = useState(PLAYER_STATES.PAUSED);
-
-  useEffect(() => {
-    if (Platform.OS === 'ios') {
-      hasIosPermission();
-    }
-  }, []);
 
   const goBack = useCallback(() => {
     setPlayerState(PLAYER_STATES.ENDED);
@@ -92,25 +85,6 @@ const DetailVideo = (props: any) => {
 
     const status = await PermissionsAndroid.request(permission);
     return status === 'granted';
-  };
-
-  const hasIosPermission = async () => {
-    if (Platform.OS === 'ios') {
-      try {
-        let readStoragePermission = await check(
-          PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
-        );
-        if (readStoragePermission !== RESULTS.GRANTED) {
-          await request(PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY);
-        }
-        let readLibraryPermission = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
-        if (readLibraryPermission !== RESULTS.GRANTED) {
-          await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
-        }
-      } catch (error: any) {
-        return error.toString();
-      }
-    }
   };
 
   const onDowload = async () => {

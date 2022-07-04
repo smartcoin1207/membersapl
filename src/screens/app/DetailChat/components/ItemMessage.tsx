@@ -28,6 +28,7 @@ import {isSameDay, validateLink, convertString} from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
 import {ViewUserSeen} from './viewUserSeen';
 import Autolink from 'react-native-autolink';
+import {ViewTask} from './ViewTask';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -60,6 +61,7 @@ const ItemMessage = React.memo((props: any) => {
     stamp_icon,
     users_seen,
     stamp_no,
+    task,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -154,6 +156,15 @@ const ItemMessage = React.memo((props: any) => {
     return null;
   };
 
+  const renderTxtName = () => {
+    const {currentMessage, previousMessage} = props;
+    if (currentMessage?.user?._id !== previousMessage?.user?._id) {
+      return <Text style={styles.txtNameSend}>{user?.name}</Text>;
+    } else {
+      null;
+    }
+  };
+
   const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
     let textBold: any = [];
     joinedUsers.forEach((joinedUser: any) => {
@@ -206,6 +217,8 @@ const ItemMessage = React.memo((props: any) => {
             }>
             <>
               {renderDay()}
+              {user?._id == user_id ? null : renderTxtName()}
+              {msg_type == 6 ? <ViewTask data={task} /> : null}
               <Menu
                 style={styles.containerMenu}
                 visible={visible}
@@ -218,11 +231,20 @@ const ItemMessage = React.memo((props: any) => {
                   msg_type={msg_type}
                 />
               </Menu>
-              <TouchableOpacity style={styles.chat} onPress={onShowMenu}>
+              <TouchableOpacity
+                style={styles.chat}
+                onPress={onShowMenu}
+                disabled={msg_type == 6}>
                 {user?._id == user_id ? (
-                  <Text style={styles.txtTimeCurent}>
-                    {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
-                  </Text>
+                  <>
+                    {msg_type == 6 ? null : (
+                      <Text style={styles.txtTimeCurent}>
+                        {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format(
+                          'HH:mm',
+                        )}
+                      </Text>
+                    )}
+                  </>
                 ) : (
                   <View style={styles.viewAvatar}>
                     <FastImage
@@ -251,90 +273,103 @@ const ItemMessage = React.memo((props: any) => {
                       }
                     />
                   ) : (
-                    <LinearGradient
-                      colors={user?._id == user_id ? colorCurrent : color}
-                      start={{x: 1, y: 0}}
-                      end={{x: 0, y: 0}}
-                      style={styles.containerChat}>
-                      {reply_to_message_text ||
-                      reply_to_message_files?.length > 0 ||
-                      reply_to_message_stamp?.stamp_icon ? (
-                        <View style={styles.viewReply}>
-                          <View style={styles.viewColumn} />
-                          <View>
-                            <Text style={styles.txtTitleReply}>
-                              返信メッセージ
-                            </Text>
-                            {reply_to_message_text ? (
-                              <Text
-                                style={styles.txtContentReply}
-                                numberOfLines={1}>
-                                {reply_to_message_text}
-                              </Text>
-                            ) : null}
-                            {reply_to_message_files?.length > 0 ? (
-                              <View style={styles.viewRowEdit}>
-                                {reply_to_message_files?.map((item: any) => (
-                                  <View key={item?.id}>
-                                    {item?.type == 4 ? (
-                                      <FastImage
-                                        source={{
-                                          uri: item?.path,
-                                          priority: FastImage.priority.high,
-                                          cache:
-                                            FastImage.cacheControl.immutable,
-                                        }}
-                                        style={styles.imageSmall}
-                                      />
-                                    ) : (
-                                      <FastImage
-                                        source={renderImgaeFile(item?.type)}
-                                        style={styles.imageFile}
-                                      />
+                    <>
+                      {msg_type == 6 ? null : (
+                        <LinearGradient
+                          colors={user?._id == user_id ? colorCurrent : color}
+                          start={{x: 1, y: 0}}
+                          end={{x: 0, y: 0}}
+                          style={styles.containerChat}>
+                          {reply_to_message_text ||
+                          reply_to_message_files?.length > 0 ||
+                          reply_to_message_stamp?.stamp_icon ? (
+                            <View style={styles.viewReply}>
+                              <View style={styles.viewColumn} />
+                              <View>
+                                <Text style={styles.txtTitleReply}>
+                                  返信メッセージ
+                                </Text>
+                                {reply_to_message_text ? (
+                                  <Text
+                                    style={styles.txtContentReply}
+                                    numberOfLines={1}>
+                                    {reply_to_message_text}
+                                  </Text>
+                                ) : null}
+                                {reply_to_message_files?.length > 0 ? (
+                                  <View style={styles.viewRowEdit}>
+                                    {reply_to_message_files?.map(
+                                      (item: any) => (
+                                        <View key={item?.id}>
+                                          {item?.type == 4 ? (
+                                            <FastImage
+                                              source={{
+                                                uri: item?.path,
+                                                priority:
+                                                  FastImage.priority.high,
+                                                cache:
+                                                  FastImage.cacheControl
+                                                    .immutable,
+                                              }}
+                                              style={styles.imageSmall}
+                                            />
+                                          ) : (
+                                            <FastImage
+                                              source={renderImgaeFile(
+                                                item?.type,
+                                              )}
+                                              style={styles.imageFile}
+                                            />
+                                          )}
+                                        </View>
+                                      ),
                                     )}
                                   </View>
-                                ))}
+                                ) : null}
+                                {reply_to_message_stamp?.stamp_icon ? (
+                                  <FastImage
+                                    source={{
+                                      uri: reply_to_message_stamp?.stamp_icon,
+                                      priority: FastImage.priority.high,
+                                      cache: FastImage.cacheControl.immutable,
+                                    }}
+                                    style={
+                                      reply_to_message_stamp?.stamp_no == 1
+                                        ? styles.imageLikeReply
+                                        : styles.imageStampRepLy
+                                    }
+                                  />
+                                ) : null}
                               </View>
-                            ) : null}
-                            {reply_to_message_stamp?.stamp_icon ? (
-                              <FastImage
-                                source={{
-                                  uri: reply_to_message_stamp?.stamp_icon,
-                                  priority: FastImage.priority.high,
-                                  cache: FastImage.cacheControl.immutable,
-                                }}
-                                style={
-                                  reply_to_message_stamp?.stamp_no == 1
-                                    ? styles.imageLikeReply
-                                    : styles.imageStampRepLy
-                                }
-                              />
-                            ) : null}
-                          </View>
-                        </View>
-                      ) : null}
-                      {msg_type == 2 ? (
-                        <MsgFile data={attachment_files} />
-                      ) : (
-                        <Autolink
-                          text={text}
-                          email
-                          url
-                          renderText={text => (
-                            <HighlightText
-                              highlightStyle={styles.txtBold}
-                              //@ts-ignore
-                              searchWords={convertMentionToLink(text, listUser)}
-                              textToHighlight={convertString(text)}
-                              style={styles.txtMessage}
+                            </View>
+                          ) : null}
+                          {msg_type == 2 ? (
+                            <MsgFile data={attachment_files} />
+                          ) : (
+                            <Autolink
+                              text={text}
+                              email
+                              url
+                              renderText={text => (
+                                <HighlightText
+                                  highlightStyle={styles.txtBold}
+                                  //@ts-ignore
+                                  searchWords={convertMentionToLink(
+                                    text,
+                                    listUser,
+                                  )}
+                                  textToHighlight={convertString(text)}
+                                  style={styles.txtMessage}
+                                />
+                              )}
                             />
                           )}
-                        />
+                        </LinearGradient>
                       )}
-                    </LinearGradient>
+                    </>
                   )}
                 </>
-                {user?._id == user_id ? null : (
+                {user?._id == user_id || msg_type == 6 ? null : (
                   <Text style={styles.txtTime}>
                     {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
                   </Text>
