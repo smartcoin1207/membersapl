@@ -15,7 +15,7 @@ const ViewUserSeen = React.memo((props: any) => {
             item?.icon_image
               ? {
                   uri: item?.icon_image,
-                  priority: FastImage.priority.normal,
+                  priority: FastImage.priority.high,
                   cache: FastImage.cacheControl.immutable,
                 }
               : defaultAvatar

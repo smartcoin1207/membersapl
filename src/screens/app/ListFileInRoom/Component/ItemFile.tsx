@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   moderateVerticalScale,
@@ -18,20 +19,20 @@ import {iconListFile} from '@images';
 const width_screen = Dimensions.get('window').width;
 
 const ItemFile = React.memo((props: any) => {
-  const {item} = props;
+  const {item, openFile} = props;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => openFile()}>
       <View style={styles.viewImage}>
         <Image source={iconListFile} />
       </View>
       <View style={styles.viewContent}>
         <Text numberOfLines={2} style={styles.txtTitle}>
-          Filename.zip
+          {item?.name}
         </Text>
-        <Text style={styles.txtSize}>893 KB</Text>
+        <Text style={styles.txtSize}>{item?.size} KB</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 });
 

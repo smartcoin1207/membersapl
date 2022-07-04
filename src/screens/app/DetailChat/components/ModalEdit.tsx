@@ -54,7 +54,7 @@ const ModalEdit = React.memo(() => {
                   <FastImage
                     source={{
                       uri: item?.path,
-                      priority: FastImage.priority.normal,
+                      priority: FastImage.priority.high,
                       cache: FastImage.cacheControl.immutable,
                     }}
                     style={styles.imageSmall}

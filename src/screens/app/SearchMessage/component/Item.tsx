@@ -20,7 +20,7 @@ const Item = React.memo((props: any) => {
                 item?.user_send?.icon_image
                   ? {
                       uri: item?.user_send?.icon_image,
-                      priority: FastImage.priority.normal,
+                      priority: FastImage.priority.high,
                       cache: FastImage.cacheControl.immutable,
                     }
                   : defaultAvatar
