@@ -52,17 +52,31 @@ function createAppSocket() {
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.message_type === 3) {
-          store.dispatch(getDetailMessageSocket(data?.relation_message_id));
+          const value = {
+            id_message: data?.relation_message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(getDetailMessageSocket(value));
         } else {
-          store.dispatch(getDetailMessageSocket(data?.message_id));
+          const value = {
+            id_message: data?.message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(getDetailMessageSocket(value));
         }
       } else {
         if (data?.message_type === 3) {
-          store.dispatch(
-            getDetailMessageSocketCurrent(data?.relation_message_id),
-          );
+          const value = {
+            id_message: data?.relation_message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(getDetailMessageSocketCurrent(value));
         } else {
-          store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
+          const value = {
+            id_message: data?.message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(getDetailMessageSocketCurrent(value));
         }
       }
     });
