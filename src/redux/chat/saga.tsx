@@ -65,15 +65,17 @@ export function* getDetailChatSaga(action: any) {
 }
 
 export function* getDetailMessageSaga(action: any) {
+  console.log(action)
   const state = store.getState();
   try {
     const body = {
-      message_id: action.payload,
+      message_id: action.payload?.id_message,
     };
+    console.log(body);
     const result: ResponseGenerator = yield getMessageFromSocket(body);
     const data = {
       id_room: state?.chat?.id_roomChat,
-      id_message: action.payload,
+      id_message: action.payload?.id_message,
     };
     yield put(updateMessageSeen(data));
     if (result?.data?.message?.del_flag == 1) {
@@ -87,7 +89,16 @@ export function* getDetailMessageSaga(action: any) {
           }),
         );
       } else {
-        yield put(getDetailMessageSocketSuccess([result?.data?.message]));
+        if (action.payload?.message_type === 3) {
+          yield put(
+            editMessageAction({
+              id: result?.data?.message?.id,
+              data: result?.data?.message,
+            }),
+          );
+        } else {
+          yield put(getDetailMessageSocketSuccess([result?.data?.message]));
+        }
       }
     }
   } catch (error) {
@@ -99,8 +110,9 @@ export function* getDetailMessageSagaCurrent(action: any) {
   const state = store.getState();
   try {
     const body = {
-      message_id: action.payload,
+      message_id: action.payload?.id_message,
     };
+    console.log(body)
     const result: ResponseGenerator = yield getMessageFromSocket(body);
     if (result?.data?.message?.msg_type === 10) {
       NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
@@ -198,6 +210,7 @@ function* updateMessageSeenSaga(action: any) {
 }
 
 function* getDetailMessageSeen(action: any) {
+  console.log('Cuong', action)
   const body = {
     message_id: action.payload?.idMsg,
   };
