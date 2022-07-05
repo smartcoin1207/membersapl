@@ -65,13 +65,11 @@ export function* getDetailChatSaga(action: any) {
 }
 
 export function* getDetailMessageSaga(action: any) {
-  console.log(action)
   const state = store.getState();
   try {
     const body = {
       message_id: action.payload?.id_message,
     };
-    console.log(body);
     const result: ResponseGenerator = yield getMessageFromSocket(body);
     const data = {
       id_room: state?.chat?.id_roomChat,
@@ -112,7 +110,6 @@ export function* getDetailMessageSagaCurrent(action: any) {
     const body = {
       message_id: action.payload?.id_message,
     };
-    console.log(body)
     const result: ResponseGenerator = yield getMessageFromSocket(body);
     if (result?.data?.message?.msg_type === 10) {
       NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
@@ -210,7 +207,6 @@ function* updateMessageSeenSaga(action: any) {
 }
 
 function* getDetailMessageSeen(action: any) {
-  console.log('Cuong', action)
   const body = {
     message_id: action.payload?.idMsg,
   };

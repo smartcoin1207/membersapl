@@ -48,21 +48,22 @@ function createAppSocket() {
     // });
 
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
-      console.log(data);
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
-        if (data?.message_type === 3) {
-          const value = {
-            id_message: data?.relation_message_id,
-            message_type: data?.message_type,
-          };
-          store.dispatch(getDetailMessageSocket(value));
-        } else {
-          const value = {
-            id_message: data?.message_id,
-            message_type: data?.message_type,
-          };
-          store.dispatch(getDetailMessageSocket(value));
+        if (data?.room_id == state?.chat?.id_roomChat) {
+          if (data?.message_type === 3) {
+            const value = {
+              id_message: data?.relation_message_id,
+              message_type: data?.message_type,
+            };
+            store.dispatch(getDetailMessageSocket(value));
+          } else {
+            const value = {
+              id_message: data?.message_id,
+              message_type: data?.message_type,
+            };
+            store.dispatch(getDetailMessageSocket(value));
+          }
         }
       } else {
         if (data?.message_type === 3) {
