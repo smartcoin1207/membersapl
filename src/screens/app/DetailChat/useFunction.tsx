@@ -372,7 +372,7 @@ export const useFunction = (props: any) => {
       method: res?.data?.data?.method,
       attachment_files: res?.data?.attachmentFiles,
       stamp_no: res?.data?.data?.stamp_no,
-      relation_message_id: res?.data?.data?.reply_to_message_id,
+      relation_message_id: res?.data?.data?.id,
       text: res?.data?.data?.message,
       text2: null,
       time: res?.data?.data?.created_at,

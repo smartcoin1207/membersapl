@@ -77,14 +77,14 @@ const InfoRoomChat = (props: any) => {
         message: res?.data?.message,
         type: 'success',
       });
-      socket.emit('ChatGroup_update_ind', {
-        user_id: user_id,
-        room_id: idRoomChat,
-        member_info: {
-          type: 5,
-          ids: convertDataUser(),
-        },
-      });
+      // socket.emit('ChatGroup_update_ind', {
+      //   user_id: user_id,
+      //   room_id: idRoomChat,
+      //   member_info: {
+      //     type: 5,
+      //     ids: convertDataUser(),
+      //   },
+      // });
       getDetail();
       setImage(null);
     } catch (error) {}
@@ -180,14 +180,14 @@ const InfoRoomChat = (props: any) => {
         message: res?.data?.message,
         type: 'success',
       });
-      socket.emit('ChatGroup_update_ind', {
-        user_id: user_id,
-        room_id: idRoomChat,
-        member_info: {
-          type: 5,
-          ids: convertDataUser(),
-        },
-      });
+      // socket.emit('ChatGroup_update_ind', {
+      //   user_id: user_id,
+      //   room_id: idRoomChat,
+      //   member_info: {
+      //     type: 5,
+      //     ids: convertDataUser(),
+      //   },
+      // });
       getDetail();
       GlobalService.hideLoading();
     } catch (error: any) {
@@ -308,7 +308,7 @@ const InfoRoomChat = (props: any) => {
                 onCancelModalLink();
               }}
             />
-            {/* <ViewItem
+            <ViewItem
               sourceImage={iconDocument}
               content="メディア・ファイル・URL"
               onClick={() => {
@@ -316,7 +316,7 @@ const InfoRoomChat = (props: any) => {
                   idRoom_chat: idRoomChat,
                 });
               }}
-            /> */}
+            />
             <ViewItem
               sourceImage={iconUser}
               content="メンバー"

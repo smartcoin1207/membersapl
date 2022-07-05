@@ -20,7 +20,7 @@ import {
   icon5,
   icon6,
   iconBookmark,
-  iconPin
+  iconPin,
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -47,7 +47,8 @@ const MenuFeature = React.memo((props: any) => {
         width: scale(22),
         height: scale(22),
       },
-      isShow: userId == user_id && msg_type !== 1 ? true : false,
+      isShow:
+        userId == user_id && msg_type !== 1 && msg_type !== 2 ? true : false,
     },
     {
       id: 9,
@@ -66,9 +67,9 @@ const MenuFeature = React.memo((props: any) => {
       style: {
         width: scale(21),
         height: scale(21),
-        tintColor: '#FFFFFF'
+        tintColor: '#FFFFFF',
       },
-      isShow: true
+      isShow: true,
     },
     {
       id: 11,
@@ -87,7 +88,7 @@ const MenuFeature = React.memo((props: any) => {
       style: {
         width: scale(22),
         height: scale(22),
-        tintColor: '#FFFFFF'
+        tintColor: '#FFFFFF',
       },
       isShow: msg_type !== 1 ? true : false,
     },
@@ -155,15 +156,17 @@ const MenuFeature = React.memo((props: any) => {
       <View style={styles.viewFeature}>
         {dataEmoji.map((item: any, index: any) => {
           return (
-            <TouchableOpacity
-              style={styles.itemFeature}
-              key={item?.id}
-              onPress={() => onActionReaction(item?.id)}>
-              <Image
-                source={item?.sourceImage}
-                style={item?.style ? item?.style : styles.imageEmoji}
-              />
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity
+                style={styles.itemFeature}
+                key={item?.id}
+                onPress={() => onActionReaction(item?.id)}>
+                <Image
+                  source={item?.sourceImage}
+                  style={item?.style ? item?.style : styles.imageEmoji}
+                />
+              </TouchableOpacity>
+            </>
           );
         })}
       </View>

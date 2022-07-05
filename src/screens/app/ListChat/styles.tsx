@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
   viewOption: {
     alignItems: 'flex-end',
   },
+  viewLoadmore:{
+    alignItems: 'center',
+    marginBottom: verticalScale(8)
+  }
 });
 
 export {styles};
