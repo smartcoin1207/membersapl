@@ -156,7 +156,7 @@ const MenuFeature = React.memo((props: any) => {
       <View style={styles.viewFeature}>
         {dataEmoji.map((item: any, index: any) => {
           return (
-            <>
+            <View key={item?.id}>
               <TouchableOpacity
                 style={styles.itemFeature}
                 key={item?.id}
@@ -166,7 +166,7 @@ const MenuFeature = React.memo((props: any) => {
                   style={item?.style ? item?.style : styles.imageEmoji}
                 />
               </TouchableOpacity>
-            </>
+            </View>
           );
         })}
       </View>

@@ -8,6 +8,7 @@ export const EVENT_SOCKET = {
   NEW_MESSAGE_IND: 'new_message_ind',
   NEW_MESSAGE_CONF: 'new_message_conf',
   CHAT_GROUP_UPDATE_IND: 'ChatGroup_update_ind',
+  MESSAGE_IND: 'message_ind',
 };
 
 export const SOCKET_CONFIG = {

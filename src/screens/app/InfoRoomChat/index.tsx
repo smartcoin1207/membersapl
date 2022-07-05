@@ -198,11 +198,12 @@ const InfoRoomChat = (props: any) => {
   return (
     <View style={styles.container}>
       <Header
-        title={
-          dataDetail?.one_one_check?.length > 0
-            ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
-            : dataDetail?.name
-        }
+        // title={
+        //   dataDetail?.one_one_check?.length > 0
+        //     ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
+        //     : dataDetail?.name
+        // }
+        title={dataDetail?.name}
         back
         imageCenter
       />
@@ -256,7 +257,7 @@ const InfoRoomChat = (props: any) => {
                   />
                 </TouchableOpacity>
 
-                {!dataDetail?.one_one_check ? (
+                {!dataDetail?.one_one_check && dataDetail?.type !== 4 ? (
                   <TouchableOpacity
                     style={styles.buttonCamera}
                     onPress={upLoadImage}>
@@ -264,7 +265,7 @@ const InfoRoomChat = (props: any) => {
                   </TouchableOpacity>
                 ) : null}
 
-                {!dataDetail?.one_one_check ? (
+                {!dataDetail?.one_one_check && dataDetail?.type !== 4 ? (
                   <TouchableOpacity
                     style={styles.buttonDelete}
                     onPress={deleteAvatar}>
@@ -273,7 +274,7 @@ const InfoRoomChat = (props: any) => {
                 ) : null}
               </View>
             </View>
-            {dataDetail?.one_one_check?.length > 0 ? null : (
+            {dataDetail?.type === 4 ? null : (
               <ViewItem
                 sourceImage={iconEdit}
                 title="チャットグループ名"
@@ -287,7 +288,7 @@ const InfoRoomChat = (props: any) => {
                 }}
               />
             )}
-            {dataDetail?.one_one_check?.length > 0 ? null : (
+            {dataDetail?.type === 4 ? null : (
               <ViewItem
                 sourceImage={iconDetailRow}
                 title="概要"
@@ -301,13 +302,15 @@ const InfoRoomChat = (props: any) => {
                 }}
               />
             )}
-            <ViewItem
-              sourceImage={iconUpload}
-              content="チャット招待リンク"
-              onClick={() => {
-                onCancelModalLink();
-              }}
-            />
+            {dataDetail?.type === 4 ? null : (
+              <ViewItem
+                sourceImage={iconUpload}
+                content="チャット招待リンク"
+                onClick={() => {
+                  onCancelModalLink();
+                }}
+              />
+            )}
             <ViewItem
               sourceImage={iconDocument}
               content="メディア・ファイル・URL"
@@ -317,24 +320,28 @@ const InfoRoomChat = (props: any) => {
                 });
               }}
             />
-            <ViewItem
-              sourceImage={iconUser}
-              content="メンバー"
-              onClick={() => {
-                navigation.navigate(ROUTE_NAME.LIST_USER, {
-                  idRoomChat: idRoomChat,
-                  dataDetail: dataDetail,
-                });
-              }}
-            />
-            <ViewItem
-              sourceImage={iconLogout}
-              content="グループを退出"
-              isLogout
-              hideBorder
-              hideNext
-              onClick={onCancelModal}
-            />
+            {dataDetail?.type === 4 ? null : (
+              <ViewItem
+                sourceImage={iconUser}
+                content="メンバー"
+                onClick={() => {
+                  navigation.navigate(ROUTE_NAME.LIST_USER, {
+                    idRoomChat: idRoomChat,
+                    dataDetail: dataDetail,
+                  });
+                }}
+              />
+            )}
+            {dataDetail?.type === 4 ? null : (
+              <ViewItem
+                sourceImage={iconLogout}
+                content="グループを退出"
+                isLogout
+                hideBorder
+                hideNext
+                onClick={onCancelModal}
+              />
+            )}
           </ScrollView>
         ) : (
           <View style={styles.marginTop}>
