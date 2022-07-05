@@ -53,7 +53,7 @@ const ConfigNoti = () => {
       <View style={styles.viewContent}>
         <View style={styles.item}>
           <Toggle
-            title="メッセージ内容をデスクトップ通知に表示する"
+            title="Push通知を表示する"
             status={state2}
             onChange={showMessage}
           />

@@ -7,6 +7,7 @@ import {
   TextInput,
   RefreshControl,
   BackHandler,
+  ActivityIndicator,
 } from 'react-native';
 import {styles} from './styles';
 import {Header, AppInput} from '@component';
@@ -28,6 +29,7 @@ import {ModalSearchMessage} from './component/ModalSearchMessage';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {AppNotification} from '@util';
+import {colors} from '@stylesCommon';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
@@ -43,6 +45,7 @@ const ListChat = () => {
   const [page, setPage] = useState(1);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showSearchMessage, setShowSearchMessage] = useState<boolean>(false);
+  const [isLoadMore, setIsLoadMore] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -52,6 +55,10 @@ const ListChat = () => {
       dispatch(getRoomList({key: key, company_id: idCompany, page: 1}));
     }, []),
   );
+
+  useEffect(() => {
+    setIsLoadMore(false);
+  }, [listRoom]);
 
   useEffect(() => {
     initFB();
@@ -69,8 +76,13 @@ const ListChat = () => {
   }, []);
 
   useEffect(() => {
-    if (page > 1) {
-      dispatch(getRoomList({key: key, company_id: idCompany, page: page}));
+    try {
+      if (page > 1) {
+        dispatch(getRoomList({key: key, company_id: idCompany, page: page}));
+      }
+    } catch (err) {
+    } finally {
+      // setIsLoadMore(false);
     }
   }, [page]);
 
@@ -105,6 +117,7 @@ const ListChat = () => {
       null;
     } else {
       setPage(prevPage => prevPage + 1);
+      setIsLoadMore(true);
     }
   };
 
@@ -172,6 +185,15 @@ const ListChat = () => {
           ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
           onEndReachedThreshold={0.01}
           onEndReached={handleLoadMore}
+          ListFooterComponent={
+            <>
+              {isLoadMore === true ? (
+                <View style={styles.viewLoadmore}>
+                  <ActivityIndicator color={colors.primary} size="small" />
+                </View>
+              ) : null}
+            </>
+          }
           refreshControl={
             <RefreshControl refreshing={false} onRefresh={onRefresh} />
           }
