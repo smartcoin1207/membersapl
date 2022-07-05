@@ -53,14 +53,14 @@ const ConfigNoti = () => {
       <View style={styles.viewContent}>
         <View style={styles.item}>
           <Toggle
-            title="Push通知を表示する"
+            title="自分が宛先の場合のみ通知する"
             status={state2}
             onChange={showMessage}
           />
         </View>
         <View style={styles.item}>
           <Toggle
-            title="自分が宛先の場合のみ通知する"
+            title="Push通知を表示する"
             status={state1}
             onChange={mentionFlag}
           />

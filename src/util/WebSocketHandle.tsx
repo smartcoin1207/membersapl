@@ -26,7 +26,7 @@ function createAppSocket() {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+    socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
     onHanleEvent(socket);
   };
@@ -35,15 +35,35 @@ function createAppSocket() {
     socket.on(EVENT_SOCKET.CONNECT, () => {
       console.log('CONNECTED', socket);
     });
-    socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, (data: any) => {
+    // socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, (data: any) => {
+    //   const state = store.getState();
+    //   if (data?.user_id !== state?.auth?.userInfo?.id) {
+    //     if (data?.room_id == state?.chat?.id_roomChat) {
+    //       store.dispatch(getDetailMessageSocket(data?.message_id));
+    //     } else {
+    //     }
+    //   } else {
+    //     store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
+    //   }
+    // });
+
+    socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
+      console.log(data);
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
-        if (data?.room_id == state?.chat?.id_roomChat) {
-          store.dispatch(getDetailMessageSocket(data?.message_id));
+        if (data?.message_type === 3) {
+          store.dispatch(getDetailMessageSocket(data?.relation_message_id));
         } else {
+          store.dispatch(getDetailMessageSocket(data?.message_id));
         }
       } else {
-        store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
+        if (data?.message_type === 3) {
+          store.dispatch(
+            getDetailMessageSocketCurrent(data?.relation_message_id),
+          );
+        } else {
+          store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
+        }
       }
     });
 

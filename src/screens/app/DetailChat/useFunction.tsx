@@ -125,7 +125,7 @@ export const useFunction = (props: any) => {
       stamp_no: message?.stamp_no,
       index: index,
       users_seen: message?.users_seen,
-      task: message?.task
+      task: message?.task,
     };
   }, []);
 
@@ -367,11 +367,11 @@ export const useFunction = (props: any) => {
       task_id: null,
       to_info: null,
       level: res?.data?.data?.msg_level,
-      message_id: res?.data?.data?.id,
+      message_id: null,
       message_type: 3,
-      method: res?.data?.data?.method,
+      method: 0,
       attachment_files: res?.data?.attachmentFiles,
-      stamp_no: res?.data?.data?.stamp_no,
+      stamp_no: data,
       relation_message_id: res?.data?.data?.id,
       text: res?.data?.data?.message,
       text2: null,
