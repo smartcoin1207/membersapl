@@ -343,27 +343,26 @@ const ItemMessage = React.memo((props: any) => {
                               </View>
                             </View>
                           ) : null}
-                          {msg_type == 2 ? (
+                          {attachment_files?.length > 0 ? (
                             <MsgFile data={attachment_files} />
-                          ) : (
-                            <Autolink
-                              text={text}
-                              email
-                              url
-                              renderText={text => (
-                                <HighlightText
-                                  highlightStyle={styles.txtBold}
-                                  //@ts-ignore
-                                  searchWords={convertMentionToLink(
-                                    text,
-                                    listUser,
-                                  )}
-                                  textToHighlight={convertString(text)}
-                                  style={styles.txtMessage}
-                                />
-                              )}
-                            />
-                          )}
+                          ) : null}
+                          <Autolink
+                            text={text}
+                            email
+                            url
+                            renderText={text => (
+                              <HighlightText
+                                highlightStyle={styles.txtBold}
+                                //@ts-ignore
+                                searchWords={convertMentionToLink(
+                                  text,
+                                  listUser,
+                                )}
+                                textToHighlight={convertString(text)}
+                                style={styles.txtMessage}
+                              />
+                            )}
+                          />
                         </LinearGradient>
                       )}
                     </>
