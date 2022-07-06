@@ -64,7 +64,7 @@ const ListUser = (props: any) => {
       });
       socket.emit('ChatGroup_update_ind', {
         user_id: user_id,
-        room_id: result?.data?.data?.id,
+        room_id: idRoomChat,
         member_info: {
           type: 1,
           ids: [user_id],
