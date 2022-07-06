@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
-import {iconFile, iconPdf, iconDoc, iconXls} from '@images';
+import {iconFile, iconPdf, iconDoc, iconXls, defaultAvatar} from '@images';
 import {Menu} from 'react-native-material-menu';
 import {MenuFeature} from '../components/MenuFeature';
 import moment from 'moment';
@@ -29,6 +29,7 @@ import HighlightText from '@sanar/react-native-highlight-text';
 import {ViewUserSeen} from './viewUserSeen';
 import Autolink from 'react-native-autolink';
 import {ViewTask} from './ViewTask';
+import {ViewInvite} from './ViewInvite';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -46,6 +47,8 @@ const ItemMessage = React.memo((props: any) => {
     onReaction,
     navigatiteToListReaction,
     listUser,
+    onAddMember,
+    idRoomChat,
   } = props;
   const {
     user,
@@ -62,6 +65,8 @@ const ItemMessage = React.memo((props: any) => {
     users_seen,
     stamp_no,
     task,
+    guest,
+    task_link,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -142,23 +147,13 @@ const ItemMessage = React.memo((props: any) => {
     return total + course.count;
   }, 0);
 
-  const renderDay = () => {
-    const {currentMessage, previousMessage} = props;
-    if (currentMessage && !isSameDay(currentMessage, previousMessage)) {
-      return (
-        <View style={styles.viewCenter}>
-          <Text style={styles.txtDateCenter} numberOfLines={2}>
-            {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('DD/MM/YYYY')}
-          </Text>
-        </View>
-      );
-    }
-    return null;
-  };
-
   const renderTxtName = () => {
     const {currentMessage, previousMessage} = props;
-    if (currentMessage?.user?._id !== previousMessage?.user?._id) {
+    if (
+      currentMessage?.user?._id !== previousMessage?.user?._id &&
+      msg_type !== 6 &&
+      msg_type !== 8
+    ) {
       return <Text style={styles.txtNameSend}>{user?.name}</Text>;
     } else {
       null;
@@ -196,6 +191,14 @@ const ItemMessage = React.memo((props: any) => {
     navigation.navigate(ROUTE_NAME.USER_SEEN, {id: _id});
   }, []);
 
+  const onConfirm = useCallback(() => {
+    onAddMember(1);
+  }, []);
+
+  const onReject = useCallback(() => {
+    onAddMember(2);
+  }, []);
+
   return (
     <>
       {msg_type == 11 ||
@@ -216,9 +219,22 @@ const ItemMessage = React.memo((props: any) => {
               user?._id == user_id ? styles.containerCurrent : styles.container
             }>
             <>
-              {renderDay()}
               {user?._id == user_id ? null : renderTxtName()}
-              {msg_type == 6 ? <ViewTask data={task} /> : null}
+              {msg_type == 6 ? (
+                <ViewTask data={task} mess={text} task_link={task_link} />
+              ) : null}
+              {msg_type == 8 ? (
+                <View style={styles.viewInvite}>
+                  {user?._id == user_id ? null : (
+                    <FastImage source={defaultAvatar} style={styles.image} />
+                  )}
+                  <ViewInvite
+                    data={guest}
+                    idRoomChat={idRoomChat}
+                    idMessage={_id}
+                  />
+                </View>
+              ) : null}
               <Menu
                 style={styles.containerMenu}
                 visible={visible}
@@ -237,10 +253,10 @@ const ItemMessage = React.memo((props: any) => {
                 disabled={msg_type == 6}>
                 {user?._id == user_id ? (
                   <>
-                    {msg_type == 6 ? null : (
+                    {msg_type == 6 || msg_type == 8 ? null : (
                       <Text style={styles.txtTimeCurent}>
                         {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format(
-                          'HH:mm',
+                          'MM/DD HH:mm',
                         )}
                       </Text>
                     )}
@@ -274,7 +290,7 @@ const ItemMessage = React.memo((props: any) => {
                     />
                   ) : (
                     <>
-                      {msg_type == 6 ? null : (
+                      {msg_type == 6 || msg_type == 8 ? null : (
                         <LinearGradient
                           colors={user?._id == user_id ? colorCurrent : color}
                           start={{x: 1, y: 0}}
@@ -368,9 +384,13 @@ const ItemMessage = React.memo((props: any) => {
                     </>
                   )}
                 </>
-                {user?._id == user_id || msg_type == 6 ? null : (
+                {user?._id == user_id ||
+                msg_type == 6 ||
+                msg_type == 8 ? null : (
                   <Text style={styles.txtTime}>
-                    {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format('HH:mm')}
+                    {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format(
+                      'MM/DD HH:mm',
+                    )}
                   </Text>
                 )}
               </TouchableOpacity>

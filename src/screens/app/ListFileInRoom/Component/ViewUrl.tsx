@@ -4,10 +4,12 @@ import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {stylesCommon, colors} from '@stylesCommon';
 import {ItemUrl} from './ItemUrl';
 import {getListLinkInRoom} from '@services';
+import {useDispatch} from 'react-redux';
+import {fetchResultMessageActionListFile} from '@redux';
 
 const ViewUrl = (props: any) => {
   const {id} = props;
-
+  const dispatch = useDispatch();
   const [listLink, setListLink] = useState([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
@@ -42,7 +44,30 @@ const ViewUrl = (props: any) => {
     getData(params);
   }, [page]);
 
-  const renderItem = ({item}: any) => <ItemUrl item={item} />;
+  const openFile = (item: any) => {
+    // if (!LINK_URL_VIDEO?.test(url)) {
+    //   setDataModalFile({
+    //     show: true,
+    //     path: url,
+    //   });
+    // } else {
+    //   navigation.navigate(ROUTE_NAME.DETAIL_VIDEO, {url: url});
+    // }
+    const body = {
+      id_room: id,
+      id_message: item?.id,
+    };
+    dispatch(fetchResultMessageActionListFile(body));
+  };
+
+  const renderItem = ({item}: any) => (
+    <ItemUrl
+      item={item}
+      openFile={() => {
+        openFile(item);
+      }}
+    />
+  );
   return (
     <View style={styles.container}>
       <FlatList

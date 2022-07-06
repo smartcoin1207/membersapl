@@ -32,6 +32,7 @@ const DELETE_BOOKMARK = 'user/chat/room/unbookmark';
 const LIST_IMAGE_INROOM = 'user/chat/room';
 const LIST_FILE_INROOM = 'user/chat/room';
 const LIST_LINK_INROOM = 'user/chat/room';
+const ADD_USER_FROM_MESSAGE = 'user/chat/room/update-guest-status';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page} = params;
@@ -214,5 +215,10 @@ export const getListFileInroom: any = async (id: any, page: any) => {
 
 export const getListLinkInRoom: any = async (id: any, page: any) => {
   const response = api.get(`${LIST_LINK_INROOM}/${id}/links?page=${page}`);
+  return response;
+};
+
+export const addUserMessage: any = async (body: any) => {
+  const response = api.post(ADD_USER_FROM_MESSAGE, body);
   return response;
 };

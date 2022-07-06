@@ -1,16 +1,20 @@
 import {colors, stylesCommon} from '@stylesCommon';
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, {useCallback} from 'react';
+import {StyleSheet, View, Text, Linking, TouchableOpacity} from 'react-native';
 import {moderateScale, verticalScale, scale} from 'react-native-size-matters';
 
 const ViewTask = React.memo((props: any) => {
-  const {data} = props;
+  const {data, mess, task_link} = props;
+
+  const onLinkTask = useCallback(() => {
+    Linking.openURL(task_link);
+  }, [task_link]);
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onLinkTask}>
       <View style={styles.viewHeader}>
         <Text style={styles.txtTitle} numberOfLines={2}>
-          タスクにアサインされました
+          {mess}
         </Text>
       </View>
       <View style={styles.viewContent}>
@@ -20,10 +24,10 @@ const ViewTask = React.memo((props: any) => {
       <View style={styles.viewBottom}>
         <Text style={styles.txtTitle}>期日</Text>
         <Text style={styles.txtTime}>
-          {data?.actual_start_date} {data?.actual_start_time}
+          {data?.plans_end_date} {data?.plans_end_time}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 });
 

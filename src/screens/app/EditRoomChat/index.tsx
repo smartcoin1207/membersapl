@@ -75,6 +75,8 @@ const EditRoomChat = (props: any) => {
           type: 5,
           ids: convertDataUser(),
         },
+        method: 2,
+        room_name: name,
       });
       onBack();
       GlobalService.hideLoading();

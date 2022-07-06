@@ -95,6 +95,13 @@ function createAppSocket() {
           );
         }
       } else {
+        if (data?.room_id == state?.chat?.id_roomChat) {
+          store?.dispatch(isGetInfoRoom(true));
+        } else {
+          store.dispatch(
+            getRoomList({company_id: state?.chat?.idCompany, search: null}),
+          );
+        }
       }
     });
 

@@ -69,6 +69,8 @@ const ListUser = (props: any) => {
           type: 11,
           ids: [idUser],
         },
+        method: 2,
+        
       });
       // dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
       getListUserOfRoom();

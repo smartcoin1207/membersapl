@@ -106,6 +106,8 @@ const CreateRoomChat = (props: any) => {
             type: 11,
             ids: renderIdUser(),
           },
+          method: 2,
+          room_name: name ? name : '新規グループ',
         });
         navigation.goBack();
         GlobalService.hideLoading();
@@ -143,6 +145,7 @@ const CreateRoomChat = (props: any) => {
             type: 11,
             ids: renderIdUser(),
           },
+          method: 2,
         });
         dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
         navigation.goBack();

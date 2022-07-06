@@ -84,6 +84,11 @@ export const fetchResultMessageActionListRoom = (payload: any) => ({
   payload,
 });
 
+export const fetchResultMessageActionListFile = (payload: any) => ({
+  type: typeChat.FETCH_RESULT_SEARCH_MESSAGE_LIST_FILE,
+  payload,
+});
+
 export const fetchResultMessageSuccess = (payload: any) => ({
   type: typeChat.RESULT_SEARCH_MESSAGE,
   payload,
