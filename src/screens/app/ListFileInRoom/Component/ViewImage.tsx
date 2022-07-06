@@ -42,6 +42,15 @@ const ViewImage = React.memo((props: any) => {
     return status === 'granted';
   };
 
+  const renderImage = useCallback(() => {
+    const result = listImage?.map((item: any) => {
+      return {
+        uri: item?.path,
+      };
+    });
+    return result;
+  }, [listImage]);
+
   useEffect(() => {
     const params = {
       id: id,
@@ -71,11 +80,11 @@ const ViewImage = React.memo((props: any) => {
     }
   }, [page, lastPage]);
 
-  const renderItem = ({item}: any) => (
+  const renderItem = ({item, index}: any) => (
     <ItemImage
       item={item}
       openFile={async () => {
-        await setUrlModalImage([{uri: item?.path}]);
+        await setUrlModalImage(index);
         viewImage();
       }}
     />
@@ -154,8 +163,8 @@ const ViewImage = React.memo((props: any) => {
         numColumns={5}
       />
       <ImageView
-        images={urlModalImage}
-        imageIndex={0}
+        images={renderImage()}
+        imageIndex={urlModalImage}
         visible={modalImage}
         onRequestClose={viewImage}
         HeaderComponent={renderHeader}

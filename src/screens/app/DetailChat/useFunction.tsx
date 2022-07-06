@@ -113,7 +113,9 @@ export const useFunction = (props: any) => {
       user: {
         _id: message?.from_id,
         avatar: message?.user_send?.icon_image,
-        name: `${message?.user_send?.last_name}${message?.user_send?.first_name}`,
+        name: message?.user_send
+          ? `${message?.user_send?.last_name}${message?.user_send?.first_name}`
+          : null,
       },
       reaction: message?.reactions,
       msg_type: message?.msg_type,
@@ -234,7 +236,7 @@ export const useFunction = (props: any) => {
           const data = new FormData();
           data.append('room_id', idRoomChat);
           data.append('from_id', user_id);
-          data.append('message', mes[0]?.text);
+          data.append('message', mes[0]?.text?.split('\n').join('<br>'));
           data.append('reply_to_message_id', messageReply?.id);
           const res = await replyMessageApi(data);
           socket.emit('message_ind', {
@@ -260,7 +262,7 @@ export const useFunction = (props: any) => {
         try {
           const param = {
             room_id: idRoomChat,
-            message: mes[0]?.text,
+            message: mes[0]?.text?.split('\n').join('<br>'),
           };
           const res = await editMessageApi(message_edit?.id, param);
           socket.emit('message_ind', {
@@ -289,7 +291,7 @@ export const useFunction = (props: any) => {
           const data = new FormData();
           data.append('room_id', idRoomChat);
           data.append('from_id', mes[0]?.user?._id);
-          data.append('message', mes[0]?.text);
+          data.append('message', mes[0]?.text?.split('\n').join('<br>'));
           const res = await sendMessageApi(data);
           socket.emit('message_ind', {
             user_id: mes[0]?.user?._id,

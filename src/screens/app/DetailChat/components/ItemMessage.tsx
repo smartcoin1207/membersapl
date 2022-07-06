@@ -151,10 +151,13 @@ const ItemMessage = React.memo((props: any) => {
     const {currentMessage, previousMessage} = props;
     if (
       currentMessage?.user?._id !== previousMessage?.user?._id &&
-      msg_type !== 6 &&
-      msg_type !== 8
+      msg_type !== 6
     ) {
-      return <Text style={styles.txtNameSend}>{user?.name}</Text>;
+      return (
+        <Text style={styles.txtNameSend}>
+          {user?.name ? user?.name : guest?.name}
+        </Text>
+      );
     } else {
       null;
     }
@@ -221,7 +224,9 @@ const ItemMessage = React.memo((props: any) => {
             <>
               {user?._id == user_id ? null : renderTxtName()}
               {msg_type == 6 ? (
-                <ViewTask data={task} mess={text} task_link={task_link} />
+                <View style={styles.viewTask}>
+                  <ViewTask data={task} mess={text} task_link={task_link} />
+                </View>
               ) : null}
               {msg_type == 8 ? (
                 <View style={styles.viewInvite}>
@@ -235,7 +240,7 @@ const ItemMessage = React.memo((props: any) => {
                   />
                 </View>
               ) : null}
-              <Menu
+              {/* <Menu
                 style={styles.containerMenu}
                 visible={visible}
                 onRequestClose={onShowMenu}
@@ -246,7 +251,7 @@ const ItemMessage = React.memo((props: any) => {
                   onActionReaction={(value: any) => onActionReaction(value)}
                   msg_type={msg_type}
                 />
-              </Menu>
+              </Menu> */}
               <TouchableOpacity
                 style={styles.chat}
                 onPress={onShowMenu}
@@ -363,7 +368,7 @@ const ItemMessage = React.memo((props: any) => {
                             <MsgFile data={attachment_files} />
                           ) : null}
                           <Autolink
-                            text={text}
+                            text={text?.split('<br>').join('\n')}
                             email
                             url
                             renderText={text => (
@@ -409,7 +414,7 @@ const ItemMessage = React.memo((props: any) => {
                 </TouchableOpacity>
               )}
             </>
-            {/* <Menu
+            <Menu
               style={styles.containerMenu}
               visible={visible}
               onRequestClose={onShowMenu}
@@ -419,7 +424,7 @@ const ItemMessage = React.memo((props: any) => {
                 onActionMenu={(value: any) => onActionMenu(value)}
                 onActionReaction={(value: any) => onActionReaction(value)}
               />
-            </Menu> */}
+            </Menu>
             {users_seen?.length > 0 ? (
               <TouchableOpacity
                 style={

@@ -89,7 +89,7 @@ const Item = React.memo((props: any) => {
                     : defaultAvatar
                 }
               />
-              {item?.one_one_check?.length > 0 ? (
+              {item?.online_status === true ? (
                 <View style={styles.viewActive}>
                   <View style={styles.active} />
                 </View>
@@ -150,7 +150,9 @@ const Item = React.memo((props: any) => {
             {item?.lastMessageJoin?.message &&
             item?.lastMessageJoin?.message !== 'null' ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
-                {convertString(item?.lastMessageJoin?.message)}
+                {convertString(
+                  item?.lastMessageJoin?.message?.split('<br>').join('\n'),
+                )}
               </Text>
             ) : null}
           </>

@@ -47,7 +47,7 @@ const ListUser = (props: any) => {
       };
       const result = await removeUser(body);
       socket.emit('message_ind', {
-        user_id: result?.data?.user_id,
+        user_id: idUser,
         room_id: idRoomChat,
         task_id: null,
         to_info: null,
@@ -66,13 +66,14 @@ const ListUser = (props: any) => {
         user_id: user_id,
         room_id: result?.data?.data?.id,
         member_info: {
-          type: 11,
+          type: 1,
           ids: [idUser],
         },
-        method: 2,
-        
+        method: 12,
+        room_name: null,
+        task_id: null,
       });
-      // dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
+      dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch (error) {
