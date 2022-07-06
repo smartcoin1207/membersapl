@@ -75,9 +75,7 @@ export function* getDetailMessageSaga(action: any) {
       id_room: state?.chat?.id_roomChat,
       id_message: action.payload?.id_message,
     };
-    if (action.payload?.id_message && state?.chat?.id_roomChat) {
-      yield put(updateMessageSeen(data));
-    }
+    yield put(updateMessageSeen(data));
     if (result?.data?.message?.del_flag == 1) {
       yield put(deleteMessage(result?.data?.message?.id));
     } else {
@@ -96,7 +94,11 @@ export function* getDetailMessageSaga(action: any) {
               data: result?.data?.message,
             }),
           );
-        } else if (result?.data?.message?.msg_type === 10) {
+        }
+        if (
+          result?.data?.message?.msg_type === 10 &&
+          state?.auth?.userInfo?.id === result?.data?.message?.from_id
+        ) {
           NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
         } else {
           yield put(getDetailMessageSocketSuccess([result?.data?.message]));
@@ -115,8 +117,13 @@ export function* getDetailMessageSagaCurrent(action: any) {
       message_id: action.payload?.id_message,
     };
     const result: ResponseGenerator = yield getMessageFromSocket(body);
-    if (result?.data?.message?.msg_type === 10) {
+    if (
+      result?.data?.message?.msg_type === 10 &&
+      state?.auth?.userInfo?.id === result?.data?.message?.from_id
+    ) {
       NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
+    } else if (result?.data?.message?.msg_type === 4) {
+      yield put(getRoomList({company_id: state?.chat?.idCompany}));
     }
   } catch (error) {
   } finally {
