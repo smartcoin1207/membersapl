@@ -47,7 +47,7 @@ const ListUser = (props: any) => {
       };
       const result = await removeUser(body);
       socket.emit('message_ind', {
-        user_id: idUser,
+        user_id: user_id,
         room_id: idRoomChat,
         task_id: null,
         to_info: null,
@@ -67,7 +67,7 @@ const ListUser = (props: any) => {
         room_id: result?.data?.data?.id,
         member_info: {
           type: 1,
-          ids: [idUser],
+          ids: [user_id],
         },
         method: 12,
         room_name: null,
