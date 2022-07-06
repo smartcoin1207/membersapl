@@ -33,7 +33,7 @@ const ViewTask = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '65%',
     backgroundColor: '#FFFFFF',
     borderRadius: moderateScale(8),
   },
