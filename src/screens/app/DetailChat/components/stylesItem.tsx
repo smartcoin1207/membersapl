@@ -1,5 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {scale, verticalScale, moderateScale, moderateVerticalScale} from 'react-native-size-matters';
+import {
+  scale,
+  verticalScale,
+  moderateScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
 
 const styles = StyleSheet.create({
@@ -34,7 +39,7 @@ const styles = StyleSheet.create({
   txtTime: {
     marginLeft: scale(7),
     color: colors.border,
-    fontSize: moderateScale(10),
+    fontSize: moderateScale(8),
   },
   image: {
     width: scale(26),
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
   txtTimeCurent: {
     marginRight: scale(7),
     color: colors.border,
-    fontSize: moderateScale(10),
+    fontSize: moderateScale(8),
   },
   viewAvatar: {
     // borderWidth: 1,
@@ -173,12 +178,17 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(2),
     tintColor: colors.primary,
   },
-  txtNameSend:{
+  txtNameSend: {
     marginLeft: scale(34),
     color: colors.border,
     fontSize: moderateScale(10),
     ...stylesCommon.fontWeight500,
-  }
+  },
+  viewInvite: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '85%',
+  },
 });
 
 export {styles};

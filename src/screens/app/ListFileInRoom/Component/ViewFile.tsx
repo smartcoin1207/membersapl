@@ -7,12 +7,15 @@ import {getListFileInroom} from '@services';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {ModalReadFile} from '@component';
+import {useDispatch} from 'react-redux';
+import {fetchResultMessageActionListFile} from '@redux';
 
 const LINK_URL_VIDEO = /^(http(s)?:\/\/|www\.).*(\.mp4|\.mkv)$/;
 
 const ViewFile = React.memo((props: any) => {
   const {id} = props;
   const navigation = useNavigation<any>();
+  const dispatch = useDispatch();
   const [listFile, setListFile] = useState([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
@@ -51,15 +54,12 @@ const ViewFile = React.memo((props: any) => {
     }
   }, [page, lastPage]);
 
-  const openFile = (url: any) => {
-    if (!LINK_URL_VIDEO?.test(url)) {
-      setDataModalFile({
-        show: true,
-        path: url,
-      });
-    } else {
-      navigation.navigate(ROUTE_NAME.DETAIL_VIDEO, {url: url});
-    }
+  const openFile = (item: any) => {
+    const body = {
+      id_room: id,
+      id_message: item?.messages_id,
+    };
+    dispatch(fetchResultMessageActionListFile(body));
   };
 
   const onCloseModalFile = useCallback(() => {
@@ -73,7 +73,7 @@ const ViewFile = React.memo((props: any) => {
     <ItemFile
       item={item}
       openFile={() => {
-        openFile(item?.path);
+        openFile(item);
       }}
     />
   );

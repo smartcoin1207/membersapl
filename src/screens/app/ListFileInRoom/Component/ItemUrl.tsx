@@ -7,6 +7,7 @@ import {
   Dimensions,
   ActivityIndicator,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {
   moderateVerticalScale,
@@ -21,10 +22,10 @@ import {convertString} from '@util';
 const width_screen = Dimensions.get('window').width;
 
 const ItemUrl = React.memo((props: any) => {
-  const {item} = props;
+  const {item, openFile} = props;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={openFile}>
       <Image
         source={
           item?.user_send?.icon_image
@@ -41,10 +42,18 @@ const ItemUrl = React.memo((props: any) => {
           renderText={text => (
             <Text style={styles.txtMessage}>{convertString(text)}</Text>
           )}
+          onPress={(url, match) => {
+            switch (match.getType()) {
+              case 'url':
+                return null;
+              default:
+                return null;
+            }
+          }}
         />
         <Text style={styles.txtSize}>{item?.created_at}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 });
 

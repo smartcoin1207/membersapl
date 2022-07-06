@@ -126,6 +126,8 @@ export const useFunction = (props: any) => {
       index: index,
       users_seen: message?.users_seen,
       task: message?.task,
+      guest: message?.guest,
+      task_link: message?.task_link,
     };
   }, []);
 

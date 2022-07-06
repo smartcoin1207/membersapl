@@ -152,6 +152,37 @@ export function* fetchResultMessage(action: any) {
   }
 }
 
+export function* fetchResultMessageListFile(action: any) {
+  try {
+    const body = {
+      id_room: action.payload.id_room,
+      id_message: action.payload.id_message,
+    };
+    const res: ResponseGenerator = yield getResultSearchMessage(body);
+    if (res?.code === 200) {
+      const param = {
+        id: action.payload.id_room,
+        page: res?.data.pages,
+      };
+      const result: ResponseGenerator = yield getDetailChatApi(param);
+      const valueSave = {
+        data: convertArrUnique(
+          res?.data?.room_messages?.data.concat(
+            result?.data?.room_messages?.data,
+          ),
+          'id',
+        ),
+        paging: result?.data?.room_messages?.paging,
+      };
+      yield put(fetchResultMessageSuccess(valueSave));
+      yield put(saveIdMessageSearch(action.payload.id_message));
+      NavigationUtils.pop(2);
+    }
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* fetchResultMessageListRoom(action: any) {
   try {
     const body = {
@@ -241,6 +272,10 @@ export function* chatSaga() {
     getDetailMessageSagaCurrent,
   );
   yield takeEvery(typeChat.FETCH_RESULT_SEARCH_MESSAGE, fetchResultMessage);
+  yield takeEvery(
+    typeChat.FETCH_RESULT_SEARCH_MESSAGE_LIST_FILE,
+    fetchResultMessageListFile,
+  );
   yield takeEvery(
     typeChat.FETCH_RESULT_SEARCH_MESSAGE_LIST_ROOM,
     fetchResultMessageListRoom,

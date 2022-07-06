@@ -43,6 +43,15 @@ const ModalSearchMessage = React.memo((prop: any) => {
     }
   }, [visible]);
 
+  useEffect(() => {
+    const params = {
+      page: page,
+      key: keySearch,
+      idCompany: idCompany,
+    };
+    callApiSearch(params);
+  }, [keySearch]);
+
   const onClickItem = (value: any) => {
     onClose();
     navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
