@@ -19,6 +19,7 @@ const ViewInvite = React.memo((props: any) => {
 
   const onAddUser = useCallback(async value => {
     try {
+      // console.log('approved_status', value);
       const params = {
         approved_status: value,
         guest_user_id: data?.id,
@@ -33,7 +34,7 @@ const ViewInvite = React.memo((props: any) => {
         level: null,
         message_id: null,
         message_type: 8,
-        method: 0,
+        method: value == 1 ? 0 : 2,
         attachment_files: null,
         stamp_no: null,
         text: String(data?.id * -1),
@@ -48,7 +49,7 @@ const ViewInvite = React.memo((props: any) => {
         level: null,
         message_id: null,
         message_type: 8,
-        method: 0,
+        method: value == 1 ? 0 : 2,
         attachment_files: null,
         stamp_no: null,
         text: String(data?.id * -1),
