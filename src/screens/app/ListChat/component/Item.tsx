@@ -150,9 +150,11 @@ const Item = React.memo((props: any) => {
             {item?.lastMessageJoin?.message &&
             item?.lastMessageJoin?.message !== 'null' ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
-                {convertString(
-                  item?.lastMessageJoin?.message?.split('<br>').join('\n'),
-                )}
+                {item?.lastMessageJoin?.msg_type == 9
+                  ? `${item?.lastMessageJoin?.guest?.name}さんが参加しました`
+                  : convertString(
+                      item?.lastMessageJoin?.message?.split('<br>').join('\n'),
+                    )}
               </Text>
             ) : null}
           </>
