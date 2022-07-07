@@ -66,6 +66,7 @@ export const useFunction = (props: any) => {
   const [text, setText] = useState('');
   const [showTagModal, setShowTag] = useState(false);
   const [listUser, setListUser] = useState([]);
+  const [ids, setIds] = useState<any>([]);
 
   useEffect(() => {
     if (idMessageSearchListChat) {
@@ -316,6 +317,7 @@ export const useFunction = (props: any) => {
         animated: true,
         index: 0,
       });
+      setIds([]);
     },
     [messageReply, message_edit],
   );
@@ -656,5 +658,7 @@ export const useFunction = (props: any) => {
     listUser,
     setText,
     bookmarkMessage,
+    setIds,
+    ids,
   };
 };
