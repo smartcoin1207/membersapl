@@ -148,19 +148,11 @@ const ItemMessage = React.memo((props: any) => {
   }, 0);
 
   const renderTxtName = () => {
-    const {currentMessage, previousMessage} = props;
-    if (
-      currentMessage?.user?._id !== previousMessage?.user?._id &&
-      msg_type !== 6
-    ) {
-      return (
-        <Text style={styles.txtNameSend}>
-          {user?.name ? user?.name : guest?.name}
-        </Text>
-      );
-    } else {
-      null;
-    }
+    return (
+      <Text style={styles.txtNameSend}>
+        {user?.name ? user?.name : guest?.name}
+      </Text>
+    );
   };
 
   const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
@@ -209,10 +201,11 @@ const ItemMessage = React.memo((props: any) => {
       msg_type == 5 ||
       msg_type == 9 ||
       msg_type == 10 ||
+      msg_type == 9 ||
       msg_type == 12 ? (
         <View style={styles.viewCenter}>
           <Text style={styles.txtCenter} numberOfLines={2}>
-            {text}
+            {msg_type !== 9 ? text : `${guest?.name}さんが参加しました。`}
           </Text>
         </View>
       ) : (
@@ -425,6 +418,7 @@ const ItemMessage = React.memo((props: any) => {
                 onActionReaction={(value: any) => onActionReaction(value)}
               />
             </Menu>
+
             {users_seen?.length > 0 ? (
               <TouchableOpacity
                 style={

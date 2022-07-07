@@ -2,6 +2,7 @@ import {colors, stylesCommon} from '@stylesCommon';
 import React, {useCallback} from 'react';
 import {StyleSheet, View, Text, Linking, TouchableOpacity} from 'react-native';
 import {moderateScale, verticalScale, scale} from 'react-native-size-matters';
+import moment from 'moment';
 
 const ViewTask = React.memo((props: any) => {
   const {data, mess, task_link} = props;
@@ -19,12 +20,19 @@ const ViewTask = React.memo((props: any) => {
       </View>
       <View style={styles.viewContent}>
         <Text style={styles.txtTitle}>タスク名</Text>
-        <Text style={styles.txtContent}>{data?.name}</Text>
+        <Text style={styles.txtContent}>
+          {data?.del_flag == 0 ? data?.name : '削除されたタスク'}
+        </Text>
       </View>
       <View style={styles.viewBottom}>
         <Text style={styles.txtTitle}>期日</Text>
         <Text style={styles.txtTime}>
-          {data?.plans_end_date} {data?.plans_end_time}
+          {data?.del_flag == 0
+            ? moment(data?.plans_end_date, 'YYYY-MM-DD').format('YYYY/MM/DD')
+            : '--'}{' '}
+          {data?.del_flag == 0
+            ? moment(data?.plans_end_time, 'HH:mm:ss').format('HH:mm')
+            : '--'}
         </Text>
       </View>
     </TouchableOpacity>

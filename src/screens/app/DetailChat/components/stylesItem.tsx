@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
   },
   containerMenu: {
-    // marginTop: moderateVerticalScale(-125),
+    marginTop: moderateVerticalScale(-125),
   },
   viewReaction: {
     marginTop: verticalScale(-8),
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   viewInvite: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '85%',
+    width: '100%',
   },
   viewTask: {
     width: '100%',

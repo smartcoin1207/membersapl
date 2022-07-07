@@ -57,7 +57,7 @@ const Item = React.memo((props: any) => {
             </Text>
             {item?.message ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
-                {convertString(item?.message)}{' '}
+                {convertString(item?.message?.split('<br>').join('\n'))}{' '}
               </Text>
             ) : null}
             {item?.stamp_no ? (

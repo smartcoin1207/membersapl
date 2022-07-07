@@ -45,7 +45,6 @@ const ViewInvite = React.memo((props: any) => {
         text2: null,
         time: null,
       });
-
       setApproved_status(value);
     } catch (error: any) {}
   }, []);
@@ -65,8 +64,8 @@ const ViewInvite = React.memo((props: any) => {
         ) : (
           <Text style={styles.txtTitle}>
             {approved_status === 1
-              ? '参加を承認しました'
-              : '参加を拒否しました'}
+              ? '参加を拒否しました'
+              : '参加を承認しました'}
           </Text>
         )}
         {approved_status === 0 ? (
@@ -91,7 +90,7 @@ const ViewInvite = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '85%',
     backgroundColor: '#FFFFFF',
     borderRadius: moderateScale(8),
   },
