@@ -54,7 +54,10 @@ const DetailChat = (props: any) => {
     listUser,
     setText,
     bookmarkMessage,
+    ids,
+    setIds,
   } = useFunction(props);
+
 
   const renderActions = useCallback((props: any) => {
     return (
@@ -217,8 +220,9 @@ const DetailChat = (props: any) => {
                   {showTagModal && (
                     <ModalTagName
                       idRoomChat={idRoomChat}
-                      choseUser={(value: any) => {
+                      choseUser={(value: any, id: any) => {
                         setText(`${text}${value}`);
+                        setIds(ids?.concat([id]));
                         setShowTag(false);
                       }}
                     />

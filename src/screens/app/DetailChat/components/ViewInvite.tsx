@@ -13,13 +13,9 @@ const ViewInvite = React.memo((props: any) => {
   const socket = getSocket();
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
   const {data, idRoomChat, idMessage} = props;
-  const [approved_status, setApproved_status] = useState<any>(null);
-
-  useEffect(() => {
-    if (data?.approved_status === 0) {
-      setApproved_status(data?.approved_status);
-    }
-  }, [data]);
+  const [approved_status, setApproved_status] = useState<any>(
+    data?.approved_status,
+  );
 
   const onAddUser = useCallback(async value => {
     try {
@@ -29,18 +25,32 @@ const ViewInvite = React.memo((props: any) => {
         room_id: idRoomChat,
       };
       const res = await addUserMessage(params);
+      console.log({
+        user_id: user_id,
+        room_id: idRoomChat * -1,
+        task_id: null,
+        to_info: null,
+        level: null,
+        message_id: null,
+        message_type: 8,
+        method: 0,
+        attachment_files: null,
+        stamp_no: null,
+        text: String(data?.id * -1),
+        text2: null,
+        time: null,
+      });
       socket.emit('message_ind', {
         user_id: user_id,
         room_id: idRoomChat * -1,
         task_id: null,
         to_info: null,
-        level: 2,
-        message_id: idMessage,
+        level: null,
+        message_id: null,
         message_type: 8,
         method: 0,
         attachment_files: null,
         stamp_no: null,
-        relation_message_id: null,
         text: String(data?.id * -1),
         text2: null,
         time: null,
@@ -59,13 +69,11 @@ const ViewInvite = React.memo((props: any) => {
       <View style={styles.viewContent}>
         <Text style={styles.txtTitle}>お名前</Text>
         <Text style={styles.txtContent}>{data?.name}</Text>
-        {approved_status === 0 ? (
+        {approved_status == 0 ? (
           <Text style={styles.txtTitle}>参加を承認しますか?</Text>
         ) : (
           <Text style={styles.txtTitle}>
-            {approved_status === 1
-              ? '参加を承認しました'
-              : '参加を拒否しました'}
+            {approved_status == 1 ? '参加を承認しました' : '参加を拒否しました'}
           </Text>
         )}
         {approved_status === 0 ? (
