@@ -31,7 +31,7 @@ const ViewInvite = React.memo((props: any) => {
       const res = await addUserMessage(params);
       socket.emit('message_ind', {
         user_id: user_id,
-        room_id: -idRoomChat,
+        room_id: idRoomChat * -1,
         task_id: null,
         to_info: null,
         level: 2,
@@ -41,7 +41,7 @@ const ViewInvite = React.memo((props: any) => {
         attachment_files: null,
         stamp_no: null,
         relation_message_id: null,
-        text: null,
+        text: String(data?.id * -1),
         text2: null,
         time: null,
       });
@@ -66,7 +66,6 @@ const ViewInvite = React.memo((props: any) => {
             {approved_status === 1
               ? '参加を承認しました'
               : '参加を拒否しました'}
-              
           </Text>
         )}
         {approved_status === 0 ? (
