@@ -239,6 +239,9 @@ export const useFunction = (props: any) => {
           data.append('from_id', user_id);
           data.append('message', mes[0]?.text?.split('\n').join('<br>'));
           data.append('reply_to_message_id', messageReply?.id);
+          ids?.forEach((item: any) => {
+            data.append('ids[]', item);
+          });
           const res = await replyMessageApi(data);
           socket.emit('message_ind', {
             user_id: mes[0]?.user?._id,
@@ -264,6 +267,7 @@ export const useFunction = (props: any) => {
           const param = {
             room_id: idRoomChat,
             message: mes[0]?.text?.split('\n').join('<br>'),
+            ids: ids,
           };
           const res = await editMessageApi(message_edit?.id, param);
           socket.emit('message_ind', {
@@ -293,6 +297,9 @@ export const useFunction = (props: any) => {
           data.append('room_id', idRoomChat);
           data.append('from_id', mes[0]?.user?._id);
           data.append('message', mes[0]?.text?.split('\n').join('<br>'));
+          ids?.forEach((item: any) => {
+            data.append('ids[]', item);
+          });
           const res = await sendMessageApi(data);
           socket.emit('message_ind', {
             user_id: mes[0]?.user?._id,
@@ -319,7 +326,7 @@ export const useFunction = (props: any) => {
       });
       setIds([]);
     },
-    [messageReply, message_edit],
+    [messageReply, message_edit, ids],
   );
 
   const updateGimMessage = useCallback(
