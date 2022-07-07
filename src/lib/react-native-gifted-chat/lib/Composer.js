@@ -65,7 +65,7 @@ export default class Composer extends React.Component {
                     },
                 }),
             },
-        ]} autoFocus={this.props.textInputAutoFocus} value={convertString(this.props.text)} enablesReturnKeyAutomatically underlineColorAndroid='transparent' keyboardAppearance={this.props.keyboardAppearance} {...this.props.textInputProps} />);
+        ]} autoFocus={this.props.textInputAutoFocus} value={this.props.text} enablesReturnKeyAutomatically underlineColorAndroid='transparent' keyboardAppearance={this.props.keyboardAppearance} {...this.props.textInputProps} />);
     }
 }
 Composer.defaultProps = {

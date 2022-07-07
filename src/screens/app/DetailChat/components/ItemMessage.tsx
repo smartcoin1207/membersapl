@@ -148,11 +148,7 @@ const ItemMessage = React.memo((props: any) => {
   }, 0);
 
   const renderTxtName = () => {
-    return (
-      <Text style={styles.txtNameSend}>
-        {user?.name ? user?.name : guest?.name}
-      </Text>
-    );
+    return <Text style={styles.txtNameSend}>{user?.name || guest?.name}</Text>;
   };
 
   const convertMentionToLink = useCallback((text: any, joinedUsers: any) => {
@@ -218,14 +214,13 @@ const ItemMessage = React.memo((props: any) => {
               {user?._id == user_id ? null : renderTxtName()}
               {msg_type == 6 ? (
                 <View style={styles.viewTask}>
+                  <FastImage source={defaultAvatar} style={styles.image} />
                   <ViewTask data={task} mess={text} task_link={task_link} />
                 </View>
               ) : null}
               {msg_type == 8 ? (
                 <View style={styles.viewInvite}>
-                  {user?._id == user_id ? null : (
-                    <FastImage source={defaultAvatar} style={styles.image} />
-                  )}
+                  <FastImage source={defaultAvatar} style={styles.image} />
                   <ViewInvite
                     data={guest}
                     idRoomChat={idRoomChat}
@@ -233,18 +228,6 @@ const ItemMessage = React.memo((props: any) => {
                   />
                 </View>
               ) : null}
-              {/* <Menu
-                style={styles.containerMenu}
-                visible={visible}
-                onRequestClose={onShowMenu}
-                key={1}>
-                <MenuFeature
-                  userId={user?._id}
-                  onActionMenu={(value: any) => onActionMenu(value)}
-                  onActionReaction={(value: any) => onActionReaction(value)}
-                  msg_type={msg_type}
-                />
-              </Menu> */}
               <TouchableOpacity
                 style={styles.chat}
                 onPress={onShowMenu}
