@@ -55,11 +55,19 @@ const ViewFile = React.memo((props: any) => {
   }, [page, lastPage]);
 
   const openFile = (item: any) => {
-    const body = {
-      id_room: id,
-      id_message: item?.messages_id,
-    };
-    dispatch(fetchResultMessageActionListFile(body));
+    // const body = {
+    //   id_room: id,
+    //   id_message: item?.messages_id,
+    // };
+    // dispatch(fetchResultMessageActionListFile(body));
+    if (!LINK_URL_VIDEO?.test(item?.path)) {
+      setDataModalFile({
+        show: true,
+        path: item?.path,
+      });
+    } else {
+      navigation.navigate(ROUTE_NAME.DETAIL_VIDEO, {url: item?.path});
+    }
   };
 
   const onCloseModalFile = useCallback(() => {

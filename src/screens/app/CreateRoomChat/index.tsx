@@ -168,6 +168,14 @@ const CreateRoomChat = (props: any) => {
     }
   };
 
+  const renderPlaceHolder = () => {
+    if (typeScreen === 'CREATE') {
+      return 'メンバー検索';
+    } else {
+      return '名前';
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Header
@@ -213,7 +221,7 @@ const CreateRoomChat = (props: any) => {
                 style={styles.input}
                 onChangeText={onSearchName}
                 value={key}
-                placeholder={listUser?.length > 0 ? '' : '名前'}
+                placeholder={listUser?.length > 0 ? '' : renderPlaceHolder()}
                 placeholderTextColor={colors.placeholder}
                 onSubmitEditing={() => onSearch(key)}
                 returnKeyType="search"

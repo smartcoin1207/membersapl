@@ -8,9 +8,9 @@ import {ROUTE_NAME} from '@routeName';
 const api = axios.create();
 
 //adamo api url
-// const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
+const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
 //member chat staging api url
-const BASEURL = 'https://stage.mem-bers.jp/mobile';
+// const BASEURL = 'https://stage.mem-bers.jp/mobile';
 //member chat live api url
 // const BASEURL = 'https://mem-bers.jp/mobile';
 
@@ -46,8 +46,10 @@ api.interceptors.response.use(
   },
   function (error) {
     const {message} = error?.response?.data;
-    if (error?.response?.data?.code === 503) {
-      NavigationUtils.navigate(ROUTE_NAME.NETWORK_ERR);
+    if (error?.response?.status == 503 || error?.response?.data?.code === 503) {
+      NavigationUtils.navigate(ROUTE_NAME.NETWORK_ERR, {
+        message: message ? message : '',
+      });
     } else {
       showMessage({
         message: message ? message : 'Network Error',

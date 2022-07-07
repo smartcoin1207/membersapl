@@ -129,12 +129,12 @@ const DetailChat = (props: any) => {
     <View style={styles.container}>
       <Header
         back
-        // title={
-        //   dataDetail?.one_one_check?.length > 0
-        //     ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
-        //     : dataDetail?.name
-        // }
-        title={dataDetail?.name}
+        title={
+          dataDetail?.one_one_check?.length > 0
+            ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
+            : dataDetail?.name
+        }
+        // title={dataDetail?.name}
         imageCenter
         iconRightFirst={iconDetail}
         iconRightSecond={iconSearch}
