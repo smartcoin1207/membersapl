@@ -58,7 +58,6 @@ const DetailChat = (props: any) => {
     setIds,
   } = useFunction(props);
 
-
   const renderActions = useCallback((props: any) => {
     return (
       <Actions
