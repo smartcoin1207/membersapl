@@ -25,21 +25,6 @@ const ViewInvite = React.memo((props: any) => {
         room_id: idRoomChat,
       };
       const res = await addUserMessage(params);
-      console.log({
-        user_id: user_id,
-        room_id: idRoomChat * -1,
-        task_id: null,
-        to_info: null,
-        level: null,
-        message_id: null,
-        message_type: 8,
-        method: 0,
-        attachment_files: null,
-        stamp_no: null,
-        text: String(data?.id * -1),
-        text2: null,
-        time: null,
-      });
       socket.emit('message_ind', {
         user_id: user_id,
         room_id: idRoomChat * -1,
@@ -48,7 +33,7 @@ const ViewInvite = React.memo((props: any) => {
         level: null,
         message_id: null,
         message_type: 8,
-        method: 0,
+        method: value == 1 ? 0 : 2,
         attachment_files: null,
         stamp_no: null,
         text: String(data?.id * -1),

@@ -195,8 +195,6 @@ const InfoRoomChat = (props: any) => {
     }
   };
 
-  console.log(dataDetail)
-
   return (
     <View style={styles.container}>
       <Header
