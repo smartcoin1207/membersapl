@@ -10,7 +10,6 @@ import {
   saveMessageReply,
   saveMessageEdit,
   editMessageAction,
-  updateMessageSeen,
   fetchResultMessageActionListRoom,
   isGetInfoRoom,
 } from '@redux';

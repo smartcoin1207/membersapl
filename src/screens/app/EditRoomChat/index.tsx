@@ -59,12 +59,20 @@ const EditRoomChat = (props: any) => {
     getListUserOfRoom();
   }, []);
 
+  const renderNameRoom = () => {
+    if (listUser?.length == 1) {
+      return null;
+    } else {
+      return '新規グループ';
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       const body = {
         room_id: idRoomChat,
         description: content,
-        name: name,
+        name: name ? name : renderNameRoom(),
       };
       GlobalService.showLoading();
       const response = await updateInfoRoomchat(body);
@@ -76,7 +84,7 @@ const EditRoomChat = (props: any) => {
           ids: convertDataUser(),
         },
         method: 2,
-        room_name: name,
+        room_name: name ? name : renderNameRoom(),
       });
       onBack();
       GlobalService.hideLoading();

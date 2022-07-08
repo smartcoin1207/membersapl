@@ -120,9 +120,9 @@ const Item = React.memo((props: any) => {
         <View style={styles.viewTxt}>
           <>
             <Text style={styles.txtContent} numberOfLines={1}>
-              {item?.one_one_check?.length > 0
-                ? `${item?.one_one_check[0]?.last_name} ${item?.one_one_check[0]?.first_name}`
-                : item?.name}
+              {item?.name && item?.name?.length > 0
+                ? item?.name
+                : `${item?.one_one_check[0]?.last_name} ${item?.one_one_check[0]?.first_name}`}
             </Text>
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
