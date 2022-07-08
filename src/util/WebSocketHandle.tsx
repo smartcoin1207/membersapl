@@ -11,6 +11,8 @@ import {EVENT_SOCKET} from '@util';
 
 //socket no auth
 // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+//new url staging websocket
+// const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
 //socket with auth
 // const socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
 
@@ -26,7 +28,7 @@ function createAppSocket() {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+    socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
     onHanleEvent(socket);
   };
