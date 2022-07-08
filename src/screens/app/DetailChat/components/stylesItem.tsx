@@ -191,6 +191,8 @@ const styles = StyleSheet.create({
   },
   viewTask: {
     width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

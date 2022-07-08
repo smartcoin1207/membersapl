@@ -90,12 +90,20 @@ const CreateRoomChat = (props: any) => {
     return data;
   };
 
+  const renderNameRoom = () => {
+    if (renderIdUser()?.length == 1) {
+      return null;
+    } else {
+      return '新規グループ';
+    }
+  };
+
   const handleSubmit = async () => {
     if (typeScreen === 'CREATE') {
       try {
         GlobalService.showLoading();
         const body = {
-          name: name ? name : '新規グループ',
+          name: name ? name : renderNameRoom(),
           user_id: renderIdUser(),
         };
         const result = await createRoom(body);
@@ -107,7 +115,7 @@ const CreateRoomChat = (props: any) => {
             ids: renderIdUser(),
           },
           method: 2,
-          room_name: name ? name : '新規グループ',
+          room_name: name ? name : renderNameRoom(),
         });
         navigation.goBack();
         GlobalService.hideLoading();

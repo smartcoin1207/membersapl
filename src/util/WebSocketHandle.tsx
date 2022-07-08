@@ -12,7 +12,7 @@ import {EVENT_SOCKET} from '@util';
 //socket no auth
 // const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
 //socket with auth
-// const socket = io('https://v3mbs-msg01.mem-bers.jp', SOCKET_CONFIG);
+// const socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
 
 let socket = io('', {
   autoConnect: false,

@@ -198,12 +198,19 @@ const InfoRoomChat = (props: any) => {
   return (
     <View style={styles.container}>
       <Header
-        // title={
-        //   dataDetail?.one_one_check?.length > 0
-        //     ? `${dataDetail?.one_one_check[0]?.last_name} ${dataDetail?.one_one_check[0]?.first_name}`
-        //     : dataDetail?.name
-        // }
-        title={dataDetail?.name}
+        title={
+          dataDetail?.name && dataDetail?.name?.length > 0
+            ? dataDetail?.name
+            : `${
+                dataDetail?.one_one_check[0]
+                  ? dataDetail?.one_one_check[0]?.last_name
+                  : ''
+              } ${
+                dataDetail?.one_one_check[0]
+                  ? dataDetail?.one_one_check[0]?.first_name
+                  : ''
+              }`
+        }
         back
         imageCenter
       />
