@@ -28,7 +28,7 @@ function createAppSocket() {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+    socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
     socket.connect();
     onHanleEvent(socket);
   };

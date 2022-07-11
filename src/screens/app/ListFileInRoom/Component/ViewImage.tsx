@@ -25,12 +25,12 @@ import {GlobalService} from '@services';
 const ViewImage = React.memo((props: any) => {
   const {id} = props;
 
-  const [listImage, setListImage] = useState([]);
+  const [listImage, setListImage] = useState<any>([]);
   const [total, setTotal] = useState(null);
   const [lastPage, setLastPage] = useState(null);
   const [page, setPage] = useState(1);
   const [modalImage, setModalImage] = useState(false);
-  const [urlModalImage, setUrlModalImage] = useState<any>([]);
+  const [urlModalImage, setUrlModalImage] = useState<any>(0);
 
   const hasAndroidPermission = async () => {
     const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
@@ -94,61 +94,69 @@ const ViewImage = React.memo((props: any) => {
     setModalImage(!modalImage);
   }, [modalImage]);
 
-  const onDowloadImage = useCallback(async () => {
-    if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
-      return;
-    } else {
-      await viewImage();
-      GlobalService.showLoading();
-      const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-      const url = urlModalImage[0]?.uri;
-      const fileName = Date.now();
-      const fileExtention = url.split('.').pop();
-      const fileFullName = fileName + '.' + fileExtention;
-      RNFetchBlob.config({
-        fileCache: true,
-        path: destinationPath + '/' + fileFullName,
-      })
-        .fetch('GET', url)
-        .then(res => {
-          CameraRoll.saveToCameraRoll(res?.path(), 'photo')
-            .then(() => {
-              GlobalService.hideLoading();
-              showMessage({
-                message: 'ダウンロード成功',
-                type: 'success',
-              });
-            })
-            .catch(err => {
-              GlobalService.hideLoading();
-              showMessage({
-                message: '処理中にエラーが発生しました',
-                type: 'danger',
-              });
-            });
+  const onDowloadImage = useCallback(
+    async imageIndex => {
+      if (Platform.OS === 'android' && !(await hasAndroidPermission())) {
+        return;
+      } else {
+        await viewImage();
+        GlobalService.showLoading();
+        const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
+        const url = listImage[imageIndex]?.path;
+        const fileName = Date.now();
+        const fileExtention = url.split('.').pop();
+        const fileFullName = fileName + '.' + fileExtention;
+        RNFetchBlob.config({
+          fileCache: true,
+          path: destinationPath + '/' + fileFullName,
         })
-        .catch(error => {
-          GlobalService.hideLoading();
-          showMessage({
-            message: '処理中にエラーが発生しました',
-            type: 'danger',
+          .fetch('GET', url)
+          .then(res => {
+            CameraRoll.saveToCameraRoll(res?.path(), 'photo')
+              .then(() => {
+                GlobalService.hideLoading();
+                showMessage({
+                  message: 'ダウンロード成功',
+                  type: 'success',
+                });
+              })
+              .catch(err => {
+                GlobalService.hideLoading();
+                showMessage({
+                  message: '処理中にエラーが発生しました',
+                  type: 'danger',
+                });
+              });
+          })
+          .catch(error => {
+            GlobalService.hideLoading();
+            showMessage({
+              message: '処理中にエラーが発生しました',
+              type: 'danger',
+            });
           });
-        });
-    }
-  }, [modalImage, urlModalImage]);
+      }
+    },
+    [modalImage, urlModalImage, listImage],
+  );
 
-  const renderHeader = useCallback(() => {
-    return (
-      <View style={styles.viewHeaderImage}>
-        <TouchableOpacity hitSlop={HITSLOP} onPress={onDowloadImage}>
-          <Image source={iconDowload} style={styles.iconDowload} />
-        </TouchableOpacity>
-        <TouchableOpacity hitSlop={HITSLOP} onPress={viewImage}>
-          <Image source={iconClose} style={styles.iconClose} />
-        </TouchableOpacity>
-      </View>
-    );
-  }, [modalImage]);
+  const renderHeader = useCallback(
+    ({imageIndex}) => {
+      return (
+        <View style={styles.viewHeaderImage}>
+          <TouchableOpacity
+            hitSlop={HITSLOP}
+            onPress={() => onDowloadImage(imageIndex)}>
+            <Image source={iconDowload} style={styles.iconDowload} />
+          </TouchableOpacity>
+          <TouchableOpacity hitSlop={HITSLOP} onPress={viewImage}>
+            <Image source={iconClose} style={styles.iconClose} />
+          </TouchableOpacity>
+        </View>
+      );
+    },
+    [modalImage],
+  );
 
   return (
     <View style={styles.container}>
