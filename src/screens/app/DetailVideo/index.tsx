@@ -102,7 +102,7 @@ const DetailVideo = (props: any) => {
       fileCache: true,
       path: destinationPath + '/' + fileFullName,
     })
-      .fetch('GET', url)
+      .fetch('GET', encodeURI(url))
       .then(res => {
         CameraRoll.saveToCameraRoll(res?.path(), 'video')
           .then(() => {

@@ -84,7 +84,7 @@ const MsgFile = React.memo((props: any) => {
       await viewImage();
       GlobalService.showLoading();
       const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-      const url = urlModalImage[0]?.uri;
+      const url = encodeURI(urlModalImage[0]?.uri);
       const fileName = Date.now();
       const fileExtention = url.split('.').pop();
       const fileFullName = fileName + '.' + fileExtention;
