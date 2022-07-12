@@ -8,6 +8,7 @@ import {
   Image,
   Platform,
   PermissionsAndroid,
+  Linking,
 } from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {stylesCommon, colors} from '@stylesCommon';
@@ -102,7 +103,7 @@ const ViewImage = React.memo((props: any) => {
         await viewImage();
         GlobalService.showLoading();
         const destinationPath = RNFetchBlob.fs.dirs.DocumentDir + '/' + 'MyApp';
-        const url = listImage[imageIndex]?.path;
+        const url = encodeURI(listImage[imageIndex]?.path);
         const fileName = Date.now();
         const fileExtention = url.split('.').pop();
         const fileFullName = fileName + '.' + fileExtention;
@@ -110,7 +111,7 @@ const ViewImage = React.memo((props: any) => {
           fileCache: true,
           path: destinationPath + '/' + fileFullName,
         })
-          .fetch('GET', url)
+          .fetch('GET', encodeURI(url))
           .then(res => {
             CameraRoll.saveToCameraRoll(res?.path(), 'photo')
               .then(() => {
@@ -121,6 +122,7 @@ const ViewImage = React.memo((props: any) => {
                 });
               })
               .catch(err => {
+                console.log('err', err);
                 GlobalService.hideLoading();
                 showMessage({
                   message: '処理中にエラーが発生しました',
@@ -129,11 +131,13 @@ const ViewImage = React.memo((props: any) => {
               });
           })
           .catch(error => {
+            console.log(error);
             GlobalService.hideLoading();
             showMessage({
               message: '処理中にエラーが発生しました',
               type: 'danger',
             });
+            Linking.openURL(url);
           });
       }
     },
