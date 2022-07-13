@@ -111,7 +111,7 @@ const ViewImage = React.memo((props: any) => {
           fileCache: true,
           path: destinationPath + '/' + fileFullName,
         })
-          .fetch('GET', encodeURI(url))
+          .fetch('GET', url)
           .then(res => {
             CameraRoll.saveToCameraRoll(res?.path(), 'photo')
               .then(() => {
