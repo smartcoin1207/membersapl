@@ -122,7 +122,6 @@ const ViewImage = React.memo((props: any) => {
                 });
               })
               .catch(err => {
-                console.log('err', err);
                 GlobalService.hideLoading();
                 showMessage({
                   message: '処理中にエラーが発生しました',
@@ -131,7 +130,6 @@ const ViewImage = React.memo((props: any) => {
               });
           })
           .catch(error => {
-            console.log(error);
             GlobalService.hideLoading();
             showMessage({
               message: '処理中にエラーが発生しました',
