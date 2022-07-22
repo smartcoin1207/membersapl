@@ -21,6 +21,7 @@ import {pinFlag, GlobalService} from '@services';
 import {saveIdRoomChat, getRoomList} from '@redux';
 import {showMessage} from 'react-native-flash-message';
 import {useSelector, useDispatch} from 'react-redux';
+import {decode} from 'html-entities';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -119,7 +120,16 @@ const Item = React.memo((props: any) => {
         </View>
         <View style={styles.viewTxt}>
           <>
-            <Text style={styles.txtContent} numberOfLines={1}>
+            <Text
+              style={[
+                styles.txtContent,
+                {
+                  fontWeight: item?.message_unread > 0 ? 'bold' : '600',
+                  color:
+                    item?.message_unread > 0 ? '#000000' : colors.backgroundTab,
+                },
+              ]}
+              numberOfLines={1}>
               {item?.name && item?.name?.length > 0
                 ? item?.name
                 : `${
@@ -159,7 +169,11 @@ const Item = React.memo((props: any) => {
                 {item?.lastMessageJoin?.msg_type == 9
                   ? `${item?.lastMessageJoin?.guest?.name}さんが参加しました`
                   : convertString(
-                      item?.lastMessageJoin?.message?.split('<br>').join('\n'),
+                      decode(
+                        item?.lastMessageJoin?.message
+                          ?.split('<br>')
+                          .join('\n'),
+                      ),
                     )}
               </Text>
             ) : null}
@@ -172,7 +186,15 @@ const Item = React.memo((props: any) => {
               style={{tintColor: pin == 1 ? '#EA5A31' : colors.border}}
             />
           </TouchableOpacity>
-          <Image source={iconNext} />
+          {item?.message_unread > 0 ? (
+            <View style={styles.viewUnread}>
+              <Text style={styles.txtMessageUnread} numberOfLines={1}>
+                {item?.message_unread}
+              </Text>
+            </View>
+          ) : (
+            <Image source={iconNext} />
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -215,7 +237,7 @@ const styles = StyleSheet.create({
     marginTop: scale(5),
   },
   txtContent: {
-    ...stylesCommon.fontWeight600,
+    // ...stylesCommon.fontWeight600,
     fontSize: moderateScale(14),
     marginTop: verticalScale(3),
     color: colors.backgroundTab,
@@ -260,6 +282,20 @@ const styles = StyleSheet.create({
   imageFile: {
     width: moderateScale(25),
     height: moderateScale(25),
+  },
+  viewUnread: {
+    width: moderateScale(25),
+    height: moderateScale(25),
+    borderRadius: moderateScale(25 / 2),
+    backgroundColor: colors.border,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: scale(8),
+  },
+  txtMessageUnread: {
+    fontSize: moderateScale(10),
+    ...stylesCommon.fontWeight600,
+    color: '#FFFFFF',
   },
 });
 

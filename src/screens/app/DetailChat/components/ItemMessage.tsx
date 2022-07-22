@@ -30,6 +30,7 @@ import {ViewUserSeen} from './viewUserSeen';
 import Autolink from 'react-native-autolink';
 import {ViewTask} from './ViewTask';
 import {ViewInvite} from './ViewInvite';
+import {decode} from 'html-entities';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#E8E8E8', '#D4D4D4'];
@@ -67,6 +68,7 @@ const ItemMessage = React.memo((props: any) => {
     task,
     guest,
     task_link,
+    message_quote,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -279,7 +281,8 @@ const ItemMessage = React.memo((props: any) => {
                           style={styles.containerChat}>
                           {reply_to_message_text ||
                           reply_to_message_files?.length > 0 ||
-                          reply_to_message_stamp?.stamp_icon ? (
+                          reply_to_message_stamp?.stamp_icon ||
+                          message_quote ? (
                             <View style={styles.viewReply}>
                               <View style={styles.viewColumn} />
                               <View>
@@ -290,7 +293,20 @@ const ItemMessage = React.memo((props: any) => {
                                   <Text
                                     style={styles.txtContentReply}
                                     numberOfLines={1}>
-                                    {reply_to_message_text}
+                                    {decode(
+                                      reply_to_message_text
+                                        ?.split('<br>')
+                                        .join('\n'),
+                                    )}
+                                  </Text>
+                                ) : null}
+                                {message_quote ? (
+                                  <Text
+                                    style={styles.txtContentReply}
+                                    numberOfLines={1}>
+                                    {decode(
+                                      message_quote?.split('<br>').join('\n'),
+                                    )}
                                   </Text>
                                 ) : null}
                                 {reply_to_message_files?.length > 0 ? (
@@ -344,7 +360,7 @@ const ItemMessage = React.memo((props: any) => {
                             <MsgFile data={attachment_files} />
                           ) : null}
                           <Autolink
-                            text={text?.split('<br>').join('\n')}
+                            text={decode(text?.split('<br>').join('\n'))}
                             email
                             url
                             renderText={text => (
