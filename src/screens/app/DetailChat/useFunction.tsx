@@ -130,6 +130,7 @@ export const useFunction = (props: any) => {
       task: message?.task,
       guest: message?.guest,
       task_link: message?.task_link,
+      message_quote: message?.message_quote,
     };
   }, []);
 
