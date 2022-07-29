@@ -2,20 +2,29 @@ import React, {useEffect} from 'react';
 import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {styles} from './styles';
 import {useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, CommonActions} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
+import {AppNotification} from '@util';
 
 const Splash = () => {
+  let {removeBadge} = AppNotification;
   const token = useSelector((state: any) => state?.auth?.token);
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const navigation = useNavigation<any>();
   var timer: any;
 
   useEffect(() => {
+    removeBadge();
     timer = setTimeout(() => {
       if (token) {
         if (idCompany) {
-          navigation.navigate(ROUTE_NAME.TAB_SCREEN);
+          // navigation.navigate(ROUTE_NAME.TAB_SCREEN);
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: ROUTE_NAME.TAB_SCREEN}],
+            }),
+          );
         } else {
           navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
         }

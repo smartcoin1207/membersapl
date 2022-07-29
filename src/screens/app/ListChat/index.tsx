@@ -65,14 +65,6 @@ const ListChat = () => {
     if (user?.id) {
       dispatch(getUserInfo(user?.id));
     }
-    const backAction = () => {
-      return true;
-    };
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      backAction,
-    );
-    return () => backHandler.remove();
   }, []);
 
   useEffect(() => {

@@ -191,6 +191,9 @@ const Item = React.memo((props: any) => {
               <Text style={styles.txtMessageUnread} numberOfLines={1}>
                 {item?.message_unread}
               </Text>
+              {item?.message_mention_unread === true ? (
+                <View style={styles.viewActiveTag} />
+              ) : null}
             </View>
           ) : (
             <Image source={iconNext} />
@@ -296,6 +299,15 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(10),
     ...stylesCommon.fontWeight600,
     color: '#FFFFFF',
+  },
+  viewActiveTag: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    position: 'absolute',
+    backgroundColor: colors.primary,
+    top: -2,
+    right: -2,
   },
 });
 

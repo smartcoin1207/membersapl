@@ -7,9 +7,11 @@ import {getSystemVersion} from 'react-native-device-info';
 import {registerToken} from '@services';
 import {store} from '../redux/store';
 import {convertString} from '@util';
+import notifee, {EventType} from '@notifee/react-native';
 
 function createAppNotification() {
   let fcmToken = '';
+  let badgeCount = 0;
   let lastMessageId = '';
 
   const initFB = () => {
@@ -27,26 +29,50 @@ function createAppNotification() {
         if (notification.messageId !== lastMessageId) {
           lastMessageId = notification.messageId || '';
         }
+        badgeCount += 1;
         handleUserInteractionNotification(notification);
       })
       .catch(error => {
         throw error;
       });
 
-    messaging().onMessage(notification => {
+    messaging().onMessage(async notification => {
       if (notification.messageId !== lastMessageId) {
         lastMessageId = notification.messageId || '';
+        badgeCount += 1;
         handleNotiOnForeground(notification);
       }
+    });
+
+    messaging().onNotificationOpenedApp(async notification => {
+      if (notification.messageId !== lastMessageId) {
+        lastMessageId = notification.messageId || '';
+      }
+      await notifee.decrementBadgeCount();
+      badgeCount -= 1;
+      handleUserInteractionNotification(notification);
     });
 
     messaging().setBackgroundMessageHandler(async notification => {
       if (notification.messageId !== lastMessageId) {
         lastMessageId = notification.messageId || '';
       }
+      await notifee
+        .incrementBadgeCount()
+        .then(() => notifee.getBadgeCount())
+        .then(count => console.log('Badge count incremented by 1 to: ', count));
+      badgeCount += 1;
       handleUserInteractionNotification(notification);
     });
   };
+
+  notifee.onBackgroundEvent(async ({type, detail}: any) => {
+    const {notification, pressAction} = detail;
+    if (type === EventType.ACTION_PRESS && pressAction?.id === 'mark-as-read') {
+      await notifee.decrementBadgeCount();
+      await notifee.cancelNotification(notification?.id);
+    }
+  });
 
   const requestUserPermisstion = async () => {
     const authStatus = await messaging().requestPermission();
@@ -101,10 +127,15 @@ function createAppNotification() {
     } catch (error) {}
   };
 
+  const removeBadge = () => {
+    notifee.setBadgeCount(0);
+  };
+
   return {
     requestUserPermisstion,
     fcmToken,
     initFB,
+    removeBadge,
   };
 }
 

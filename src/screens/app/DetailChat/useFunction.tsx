@@ -66,6 +66,7 @@ export const useFunction = (props: any) => {
   const [showTagModal, setShowTag] = useState(false);
   const [listUser, setListUser] = useState([]);
   const [ids, setIds] = useState<any>([]);
+  const [newIndexArray, setIndex] = useState<any>(null);
 
   useEffect(() => {
     if (idMessageSearchListChat) {
@@ -600,7 +601,15 @@ export const useFunction = (props: any) => {
   const getUserListChat = useCallback(async () => {
     try {
       const result = await getListUser({room_id: idRoomChat});
-      setListUser(result?.data?.users?.data);
+      const guest = result?.data?.guests?.map((item: any) => {
+        return {
+          ...item,
+          id: Number(item?.id) * -1,
+          last_name: item?.name,
+          first_name: '',
+        };
+      });
+      setListUser(result?.data?.users?.data?.concat(guest));
     } catch {
       (error: any) => {};
     }
@@ -667,5 +676,7 @@ export const useFunction = (props: any) => {
     bookmarkMessage,
     setIds,
     ids,
+    newIndexArray,
+    setIndex,
   };
 };

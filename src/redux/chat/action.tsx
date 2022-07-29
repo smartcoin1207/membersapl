@@ -118,3 +118,8 @@ export const isGetInfoRoom = (payload: any) => ({
   type: typeChat.IS_GET_INFO_ROOM,
   payload,
 });
+
+export const updateMessageReaction = (payload: any) => ({
+  type: typeChat.EDIT_MESSAGE_REACTION,
+  payload,
+});

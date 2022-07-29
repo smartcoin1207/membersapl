@@ -53,7 +53,7 @@ const ModalSearchMessage = React.memo((prop: any) => {
       idCompany: idCompany,
     };
     callApiSearch(params);
-  }, [keySearch]);
+  }, [keySearch, visible]);
 
   const onClickItem = (value: any) => {
     onClose();
