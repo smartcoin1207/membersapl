@@ -56,6 +56,8 @@ const DetailChat = (props: any) => {
     bookmarkMessage,
     ids,
     setIds,
+    setIndex,
+    newIndexArray,
   } = useFunction(props);
 
   const renderActions = useCallback((props: any) => {
@@ -109,11 +111,12 @@ const DetailChat = (props: any) => {
               navigatiteToListReaction(idMsg);
             }}
             listUser={listUser}
+            newIndexArray={newIndexArray}
           />
         </>
       );
     },
-    [listUser],
+    [listUser, newIndexArray],
   );
 
   const isCloseToTop = useCallback(
@@ -126,6 +129,14 @@ const DetailChat = (props: any) => {
     },
     [],
   );
+
+  const onViewRef = React.useRef((viewableItems: any) => {
+    const index = viewableItems?.viewableItems?.length - 1;
+    setIndex(viewableItems?.viewableItems[index]?.index);
+  });
+  const viewConfigRef = React.useRef({
+    viewAreaCoveragePercentThreshold: 0,
+  });
 
   return (
     <View style={styles.container}>
@@ -193,6 +204,8 @@ const DetailChat = (props: any) => {
             } else if (nativeEvent?.contentOffset?.y === 0) {
             }
           },
+          viewabilityConfig: viewConfigRef.current,
+          onViewableItemsChanged: onViewRef.current,
           onScrollToIndexFailed: (info: any) => {
             if (info?.index >= 0) {
               const wait = new Promise(resolve => setTimeout(resolve, 500));
@@ -227,9 +240,14 @@ const DetailChat = (props: any) => {
                     <ModalTagName
                       idRoomChat={idRoomChat}
                       choseUser={(value: any, id: any) => {
-                        setText(`${text}${value}`);
-                        setIds(ids?.concat([id]));
-                        setShowTag(false);
+                        if (id < 0) {
+                          setText(`${text}${value}`);
+                          setShowTag(false);
+                        } else {
+                          setText(`${text}${value}`);
+                          setIds(ids?.concat([id]));
+                          setShowTag(false);
+                        }
                       }}
                     />
                   )}

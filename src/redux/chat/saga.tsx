@@ -110,6 +110,33 @@ export function* getDetailMessageSaga(action: any) {
   }
 }
 
+export function* editMessageReaction(action: any) {
+  const state = store.getState();
+  try {
+    const body = {
+      message_id: action.payload?.id_message,
+    };
+    const result: ResponseGenerator = yield getMessageFromSocket(body);
+    const data = {
+      id_room: state?.chat?.id_roomChat,
+      id_message: action.payload?.id_message,
+    };
+    yield put(updateMessageSeen(data));
+    if (result?.data?.message?.del_flag == 1) {
+      yield put(deleteMessage(result?.data?.message?.id));
+    } else {
+      yield put(
+        editMessageAction({
+          id: result?.data?.message?.id,
+          data: result?.data?.message,
+        }),
+      );
+    }
+  } catch (error) {
+  } finally {
+  }
+}
+
 export function* getDetailMessageSagaCurrent(action: any) {
   const state = store.getState();
   try {
@@ -294,4 +321,5 @@ export function* chatSaga() {
     typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN,
     getDetailMessageSeen,
   );
+  yield takeEvery(typeChat.EDIT_MESSAGE_REACTION, editMessageReaction);
 }

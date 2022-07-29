@@ -22,7 +22,11 @@ import {Reaction} from './Reaction';
 import {ROUTE_NAME} from '@routeName';
 import {useNavigation} from '@react-navigation/native';
 import {styles} from './stylesItem';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {
+  scale,
+  verticalScale,
+  moderateVerticalScale,
+} from 'react-native-size-matters';
 import {MsgFile} from './MsgFile';
 import {isSameDay, validateLink, convertString} from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
@@ -50,6 +54,7 @@ const ItemMessage = React.memo((props: any) => {
     listUser,
     onAddMember,
     idRoomChat,
+    newIndexArray,
   } = props;
   const {
     user,
@@ -69,6 +74,7 @@ const ItemMessage = React.memo((props: any) => {
     guest,
     task_link,
     message_quote,
+    index,
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
@@ -287,7 +293,9 @@ const ItemMessage = React.memo((props: any) => {
                               <View style={styles.viewColumn} />
                               <View>
                                 <Text style={styles.txtTitleReply}>
-                                  返信メッセージ
+                                  {message_quote
+                                    ? '引用メッセージ'
+                                    : '返信メッセージ'}
                                 </Text>
                                 {reply_to_message_text ? (
                                   <Text
@@ -304,6 +312,7 @@ const ItemMessage = React.memo((props: any) => {
                                   <Text
                                     style={styles.txtContentReply}
                                     numberOfLines={1}>
+                                    Webで{' '}
                                     {decode(
                                       message_quote?.split('<br>').join('\n'),
                                     )}
@@ -406,8 +415,16 @@ const ItemMessage = React.memo((props: any) => {
                 </TouchableOpacity>
               )}
             </>
+
             <Menu
-              style={styles.containerMenu}
+              style={{
+                marginTop:
+                  index === newIndexArray ||
+                  index === newIndexArray - 1 ||
+                  index === newIndexArray - 2
+                    ? moderateVerticalScale(0)
+                    : moderateVerticalScale(-125),
+              }}
               visible={visible}
               onRequestClose={onShowMenu}
               key={1}>

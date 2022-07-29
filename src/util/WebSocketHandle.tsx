@@ -4,6 +4,7 @@ import {
   getDetailMessageSocket,
   getDetailMessageSocketCurrent,
   getDetailMessageSocketSeen,
+  updateMessageReaction,
   isGetInfoRoom,
 } from '@redux';
 import {store} from '../redux/store';
@@ -58,7 +59,7 @@ function createAppSocket() {
               id_message: data?.relation_message_id,
               message_type: data?.message_type,
             };
-            store.dispatch(getDetailMessageSocket(value));
+            store.dispatch(updateMessageReaction(value));
           } else {
             const value = {
               id_message: data?.message_id,
