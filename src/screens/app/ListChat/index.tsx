@@ -30,6 +30,7 @@ import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
 import {AppNotification} from '@util';
 import {colors} from '@stylesCommon';
+import notifee, {EventType} from '@notifee/react-native';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
@@ -56,9 +57,19 @@ const ListChat = () => {
     }, []),
   );
 
+  var countMessage = listRoom?.reduce(function (total: any, course: any) {
+    return total + course.message_unread;
+  }, 0);
+
   useEffect(() => {
     setIsLoadMore(false);
   }, [listRoom]);
+
+  useEffect(() => {
+    if (countMessage) {
+      notifee.setBadgeCount(countMessage);
+    }
+  }, [countMessage]);
 
   useEffect(() => {
     initFB();

@@ -6,6 +6,7 @@ import {
   getDetailMessageSocketSeen,
   updateMessageReaction,
   isGetInfoRoom,
+  getDetailRoomSocket,
 } from '@redux';
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
@@ -35,20 +36,24 @@ function createAppSocket() {
   };
 
   const onHanleEvent = (socket: any) => {
-    socket.on(EVENT_SOCKET.CONNECT, () => {
-      console.log('CONNECTED', socket);
+    socket.on(EVENT_SOCKET.CONNECT, () => {});
+
+    socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, (data: any) => {
+      const state = store.getState();
+      if (data?.room_id == state?.chat?.id_roomChat) {
+        return null;
+      } else {
+        if (state?.chat?.roomList?.length > 0) {
+          const dataList = [...state?.chat?.roomList];
+          const index = dataList.findIndex(
+            (element: any) => element?.id == data?.room_id,
+          );
+          if (index > -1) {
+            store.dispatch(getDetailRoomSocket(data?.room_id));
+          }
+        }
+      }
     });
-    // socket.on(EVENT_SOCKET.NEW_MESSAGE_IND, (data: any) => {
-    //   const state = store.getState();
-    //   if (data?.user_id !== state?.auth?.userInfo?.id) {
-    //     if (data?.room_id == state?.chat?.id_roomChat) {
-    //       store.dispatch(getDetailMessageSocket(data?.message_id));
-    //     } else {
-    //     }
-    //   } else {
-    //     store.dispatch(getDetailMessageSocketCurrent(data?.message_id));
-    //   }
-    // });
 
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
       const state = store.getState();

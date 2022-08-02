@@ -60,7 +60,7 @@ function createAppNotification() {
       await notifee
         .incrementBadgeCount()
         .then(() => notifee.getBadgeCount())
-        .then(count => console.log('Badge count incremented by 1 to: ', count));
+        .then(count => {});
       badgeCount += 1;
       handleUserInteractionNotification(notification);
     });
