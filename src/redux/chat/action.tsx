@@ -123,3 +123,13 @@ export const updateMessageReaction = (payload: any) => ({
   type: typeChat.EDIT_MESSAGE_REACTION,
   payload,
 });
+
+export const getDetailRoomSocket = (payload: any) => ({
+  type: typeChat.DETAIL_ROOM_SOCKET,
+  payload,
+});
+
+export const getDetailRoomSocketSuccess = (payload: any) => ({
+  type: typeChat.DETAIL_ROOM_SOCKET_SUCCESS,
+  payload,
+});

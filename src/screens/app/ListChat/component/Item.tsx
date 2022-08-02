@@ -22,6 +22,7 @@ import {saveIdRoomChat, getRoomList} from '@redux';
 import {showMessage} from 'react-native-flash-message';
 import {useSelector, useDispatch} from 'react-redux';
 import {decode} from 'html-entities';
+import notifee, {EventType} from '@notifee/react-native';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -36,12 +37,18 @@ const Item = React.memo((props: any) => {
     }
   }, [item?.pin_flag]);
 
-  const navigateDetail = async () => {
-    await dispatch(saveIdRoomChat(item?.id));
-    navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
-      idRoomChat: item?.id,
-      idMessageSearchListChat: null,
-    });
+  const navigateDetail = () => {
+    try {
+      notifee.getBadgeCount().then(async (count: any) => {
+        const countMessage = count - Number(item?.message_unread);
+        await notifee.setBadgeCount(countMessage);
+        await dispatch(saveIdRoomChat(item?.id));
+        navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+          idRoomChat: item?.id,
+          idMessageSearchListChat: null,
+        });
+      });
+    } catch (error) {}
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {

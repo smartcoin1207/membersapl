@@ -7,14 +7,13 @@ import {ROUTE_NAME} from '@routeName';
 import {AppNotification} from '@util';
 
 const Splash = () => {
-  let {removeBadge} = AppNotification;
+  const {removeBadge} = AppNotification;
   const token = useSelector((state: any) => state?.auth?.token);
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const navigation = useNavigation<any>();
   var timer: any;
 
   useEffect(() => {
-    removeBadge();
     timer = setTimeout(() => {
       if (token) {
         if (idCompany) {
@@ -29,6 +28,7 @@ const Splash = () => {
           navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
         }
       } else {
+        removeBadge();
         navigation.navigate(ROUTE_NAME.LOGIN);
       }
     }, 1700);

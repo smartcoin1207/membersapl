@@ -10,6 +10,7 @@ import {
   saveIdMessageSearch,
   updateMessageSeen,
   getDetailMessageSocketSeenSuccess,
+  getDetailRoomSocketSuccess
 } from './action';
 
 import {typeChat} from './type';
@@ -20,6 +21,7 @@ import {
   getResultSearchMessage,
   registerLastMessage,
   GlobalService,
+  detailRoomchat
 } from '@services';
 
 import {NavigationUtils} from '@navigation';
@@ -299,6 +301,13 @@ function* getDetailMessageSeen(action: any) {
   } catch (error: any) {}
 }
 
+function* getDetailRoomSocket(action: any) {
+  try {
+    const result: ResponseGenerator = yield detailRoomchat(action?.payload);
+    yield put(getDetailRoomSocketSuccess(result?.data?.room))
+  } catch (error: any) {}
+}
+
 export function* chatSaga() {
   yield takeEvery(typeChat.GET_ROOM_LIST, getRoomListSaga);
   yield takeEvery(typeChat.GET_DETAIL_LIST_CHAT, getDetailChatSaga);
@@ -322,4 +331,5 @@ export function* chatSaga() {
     getDetailMessageSeen,
   );
   yield takeEvery(typeChat.EDIT_MESSAGE_REACTION, editMessageReaction);
+  yield takeEvery(typeChat.DETAIL_ROOM_SOCKET, getDetailRoomSocket);
 }

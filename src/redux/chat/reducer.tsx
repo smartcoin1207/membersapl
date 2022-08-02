@@ -126,6 +126,18 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         detailChat: dataNew?.concat(dataSeen),
       };
+    case typeChat.DETAIL_ROOM_SOCKET_SUCCESS:
+      const dataList = [...state?.roomList];
+      const indexListRoom = dataList.findIndex(
+        (element: any) => element?.id == action.payload?.id,
+      );
+      if (indexListRoom > -1) {
+        dataList[indexListRoom] = action.payload;
+      }
+      return {
+        ...state,
+        roomList: dataList,
+      };
     case typeChat.IS_GET_INFO_ROOM:
       return {
         ...state,
