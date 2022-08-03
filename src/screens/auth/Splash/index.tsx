@@ -25,11 +25,23 @@ const Splash = () => {
             }),
           );
         } else {
-          navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
+          // navigation.navigate(ROUTE_NAME.SELECT_COMPANY);
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{name: ROUTE_NAME.SELECT_COMPANY}],
+            }),
+          );
         }
       } else {
         removeBadge();
-        navigation.navigate(ROUTE_NAME.LOGIN);
+        // navigation.navigate(ROUTE_NAME.LOGIN);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{name: ROUTE_NAME.LOGIN}],
+          }),
+        );
       }
     }, 1700);
     return () => {

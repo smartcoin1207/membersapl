@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {View, Text, TouchableOpacity, Image, Platform} from 'react-native';
+import {View, Image, Platform} from 'react-native';
 import {styles} from './styles';
 import {Header} from '@component';
 import {iconSearch, iconUpload, iconLike, iconDetail} from '@images';
@@ -12,7 +12,6 @@ import {
   renderComposer,
 } from './components/InputToolbar';
 import {ModalPickFile} from './components/ModalPickFile';
-import {convertString} from '@util';
 
 import {ModalStamp} from './components/ModalStamp';
 import {ModalReply} from './components/ModalReply';

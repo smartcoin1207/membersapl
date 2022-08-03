@@ -6,7 +6,6 @@ import {
   FlatList,
   TextInput,
   RefreshControl,
-  BackHandler,
   ActivityIndicator,
 } from 'react-native';
 import {styles} from './styles';

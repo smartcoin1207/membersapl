@@ -1,8 +1,8 @@
 import React, {useState, useCallback} from 'react';
 import {View, Text, TouchableOpacity, FlatList} from 'react-native';
 import {styles} from './styles';
-import {Header, AppInput, ModalConfirm, ModalRemoveUser} from '@component';
-import {iconAddUser, iconAddListChat} from '@images';
+import {Header, ModalRemoveUser} from '@component';
+import {iconAddUser} from '@images';
 import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
 import {AppSocket} from '@util';
