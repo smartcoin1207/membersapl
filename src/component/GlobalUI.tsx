@@ -1,5 +1,4 @@
 import React, {useImperativeHandle, useState, useRef} from 'react';
-import {BackHandler} from 'react-native';
 import {Loading} from './Loading';
 
 export const GlobalUI = React.forwardRef((props, ref) => {

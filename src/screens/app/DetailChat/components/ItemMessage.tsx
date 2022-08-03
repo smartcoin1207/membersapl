@@ -444,7 +444,14 @@ const ItemMessage = React.memo((props: any) => {
                 }
                 onPress={onClickDetailSeen}>
                 {users_seen?.map((item: any, index: any) => {
-                  return <ViewUserSeen item={item} index={index} key={index} />;
+                  return (
+                    <ViewUserSeen
+                      item={item}
+                      index={index}
+                      key={index}
+                      data={users_seen}
+                    />
+                  );
                 })}
               </TouchableOpacity>
             ) : null}
