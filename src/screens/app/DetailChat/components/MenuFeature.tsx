@@ -96,7 +96,7 @@ const MenuFeature = React.memo((props: any) => {
     {
       id: 13,
       sourceImage: iconQuote,
-      name: '見積もり',
+      name: '引用',
       style: {
         width: scale(22),
         height: scale(22),

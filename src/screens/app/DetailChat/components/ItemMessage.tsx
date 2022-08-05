@@ -37,7 +37,7 @@ import {ViewInvite} from './ViewInvite';
 import {decode} from 'html-entities';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
-const color = ['#E8E8E8', '#D4D4D4'];
+const color = ['#FDF5E6', '#FDF5E6'];
 const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
