@@ -78,6 +78,11 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         ...state,
         messageReply: action.payload,
       };
+    case typeChat.SAVE_MESSAGE_QUOTE:
+      return {
+        ...state,
+        messageQuote: action.payload,
+      };
     case typeChat.SAVE_MESSAGE_EDIT:
       return {
         ...state,

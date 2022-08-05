@@ -15,6 +15,7 @@ import {ModalPickFile} from './components/ModalPickFile';
 
 import {ModalStamp} from './components/ModalStamp';
 import {ModalReply} from './components/ModalReply';
+import {ModalQuote} from './components/ModalQuote';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPin} from './components/ModalPin';
 import {ModalTagName} from './components/ModalTagName';
@@ -57,6 +58,8 @@ const DetailChat = (props: any) => {
     setIds,
     setIndex,
     newIndexArray,
+    quoteMessage,
+    messageQuote,
   } = useFunction(props);
 
   const renderActions = useCallback((props: any) => {
@@ -105,6 +108,9 @@ const DetailChat = (props: any) => {
             }}
             onReaction={(data: any, idMsg: any) => {
               reactionMessage(data, idMsg);
+            }}
+            quoteMsg={(data: any) => {
+              quoteMessage(data);
             }}
             navigatiteToListReaction={(idMsg: any) => {
               navigatiteToListReaction(idMsg);
@@ -231,6 +237,7 @@ const DetailChat = (props: any) => {
         renderAccessory={
           messageReply ||
           message_edit ||
+          messageQuote ||
           modalStamp === true ||
           showTagModal === true
             ? () => (
@@ -252,6 +259,7 @@ const DetailChat = (props: any) => {
                   )}
                   {messageReply && <ModalReply />}
                   {message_edit && <ModalEdit />}
+                  {messageQuote && <ModalQuote />}
                   {modalStamp && (
                     <ModalStamp
                       onChose={(value: any) => {

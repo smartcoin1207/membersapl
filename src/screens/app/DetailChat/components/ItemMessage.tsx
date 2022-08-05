@@ -55,6 +55,7 @@ const ItemMessage = React.memo((props: any) => {
     onAddMember,
     idRoomChat,
     newIndexArray,
+    quoteMsg,
   } = props;
   const {
     user,
@@ -137,6 +138,13 @@ const ItemMessage = React.memo((props: any) => {
           break;
         case 12:
           bookmarkMsg(_id);
+        case 13:
+          const dataQuote = {
+            id: _id,
+            user: user,
+            text: text,
+          };
+          quoteMsg(dataQuote);
           break;
       }
     },
