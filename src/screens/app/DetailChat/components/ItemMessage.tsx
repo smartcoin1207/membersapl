@@ -138,6 +138,7 @@ const ItemMessage = React.memo((props: any) => {
           break;
         case 12:
           bookmarkMsg(_id);
+          break;
         case 13:
           const dataQuote = {
             id: _id,
