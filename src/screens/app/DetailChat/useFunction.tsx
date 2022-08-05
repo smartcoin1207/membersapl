@@ -9,6 +9,7 @@ import {
   getDetailMessageSocketSuccess,
   saveMessageReply,
   saveMessageEdit,
+  saveMessageQuote,
   editMessageAction,
   fetchResultMessageActionListRoom,
   isGetInfoRoom,
@@ -49,6 +50,7 @@ export const useFunction = (props: any) => {
   );
   const message_edit = useSelector((state: any) => state.chat?.messageEdit);
   const messageReply = useSelector((state: any) => state.chat?.messageReply);
+  const messageQuote = useSelector((state: any) => state.chat?.messageQuote);
   const idMessageSearch = useSelector(
     (state: any) => state.chat?.id_messageSearch,
   );
@@ -180,10 +182,10 @@ export const useFunction = (props: any) => {
   );
 
   useEffect(() => {
-    if (message_edit || messageReply) {
+    if (message_edit || messageReply || messageQuote) {
       setShowModalStamp(false);
     }
-  }, [message_edit, messageReply]);
+  }, [message_edit, messageReply, messageQuote]);
 
   useEffect(() => {
     if (!message_edit) {
@@ -292,6 +294,36 @@ export const useFunction = (props: any) => {
             editMessageAction({id: res?.data?.data.id, data: res?.data?.data}),
           );
         } catch (error: any) {}
+      } else if (messageQuote) {
+        try {
+          const data = new FormData();
+          data.append('room_id', idRoomChat);
+          data.append('from_id', user_id);
+          data.append('message', mes[0]?.text?.split('\n').join('<br>'));
+          data.append('message_quote', messageQuote?.text);
+          ids?.forEach((item: any) => {
+            data.append('ids[]', item);
+          });
+          const res = await sendMessageApi(data);
+          socket.emit('message_ind', {
+            user_id: mes[0]?.user?._id,
+            room_id: idRoomChat,
+            task_id: null,
+            to_info: null,
+            level: res?.data?.data?.msg_level,
+            message_id: res?.data?.data?.id,
+            message_type: res?.data?.data?.msg_type,
+            method: res?.data?.data?.method,
+            attachment_files: res?.data?.attachmentFiles,
+            stamp_no: res?.data?.data?.stamp_no,
+            relation_message_id: res?.data?.data?.reply_to_message_id,
+            text: res?.data?.data?.message,
+            text2: messageQuote?.text,
+            time: res?.data?.data?.created_at,
+          });
+          dispatch(saveMessageQuote(null));
+          dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+        } catch (error: any) {}
       } else {
         try {
           const data = new FormData();
@@ -327,7 +359,7 @@ export const useFunction = (props: any) => {
       });
       setIds([]);
     },
-    [messageReply, message_edit, ids],
+    [messageReply, message_edit, ids, messageQuote],
   );
 
   const updateGimMessage = useCallback(
@@ -358,6 +390,10 @@ export const useFunction = (props: any) => {
 
   const removeReplyMessage = useCallback(() => {
     dispatch(saveMessageReply(null));
+  }, []);
+
+  const removeQuoteMessage = useCallback(() => {
+    dispatch(saveMessageQuote(null));
   }, []);
 
   const editMessage = useCallback((data: any) => {
@@ -399,10 +435,15 @@ export const useFunction = (props: any) => {
   useEffect(() => {
     if (message_edit) {
       dispatch(saveMessageReply(null));
+      dispatch(saveMessageQuote(null));
     } else if (messageReply) {
       dispatch(saveMessageEdit(null));
+      dispatch(saveMessageQuote(null));
+    } else if (messageQuote) {
+      dispatch(saveMessageEdit(null));
+      dispatch(saveMessageReply(null));
     }
-  }, [message_edit, messageReply]);
+  }, [message_edit, messageReply, messageQuote]);
 
   const navigatiteToListReaction = useCallback(idMsg => {
     navigation.navigate(ROUTE_NAME.LIST_REACTION, {
@@ -588,6 +629,7 @@ export const useFunction = (props: any) => {
     if (modalStamp === true) {
       removeReplyMessage();
       removeEditMessage();
+      removeQuoteMessage();
     }
   }, [modalStamp]);
 
@@ -635,6 +677,10 @@ export const useFunction = (props: any) => {
     }
   }, []);
 
+  const quoteMessage = useCallback((data: any) => {
+    dispatch(saveMessageQuote(data));
+  }, []);
+
   return {
     chatUser,
     idRoomChat,
@@ -678,5 +724,7 @@ export const useFunction = (props: any) => {
     ids,
     newIndexArray,
     setIndex,
+    quoteMessage,
+    messageQuote,
   };
 };

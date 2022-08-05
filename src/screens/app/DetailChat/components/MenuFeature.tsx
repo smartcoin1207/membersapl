@@ -21,6 +21,7 @@ import {
   icon6,
   iconBookmark,
   iconPin,
+  iconQuote,
 } from '@images';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
@@ -91,6 +92,17 @@ const MenuFeature = React.memo((props: any) => {
         tintColor: '#FFFFFF',
       },
       isShow: msg_type !== 1 ? true : false,
+    },
+    {
+      id: 13,
+      sourceImage: iconQuote,
+      name: '見積もり',
+      style: {
+        width: scale(22),
+        height: scale(22),
+        tintColor: '#FFFFFF',
+      },
+      isShow: true,
     },
   ];
 
