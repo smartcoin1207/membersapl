@@ -320,7 +320,6 @@ const ItemMessage = React.memo((props: any) => {
                                   <Text
                                     style={styles.txtContentReply}
                                     numberOfLines={1}>
-                                    Webで{' '}
                                     {decode(
                                       message_quote?.split('<br>').join('\n'),
                                     )}
