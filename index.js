@@ -9,7 +9,9 @@ import messaging from '@react-native-firebase/messaging';
 import notifee from "@notifee/react-native";
 
 messaging().setBackgroundMessageHandler(async remoteMessage => {
-  await notifee.incrementBadgeCount();
+  if (remoteMessage) {
+    await notifee.incrementBadgeCount();
+  }
 });
 
 AppRegistry.registerComponent(appName, () => App);
