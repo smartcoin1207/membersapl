@@ -11,6 +11,8 @@ let {init, endConnect} = AppSocket;
 
 const Stack = createNativeStackNavigator();
 
+//Vì dự án bị thay đổi requirement khá nhiều ở luồng app nên file navigation đang phải để tạm thế này, sau này ai rảnh thì sửa lại nhé
+
 const NavigationApp = React.forwardRef((props: any, ref: any) => {
   const screenOptions = {
     headerShown: false,

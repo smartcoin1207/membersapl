@@ -71,6 +71,7 @@ export const useFunction = (props: any) => {
   const [newIndexArray, setIndex] = useState<any>(null);
 
   useEffect(() => {
+    //Logic xem xét khi vào màn này có phải dạng message được tìm kiếm không
     if (idMessageSearchListChat) {
       setTimeout(() => {
         const body = {
@@ -98,6 +99,7 @@ export const useFunction = (props: any) => {
   );
 
   useEffect(() => {
+    //Logic khi có id message tìm kiếm thì tiến hành scroll đển tin nhắn đó
     if (idMessageSearch) {
       setPage(pagging?.current_page);
       navigateToMessage(idMessageSearch);
@@ -109,6 +111,7 @@ export const useFunction = (props: any) => {
   }, [idRoomChat]);
 
   const convertDataMessage = useCallback((message: any, index: any) => {
+    //Hàm xử lý lại dữ liệu message khi nhận từ api trả về
     return {
       _id: message?.id,
       text: message?.message,
@@ -353,6 +356,7 @@ export const useFunction = (props: any) => {
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
         } catch (error: any) {}
       }
+      // Khi call api gửi tin nhắn xong sẽ auto scroll xuống tin nhắn cuối cùng
       giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
         animated: true,
         index: 0,

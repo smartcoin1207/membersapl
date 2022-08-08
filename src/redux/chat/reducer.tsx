@@ -24,6 +24,7 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
       return {
         ...state,
         detailChat:
+          //Load more list message detail
           page === 1
             ? convertArrUnique(action.payload.room_messages.data, 'id')
             : convertArrUnique(
@@ -107,6 +108,7 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
         id_messageSearch: action.payload,
       };
     case typeChat.GET_DETAIL_MESSAGE_SOCKET_SEEN_SUCCESS:
+      //Logic xử lý phần đã xem message
       const arrayListChat = [...state.detailChat];
       let dataNew = arrayListChat?.filter(
         (item: any) => item?.id === action?.payload?.id,

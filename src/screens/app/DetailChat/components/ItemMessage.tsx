@@ -88,6 +88,7 @@ const ItemMessage = React.memo((props: any) => {
     navigatiteToListReaction(_id);
   }, []);
 
+  //Đây là hàm xử lý khi ấn vào menu reaction
   const onActionMenu = useCallback(
     value => {
       onShowMenu();
@@ -261,14 +262,16 @@ const ItemMessage = React.memo((props: any) => {
                   </>
                 ) : (
                   <View style={styles.viewAvatar}>
-                    <FastImage
-                      style={styles.image}
-                      source={{
-                        uri: user?.avatar,
-                        priority: FastImage.priority.high,
-                        cache: FastImage.cacheControl.immutable,
-                      }}
-                    />
+                    {msg_type == 6 || msg_type == 8 ? null : (
+                      <FastImage
+                        style={styles.image}
+                        source={{
+                          uri: user?.avatar,
+                          priority: FastImage.priority.high,
+                          cache: FastImage.cacheControl.immutable,
+                        }}
+                      />
+                    )}
                     <View style={{flex: 1}} />
                   </View>
                 )}
@@ -376,7 +379,9 @@ const ItemMessage = React.memo((props: any) => {
                           {attachment_files?.length > 0 ? (
                             <MsgFile data={attachment_files} />
                           ) : null}
+                          {/* Xử lý message hightlight khi message có link, tagName, hightlight... */}
                           <Autolink
+                            //Convert message có kí tự <br> nhận từ web (kí tự xuống dòng)
                             text={decode(text?.split('<br>').join('\n'))}
                             email
                             url
@@ -426,6 +431,7 @@ const ItemMessage = React.memo((props: any) => {
 
             <Menu
               style={{
+                //Logic check ẩnh và hiện menu khi tin nhắn ở sát phần trên của màn hình
                 marginTop:
                   index === newIndexArray ||
                   index === newIndexArray - 1 ||
