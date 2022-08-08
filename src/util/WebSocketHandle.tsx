@@ -11,12 +11,10 @@ import {
 import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
 
-//socket no auth
-// const socket = io('https://stage-v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
-//new url test server websocket
-// const socket = io('https://v3mbs-msg01.sense.co.jp:443', SOCKET_CONFIG);
-//socket with auth
-// const socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+//socket stagging
+const socketURL = 'https://stage-v3mbs-msg01.mem-bers.jp:443';
+//socket product
+// const socketURL = 'https://v3mbs-msg01.mem-bers.jp:443';
 
 let socket = io('', {
   autoConnect: false,
@@ -30,7 +28,7 @@ function createAppSocket() {
         token: token || store.getState()?.auth?.userInfo?.ws_token,
       },
     };
-    socket = io('https://v3mbs-msg01.mem-bers.jp:443', SOCKET_CONFIG);
+    socket = io(socketURL, SOCKET_CONFIG);
     socket.connect();
     onHanleEvent(socket);
   };
@@ -59,6 +57,7 @@ function createAppSocket() {
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.room_id == state?.chat?.id_roomChat) {
+          //Check tin nhắn về là dạng thả reaction
           if (data?.message_type === 3) {
             const value = {
               id_message: data?.relation_message_id,
@@ -66,10 +65,12 @@ function createAppSocket() {
             };
             store.dispatch(updateMessageReaction(value));
           } else {
+            //Dạng message nhận về bình thường
             const value = {
               id_message: data?.message_id,
               message_type: data?.message_type,
             };
+            //Đây là sự kiện action redux khi nhận được 1 tin nhắn từ socket về
             store.dispatch(getDetailMessageSocket(value));
           }
         }

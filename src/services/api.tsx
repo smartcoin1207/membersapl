@@ -10,11 +10,9 @@ const api = axios.create();
 //adamo api url
 // const BASEURL = 'https://member-chat-api.adamo.tech/mobile';
 //member chat staging api url
-// const BASEURL = 'https://stage.mem-bers.jp/mobile';
-//member chat test server api url
-// const BASEURL = 'https://v3mbs01.sense.co.jp/mobile';
+const BASEURL = 'https://stage.mem-bers.jp/mobile';
 //member chat live api url
-const BASEURL = 'https://mem-bers.jp/mobile';
+// const BASEURL = 'https://mem-bers.jp/mobile';
 
 api.interceptors.request.use(
   async (config: any) => {
@@ -38,7 +36,9 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
+  //response success
   function (response: any) {
+    //Hàm log trả về response (Có thể bật và tắt trong file logger)
     describeSuccessResponse(response);
     try {
       return response?.data;
@@ -46,8 +46,10 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
   },
+  //error
   function (error) {
     const {message} = error?.response?.data;
+    //Check status code trả về là 503 thì điều hướng tới màn hình lỗi server
     if (error?.response?.status == 503 || error?.response?.data?.code === 503) {
       NavigationUtils.navigate(ROUTE_NAME.NETWORK_ERR, {
         message: message ? message : '',
@@ -58,6 +60,7 @@ api.interceptors.response.use(
         type: 'danger',
       });
     }
+    //Hàm log trả về error (Có thể bật và tắt trong file logger)
     describeErrorResponse(error);
     return Promise.reject(error);
   },

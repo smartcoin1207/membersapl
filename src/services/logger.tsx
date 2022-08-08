@@ -1,4 +1,5 @@
-const SHOW_LOG_REQUEST = false;
+//Bật tắt log server api ở đây (false là tắt)
+const SHOW_LOG_REQUEST = true;
 
 export function describeSuccessResponse(response: any) {
   if (!SHOW_LOG_REQUEST) {

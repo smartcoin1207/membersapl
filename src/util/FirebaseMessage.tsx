@@ -11,7 +11,6 @@ import notifee, {EventType} from '@notifee/react-native';
 
 function createAppNotification() {
   let fcmToken = '';
-  let badgeCount = 0;
   let lastMessageId = '';
 
   const initFB = () => {
@@ -29,7 +28,6 @@ function createAppNotification() {
         if (notification.messageId !== lastMessageId) {
           lastMessageId = notification.messageId || '';
         }
-        badgeCount += 1;
         handleUserInteractionNotification(notification);
       })
       .catch(error => {
@@ -39,7 +37,6 @@ function createAppNotification() {
     messaging().onMessage(async notification => {
       if (notification.messageId !== lastMessageId) {
         lastMessageId = notification.messageId || '';
-        badgeCount += 1;
         handleNotiOnForeground(notification);
       }
     });
@@ -49,7 +46,6 @@ function createAppNotification() {
         lastMessageId = notification.messageId || '';
       }
       await notifee.decrementBadgeCount();
-      badgeCount -= 1;
       handleUserInteractionNotification(notification);
     });
 
@@ -61,7 +57,6 @@ function createAppNotification() {
         .incrementBadgeCount()
         .then(() => notifee.getBadgeCount())
         .then(count => {});
-      badgeCount += 1;
       handleUserInteractionNotification(notification);
     });
   };

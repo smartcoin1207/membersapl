@@ -10,7 +10,7 @@ import {
   saveIdMessageSearch,
   updateMessageSeen,
   getDetailMessageSocketSeenSuccess,
-  getDetailRoomSocketSuccess
+  getDetailRoomSocketSuccess,
 } from './action';
 
 import {typeChat} from './type';
@@ -21,7 +21,7 @@ import {
   getResultSearchMessage,
   registerLastMessage,
   GlobalService,
-  detailRoomchat
+  detailRoomchat,
 } from '@services';
 
 import {NavigationUtils} from '@navigation';
@@ -78,9 +78,11 @@ export function* getDetailMessageSaga(action: any) {
       id_message: action.payload?.id_message,
     };
     yield put(updateMessageSeen(data));
+    //Check xoá tin nhắn
     if (result?.data?.message?.del_flag == 1) {
       yield put(deleteMessage(result?.data?.message?.id));
     } else {
+      //Chỉnh sửa tin nhắn
       if (result?.data?.message?.medthod === 1) {
         yield put(
           editMessageAction({
@@ -89,6 +91,7 @@ export function* getDetailMessageSaga(action: any) {
           }),
         );
       } else {
+        //Chỉnh sửa tin nhắn
         if (action.payload?.message_type === 3) {
           yield put(
             editMessageAction({
@@ -97,12 +100,14 @@ export function* getDetailMessageSaga(action: any) {
             }),
           );
         }
+        //Check nếu còn trong phòng mà bị remove sẽ bị kích ra ngoài
         if (
           result?.data?.message?.msg_type === 10 &&
           state?.auth?.userInfo?.id === result?.data?.message?.from_id
         ) {
           NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
         } else {
+          //Hành động nối tin nhắn vào mảng
           yield put(getDetailMessageSocketSuccess([result?.data?.message]));
         }
       }
@@ -160,6 +165,7 @@ export function* getDetailMessageSagaCurrent(action: any) {
 }
 
 export function* fetchResultMessage(action: any) {
+  //Hàm xử lý cho việc tìm kiếm message
   try {
     const body = {
       id_room: action.payload.id_room,
@@ -304,7 +310,7 @@ function* getDetailMessageSeen(action: any) {
 function* getDetailRoomSocket(action: any) {
   try {
     const result: ResponseGenerator = yield detailRoomchat(action?.payload);
-    yield put(getDetailRoomSocketSuccess(result?.data?.room))
+    yield put(getDetailRoomSocketSuccess(result?.data?.room));
   } catch (error: any) {}
 }
 

@@ -8,6 +8,7 @@ import {colors, stylesCommon} from '@stylesCommon';
 const ViewUserSeen = React.memo((props: any) => {
   const {item, index, data} = props;
 
+  //Logic check hiển thị UI của người dùng khi có khoảng 90 người
   const renderMore = () => {
     return (
       <>
@@ -20,6 +21,7 @@ const ViewUserSeen = React.memo((props: any) => {
     );
   };
 
+  //Logic check hiển thị UI của người dùng khi có khoảng 100 người trở lên
   const renderMoreLarge = () => {
     return (
       <>

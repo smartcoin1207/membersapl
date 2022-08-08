@@ -78,10 +78,13 @@ const Item = React.memo((props: any) => {
     }
   };
 
+  // note: one_one_check là 1 trường check xem có phải chat 1-1 không được trả về từ api
+
   return (
     <TouchableOpacity style={styles.container} onPress={navigateDetail}>
       <View style={styles.viewContent}>
         <View style={styles.viewImage}>
+          {/* Check có phải chat 1-1 hay không */}
           {item?.one_one_check?.length > 0 ? (
             <View style={styles.image}>
               <FastImage
@@ -176,6 +179,7 @@ const Item = React.memo((props: any) => {
                 {item?.lastMessageJoin?.msg_type == 9
                   ? `${item?.lastMessageJoin?.guest?.name}さんが参加しました`
                   : convertString(
+                      //Check logic xuống dòng khi thông tin được sửa từ trên app
                       decode(
                         item?.lastMessageJoin?.message
                           ?.split('<br>')

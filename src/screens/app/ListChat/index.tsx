@@ -33,6 +33,7 @@ import notifee, {EventType} from '@notifee/react-native';
 
 const ListChat = () => {
   const refInput = useRef<any>(null);
+  //Khởi tạo Firebase noti
   let {initFB} = AppNotification;
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
@@ -56,6 +57,7 @@ const ListChat = () => {
     }, []),
   );
 
+  //Logic tính tổng các tin nhắn chưa đọc
   var countMessage = listRoom?.reduce(function (total: any, course: any) {
     return total + course.message_unread;
   }, 0);
@@ -64,6 +66,7 @@ const ListChat = () => {
     setIsLoadMore(false);
   }, [listRoom]);
 
+  //Đây là hàm logic lắng nghe tổng các tin nhắn chưa đọc, nếu có kết quả thì set lại badge noti
   useEffect(() => {
     if (countMessage) {
       notifee.setBadgeCount(countMessage);
@@ -167,6 +170,7 @@ const ListChat = () => {
           showObtion={true}
           onShowOption={onShowOption}
         />
+        {/* Popup điều hướng khi chọn search tin nhắn hoặc tên phòng */}
         <View style={styles.viewOption}>
           <Menu
             style={styles.containerMenu}
