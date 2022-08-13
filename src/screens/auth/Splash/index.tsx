@@ -24,7 +24,7 @@ const Splash = () => {
           navigation.dispatch(
             CommonActions.reset({
               index: 0,
-              routes: [{name: ROUTE_NAME.LISTCHAT_SCREEN}],
+              routes: [{name: ROUTE_NAME.TAB_SCREEN}],
             }),
           );
         } else {
