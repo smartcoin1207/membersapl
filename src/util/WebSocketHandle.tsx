@@ -54,6 +54,7 @@ function createAppSocket() {
     });
 
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
+      console.log(data)
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.room_id == state?.chat?.id_roomChat) {
