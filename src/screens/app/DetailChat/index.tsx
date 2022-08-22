@@ -61,6 +61,8 @@ const DetailChat = (props: any) => {
     newIndexArray,
     quoteMessage,
     messageQuote,
+    listUserSelect,
+    setListUserSelect
   } = useFunction(props);
 
   //Render ra UI chọn ảnh, video, file
@@ -265,7 +267,7 @@ const DetailChat = (props: any) => {
                   {showTagModal && (
                     <ModalTagName
                       idRoomChat={idRoomChat}
-                      choseUser={(value: any, id: any) => {
+                      choseUser={(value: any, id: any, item: any) => {
                         // logic khi tag name là tin nhắn tag có tên người và đồng thời gửi thêm 1 mảng id người dùng được tag
                         if (id < 0) {
                           // check nếu đây là id của khách lẻ thì không gửi mảng id lên
@@ -274,6 +276,7 @@ const DetailChat = (props: any) => {
                         } else {
                           setText(`${text}${value}`);
                           setIds(ids?.concat([id]));
+                          setListUserSelect(listUserSelect?.concat([{...item}]))
                           setShowTag(false);
                         }
                       }}

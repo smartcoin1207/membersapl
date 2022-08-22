@@ -26,6 +26,7 @@ import {
   sendLabelApi,
   getListUser,
   addBookmark,
+  callApiChatBot,
 } from '@services';
 import {useNavigation, useFocusEffect} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
@@ -34,6 +35,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import DocumentPicker from 'react-native-document-picker';
 import {Platform, Keyboard, Alert} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
+import {convertArrUnique} from '@util';
 
 export const useFunction = (props: any) => {
   const {getSocket} = AppSocket;
@@ -69,6 +71,8 @@ export const useFunction = (props: any) => {
   const [listUser, setListUser] = useState([]);
   const [ids, setIds] = useState<any>([]);
   const [newIndexArray, setIndex] = useState<any>(null);
+  const [listUserRoot, setListUserRoot] = useState([]);
+  const [listUserSelect, setListUserSelect] = useState<any>([]);
 
   useEffect(() => {
     //Logic xem xét khi vào màn này có phải dạng message được tìm kiếm không
@@ -354,6 +358,11 @@ export const useFunction = (props: any) => {
             time: res?.data?.data?.created_at,
           });
           dispatch(getDetailMessageSocketSuccess([res?.data?.data]));
+          callApiChatBotRequest(
+            res?.data?.data?.message,
+            res?.data?.data?.id,
+            `${res?.data?.data?.user_send?.first_name}${res?.data?.data?.user_send?.last_name}`,
+          );
         } catch (error: any) {}
       }
       // Khi call api gửi tin nhắn xong sẽ auto scroll xuống tin nhắn cuối cùng
@@ -656,6 +665,7 @@ export const useFunction = (props: any) => {
         };
       });
       setListUser(result?.data?.users?.data?.concat(guest));
+      setListUserRoot(result?.data?.users?.data);
     } catch {
       (error: any) => {};
     }
@@ -684,6 +694,33 @@ export const useFunction = (props: any) => {
   const quoteMessage = useCallback((data: any) => {
     dispatch(saveMessageQuote(data));
   }, []);
+
+  const callApiChatBotRequest = async (
+    message: any,
+    messageId: any,
+    useName: any,
+  ) => {
+    try {
+      let sendInfo: any = [];
+      const numberOfMember = listUserRoot.length;
+      if (numberOfMember < 2) {
+        return null;
+      } else if (numberOfMember === 2) {
+        sendInfo = listUserRoot;
+      } else if (numberOfMember > 2) {
+        sendInfo = listUserSelect;
+      }
+      let formData = new FormData();
+      formData.append('from_user_name', useName);
+      formData.append(
+        'mention_members',
+        JSON.stringify(convertArrUnique(sendInfo, 'id')),
+      );
+      formData.append('message', message);
+      formData.append('message_id', messageId);
+      const res = await callApiChatBot(formData);
+    } catch (error) {}
+  };
 
   return {
     chatUser,
@@ -730,5 +767,7 @@ export const useFunction = (props: any) => {
     setIndex,
     quoteMessage,
     messageQuote,
+    listUserSelect,
+    setListUserSelect,
   };
 };

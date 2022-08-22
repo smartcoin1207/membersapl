@@ -12,9 +12,9 @@ import {store} from '../redux/store';
 import {EVENT_SOCKET} from '@util';
 
 //socket stagging
-// const socketURL = 'https://stage-v3mbs-msg01.mem-bers.jp:443';
+const socketURL = 'https://stage-v3mbs-msg01.mem-bers.jp:443';
 //socket product
-const socketURL = 'https://v3mbs-msg01.mem-bers.jp:443';
+// const socketURL = 'https://v3mbs-msg01.mem-bers.jp:443';
 
 let socket = io('', {
   autoConnect: false,
@@ -54,7 +54,6 @@ function createAppSocket() {
     });
 
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
-      console.log(data)
       const state = store.getState();
       if (data?.user_id !== state?.auth?.userInfo?.id) {
         if (data?.room_id == state?.chat?.id_roomChat) {
