@@ -1,6 +1,4 @@
 import api from '../api';
-import apiChatBot from '../apiChatBot';
-import {BASEURLNOMOBILE} from '../api';
 
 const GET_LIST_ROOM = 'user/chat/rooms';
 const GET_LIST_USER = 'user/list';
@@ -231,7 +229,4 @@ export const addUserMessage: any = async (body: any) => {
   return response;
 };
 
-export const callApiChatBot: any = async (body: any) => {
-  const response = apiChatBot.post(`${BASEURLNOMOBILE}chat/notify`, body);
-  return response;
-};
+export const callApiChatBot: any = async (body: any) => {};

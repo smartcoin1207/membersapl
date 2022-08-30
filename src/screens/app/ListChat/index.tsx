@@ -68,8 +68,10 @@ const ListChat = () => {
 
   //Đây là hàm logic lắng nghe tổng các tin nhắn chưa đọc, nếu có kết quả thì set lại badge noti
   useEffect(() => {
-    if (countMessage) {
+    if (countMessage > 0) {
       notifee.setBadgeCount(countMessage);
+    } else {
+      notifee.setBadgeCount(0);
     }
   }, [countMessage]);
 

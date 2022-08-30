@@ -451,11 +451,7 @@ const ItemMessage = React.memo((props: any) => {
 
             {users_seen?.length > 0 ? (
               <TouchableOpacity
-                style={
-                  user?._id == user_id
-                    ? styles.viewSeenCurrent
-                    : styles.viewSeen
-                }
+                style={styles.viewSeen}
                 onPress={onClickDetailSeen}>
                 {users_seen?.map((item: any, index: any) => {
                   return (
