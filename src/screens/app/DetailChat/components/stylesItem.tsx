@@ -164,12 +164,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   viewSeen: {
-    // marginLeft: scale(27 + 7),
     flexDirection: 'row',
     marginTop: verticalScale(5),
+    justifyContent: 'flex-end',
     alignItems: 'center',
     width: '100%',
-
   },
   imageStampRepLy: {
     width: moderateScale(45),
