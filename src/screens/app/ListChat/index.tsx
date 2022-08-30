@@ -70,8 +70,6 @@ const ListChat = () => {
   useEffect(() => {
     if (countMessage) {
       notifee.setBadgeCount(countMessage);
-    } else {
-      notifee.setBadgeCount(0);
     }
   }, [countMessage]);
 
