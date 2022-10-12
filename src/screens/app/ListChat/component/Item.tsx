@@ -40,13 +40,21 @@ const Item = React.memo((props: any) => {
   const navigateDetail = () => {
     try {
       notifee.getBadgeCount().then(async (count: any) => {
-        const countMessage = count - Number(item?.message_unread);
-        await notifee.setBadgeCount(countMessage);
-        await dispatch(saveIdRoomChat(item?.id));
-        navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
-          idRoomChat: item?.id,
-          idMessageSearchListChat: null,
-        });
+        if (count > 0) {
+          const countMessage = count - Number(item?.message_unread);
+          await notifee.setBadgeCount(countMessage);
+          await dispatch(saveIdRoomChat(item?.id));
+          navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+            idRoomChat: item?.id,
+            idMessageSearchListChat: null,
+          });
+        } else {
+          await dispatch(saveIdRoomChat(item?.id));
+          navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
+            idRoomChat: item?.id,
+            idMessageSearchListChat: null,
+          });
+        }
       });
     } catch (error) {}
   };
