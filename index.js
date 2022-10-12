@@ -12,4 +12,5 @@ messaging().setBackgroundMessageHandler(async remoteMessage => {
   await notifee.incrementBadgeCount();
 });
 
+
 AppRegistry.registerComponent(appName, () => App);
