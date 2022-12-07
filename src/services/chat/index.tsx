@@ -34,21 +34,22 @@ const LIST_FILE_INROOM = 'user/chat/room';
 const LIST_LINK_INROOM = 'user/chat/room';
 const ADD_USER_FROM_MESSAGE = 'user/chat/room/update-guest-status';
 const REMOVE_GUEST = 'user/chat/room/farewell-to-guest';
+const DELETE_ROOM = 'user/chat/room';
+const CHANGE_ROLE = 'user/chat/room/role-user';
 
 export const getRoomListApi: any = async (params: any) => {
-  const {key, company_id, page} = params;
+  const { key, company_id, page } = params;
   const response = await api.get(
     key?.length > 0
-      ? `${GET_LIST_ROOM}?company_id=${company_id}&page=${
-          page ? page : 1
-        }&search=${key}`
+      ? `${GET_LIST_ROOM}?company_id=${company_id}&page=${page ? page : 1
+      }&search=${key}`
       : `${GET_LIST_ROOM}?company_id=${company_id}&page=${page ? page : 1}`,
   );
   return response;
 };
 
 export const getListUser: any = async (params: any) => {
-  const response = api.get(GET_LIST_USER, {params});
+  const response = api.get(GET_LIST_USER, { params });
   return response;
 };
 
@@ -98,12 +99,11 @@ export const updateImageRoomChat: any = async (body: any) => {
 };
 
 export const getDetailChatApi: any = async (params: any) => {
-  const {id, page, key} = params;
+  const { id, page, key } = params;
   const response = api.get(
     key?.length > 0
-      ? `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}&key=${
-          key ? key : ''
-        }`
+      ? `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}&key=${key ? key : ''
+      }`
       : `${DETAIL_CHAT}/${id}/message?page=${page ? page : 1}`,
   );
   return response;
@@ -160,7 +160,7 @@ export const sendLabelApi: any = async (body: any) => {
 };
 
 export const getResultSearchMessage: any = async (params: any) => {
-  const {id_room, id_message} = params;
+  const { id_room, id_message } = params;
   const response = api.get(
     `${GET_RESULT_SEARCH_MESSAGE}/${id_room}/messages-after-from-id?message_from_id=${id_message}`,
   );
@@ -168,7 +168,7 @@ export const getResultSearchMessage: any = async (params: any) => {
 };
 
 export const registerLastMessage: any = async (data: any) => {
-  const {id_room, id_message} = data;
+  const { id_room, id_message } = data;
   const response = api.post(
     `${REGISTER_LAST_MESSAGE}/${id_room}/register-last-message-id?message_id=${id_message}`,
   );
@@ -229,4 +229,14 @@ export const addUserMessage: any = async (body: any) => {
   return response;
 };
 
-export const callApiChatBot: any = async (body: any) => {};
+export const callApiChatBot: any = async (body: any) => { };
+
+export const deleteRoom: any = async (id: any) => {
+  const response = api.get(`${DELETE_ROOM}/${id}/delete`);
+  return response;
+}
+
+export const changeRole: any = async (body: any) => {
+  const response = api.post(CHANGE_ROLE, body);
+  return response;
+}

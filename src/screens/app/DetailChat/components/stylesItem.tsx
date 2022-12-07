@@ -1,11 +1,11 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import {
   scale,
   verticalScale,
   moderateScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import {colors, stylesCommon} from '@stylesCommon';
+import { colors, stylesCommon } from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     marginVertical: verticalScale(8),
     textAlign: 'center',
   },
-  txtBold: {fontWeight: 'bold', fontSize: moderateScale(16)},
+  txtBold: { fontWeight: 'bold', fontSize: moderateScale(16) },
   bottomMenu: {
     marginTop: verticalScale(-100),
   },
@@ -197,6 +197,54 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  txtEdited: {
+    color: colors.border,
+    fontSize: moderateScale(10),
+  },
+  viewTimeEditRight: {
+    marginTop: moderateScale(5),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  viewTimeEditLeft: {
+    marginTop: moderateScale(5),
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginLeft: scale(26) + scale(7),
+  },
+  iconEdit: {
+    width: moderateScale(15),
+    height: moderateScale(15),
+    marginRight: moderateScale(5),
+  },
+  containerMenuDelete: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  },
+  viewRedLine: {
+    width: '100%',
+    borderWidth: 0.5,
+    marginVertical: moderateScale(20),
+    borderColor: 'red'
+  },
+  txtRedLine:{
+    color: 'red',
+    fontSize: moderateScale(14),
+    position: 'absolute',
+    top: moderateScale(11),
+    paddingHorizontal: moderateScale(10),
+    backgroundColor: '#FFFFFF',
+    ...stylesCommon.fontWeight500,
+  }
 });
 
-export {styles};
+export { styles };

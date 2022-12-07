@@ -11,6 +11,7 @@ export type ChatState = {
   id_messageSearch: any;
   isGetInfoRoom: boolean;
   messageQuote: any;
+  redLineId: any;
 };
 
 export const INITIAL_STATE_CHAT: ChatState = {
@@ -26,4 +27,5 @@ export const INITIAL_STATE_CHAT: ChatState = {
   id_messageSearch: null,
   isGetInfoRoom: false,
   messageQuote: null,
+  redLineId: null
 };

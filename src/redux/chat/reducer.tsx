@@ -1,6 +1,6 @@
-import {typeChat} from './type';
-import {INITIAL_STATE_CHAT} from './state';
-import {convertArrUnique} from '@util';
+import { typeChat } from './type';
+import { INITIAL_STATE_CHAT } from './state';
+import { convertArrUnique } from '@util';
 
 export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
   switch (action.type) {
@@ -28,14 +28,15 @@ export default function chatReducer(state = INITIAL_STATE_CHAT, action: any) {
           page === 1
             ? convertArrUnique(action.payload.room_messages.data, 'id')
             : convertArrUnique(
-                state.detailChat.concat(action.payload.room_messages.data),
-                'id',
-              ),
+              state.detailChat.concat(action.payload.room_messages.data),
+              'id',
+            ),
         pagingDetail: action.payload.room_messages.paging,
         message_pinned: action.payload.message_pinned,
+        redLineId: action.payload.redline
       };
     case typeChat.DELETE_MESSAGE:
-      const {detailChat} = state;
+      const { detailChat } = state;
       let data = [...detailChat];
       const index = data.findIndex(
         (element: any) => element?.id == action.payload,

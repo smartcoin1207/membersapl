@@ -1,5 +1,5 @@
-import {colors, stylesCommon} from '@stylesCommon';
-import React, {useState, useCallback, useEffect} from 'react';
+import { colors, stylesCommon } from '@stylesCommon';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,34 +11,41 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
-import {iconFile, iconPdf, iconDoc, iconXls, defaultAvatar} from '@images';
-import {Menu} from 'react-native-material-menu';
-import {MenuFeature} from '../components/MenuFeature';
+import { iconFile, iconPdf, iconDoc, iconXls, defaultAvatar, iconEdit } from '@images';
+import { Menu } from 'react-native-material-menu';
+import { MenuFeature } from '../components/MenuFeature';
 import moment from 'moment';
 import Clipboard from '@react-native-clipboard/clipboard';
-import {showMessage} from 'react-native-flash-message';
-import {useSelector} from 'react-redux';
-import {Reaction} from './Reaction';
-import {ROUTE_NAME} from '@routeName';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from './stylesItem';
+import { showMessage } from 'react-native-flash-message';
+import { useSelector } from 'react-redux';
+import { Reaction } from './Reaction';
+import { ROUTE_NAME } from '@routeName';
+import { useNavigation } from '@react-navigation/native';
+import { styles } from './stylesItem';
 import {
   scale,
   verticalScale,
   moderateVerticalScale,
 } from 'react-native-size-matters';
-import {MsgFile} from './MsgFile';
-import {isSameDay, validateLink, convertString} from '@util';
+import { MsgFile } from './MsgFile';
+import { isSameDay, validateLink, convertString } from '@util';
 import HighlightText from '@sanar/react-native-highlight-text';
-import {ViewUserSeen} from './viewUserSeen';
+import { ViewUserSeen } from './viewUserSeen';
 import Autolink from 'react-native-autolink';
-import {ViewTask} from './ViewTask';
-import {ViewInvite} from './ViewInvite';
-import {decode} from 'html-entities';
+import { ViewTask } from './ViewTask';
+import { ViewInvite } from './ViewInvite';
+import { MenuOption } from './MenuOption';
+import { decode } from 'html-entities';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#FDF5E6', '#FDF5E6'];
 const width = Dimensions.get('window').width;
+
+const dataAll: any = [{
+  id: 'All',
+  last_name: 'このグループ全員に',
+  first_name: '通知が送信されます'
+}]
 
 const ItemMessage = React.memo((props: any) => {
   const navigation = useNavigation<any>();
@@ -56,6 +63,9 @@ const ItemMessage = React.memo((props: any) => {
     idRoomChat,
     newIndexArray,
     quoteMsg,
+    showRedLine,
+    redLineId,
+    isAdmin
   } = props;
   const {
     user,
@@ -76,9 +86,15 @@ const ItemMessage = React.memo((props: any) => {
     task_link,
     message_quote,
     index,
+    updated_at
   } = props.currentMessage;
 
   const [visible, setVisible] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+
+  const onShowModalDelete = useCallback(() => {
+    setShowModalDelete(!showModalDelete)
+  }, [showModalDelete])
 
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
@@ -175,7 +191,7 @@ const ItemMessage = React.memo((props: any) => {
       let mentionText = `@${joinedUser?.last_name.replace(
         ' ',
         '',
-      )}${joinedUser?.first_name?.replace(' ', '')}`;
+      )}${joinedUser?.first_name?.replace(' ', '')}さん`;
       if (text?.includes(mentionText)) {
         textBold = textBold?.concat(mentionText);
       }
@@ -197,7 +213,7 @@ const ItemMessage = React.memo((props: any) => {
   }, []);
 
   const onClickDetailSeen = useCallback(() => {
-    navigation.navigate(ROUTE_NAME.USER_SEEN, {id: _id});
+    navigation.navigate(ROUTE_NAME.USER_SEEN, { id: _id });
   }, []);
 
   const onConfirm = useCallback(() => {
@@ -211,19 +227,41 @@ const ItemMessage = React.memo((props: any) => {
   return (
     <>
       {msg_type == 11 ||
-      msg_type == 4 ||
-      msg_type == 5 ||
-      msg_type == 9 ||
-      msg_type == 10 ||
-      msg_type == 9 ||
-      msg_type == 12 ? (
-        <View style={styles.viewCenter}>
-          <Text style={styles.txtCenter} numberOfLines={2}>
-            {msg_type !== 9 ? text : `${guest?.name}さんが参加しました。`}
-          </Text>
-        </View>
+        msg_type == 4 ||
+        msg_type == 5 ||
+        msg_type == 9 ||
+        msg_type == 10 ||
+        msg_type == 9 ||
+        msg_type == 12 ? (
+        <>
+          <TouchableOpacity style={styles.viewCenter}
+            onPress={onShowModalDelete}
+            disabled={isAdmin === 1 ? false : true}
+          >
+            <Text style={styles.txtCenter} numberOfLines={2}>
+              {msg_type !== 9 ? text : `${guest?.name}さんが参加しました。`}
+            </Text>
+            <Menu
+              style={styles.containerMenuDelete}
+              visible={showModalDelete}
+              onRequestClose={onShowModalDelete}
+              key={1}>
+              <MenuOption
+                onDeleteMessage={() => onActionMenu(11)}
+              />
+            </Menu>
+          </TouchableOpacity>
+          {(redLineId === _id && showRedLine === true) ? <View style={styles.viewCenter}>
+            <View style={styles.viewRedLine} />
+            <Text style={styles.txtRedLine}>未読メッセージ</Text>
+          </View> : null}
+        </>
       ) : (
         <>
+          {(redLineId === _id && showRedLine === true) ? <View style={styles.viewCenter}>
+            <View style={styles.viewRedLine} />
+            <Text style={styles.txtRedLine}>未読メッセージ</Text>
+          </View> : null}
           <View
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
@@ -272,7 +310,7 @@ const ItemMessage = React.memo((props: any) => {
                         }}
                       />
                     )}
-                    <View style={{flex: 1}} />
+                    <View style={{ flex: 1 }} />
                   </View>
                 )}
                 <>
@@ -294,13 +332,13 @@ const ItemMessage = React.memo((props: any) => {
                       {msg_type == 6 || msg_type == 8 ? null : (
                         <LinearGradient
                           colors={user?._id == user_id ? colorCurrent : color}
-                          start={{x: 1, y: 0}}
-                          end={{x: 0, y: 0}}
+                          start={{ x: 1, y: 0 }}
+                          end={{ x: 0, y: 0 }}
                           style={styles.containerChat}>
                           {reply_to_message_text ||
-                          reply_to_message_files?.length > 0 ||
-                          reply_to_message_stamp?.stamp_icon ||
-                          message_quote ? (
+                            reply_to_message_files?.length > 0 ||
+                            reply_to_message_stamp?.stamp_icon ||
+                            message_quote ? (
                             <View style={styles.viewReply}>
                               <View style={styles.viewColumn} />
                               <View>
@@ -391,7 +429,7 @@ const ItemMessage = React.memo((props: any) => {
                                 //@ts-ignore
                                 searchWords={convertMentionToLink(
                                   text,
-                                  listUser,
+                                  listUser?.concat(dataAll),
                                 )}
                                 textToHighlight={convertString(text)}
                                 style={styles.txtMessage}
@@ -404,8 +442,8 @@ const ItemMessage = React.memo((props: any) => {
                   )}
                 </>
                 {user?._id == user_id ||
-                msg_type == 6 ||
-                msg_type == 8 ? null : (
+                  msg_type == 6 ||
+                  msg_type == 8 ? null : (
                   <Text style={styles.txtTime}>
                     {moment(createdAt, 'YYYY/MM/DD hh:mm:ss').format(
                       'MM/DD HH:mm',
@@ -427,6 +465,15 @@ const ItemMessage = React.memo((props: any) => {
                   </View>
                 </TouchableOpacity>
               )}
+              {/* Time tin nhắn đã bị edit */}
+              {moment(createdAt) < moment(updated_at) ? <View style={user?._id == user_id ? styles.viewTimeEditRight : styles.viewTimeEditLeft}>
+                <Image source={iconEdit} style={styles.iconEdit} />
+                <Text style={styles.txtEdited}>
+                  Edited: {moment(updated_at, 'YYYY/MM/DD hh:mm:ss').format(
+                    'MM/DD HH:mm',
+                  )}
+                </Text>
+              </View> : null}
             </>
 
             <Menu
@@ -434,8 +481,8 @@ const ItemMessage = React.memo((props: any) => {
                 //Logic check ẩnh và hiện menu khi tin nhắn ở sát phần trên của màn hình
                 marginTop:
                   index === newIndexArray ||
-                  index === newIndexArray - 1 ||
-                  index === newIndexArray - 2
+                    index === newIndexArray - 1 ||
+                    index === newIndexArray - 2
                     ? moderateVerticalScale(0)
                     : moderateVerticalScale(-125),
               }}
@@ -472,4 +519,4 @@ const ItemMessage = React.memo((props: any) => {
   );
 });
 
-export {ItemMessage};
+export { ItemMessage };

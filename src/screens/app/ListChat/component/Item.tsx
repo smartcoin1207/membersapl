@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import React, { useCallback, useEffect, useState } from 'react';
+import { TouchableOpacity, StyleSheet, View, Image, Text } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
-import {colors, stylesCommon} from '@stylesCommon';
+import { colors, stylesCommon } from '@stylesCommon';
 import {
   iconNext,
   defaultAvatar,
@@ -12,24 +12,26 @@ import {
   iconDoc,
   iconXls,
 } from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTE_NAME } from '@routeName';
 import FastImage from 'react-native-fast-image';
-import {convertString, HITSLOP} from '@util';
-import {pinFlag, GlobalService} from '@services';
+import { convertString, HITSLOP } from '@util';
+import { pinFlag, GlobalService } from '@services';
 
-import {saveIdRoomChat, getRoomList} from '@redux';
-import {showMessage} from 'react-native-flash-message';
-import {useSelector, useDispatch} from 'react-redux';
-import {decode} from 'html-entities';
-import notifee, {EventType} from '@notifee/react-native';
+import { saveIdRoomChat, getRoomList } from '@redux';
+import { showMessage } from 'react-native-flash-message';
+import { useSelector, useDispatch } from 'react-redux';
+import { decode } from 'html-entities';
+import notifee, { EventType } from '@notifee/react-native';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const dispatch = useDispatch();
   const navigation = useNavigation<any>();
-  const {item, index} = props;
+  const { item, index } = props;
   const [pin, setStatusPin] = useState<any>(null);
+
+  let count_user = (item?.name.match(/,/g) || []).length
 
   useEffect(() => {
     if (item?.pin_flag) {
@@ -56,7 +58,7 @@ const Item = React.memo((props: any) => {
           });
         }
       });
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {
@@ -80,7 +82,7 @@ const Item = React.memo((props: any) => {
         message: response?.data?.message,
         type: 'success',
       });
-      await dispatch(getRoomList({key: '', company_id: idCompany, page: 1}));
+      await dispatch(getRoomList({ key: '', company_id: idCompany, page: 1 }));
     } catch {
       GlobalService.hideLoading();
     }
@@ -99,12 +101,12 @@ const Item = React.memo((props: any) => {
                 style={styles.image}
                 source={
                   item?.one_one_check?.length > 0 &&
-                  item?.one_one_check[0]?.icon_image
+                    item?.one_one_check[0]?.icon_image
                     ? {
-                        uri: item?.one_one_check[0]?.icon_image,
-                        priority: FastImage.priority.high,
-                        cache: FastImage.cacheControl.immutable,
-                      }
+                      uri: item?.one_one_check[0]?.icon_image,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }
                     : defaultAvatar
                 }
               />
@@ -121,10 +123,10 @@ const Item = React.memo((props: any) => {
                 source={
                   item?.icon_image
                     ? {
-                        uri: item?.icon_image,
-                        priority: FastImage.priority.high,
-                        cache: FastImage.cacheControl.immutable,
-                      }
+                      uri: item?.icon_image,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }
                     : defaultAvatar
                 }
               />
@@ -138,26 +140,27 @@ const Item = React.memo((props: any) => {
         </View>
         <View style={styles.viewTxt}>
           <>
-            <Text
-              style={[
-                styles.txtContent,
-                {
-                  fontWeight: item?.message_unread > 0 ? 'bold' : '600',
-                  color:
-                    item?.message_unread > 0 ? '#000000' : colors.backgroundTab,
-                },
-              ]}
-              numberOfLines={1}>
-              {item?.name && item?.name?.length > 0
-                ? item?.name
-                : `${
-                    item?.one_one_check ? item?.one_one_check[0]?.last_name : ''
-                  } ${
-                    item?.one_one_check
-                      ? item?.one_one_check[0]?.first_name
-                      : ''
+            <View style={styles.viewRowTitle}>
+              <Text
+                style={[
+                  styles.txtContent,
+                  {
+                    fontWeight: item?.message_unread > 0 ? 'bold' : '600',
+                    color:
+                      item?.message_unread > 0 ? '#000000' : colors.backgroundTab,
+                  },
+                ]}
+                numberOfLines={1}>
+                {item?.name && item?.name?.length > 0
+                  ? item?.name
+                  : `${item?.one_one_check ? item?.one_one_check[0]?.last_name : ''
+                  } ${item?.one_one_check
+                    ? item?.one_one_check[0]?.first_name
+                    : ''
                   }`}
-            </Text>
+              </Text>
+              {item?.name && item?.name?.length > 0 ? <Text> {count_user > 0 ? `(${count_user + 1})` : ''}</Text> : null}
+            </View>
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
                 {item?.lastMessageJoin?.attachment_files?.map((item: any) => (
@@ -182,18 +185,18 @@ const Item = React.memo((props: any) => {
               </View>
             ) : null}
             {item?.lastMessageJoin?.message &&
-            item?.lastMessageJoin?.message !== 'null' ? (
+              item?.lastMessageJoin?.message !== 'null' ? (
               <Text style={styles.txtTitle} numberOfLines={2}>
                 {item?.lastMessageJoin?.msg_type == 9
                   ? `${item?.lastMessageJoin?.guest?.name}さんが参加しました`
                   : convertString(
-                      //Check logic xuống dòng khi thông tin được sửa từ trên app
-                      decode(
-                        item?.lastMessageJoin?.message
-                          ?.split('<br>')
-                          .join('\n'),
-                      ),
-                    )}
+                    //Check logic xuống dòng khi thông tin được sửa từ trên app
+                    decode(
+                      item?.lastMessageJoin?.message
+                        ?.split('<br>')
+                        .join('\n'),
+                    ),
+                  )}
               </Text>
             ) : null}
           </>
@@ -202,7 +205,7 @@ const Item = React.memo((props: any) => {
           <TouchableOpacity hitSlop={HITSLOP} onPress={onGhimRoomChat}>
             <Image
               source={iconPin}
-              style={{tintColor: pin == 1 ? '#EA5A31' : colors.border}}
+              style={{ tintColor: pin == 1 ? '#EA5A31' : colors.border }}
             />
           </TouchableOpacity>
           {item?.message_unread > 0 ? (
@@ -295,6 +298,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(10),
   },
+  viewRowTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    maxWidth: '95%'
+  },
   imageSmall: {
     width: moderateScale(30),
     height: moderateScale(30),
@@ -330,4 +338,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {Item};
+export { Item };

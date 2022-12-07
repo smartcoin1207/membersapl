@@ -1,15 +1,16 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import { TouchableOpacity, StyleSheet, View, Image, Text } from 'react-native';
+import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
-import {colors, stylesCommon} from '@stylesCommon';
-import {iconRemove, defaultAvatar, iconPin} from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
+import { colors, stylesCommon } from '@stylesCommon';
+import { iconRemove, defaultAvatar, iconPin } from '@images';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTE_NAME } from '@routeName';
+import moment from 'moment';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const {item, deleteUser} = props;
+  const { item, deleteUser } = props;
 
   return (
     <View style={styles.container}>
@@ -18,7 +19,7 @@ const Item = React.memo((props: any) => {
           <View style={styles.image}>
             <Image
               source={
-                item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
+                item?.icon_image ? { uri: item?.icon_image } : defaultAvatar
               }
               style={styles.image}
             />
@@ -28,6 +29,11 @@ const Item = React.memo((props: any) => {
           <>
             <Text style={styles.txtTitle} numberOfLines={2}>
               {item?.last_name} {item?.first_name}
+            </Text>
+          </>
+          <>
+            <Text style={styles.txtTitleDate} numberOfLines={2}>
+              見た: <Text style={{ color: colors.primary }}>{moment(item?.last_check_date).format('DD/MM/YYYY HH:mm')}</Text>
             </Text>
           </>
         </View>
@@ -55,7 +61,9 @@ const styles = StyleSheet.create({
   },
   viewTxt: {
     width: '80%',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
   },
   viewImageNext: {
     width: '15%',
@@ -69,8 +77,16 @@ const styles = StyleSheet.create({
     color: colors.border,
   },
   txtTitle: {
+    maxWidth: '50%',
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(16),
+    marginTop: verticalScale(5),
+    color: colors.backgroundTab,
+  },
+  txtTitleDate: {
+    maxWidth: '50%',
+    ...stylesCommon.fontWeight500,
+    fontSize: moderateScale(12),
     marginTop: verticalScale(5),
     color: colors.backgroundTab,
   },
@@ -103,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {Item};
+export { Item };
