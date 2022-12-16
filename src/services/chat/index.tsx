@@ -61,11 +61,6 @@ export const getRoomListApi: any = async (params: any) => {
   return response;
 };
 
-// export const getRoomListApi: any = async (params: any) => {
-//   const response = await api.get(GET_LIST_ROOM, params);
-//   return response;
-// }
-
 export const getListUser: any = async (params: any) => {
   const response = api.get(GET_LIST_USER, {params});
   return response;

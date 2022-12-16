@@ -502,23 +502,6 @@ const ItemMessage = React.memo((props: any) => {
                   </View>
                 </TouchableOpacity>
               )}
-              {/* Time tin nhắn đã bị edit */}
-              {/* {moment(createdAt) < moment(updated_at) ? (
-                <View
-                  style={
-                    user?._id == user_id
-                      ? styles.viewTimeEditRight
-                      : styles.viewTimeEditLeft
-                  }>
-                  <Image source={iconEdit} style={styles.iconEdit} />
-                  <Text style={styles.txtEdited}>
-                    Edited:{' '}
-                    {moment(updated_at, 'YYYY/MM/DD hh:mm:ss').format(
-                      'MM/DD HH:mm',
-                    )}
-                  </Text>
-                </View>
-              ) : null} */}
             </>
 
             <Menu

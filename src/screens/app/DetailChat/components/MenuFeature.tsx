@@ -23,7 +23,6 @@ import {
   iconPin,
   iconQuote,
 } from '@images';
-// import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 const MenuFeature = React.memo((props: any) => {
