@@ -12,6 +12,7 @@ export type ChatState = {
   isGetInfoRoom: boolean;
   messageQuote: any;
   redLineId: any;
+  modalFilterChat: boolean;
 };
 
 export const INITIAL_STATE_CHAT: ChatState = {
@@ -27,5 +28,6 @@ export const INITIAL_STATE_CHAT: ChatState = {
   id_messageSearch: null,
   isGetInfoRoom: false,
   messageQuote: null,
-  redLineId: null
+  redLineId: null,
+  modalFilterChat: false,
 };

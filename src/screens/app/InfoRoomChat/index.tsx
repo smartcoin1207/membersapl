@@ -362,7 +362,7 @@ const InfoRoomChat = (props: any) => {
             )}
             {dataDetail?.is_admin == 1 && listUser?.length > 1 ? <ViewItem
               sourceImage={iconDelete}
-              content="未読メッセージ"
+              content="グループを削除"
               hideNext
               isLogout
               hideBorder

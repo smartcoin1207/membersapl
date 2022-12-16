@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,16 +8,16 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import { verticalScale, scale, moderateScale } from 'react-native-size-matters';
-import { getListUser } from '@services';
-import { colors, stylesCommon } from '@stylesCommon';
+import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
+import {getListUser} from '@services';
+import {colors, stylesCommon} from '@stylesCommon';
 import FastImage from 'react-native-fast-image';
-import { defaultAvatar, iconTagAll } from '@images';
+import {defaultAvatar, iconTagAll} from '@images';
 
 const width = Dimensions.get('window').width;
 
 const ModalTagName = React.memo((props: any) => {
-  const { idRoomChat, choseUser } = props;
+  const {idRoomChat, choseUser} = props;
   const [listUser, setListUser] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,20 +27,23 @@ const ModalTagName = React.memo((props: any) => {
 
   const getListUserApi = async () => {
     try {
-      const result = await getListUser({ room_id: idRoomChat });
+      const result = await getListUser({room_id: idRoomChat});
       const guest = result?.data?.guests?.map((item: any) => {
         return {
           ...item,
           id: Number(item?.id) * -1,
         };
       });
-      const dataAll: any = [{
-        id: 'All',
-        last_name: 'このグループ全員に',
-        first_name: '通知が送信されます'
-      }]
-      const dataUser = result?.data?.users?.data?.concat(guest)
-      const dataAddAll = dataAll?.concat(dataUser)
+      const dataAll: any = [
+        {
+          id: 'All',
+          last_name: 'このグループ全員に',
+          first_name: '通知が送信されます',
+          value: 'All',
+        },
+      ];
+      const dataUser = result?.data?.users?.data?.concat(guest);
+      const dataAddAll = dataAll?.concat(dataUser);
       setListUser(dataAddAll);
       setLoading(false);
     } catch {
@@ -52,42 +55,42 @@ const ModalTagName = React.memo((props: any) => {
 
   const onChoseUser = (item: any) => {
     if (item?.id === 'All') {
-      const valueName =
-        item?.id < 0 ? `${item?.name}さん` : `${item?.last_name}${item?.first_name}`;
+      const valueName = item?.id < 0 ? `${item?.name}さん` : `${item?.value}`;
       const id = item?.id;
       choseUser(valueName?.replace(' ', ''), id, item);
     } else {
       const valueName =
-        item?.id < 0 ? `${item?.name}さん` : `${item?.last_name}${item?.first_name}さん`;
+        item?.id < 0
+          ? `${item?.name}さん`
+          : `${item?.last_name}${item?.first_name}さん`;
       const id = item?.id;
       choseUser(valueName?.replace(' ', ''), id, item);
     }
   };
 
-  const renderItem = ({ item }: any) => (
+  const renderItem = ({item}: any) => (
     <TouchableOpacity style={styles.viewItem} onPress={() => onChoseUser(item)}>
       <>
-        {item?.id === 'All' ?
+        {item?.id === 'All' ? (
           <>
-            <FastImage
-              source={defaultAvatar}
-              style={styles.imageIconTag}
-            />
+            <FastImage source={defaultAvatar} style={styles.imageIconTag} />
             <Text style={styles.txtTitle} numberOfLines={2}>
               <Text style={styles.txtTitle} numberOfLines={2}>
                 {item?.last_name}
                 {item?.first_name}
               </Text>
             </Text>
-          </> : <>
+          </>
+        ) : (
+          <>
             <FastImage
               source={
                 item?.icon_image
                   ? {
-                    uri: item?.icon_image,
-                    priority: FastImage.priority.high,
-                    cache: FastImage.cacheControl.immutable,
-                  }
+                      uri: item?.icon_image,
+                      priority: FastImage.priority.high,
+                      cache: FastImage.cacheControl.immutable,
+                    }
                   : defaultAvatar
               }
               style={styles.image}
@@ -102,8 +105,8 @@ const ModalTagName = React.memo((props: any) => {
                 {item?.last_name}
               </Text>
             )}
-          </>}
-
+          </>
+        )}
       </>
     </TouchableOpacity>
   );
@@ -164,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { ModalTagName };
+export {ModalTagName};

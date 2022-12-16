@@ -1,24 +1,24 @@
-import React, { useCallback } from 'react';
-import { View, Image, Platform } from 'react-native';
-import { styles } from './styles';
-import { Header } from '@component';
-import { iconSearch, iconUpload, iconLike, iconDetail } from '@images';
-import { useFunction } from './useFunction';
-import { GiftedChat, Actions } from '../../../lib/react-native-gifted-chat';
-import { ItemMessage } from './components/ItemMessage';
+import React, {useCallback, useEffect} from 'react';
+import {View, Image, Platform} from 'react-native';
+import {styles} from './styles';
+import {Header} from '@component';
+import {iconSearch, iconUpload, iconLike, iconDetail} from '@images';
+import {useFunction} from './useFunction';
+import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
+import {ItemMessage} from './components/ItemMessage';
 import {
   renderSend,
   renderInputToolbar,
   renderComposer,
 } from './components/InputToolbar';
-import { ModalPickFile } from './components/ModalPickFile';
+import {ModalPickFile} from './components/ModalPickFile';
 
-import { ModalStamp } from './components/ModalStamp';
-import { ModalReply } from './components/ModalReply';
-import { ModalQuote } from './components/ModalQuote';
-import { ModalEdit } from './components/ModalEdit';
-import { ModalPin } from './components/ModalPin';
-import { ModalTagName } from './components/ModalTagName';
+import {ModalStamp} from './components/ModalStamp';
+import {ModalReply} from './components/ModalReply';
+import {ModalQuote} from './components/ModalQuote';
+import {ModalEdit} from './components/ModalEdit';
+import {ModalPin} from './components/ModalPin';
+import {ModalTagName} from './components/ModalTagName';
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -64,7 +64,7 @@ const DetailChat = (props: any) => {
     listUserSelect,
     setListUserSelect,
     showRedLine,
-    redLineId
+    redLineId,
   } = useFunction(props);
 
   //Render ra UI chọn ảnh, video, file
@@ -137,7 +137,7 @@ const DetailChat = (props: any) => {
 
   //Check phạm vi để gọi hàm loadmore
   const isCloseToTop = useCallback(
-    ({ layoutMeasurement, contentOffset, contentSize }: any) => {
+    ({layoutMeasurement, contentOffset, contentSize}: any) => {
       const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
       return (
         contentSize.height - layoutMeasurement.height - paddingToTop <=
@@ -158,6 +158,17 @@ const DetailChat = (props: any) => {
     viewAreaCoveragePercentThreshold: 0,
   });
 
+  useEffect(() => {
+    if (text?.length > 0 && text.match('@All')) {
+      console.log(text.match('@All'))
+      const idsData = listUser?.map((item: any) => {
+        return item?.id;
+      });
+      setIds(idsData);
+    } else {
+    }
+  }, [text]);
+
   return (
     <View style={styles.container}>
       <Header
@@ -166,10 +177,17 @@ const DetailChat = (props: any) => {
         title={
           dataDetail?.name && dataDetail?.name?.length > 0
             ? dataDetail?.name
-            : `${(dataDetail?.one_one_check && dataDetail?.one_one_check?.length > 0) ? dataDetail?.one_one_check[0]?.last_name : ''} ${(dataDetail?.one_one_check && dataDetail?.one_one_check[0]?.length > 0)
-              ? dataDetail?.one_one_check[0]?.first_name
-              : ''
-            }`
+            : `${
+                dataDetail?.one_one_check &&
+                dataDetail?.one_one_check?.length > 0
+                  ? dataDetail?.one_one_check[0]?.last_name
+                  : ''
+              } ${
+                dataDetail?.one_one_check &&
+                dataDetail?.one_one_check[0]?.length > 0
+                  ? dataDetail?.one_one_check[0]?.first_name
+                  : ''
+              }`
         }
         imageCenter
         iconRightFirst={iconDetail}
@@ -218,7 +236,7 @@ const DetailChat = (props: any) => {
         listViewProps={{
           scrollEventThrottle: 400,
           //Xử lý loadmore tin nhắn
-          onScroll: ({ nativeEvent }: any) => {
+          onScroll: ({nativeEvent}: any) => {
             if (isCloseToTop(nativeEvent)) {
               onLoadMore();
             } else if (nativeEvent?.contentOffset?.y === 0) {
@@ -246,7 +264,7 @@ const DetailChat = (props: any) => {
         }}
         //Các props của textInput nhúng vào gifted chat
         textInputProps={{
-          onKeyPress: ({ nativeEvent }: any) => {
+          onKeyPress: ({nativeEvent}: any) => {
             if (nativeEvent?.key?.trim() === '@') {
               setShowTag(true);
             } else {
@@ -257,56 +275,59 @@ const DetailChat = (props: any) => {
         //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
         renderAccessory={
           messageReply ||
-            message_edit ||
-            messageQuote ||
-            modalStamp === true ||
-            showTagModal === true
+          message_edit ||
+          messageQuote ||
+          modalStamp === true ||
+          showTagModal === true
             ? () => (
-              <>
-                {/* UI modal tag name */}
-                {showTagModal && (
-                  <ModalTagName
-                    idRoomChat={idRoomChat}
-                    choseUser={(value: any, id: any, item: any) => {
-                      // logic khi tag name là tin nhắn tag có tên người và đồng thời gửi thêm 1 mảng id người dùng được tag
-                      if (id < 0) {
-                        // check nếu đây là id của khách lẻ thì không gửi mảng id lên
-                        setText(`${text}${value}`);
-                        setShowTag(false);
-                      } else {
-                        if (id === 'All') {
+                <>
+                  {/* UI modal tag name */}
+                  {showTagModal && (
+                    <ModalTagName
+                      idRoomChat={idRoomChat}
+                      choseUser={(value: any, id: any, item: any) => {
+                        console.log(value);
+                        // logic khi tag name là tin nhắn tag có tên người và đồng thời gửi thêm 1 mảng id người dùng được tag
+                        if (id < 0) {
+                          // check nếu đây là id của khách lẻ thì không gửi mảng id lên
                           setText(`${text}${value}`);
-                          const idsData = listUser?.map((item: any) => {
-                            return item?.id
-                          });
-                          setIds(idsData);
                           setShowTag(false);
                         } else {
-                          setText(`${text}${value}`);
-                          setIds(ids?.concat([id]));
-                          setListUserSelect(listUserSelect?.concat([{ ...item }]))
-                          setShowTag(false);
+                          if (id === 'All') {
+                            setText(`${text}${value}`);
+                            const idsData = listUser?.map((item: any) => {
+                              return item?.id;
+                            });
+                            setIds(idsData);
+                            setShowTag(false);
+                          } else {
+                            setText(`${text}${value}`);
+                            setIds(ids?.concat([id]));
+                            setListUserSelect(
+                              listUserSelect?.concat([{...item}]),
+                            );
+                            setShowTag(false);
+                          }
                         }
-                      }
-                    }}
-                  />
-                )}
-                {/* UI reply message */}
-                {messageReply && <ModalReply />}
-                {/* UI Edit message */}
-                {message_edit && <ModalEdit />}
-                {/* UI message quote */}
-                {messageQuote && <ModalQuote />}
-                {/* UI chọn stamp */}
-                {modalStamp && (
-                  <ModalStamp
-                    onChose={(value: any) => {
-                      sendLabel(value);
-                    }}
-                  />
-                )}
-              </>
-            )
+                      }}
+                    />
+                  )}
+                  {/* UI reply message */}
+                  {messageReply && <ModalReply />}
+                  {/* UI Edit message */}
+                  {message_edit && <ModalEdit />}
+                  {/* UI message quote */}
+                  {messageQuote && <ModalQuote />}
+                  {/* UI chọn stamp */}
+                  {modalStamp && (
+                    <ModalStamp
+                      onChose={(value: any) => {
+                        sendLabel(value);
+                      }}
+                    />
+                  )}
+                </>
+              )
             : undefined
         }
         bottomOffset={0}
@@ -323,4 +344,4 @@ const DetailChat = (props: any) => {
   );
 };
 
-export { DetailChat };
+export {DetailChat};

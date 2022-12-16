@@ -156,3 +156,8 @@ export const getDetailRoomSocketSuccess = (payload: any) => ({
   type: typeChat.DETAIL_ROOM_SOCKET_SUCCESS,
   payload,
 });
+
+export const showHideModalFilterListChat = (payload: any) => ({
+  type: typeChat.SHOW_HIDE_MODAL_FILTER_LISTCHAT,
+  payload,
+});

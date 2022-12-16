@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   txtTime: {
-    marginLeft: scale(7),
+    marginLeft: scale(5),
     color: colors.border,
     fontSize: moderateScale(8),
   },
@@ -215,9 +215,8 @@ const styles = StyleSheet.create({
     marginLeft: scale(26) + scale(7),
   },
   iconEdit: {
-    width: moderateScale(15),
-    height: moderateScale(15),
-    marginRight: moderateScale(5),
+    width: moderateScale(10),
+    height: moderateScale(10),
   },
   containerMenuDelete: {
     shadowColor: '#000',

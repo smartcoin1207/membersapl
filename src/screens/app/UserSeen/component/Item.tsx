@@ -1,16 +1,22 @@
 import React from 'react';
-import { TouchableOpacity, StyleSheet, View, Image, Text } from 'react-native';
-import { scale, verticalScale, moderateScale } from 'react-native-size-matters';
+import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import LinearGradient from 'react-native-linear-gradient';
-import { colors, stylesCommon } from '@stylesCommon';
-import { iconRemove, defaultAvatar, iconPin } from '@images';
-import { useNavigation } from '@react-navigation/native';
-import { ROUTE_NAME } from '@routeName';
+import {colors, stylesCommon} from '@stylesCommon';
+import {iconRemove, defaultAvatar, iconPin} from '@images';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
 import moment from 'moment';
 
 const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
-  const { item, deleteUser } = props;
+  const {item, deleteUser} = props;
+
+  const string_date = `${moment(item?.last_check_date).format(
+    'YYYY',
+  )}年${moment(item?.last_check_date).format('MM')}月${moment(
+    item?.last_check_date,
+  ).format('D')} ${moment(item?.last_check_date).format('HH:mm')}`;
 
   return (
     <View style={styles.container}>
@@ -19,7 +25,7 @@ const Item = React.memo((props: any) => {
           <View style={styles.image}>
             <Image
               source={
-                item?.icon_image ? { uri: item?.icon_image } : defaultAvatar
+                item?.icon_image ? {uri: item?.icon_image} : defaultAvatar
               }
               style={styles.image}
             />
@@ -33,7 +39,7 @@ const Item = React.memo((props: any) => {
           </>
           <>
             <Text style={styles.txtTitleDate} numberOfLines={2}>
-              見た: <Text style={{ color: colors.primary }}>{moment(item?.last_check_date).format('DD/MM/YYYY HH:mm')}</Text>
+              閲覧: <Text style={{color: colors.primary}}>{string_date}</Text>
             </Text>
           </>
         </View>
@@ -63,7 +69,7 @@ const styles = StyleSheet.create({
     width: '80%',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   viewImageNext: {
     width: '15%',
@@ -119,4 +125,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { Item };
+export {Item};
