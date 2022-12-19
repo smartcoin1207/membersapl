@@ -11,6 +11,7 @@ import {
   updateMessageSeen,
   getDetailMessageSocketSeenSuccess,
   getDetailRoomSocketSuccess,
+  // getUnreadMessageCountSuccess,
 } from './action';
 
 import {typeChat} from './type';
@@ -20,6 +21,7 @@ import {
   getMessageFromSocket,
   getResultSearchMessage,
   registerLastMessage,
+  // getUnreadMessageCountApi,
   GlobalService,
   detailRoomchat,
 } from '@services';
@@ -158,6 +160,37 @@ export function* getDetailMessageSagaCurrent(action: any) {
       NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
     } else if (result?.data?.message?.msg_type === 4) {
       yield put(getRoomList({company_id: state?.chat?.idCompany}));
+    }
+  } catch (error) {
+  } finally {
+  }
+}
+
+export function* fetchResultMessageRedLine(action: any) {
+  //Hàm xử lý cho việc tìm kiếm message
+  try {
+    const body = {
+      id_room: action.payload.id_room,
+      id_message: action.payload.id_message,
+    };
+    const res: ResponseGenerator = yield getResultSearchMessage(body);
+    if (res?.code === 200) {
+      const param = {
+        id: action.payload.id_room,
+        page: res?.data.pages,
+      };
+      const result: ResponseGenerator = yield getDetailChatApi(param);
+      const valueSave = {
+        data: convertArrUnique(
+          res?.data?.room_messages?.data.concat(
+            result?.data?.room_messages?.data,
+          ),
+          'id',
+        ),
+        paging: result?.data?.room_messages?.paging,
+      };
+      yield put(fetchResultMessageSuccess(valueSave));
+      yield put(saveIdMessageSearch(action.payload.id_message));
     }
   } catch (error) {
   } finally {
@@ -313,6 +346,17 @@ function* getDetailRoomSocket(action: any) {
     yield put(getDetailRoomSocketSuccess(result?.data?.room));
   } catch (error: any) {}
 }
+// export function* getUnreadMessageCountSaga() {
+//   try {
+//     const state = store.getState();
+//     const user_id = state?.auth?.userInfo.id;
+//     const result: ResponseGenerator = yield getUnreadMessageCountApi(user_id);
+//     yield put(getUnreadMessageCountSuccess(result?.data));
+//   } catch (error) {
+//   } finally {
+//     GlobalService.hideLoading();
+//   }
+// }
 
 export function* chatSaga() {
   yield takeEvery(typeChat.GET_ROOM_LIST, getRoomListSaga);
@@ -322,7 +366,10 @@ export function* chatSaga() {
     typeChat.GET_DETAIL_MESSAGE_SOCKET_CURRENT,
     getDetailMessageSagaCurrent,
   );
-  yield takeEvery(typeChat.FETCH_RESULT_SEARCH_MESSAGE, fetchResultMessage);
+  yield takeEvery(
+    typeChat.FETCH_RESULT_SEARCH_MESSAGE_RED_LINE,
+    fetchResultMessageRedLine,
+  );
   yield takeEvery(
     typeChat.FETCH_RESULT_SEARCH_MESSAGE_LIST_FILE,
     fetchResultMessageListFile,
@@ -338,4 +385,5 @@ export function* chatSaga() {
   );
   yield takeEvery(typeChat.EDIT_MESSAGE_REACTION, editMessageReaction);
   yield takeEvery(typeChat.DETAIL_ROOM_SOCKET, getDetailRoomSocket);
+  // yield takeEvery(typeChat.GET_UNREAD_MESSAGE_COUNT_ALL, getUnreadMessageCountSaga);
 }

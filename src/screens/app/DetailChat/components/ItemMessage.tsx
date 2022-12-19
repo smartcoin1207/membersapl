@@ -235,6 +235,12 @@ const ItemMessage = React.memo((props: any) => {
 
   return (
     <>
+      {redLineId === _id && showRedLine === true ? (
+        <View style={styles.viewCenter}>
+          <View style={styles.viewRedLine} />
+          <Text style={styles.txtRedLine}>未読メッセージ</Text>
+        </View>
+      ) : null}
       {msg_type == 11 ||
       msg_type == 4 ||
       msg_type == 5 ||
@@ -258,21 +264,9 @@ const ItemMessage = React.memo((props: any) => {
               <MenuOption onDeleteMessage={() => onActionMenu(11)} />
             </Menu>
           </TouchableOpacity>
-          {redLineId === _id && showRedLine === true ? (
-            <View style={styles.viewCenter}>
-              <View style={styles.viewRedLine} />
-              <Text style={styles.txtRedLine}>未読メッセージ</Text>
-            </View>
-          ) : null}
         </>
       ) : (
         <>
-          {redLineId === _id && showRedLine === true ? (
-            <View style={styles.viewCenter}>
-              <View style={styles.viewRedLine} />
-              <Text style={styles.txtRedLine}>未読メッセージ</Text>
-            </View>
-          ) : null}
           <View
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
@@ -502,23 +496,6 @@ const ItemMessage = React.memo((props: any) => {
                   </View>
                 </TouchableOpacity>
               )}
-              {/* Time tin nhắn đã bị edit */}
-              {/* {moment(createdAt) < moment(updated_at) ? (
-                <View
-                  style={
-                    user?._id == user_id
-                      ? styles.viewTimeEditRight
-                      : styles.viewTimeEditLeft
-                  }>
-                  <Image source={iconEdit} style={styles.iconEdit} />
-                  <Text style={styles.txtEdited}>
-                    Edited:{' '}
-                    {moment(updated_at, 'YYYY/MM/DD hh:mm:ss').format(
-                      'MM/DD HH:mm',
-                    )}
-                  </Text>
-                </View>
-              ) : null} */}
             </>
 
             <Menu
