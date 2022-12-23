@@ -51,7 +51,7 @@ const width = Dimensions.get('window').width;
 const dataAll: any = [
   {
     id: 'All',
-    last_name: 'A',
+    last_name: 'a',
     first_name: 'll',
   },
 ];
@@ -235,12 +235,6 @@ const ItemMessage = React.memo((props: any) => {
 
   return (
     <>
-      {redLineId === _id && showRedLine === true ? (
-        <View style={styles.viewCenter}>
-          <View style={styles.viewRedLine} />
-          <Text style={styles.txtRedLine}>未読メッセージ</Text>
-        </View>
-      ) : null}
       {msg_type == 11 ||
       msg_type == 4 ||
       msg_type == 5 ||
@@ -267,6 +261,12 @@ const ItemMessage = React.memo((props: any) => {
         </>
       ) : (
         <>
+          {redLineId === _id && showRedLine === true ? (
+            <View style={styles.viewCenter}>
+              <View style={styles.viewRedLine} />
+              <Text style={styles.txtRedLine}>未読メッセージ</Text>
+            </View>
+          ) : null}
           <View
             style={
               user?._id == user_id ? styles.containerCurrent : styles.container
@@ -448,7 +448,7 @@ const ItemMessage = React.memo((props: any) => {
                                 searchWords={convertMentionToLink(
                                   text,
                                   listUser?.concat(dataAll),
-                                )}
+                                )?.concat(['@all'])}
                                 textToHighlight={convertString(text)}
                                 style={styles.txtMessage}
                               />

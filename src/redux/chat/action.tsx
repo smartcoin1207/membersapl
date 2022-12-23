@@ -166,3 +166,18 @@ export const showHideModalFilterListChat = (payload: any) => ({
   type: typeChat.SHOW_HIDE_MODAL_FILTER_LISTCHAT,
   payload,
 });
+
+export const saveTypeFilter = (payload: any) => ({
+  type: typeChat.SAVE_TYPE_FILTER,
+  payload,
+});
+
+export const saveCategoryFilter = (payload: any) => ({
+  type: typeChat.SAVE_CATEGORY_FILTER,
+  payload,
+});
+
+export const saveStatusFilter = (payload: any) => ({
+  type: typeChat.SAVE_STATUS_FILTER,
+  payload,
+});
