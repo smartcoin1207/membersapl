@@ -132,7 +132,7 @@ function createAppSocket() {
             idMsg: data?.message_id,
             idUser: data?.user_id,
           };
-          store.dispatch(getDetailMessageSocketSeen(body));
+          store.dispatch(getDetailMessageSocketSeen(body)); 
         } else {
         }
       } else {
