@@ -45,6 +45,7 @@ export const renderComposer = (props: any) => {
               style={styles.inputMessage}
               multiline={true}
               scrollEnabled={false}
+              onTextInput={props.textInputProps.onTextInput}
               onKeyPress={props.textInputProps.onKeyPress}
               value={null}
               // selection={props.textSelection}
