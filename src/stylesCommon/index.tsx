@@ -1,3 +1,4 @@
+import {INTER_MEDIUM, INTER_SEMIBOLD} from '@constants/fonts';
 import {StyleSheet, Platform} from 'react-native';
 
 const colors = {
@@ -23,10 +24,10 @@ const stylesCommon = StyleSheet.create({
     backgroundColor: '#FFFFFF',
   },
   fontWeight500: {
-    fontFamily: 'Inter-Medium',
+    fontFamily: INTER_MEDIUM,
   },
   fontWeight600: {
-    fontFamily: 'Inter-SemiBold',
+    fontFamily: INTER_SEMIBOLD,
   },
 });
 

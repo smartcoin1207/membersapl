@@ -64,6 +64,7 @@
 	<array>
 		<string>Inter-Medium.ttf</string>
 		<string>Inter-SemiBold.ttf</string>
+		<string>Hiragino-Kaku.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -143,10 +143,12 @@ const User = () => {
           </LinearGradient>
           <ViewItem
             sourceImage={iconEdit}
-            title="表示名"
-            content={`${user?.last_name} ${user?.first_name}`}
+            title="表示名・補足情報"
+            content={`${user?.last_name} ${user?.first_name}  ${
+              user?.addition ? `・${user.addition}` : ''
+            }`}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Name'});
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'name'});
             }}
           />
           <ViewItem
@@ -154,7 +156,7 @@ const User = () => {
             title="メールアドレス "
             content={user?.mail}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Email'});
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'email'});
             }}
           />
           <ViewItem

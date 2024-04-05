@@ -323,7 +323,11 @@ const ItemMessage = React.memo((props: any) => {
   }, 0);
 
   const renderTxtName = () => {
-    return <Text style={styles.txtNameSend}>{user?.name}</Text>;
+    return (
+      <Text
+        style={styles.txtNameSend}
+        numberOfLines={1}>{`${user?.name} 追加`}</Text>
+    );
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {

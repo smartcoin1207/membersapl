@@ -1,43 +1,42 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import {styles} from './styles';
-import {Header, AppInput, AppButton} from '@component';
+import {AppButton, AppInput, Header} from '@component';
 import {iconClose} from '@images';
-import {colors} from '@stylesCommon';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-import {useSelector, useDispatch} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Formik} from 'formik';
-import * as yup from 'yup';
-import {validateForm} from '@util';
 import {saveInfoUser} from '@redux';
 import {GlobalService, updateProfile} from '@services';
+import {Formik} from 'formik';
+import React, {useCallback} from 'react';
+import {Text, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {useDispatch, useSelector} from 'react-redux';
+import {styles} from './styles';
+import {
+  validationSchemaEmail,
+  validationSchemaName,
+} from '@util/validations/editUser';
 
-const EditUser = (props: any) => {
-  const {route} = props;
+const getInitialValues = (type: 'name' | 'email', user: any) => {
+  if (!user) {
+    return;
+  }
+
+  const formInitialValuesName = {
+    first_name: user.first_name,
+    last_name: user.last_name,
+    addition: user.addition,
+  };
+
+  const formInitialValuesEmail = {
+    email: user.mail,
+  };
+
+  return type === 'name' ? formInitialValuesName : formInitialValuesEmail;
+};
+
+const EditUser = ({route}: any) => {
   const {type} = route?.params;
   const dispatch = useDispatch();
   const user = useSelector((state: any) => state?.auth?.userInfo);
   const navigation = useNavigation<any>();
-
-  const formInitialValuesName = {
-    first_name: user?.first_name,
-    last_name: user?.last_name,
-  };
-
-  const formInitialValuesEmail = {
-    email: user?.mail,
-  };
-
-  const validationSchemaName = yup.object().shape({
-    first_name: validateForm().first_name,
-    last_name: validateForm().last_name,
-  });
-
-  const validationSchemaEmail = yup.object().shape({
-    email: validateForm().email,
-  });
 
   const onBack = useCallback(() => {
     navigation.goBack();
@@ -46,7 +45,7 @@ const EditUser = (props: any) => {
   const handleSubmit = async (value: any) => {
     const body = {
       ...value,
-      type: type === 'Email' ? 'email' : 'name',
+      type,
     };
     try {
       GlobalService.showLoading();
@@ -69,11 +68,9 @@ const EditUser = (props: any) => {
       />
       <View style={styles.viewContent}>
         <Formik
-          initialValues={
-            type === 'Name' ? formInitialValuesName : formInitialValuesEmail
-          }
+          initialValues={getInitialValues(type, user)}
           validationSchema={
-            type === 'Name' ? validationSchemaName : validationSchemaEmail
+            type === 'name' ? validationSchemaName : validationSchemaEmail
           }
           validateOnChange={false}
           onSubmit={handleSubmit}>
@@ -84,7 +81,7 @@ const EditUser = (props: any) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  {type === 'Name' ? (
+                  {type === 'name' ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
@@ -104,9 +101,20 @@ const EditUser = (props: any) => {
                         //@ts-ignore
                         error={props.errors.first_name}
                       />
+
+                      <Text style={styles.txtTitle}>補足情報</Text>
+                      <AppInput
+                        placeholder="補足情報"
+                        onChange={props.handleChange('addition')}
+                        //@ts-ignore
+                        value={props.values.addition}
+                        //@ts-ignore
+                        error={props.errors.addition}
+                      />
                     </>
                   ) : null}
-                  {type === 'Email' ? (
+
+                  {type === 'email' ? (
                     <>
                       <Text style={styles.txtTitle}>Eメール</Text>
                       <AppInput
@@ -119,6 +127,7 @@ const EditUser = (props: any) => {
                       />
                     </>
                   ) : null}
+
                   <AppButton
                     title="アップデート"
                     onPress={props.handleSubmit}

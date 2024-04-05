@@ -23,6 +23,7 @@ import {showMessage} from 'react-native-flash-message';
 import {useSelector, useDispatch} from 'react-redux';
 import {decode} from 'html-entities';
 import notifee from '@notifee/react-native';
+import {HIRAGINO_KAKU_GOTHIC_PRON} from '@constants/fonts';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -35,7 +36,7 @@ const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
   const {item, idRoomChat} = props;
   const [pin, setStatusPin] = useState<number | null>(null);
-  const [noIdRoomChatFlg, setNoIdRoomChatFlg] = useState<boolean>(false);
+  const [, setNoIdRoomChatFlg] = useState<boolean>(false);
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
 
@@ -92,21 +93,28 @@ const Item = React.memo((props: any) => {
         change_flag: 0,
         unread_count: 0,
         unread_mention: 0,
-        room_id: item.id
+        room_id: item.id,
       };
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
-          if(room.message_unread) sock_body.unread_count++;
-          if(room.message_mention_unread) sock_body.unread_mention++;
+          if (room.message_unread) {
+            sock_body.unread_count++;
+          }
+          if (room.message_mention_unread) {
+            sock_body.unread_mention++;
+          }
         }
       });
-      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする 
+      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
       sock_body.change_flag = sock_body.unread_count > 0 ? 1 : 0;
       socket.emit('change_browser_icon2', sock_body);
 
       notifee.getBadgeCount().then(async (count: any) => {
         if (count > 0 && item.message_unread > 0) {
-          const countMessage = count - Number(item?.message_unread) > 0 ? count - Number(item?.message_unread) : 0;
+          const countMessage =
+            count - Number(item?.message_unread) > 0
+              ? count - Number(item?.message_unread)
+              : 0;
           notifee.setBadgeCount(countMessage);
         }
         await dispatch(saveIdRoomChat(item?.id));
@@ -230,17 +238,16 @@ const Item = React.memo((props: any) => {
                 numberOfLines={1}>
                 {item?.name && item?.name?.length > 0
                   ? renderNameRoom(item?.name)
-                  : `${
-                      item?.one_one_check
-                        ? item?.one_one_check[0]?.last_name
-                        : ''
-                    } ${
-                      item?.one_one_check
-                        ? item?.one_one_check[0]?.first_name
-                        : ''
+                  : `${item?.one_one_check?.[0]?.last_name || ''} ${
+                      item?.one_one_check?.[0]?.first_name || ''
                     }`}
               </Text>
             </View>
+
+            <Text numberOfLines={1} style={styles.txtAddition}>
+              AdditionAdditionAdditionAdditionAdditionAddition
+            </Text>
+
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
                 {item?.lastMessageJoin?.attachment_files?.map((el: any) => (
@@ -431,6 +438,13 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     top: -2,
     right: -2,
+  },
+  txtAddition: {
+    fontSize: moderateScale(9),
+    fontFamily: HIRAGINO_KAKU_GOTHIC_PRON,
+    letterSpacing: -0.18,
+    lineHeight: 10,
+    marginTop: verticalScale(5),
   },
 });
 
