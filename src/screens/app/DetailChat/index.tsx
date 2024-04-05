@@ -387,18 +387,8 @@ const DetailChat = (props: any) => {
           }}
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
-            onKeyPress: ({nativeEvent}: any) => {
-              if (nativeEvent?.key?.trim() === '@') {
-                setShowTag(true);
-              } else if (nativeEvent?.key === 'Enter') {
-                formattedText.push(' ');
-                setFormattedText(formattedText);
-                return false;
-              } else if (nativeEvent?.key === 'Backspace') {
-                // 半角@入力後にも発火するので何もしない
-              } else {
-                setShowTag(false);
-              }
+            onTextInput: ({nativeEvent}: any) => {
+              nativeEvent.text === '@' ? setShowTag(true) : setShowTag(false);
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;
