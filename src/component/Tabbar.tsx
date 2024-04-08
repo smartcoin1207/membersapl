@@ -1,21 +1,20 @@
+import {SAFE_BOTTOM_PADDING} from '@constants/dimensions';
+import {defaultAvatar, iconTabChat, iconTabSetting, menuPinChat} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 import React from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
   Dimensions,
   Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {ROUTE_NAME} from '../navigation/routeName';
-import {getBottomSpace} from 'react-native-iphone-x-helper';
-import {iconTabChat, iconTabSetting, defaultAvatar, menuPinChat} from '@images';
-import {colors, stylesCommon} from '@stylesCommon';
-import {verticalScale, moderateScale, scale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+import {ROUTE_NAME} from '../navigation/routeName';
 
 const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
 const active_color = colors.activeTab;
 const inActive_color = colors.inActiveTab;
 
@@ -25,7 +24,7 @@ type Props = {
 };
 
 const Tabbar: React.FC<Props> = ({state, navigation}) => {
-  const user = useSelector((state: any) => state?.auth?.userInfo);
+  const user = useSelector((userState: any) => userState?.auth?.userInfo);
   const renderLabel = (value: string) => {
     switch (value) {
       case ROUTE_NAME.LISTCHAT_SCREEN:
@@ -99,7 +98,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: width,
     paddingTop: verticalScale(12),
-    paddingBottom: height >= 812 ? getBottomSpace() + 5 : 12,
+    paddingBottom: verticalScale(12) + SAFE_BOTTOM_PADDING,
     backgroundColor: colors.primary,
   },
   button: {

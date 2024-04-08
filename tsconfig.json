@@ -46,6 +46,7 @@
       "@util/*": ["src/util/*"],
       "@constants/*": ["src/constants/*"],
       "@component": ["src/component"],
+      "@component/*": ["src/component/*"],
       "@stylesCommon": ["src/stylesCommon"],
       "@redux": ["src/redux"],
       "@services": ["src/services"],

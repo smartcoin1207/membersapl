@@ -1,39 +1,46 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {
-  View,
-  ScrollView,
-  TouchableOpacity,
-  Image,
-  Platform,
-  ActivityIndicator,
-} from 'react-native';
-import {styles} from './styles';
 import {Header, ModalConfirm, ModalLink} from '@component';
+import {IS_IOS} from '@constants/dimensions';
 import {
   defaultAvatar,
   iconBell,
   iconCamera,
   iconDelete,
-  iconEdit,
   iconDetailRow,
-  iconUser,
+  iconDocument,
+  iconEdit,
+  iconLink,
   iconLogout,
   iconPin,
-  iconLink,
-  iconDocument,
   iconTaskCutting,
+  iconUser,
 } from '@images';
-import {ViewItem} from './components/ViewItem';
-import {useNavigation, useFocusEffect} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
-import {detailRoomchat, pinFlag, leaveRoomChat, GlobalService} from '@services';
+import {
+  GlobalService,
+  deleteImageRoomChat,
+  deleteRoom,
+  detailRoomchat,
+  leaveRoomChat,
+  pinFlag,
+  updateImageRoomChat,
+} from '@services';
+import {colors} from '@stylesCommon';
+import React, {useCallback, useEffect, useState} from 'react';
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
-import {updateImageRoomChat, deleteImageRoomChat, deleteRoom} from '@services';
-import {colors} from '@stylesCommon';
-import FastImage from 'react-native-fast-image';
 import {useSelector} from 'react-redux';
+import {ViewItem} from './components/ViewItem';
+import {styles} from './styles';
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -58,7 +65,7 @@ const InfoRoomChat = (props: any) => {
       GlobalService.showLoading();
       const response = await detailRoomchat(idRoomChat);
       setData(response?.data?.room);
-    } catch (e) {
+    } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
       }
@@ -71,10 +78,7 @@ const InfoRoomChat = (props: any) => {
     try {
       const data = new FormData();
       const imageUpload = {
-        uri:
-          Platform.OS === 'ios'
-            ? image?.path.replace('file://', '')
-            : image?.path,
+        uri: IS_IOS ? image?.path.replace('file://', '') : image?.path,
         type: 'image/jpeg',
         name: image?.filename ? image?.filename : image?.path,
       };
@@ -138,7 +142,7 @@ const InfoRoomChat = (props: any) => {
         type: 'success',
       });
       getDetail();
-    } catch (e) {
+    } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
       }
@@ -329,7 +333,10 @@ const InfoRoomChat = (props: any) => {
             <ViewItem
               sourceImage={iconDetailRow}
               title="概要"
-              content={dataDetail?.summary_column?.replace(/<br\s*[\/]?>/gi, '\n')}
+              content={dataDetail?.summary_column?.replace(
+                /<br\s*[\/]?>/gi,
+                '\n',
+              )}
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
                   idRoomChat: idRoomChat,

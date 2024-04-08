@@ -1,29 +1,29 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
-import {colors, stylesCommon} from '@stylesCommon';
 import {
-  iconNext,
   defaultAvatar,
-  iconPin,
-  iconFile,
-  iconPdf,
-  iconDoc,
-  iconXls,
   iconBellSlash,
+  iconDoc,
+  iconFile,
+  iconNext,
+  iconPdf,
+  iconPin,
+  iconXls,
 } from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
+import {GlobalService, pinFlag} from '@services';
+import {colors, stylesCommon} from '@stylesCommon';
+import {AppSocket, HITSLOP, convertString} from '@util';
+import React, {useCallback, useEffect, useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {convertString, HITSLOP, AppSocket} from '@util';
-import {pinFlag, GlobalService} from '@services';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
-import {saveIdRoomChat, getRoomList, resetDataChat} from '@redux';
-import {showMessage} from 'react-native-flash-message';
-import {useSelector, useDispatch} from 'react-redux';
-import {decode} from 'html-entities';
+import UserAddition from '@component/UserAddition';
 import notifee from '@notifee/react-native';
-import {HIRAGINO_KAKU_GOTHIC_PRON} from '@constants/fonts';
+import {getRoomList, resetDataChat, saveIdRoomChat} from '@redux';
+import {decode} from 'html-entities';
+import {showMessage} from 'react-native-flash-message';
+import {useDispatch, useSelector} from 'react-redux';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -244,9 +244,7 @@ const Item = React.memo((props: any) => {
               </Text>
             </View>
 
-            <Text numberOfLines={1} style={styles.txtAddition}>
-              AdditionAdditionAdditionAdditionAdditionAddition
-            </Text>
+            <UserAddition content="Addition" />
 
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
@@ -438,13 +436,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     top: -2,
     right: -2,
-  },
-  txtAddition: {
-    fontSize: moderateScale(9),
-    fontFamily: HIRAGINO_KAKU_GOTHIC_PRON,
-    letterSpacing: -0.18,
-    lineHeight: 10,
-    marginTop: verticalScale(5),
   },
 });
 

@@ -1,11 +1,12 @@
-import { StyleSheet, Platform } from 'react-native';
+import {IS_IOS} from '@constants/dimensions';
+import {colors, stylesCommon} from '@stylesCommon';
+import {StyleSheet} from 'react-native';
 import {
-  scale,
-  verticalScale,
   moderateScale,
   moderateVerticalScale,
+  scale,
+  verticalScale,
 } from 'react-native-size-matters';
-import { colors, stylesCommon } from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
@@ -219,8 +220,12 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(2),
     tintColor: colors.primary,
   },
-  txtNameSend: {
+  senderInfo: {
     marginLeft: scale(34),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  txtNameSend: {
     color: colors.border,
     fontSize: moderateScale(10),
     ...stylesCommon.fontWeight500,
@@ -283,7 +288,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingLeft: moderateScale(15),
     paddingBottom: moderateScale(30),
-    paddingTop: Platform.OS === 'ios' ? moderateScale(16) : moderateScale(6),
+    paddingTop: IS_IOS ? moderateScale(16) : moderateScale(6),
   },
   decoButton: {
     width: moderateScale(56),
@@ -301,4 +306,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export { styles };
+export {styles};

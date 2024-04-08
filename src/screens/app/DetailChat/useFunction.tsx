@@ -1,49 +1,48 @@
-import React, {useMemo, useEffect, useState, useCallback, useRef} from 'react';
-import {store} from '../../../redux/store';
-import {useDispatch, useSelector} from 'react-redux';
+import {IS_IOS} from '@constants/dimensions';
+import {useNavigation} from '@react-navigation/native';
 import {
-  getDetailListChat,
-  getListUserChat,
   deleteMessage,
-  pinMessage,
-  getDetailMessageSocketSuccess,
-  saveMessageReply,
-  saveMessageEdit,
-  saveMessageQuote,
   editMessageAction,
   fetchResultMessageActionListRoom,
-  saveIdMessageSearch,
+  getDetailListChat,
+  getDetailMessageSocketSuccess,
+  getListUserChat,
+  pinMessage,
   resetDataChat,
+  saveIdMessageSearch,
   saveIdRoomChat,
   saveIsGetInfoRoom,
-  updateMuteStatusRoom,
   saveListUserChat,
+  saveMessageEdit,
+  saveMessageQuote,
+  saveMessageReply,
+  updateMuteStatusRoom,
 } from '@redux';
+import {ROUTE_NAME} from '@routeName';
 import {
-  deleteMessageApi,
   GlobalService,
-  detailRoomchat,
-  sendMessageApi,
-  pinMessageApi,
-  replyMessageApi,
-  editMessageApi,
-  sendReactionApi,
-  sendLabelApi,
   addBookmark,
   callApiChatBot,
+  deleteMessageApi,
+  detailRoomchat,
+  editMessageApi,
+  pinMessageApi,
+  replyMessageApi,
   saveTask,
+  sendLabelApi,
+  sendMessageApi,
+  sendReactionApi,
   updateTask,
 } from '@services';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
-import {AppSocket, MESSAGE_RANGE_TYPE} from '@util';
-import ImagePicker from 'react-native-image-crop-picker';
-import DocumentPicker from 'react-native-document-picker';
-import {Platform, Text} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
-import {convertArrUnique} from '@util';
+import {AppSocket, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
 import moment from 'moment/moment';
-import {Keyboard, KeyboardEvent} from 'react-native';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Keyboard, KeyboardEvent, Text} from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import {showMessage} from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useDispatch, useSelector} from 'react-redux';
+import {store} from '../../../redux/store';
 
 interface partCopyType {
   me: boolean;
@@ -402,7 +401,7 @@ export const useFunction = (props: any) => {
           element?.props?.children?.startsWith('@') &&
           element?.props?.children?.length > 1 &&
           element?.props?.children?.length <
-            formattedText[index]?.props?.children.length
+            (formattedText[index] as any)?.props?.children.length
         ) {
           result = true;
         }
@@ -430,7 +429,7 @@ export const useFunction = (props: any) => {
         } else if (numberOfMember > 1) {
           // グループチャットではメンションのみ送信対象
           if (inputText.indexOf('@all') > -1) {
-            mentionMembers = listUserChat.map(el => ({
+            mentionMembers = listUserChat.map((el: any) => ({
               userId: el.id,
               userName: `${el.last_name}${el.first_name}`,
             }));
@@ -621,12 +620,12 @@ export const useFunction = (props: any) => {
         text2: null,
         time: res?.data?.data?.created_at,
       });
-      const joinUsers = listUserChat?.map(el => {
+      const joinUsers = listUserChat?.map((el: any) => {
         return {userId: el.id, userName: el.last_name + el.first_name};
       });
       const toInfo = {
         type: MESSAGE_RANGE_TYPE.USER,
-        ids: listUserChat?.map(el => el.id),
+        ids: listUserChat?.map((el: any) => el.id),
       };
       socket.emit('notification_ind2', {
         user_id: user_id,
@@ -717,14 +716,13 @@ export const useFunction = (props: any) => {
                 uri: item?.path,
                 path: item?.path,
                 size: item?.size,
-                type:
-                  Platform.OS === 'ios'
-                    ? `image/${
-                        isHEIC
-                          ? item?.path?.split('.')[0] + '.JPG'
-                          : item?.path?.split('.').pop()
-                      }}`
-                    : item?.mime,
+                type: IS_IOS
+                  ? `image/${
+                      isHEIC
+                        ? item?.path?.split('.')[0] + '.JPG'
+                        : item?.path?.split('.').pop()
+                    }}`
+                  : item?.mime,
                 height: item?.height,
               });
               data.append('msg_type', 2);
@@ -735,10 +733,9 @@ export const useFunction = (props: any) => {
               data.append('attachment[]', {
                 name: item?.name,
                 type: item?.type,
-                uri:
-                  Platform.OS === 'ios'
-                    ? decodeURIComponent(item?.uri?.replace('file://', ''))
-                    : decodeURIComponent(item?.fileCopyUri),
+                uri: IS_IOS
+                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                  : decodeURIComponent(item?.fileCopyUri),
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
@@ -817,12 +814,12 @@ export const useFunction = (props: any) => {
         text2: null,
         time: res?.data?.data?.created_at,
       });
-      const joinUsers = listUserChat?.map(el => {
+      const joinUsers = listUserChat?.map((el: any) => {
         return {userId: el.id, userName: el.last_name + el.first_name};
       });
       const toInfo = {
         type: MESSAGE_RANGE_TYPE.USER,
-        ids: listUserChat?.map(el => el.id),
+        ids: listUserChat?.map((el: any) => el.id),
       };
       socket.emit('notification_ind2', {
         user_id: user_id,
@@ -945,12 +942,12 @@ export const useFunction = (props: any) => {
             text2: null,
             time: res?.data?.data?.created_at,
           });
-          const joinUsers = listUserChat?.map(el => {
+          const joinUsers = listUserChat?.map((el: any) => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map(el => el.id),
+            ids: listUserChat?.map((el: any) => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1004,12 +1001,12 @@ export const useFunction = (props: any) => {
             time: res?.data?.data?.created_at,
             time2: res?.data?.data?.updated_at,
           });
-          const joinUsers = listUserChat?.map(el => {
+          const joinUsers = listUserChat?.map((el: any) => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map(el => el.id),
+            ids: listUserChat?.map((el: any) => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1071,12 +1068,12 @@ export const useFunction = (props: any) => {
             text2: messageQuote?.text,
             time: res?.data?.data?.created_at,
           });
-          const joinUsers = listUserChat?.map(el => {
+          const joinUsers = listUserChat?.map((el: any) => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map(el => el.id),
+            ids: listUserChat?.map((el: any) => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1131,12 +1128,12 @@ export const useFunction = (props: any) => {
               text2: null,
               time: res?.data?.data?.created_at,
             });
-            const joinUsers = listUserChat?.map(el => {
+            const joinUsers = listUserChat?.map((el: any) => {
               return {userId: el.id, userName: el.last_name + el.first_name};
             });
             const toInfo = {
               type: MESSAGE_RANGE_TYPE.USER,
-              ids: listUserChat?.map(el => el.id),
+              ids: listUserChat?.map((el: any) => el.id),
             };
             socket.emit('notification_ind2', {
               user_id: mes[0]?.user?._id,
@@ -1159,12 +1156,12 @@ export const useFunction = (props: any) => {
               res?.data?.data?.id,
             );
           } else {
-            const joinUsers = listUserChat?.map(el => {
+            const joinUsers = listUserChat?.map((el: any) => {
               return {userId: el.id, userName: el.last_name + el.first_name};
             });
             const toInfo = {
               type: MESSAGE_RANGE_TYPE.USER,
-              ids: listUserChat?.map(el => el.id),
+              ids: listUserChat?.map((el: any) => el.id),
             };
             socket.emit('notification_ind2', {
               user_id: mes[0]?.user?._id,
@@ -1370,7 +1367,7 @@ export const useFunction = (props: any) => {
       GlobalService.hideLoading();
     } else if (idMessageSearch > 0) {
       const index = listChat.findIndex(
-        (element: any) => element?.id === Number(idMessageSearch)
+        (element: any) => element?.id === Number(idMessageSearch),
       );
       if (index && index >= 0) {
         try {
@@ -1516,7 +1513,7 @@ export const useFunction = (props: any) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (formattedText[0]?.props?.children === '') {
+      if ((formattedText[0] as any)?.props?.children === '') {
         formattedText.shift();
         setFormattedText([...formattedText]);
       }

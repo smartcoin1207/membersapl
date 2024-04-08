@@ -30,6 +30,7 @@ import {ViewUserSeen} from './viewUserSeen';
 import {ViewTask} from './ViewTask';
 import {MenuOption} from './MenuOption';
 import {API_DOMAIN} from '@util';
+import UserAddition from '@component/UserAddition';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#FDF5E6', '#FDF5E6'];
@@ -324,9 +325,12 @@ const ItemMessage = React.memo((props: any) => {
 
   const renderTxtName = () => {
     return (
-      <Text
-        style={styles.txtNameSend}
-        numberOfLines={1}>{`${user?.name} 追加`}</Text>
+      <View style={styles.senderInfo}>
+        <Text style={styles.txtNameSend} numberOfLines={1}>
+          {user?.name ? `${user.name} ` : ''}
+          <UserAddition content=" AdditionAddition" />
+        </Text>
+      </View>
     );
   };
 

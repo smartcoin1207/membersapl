@@ -1,16 +1,16 @@
-import React, { useEffect } from "react";
-import { StatusBar, Alert, BackHandler, Linking } from "react-native";
-import NavigationApp from './src/navigation/StackContainer';
-import {NavigationUtils} from '@navigation';
-import {store, persistor} from './src/redux/store';
-import {Provider, useDispatch} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
 import {GlobalUI} from '@component';
+import {NavigationUtils} from '@navigation';
 import {GlobalService} from '@services';
-import FlashMessage from 'react-native-flash-message';
-import {LogBox} from 'react-native';
-import VersionCheck from 'react-native-version-check';
+import React, {useEffect} from 'react';
+import {Alert, Linking, LogBox, StatusBar, StyleSheet} from 'react-native';
 import RNExitApp from 'react-native-exit-app';
+import FlashMessage from 'react-native-flash-message';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
+import VersionCheck from 'react-native-version-check';
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react';
+import NavigationApp from './src/navigation/StackContainer';
+import {persistor, store} from './src/redux/store';
 import {BASEURL} from './src/services/api';
 
 //Disable yellow box warning
@@ -59,11 +59,13 @@ const App = () => {
       />
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <NavigationApp
-            ref={(navigatorRef: any) =>
-              NavigationUtils.setTopLevelNavigator(navigatorRef)
-            }
-          />
+          <SafeAreaProvider style={styles.container}>
+            <NavigationApp
+              ref={(navigatorRef: any) =>
+                NavigationUtils.setTopLevelNavigator(navigatorRef)
+              }
+            />
+          </SafeAreaProvider>
         </PersistGate>
       </Provider>
       <FlashMessage position="top" floating={true} hideStatusBar={false} />
@@ -73,6 +75,12 @@ const App = () => {
 };
 
 export default App;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
 
 //NOTE:
 //Turn on log redux: check src/redux/store.tsx
