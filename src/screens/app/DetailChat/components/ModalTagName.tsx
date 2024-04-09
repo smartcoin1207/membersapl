@@ -94,7 +94,7 @@ const ModalTagName = React.memo((props: any) => {
 
               <UserAddition
                 content="AdditionAddit"
-                customStyle={{marginTop: scale(4)}}
+                customStyle={[styles.txtTitle, {marginTop: scale(4)}]}
               />
             </View>
           </>

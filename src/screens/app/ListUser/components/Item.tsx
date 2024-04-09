@@ -10,6 +10,7 @@ import {
   scale,
   verticalScale,
 } from 'react-native-size-matters';
+
 import {MenuOption} from './MenuOption';
 
 const Item = React.memo((props: any) => {
@@ -21,7 +22,11 @@ const Item = React.memo((props: any) => {
     switch (item?.is_admin) {
       case 1:
         return (
-          <View style={[styles.viewRole, {backgroundColor: '#FDEEEA'}]}>
+          <View
+            style={[
+              styles.viewRole,
+              {backgroundColor: colors.deepOrange[200]},
+            ]}>
             <Text style={styles.txtContent}>マスター</Text>
           </View>
         );
@@ -69,9 +74,9 @@ const Item = React.memo((props: any) => {
                 {item?.last_name} {item?.first_name}
               </Text>
             )}
-          </>
 
-          <UserAddition content="AdditionAddition" />
+            <UserAddition content="AdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAddition" />
+          </>
 
           {renderViewRole()}
         </View>
@@ -146,7 +151,6 @@ const styles = StyleSheet.create({
   viewTxt: {
     width: '57%',
     justifyContent: 'space-between',
-    paddingVertical: verticalScale(4),
   },
   viewImageNext: {
     width: '10%',
@@ -165,7 +169,7 @@ const styles = StyleSheet.create({
     color: colors.backgroundTab,
   },
   txtContentLogout: {
-    color: '#EA5A31',
+    color: colors.secondPrimary,
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },
@@ -196,7 +200,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(10),
     marginTop: 6,
     borderRadius: 10,
-    backgroundColor: '#E7F6F6',
+    backgroundColor: colors.grey[200],
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -205,14 +209,13 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(25),
   },
   containerMenuDelete: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     elevation: 3,
   },
 });

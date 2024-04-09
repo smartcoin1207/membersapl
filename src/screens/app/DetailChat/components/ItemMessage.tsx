@@ -1,8 +1,4 @@
-import {colors} from '@stylesCommon';
-import React, {useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import FastImage from 'react-native-fast-image';
+import UserAddition from '@component/UserAddition';
 import {
   iconFile,
   iconPdf,
@@ -13,29 +9,35 @@ import {
   iconReply,
   iconQuote2,
 } from '@images';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {colors} from '@stylesCommon';
+import {API_DOMAIN} from '@util';
+import moment from 'moment';
+import React, {useState, useCallback} from 'react';
+import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {showMessage} from 'react-native-flash-message';
+import LinearGradient from 'react-native-linear-gradient';
 import {Menu} from 'react-native-material-menu';
+import {scale, moderateVerticalScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
+
 import {MenuFeature} from '../components/MenuFeature';
 import MessageInfo from '../components/MessageInfo';
-import moment from 'moment';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {showMessage} from 'react-native-flash-message';
-import {useSelector} from 'react-redux';
-import {Reaction} from './Reaction';
-import {ROUTE_NAME} from '@routeName';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from './stylesItem';
-import {scale, moderateVerticalScale} from 'react-native-size-matters';
-import {MsgFile} from './MsgFile';
-import {ViewUserSeen} from './viewUserSeen';
-import {ViewTask} from './ViewTask';
-import {MenuOption} from './MenuOption';
-import {API_DOMAIN} from '@util';
-import UserAddition from '@component/UserAddition';
 
-const colorCurrent = ['#CBEEF0', '#BFD6D8'];
-const color = ['#FDF5E6', '#FDF5E6'];
-const colorSelfMention = ['#FDE3E3', '#FDE3E3'];
-const colorReplyQuote = ['#DCDCDC', '#DCDCDC'];
+import {MenuOption} from './MenuOption';
+import {MsgFile} from './MsgFile';
+import {Reaction} from './Reaction';
+import {styles} from './stylesItem';
+import {ViewTask} from './ViewTask';
+import {ViewUserSeen} from './viewUserSeen';
+
+const colorCurrent = [colors.cyan[50], colors.cyan[100]];
+const color = [colors.yellow[100], colors.yellow[100]];
+const colorSelfMention = [colors.deepOrange[50], colors.deepOrange[50]];
+const colorReplyQuote = [colors.grey[150], colors.grey[150]];
 const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
@@ -163,7 +165,7 @@ const ItemMessage = React.memo((props: any) => {
           showMessage({
             message: 'コピー',
             backgroundColor: colors.backgroundTab,
-            color: '#FFFFFF',
+            color: colors.white,
             position: {
               bottom: 0,
               left: width / 2 - scale(50 + 10),
@@ -217,7 +219,7 @@ const ItemMessage = React.memo((props: any) => {
               key={word + index}
               style={{
                 alignSelf: 'flex-start',
-                color: '#3366CC',
+                color: colors.blue[700],
                 fontWeight: 'bold',
               }}>
               {word}
@@ -270,7 +272,7 @@ const ItemMessage = React.memo((props: any) => {
           showMessage({
             message: 'リンクをコピーしました',
             backgroundColor: colors.backgroundTab,
-            color: '#FFFFFF',
+            color: colors.white,
             position: {
               bottom: 0,
               left: width / 2 - scale(100 + 10),

@@ -1,3 +1,4 @@
+import UserAddition from '@component/UserAddition';
 import {
   defaultAvatar,
   iconBellSlash,
@@ -8,21 +9,19 @@ import {
   iconPin,
   iconXls,
 } from '@images';
+import notifee from '@notifee/react-native';
 import {useNavigation} from '@react-navigation/native';
+import {getRoomList, resetDataChat, saveIdRoomChat} from '@redux';
 import {ROUTE_NAME} from '@routeName';
 import {GlobalService, pinFlag} from '@services';
 import {colors, stylesCommon} from '@stylesCommon';
 import {AppSocket, HITSLOP, convertString} from '@util';
+import {decode} from 'html-entities';
 import React, {useCallback, useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-
-import UserAddition from '@component/UserAddition';
-import notifee from '@notifee/react-native';
-import {getRoomList, resetDataChat, saveIdRoomChat} from '@redux';
-import {decode} from 'html-entities';
 import {showMessage} from 'react-native-flash-message';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Item = React.memo((props: any) => {
@@ -244,7 +243,7 @@ const Item = React.memo((props: any) => {
               </Text>
             </View>
 
-            <UserAddition content="Addition" />
+            <UserAddition content="AdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAddition" />
 
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>

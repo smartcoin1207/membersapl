@@ -1,5 +1,5 @@
-import {StyleSheet} from 'react-native';
 import {stylesCommon, colors} from '@stylesCommon';
+import {StyleSheet} from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
 
 const styles = StyleSheet.create({

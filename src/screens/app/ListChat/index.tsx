@@ -1,24 +1,9 @@
-import React, {useState, useCallback, useEffect, useRef} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-  ActivityIndicator,
-  Image,
-  AppState,
-  AppStateStatus,
-  Linking,
-} from 'react-native';
-import {styles} from './styles';
 import {Header, AppInput} from '@component';
+import AppSafeView from '@component/AppSafeView';
 import {iconSearch, iconAddListChat, iconFilterChat, iconNext} from '@images';
-import {Item} from './component/Item';
+import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
-import {debounce} from 'lodash';
-import {Menu} from 'react-native-material-menu';
-import {MenuOption} from './component/MenuOption';
+import {useNavigation} from '@react-navigation/native';
 import {
   getRoomList,
   getUserInfo,
@@ -29,15 +14,32 @@ import {
   showHideModalFilterListChat,
   getUnreadMessageCount,
 } from '@redux';
-import {useDispatch, useSelector} from 'react-redux';
-import {ModalSearchMessage} from './component/ModalSearchMessage';
-import {useNavigation} from '@react-navigation/native';
 import {ROUTE_NAME} from '@routeName';
-import {AppNotification} from '@util';
 import {colors} from '@stylesCommon';
-import notifee from '@notifee/react-native';
+import {AppNotification} from '@util';
+import {debounce} from 'lodash';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import type {AppStateStatus} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  Image,
+  AppState,
+  Linking,
+} from 'react-native';
+import {Menu} from 'react-native-material-menu';
+import {useDispatch, useSelector} from 'react-redux';
+
 import {FilterListChat} from '../FilterListChat';
-import AppSafeView from '@component/AppSafeView';
+
+import {Item} from './component/Item';
+import {MenuOption} from './component/MenuOption';
+import {ModalSearchMessage} from './component/ModalSearchMessage';
+import {styles} from './styles';
 
 const ListChat = (props: any) => {
   const refInput = useRef<any>(null);
@@ -251,92 +253,90 @@ const ListChat = (props: any) => {
   }, [showSearchMessage]);
 
   return (
-    <AppSafeView>
-      <View style={styles.container}>
-        <Header
-          title="チャットグループ一覧"
-          imageCenter
-          onRightFirst={onCreate}
-          iconRightFirst={iconAddListChat}
-          styleIconRightFirst={styles.colorIcon}
+    <AppSafeView style={styles.container}>
+      <Header
+        title="チャットグループ一覧"
+        imageCenter
+        onRightFirst={onCreate}
+        iconRightFirst={iconAddListChat}
+        styleIconRightFirst={styles.colorIcon}
+      />
+      <View style={styles.viewContent}>
+        <AppInput
+          ref={refInput}
+          placeholder="グループ名、メッセージ内容を検索"
+          onChange={onChangeText}
+          value={key}
+          styleContainer={styles.containerSearch}
+          styleInput={styles.input}
+          icon={iconSearch}
+          styleIcon={styles.icon}
+          showObtion={true}
+          onShowOption={onShowOption}
         />
-        <View style={styles.viewContent}>
-          <AppInput
-            ref={refInput}
-            placeholder="グループ名、メッセージ内容を検索"
-            onChange={onChangeText}
-            value={key}
-            styleContainer={styles.containerSearch}
-            styleInput={styles.input}
-            icon={iconSearch}
-            styleIcon={styles.icon}
-            showObtion={true}
-            onShowOption={onShowOption}
-          />
-          {/* Popup điều hướng khi chọn search tin nhắn hoặc tên phòng */}
-          <View style={styles.viewOption}>
-            <Menu
-              style={styles.containerMenu}
-              visible={showMenu}
-              onRequestClose={onShowOption}
-              key={1}>
-              <MenuOption
-                onSearchRoom={onSearchRoom}
-                onSearchMessage={onSearchMessage}
-              />
-            </Menu>
-          </View>
-          <TouchableOpacity
-            style={styles.viewFilter}
-            onPress={() => {
-              dispatch(showHideModalFilterListChat(true));
-            }}>
-            <View style={styles.viewCenter}>
-              <Image source={iconFilterChat} />
-              <Text style={styles.txtTitle}>
-                {status_Filter?.length > 0 ? status_Filter : 'すべてのチャット'}
-              </Text>
-            </View>
-            <Image source={iconNext} style={{transform: [{rotate: '90deg'}]}} />
-          </TouchableOpacity>
-          <FlatList
-            data={listRoom}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
-            onEndReachedThreshold={0.5}
-            onEndReached={() => {
-              if (!isLoadMore) {
-                handleLoadMore();
-              }
-            }}
-            ListFooterComponent={
-              <>
-                {isLoadMore === true ? (
-                  <View style={styles.viewLoadmore}>
-                    <ActivityIndicator color={colors.primary} size="small" />
-                  </View>
-                ) : null}
-              </>
-            }
-            refreshControl={
-              <RefreshControl refreshing={false} onRefresh={onRefresh} />
-            }
-          />
+        {/* Popup điều hướng khi chọn search tin nhắn hoặc tên phòng */}
+        <View style={styles.viewOption}>
+          <Menu
+            style={styles.containerMenu}
+            visible={showMenu}
+            onRequestClose={onShowOption}
+            key={1}>
+            <MenuOption
+              onSearchRoom={onSearchRoom}
+              onSearchMessage={onSearchMessage}
+            />
+          </Menu>
         </View>
-        <FilterListChat
-          visible={showModalFilter}
-          closeModal={() => {
-            dispatch(showHideModalFilterListChat(false));
+        <TouchableOpacity
+          style={styles.viewFilter}
+          onPress={() => {
+            dispatch(showHideModalFilterListChat(true));
+          }}>
+          <View style={styles.viewCenter}>
+            <Image source={iconFilterChat} />
+            <Text style={styles.txtTitle}>
+              {status_Filter?.length > 0 ? status_Filter : 'すべてのチャット'}
+            </Text>
+          </View>
+          <Image source={iconNext} style={{transform: [{rotate: '90deg'}]}} />
+        </TouchableOpacity>
+        <FlatList
+          data={listRoom}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={<Text style={styles.txtEmpty}>データなし</Text>}
+          onEndReachedThreshold={0.5}
+          onEndReached={() => {
+            if (!isLoadMore) {
+              handleLoadMore();
+            }
           }}
-        />
-        <ModalSearchMessage
-          visible={showSearchMessage}
-          onClose={onCloseModal}
-          keySearch={key}
+          ListFooterComponent={
+            <>
+              {isLoadMore === true ? (
+                <View style={styles.viewLoadmore}>
+                  <ActivityIndicator color={colors.primary} size="small" />
+                </View>
+              ) : null}
+            </>
+          }
+          refreshControl={
+            <RefreshControl refreshing={false} onRefresh={onRefresh} />
+          }
         />
       </View>
+      <FilterListChat
+        visible={showModalFilter}
+        closeModal={() => {
+          dispatch(showHideModalFilterListChat(false));
+        }}
+      />
+      <ModalSearchMessage
+        visible={showSearchMessage}
+        onClose={onCloseModal}
+        keySearch={key}
+      />
     </AppSafeView>
   );
 };

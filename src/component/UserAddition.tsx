@@ -1,13 +1,8 @@
 import {HIRAGINO_KAKU_GOTHIC_PRON} from '@constants/fonts';
 import {colors} from '@stylesCommon';
 import React from 'react';
-import {
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextProps,
-  type TextStyle,
-} from 'react-native';
+import type {StyleProp, TextProps, TextStyle} from 'react-native';
+import {StyleSheet, Text} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 
 const UserAddition = ({
@@ -18,7 +13,10 @@ const UserAddition = ({
   content: string;
 } & TextProps) => {
   return (
-    <Text numberOfLines={1} style={[styles.txtAddition, customStyle]}>
+    <Text
+      numberOfLines={1}
+      style={[styles.txtAddition, customStyle]}
+      ellipsizeMode="tail">
       {content}
     </Text>
   );
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(9),
     fontFamily: HIRAGINO_KAKU_GOTHIC_PRON,
     letterSpacing: -0.18,
-    width: '100%',
     color: colors.grey[400],
   },
 });

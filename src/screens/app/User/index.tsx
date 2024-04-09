@@ -22,6 +22,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import {verticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
+
 import {ViewItem} from './components/ViewItem';
 import {styles} from './styles';
 
@@ -95,85 +96,83 @@ const User = () => {
   }, []);
 
   return (
-    <AppSafeView>
+    <AppSafeView style={styles.container}>
+      <Header title="個人設定" imageCenter />
       <View style={styles.container}>
-        <Header title="個人設定" imageCenter />
-        <View style={styles.container}>
-          <ScrollView alwaysBounceVertical={false}>
-            <LinearGradient
-              colors={['#1AA1AA', '#989898']}
-              style={styles.viewHeader}>
-              <View style={styles.viewAvatar}>
-                {user?.icon_image ? (
-                  <Image
-                    source={{uri: user?.icon_image}}
-                    style={styles.avatar}
-                    resizeMode="cover"
-                  />
-                ) : (
-                  <Image source={defaultAvatar} style={styles.avatar} />
-                )}
-                <TouchableOpacity
-                  style={styles.buttonCamera}
-                  onPress={upLoadImage}>
-                  <Image
-                    source={iconCamera}
-                    style={{tintColor: colors.darkGrayText}}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.buttonDelete}
-                  onPress={deleteAvatar}>
-                  <Image
-                    source={iconDelete}
-                    style={{tintColor: colors.darkGrayText}}
-                  />
-                </TouchableOpacity>
-              </View>
-            </LinearGradient>
-            <ViewItem
-              sourceImage={iconEdit}
-              title="表示名・補足情報"
-              content={`${user?.last_name} ${user?.first_name}  ${
-                user?.addition ? `・${user.addition}` : ''
-              }`}
-              onPress={() => {
-                navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'name'});
-              }}
-            />
-            <ViewItem
-              sourceImage={iconEmail}
-              title="メールアドレス "
-              content={user?.mail}
-              onPress={() => {
-                navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'email'});
-              }}
-            />
-            <ViewItem
-              sourceImage={iconPassword}
-              title="パスワード"
-              content="*******"
-              onPress={() => {
-                navigation.navigate(ROUTE_NAME.CHANGE_PASSWORD);
-              }}
-            />
-            <ViewItem
-              sourceImage={iconCompany}
-              title="クライアント選択"
-              onPress={() => {
-                navigation.navigate(ROUTE_NAME.SETTING_COMPANY);
-              }}
-              hideBorder
-            />
-          </ScrollView>
-        </View>
-        <ModalConfirm
-          visible={modal}
-          onCancel={onCancelModal}
-          titleHeader="本当にログアウトしますか？"
-          onConfirm={onLogout}
-        />
+        <ScrollView alwaysBounceVertical={false}>
+          <LinearGradient
+            colors={['#1AA1AA', '#989898']}
+            style={styles.viewHeader}>
+            <View style={styles.viewAvatar}>
+              {user?.icon_image ? (
+                <Image
+                  source={{uri: user?.icon_image}}
+                  style={styles.avatar}
+                  resizeMode="cover"
+                />
+              ) : (
+                <Image source={defaultAvatar} style={styles.avatar} />
+              )}
+              <TouchableOpacity
+                style={styles.buttonCamera}
+                onPress={upLoadImage}>
+                <Image
+                  source={iconCamera}
+                  style={{tintColor: colors.darkGrayText}}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.buttonDelete}
+                onPress={deleteAvatar}>
+                <Image
+                  source={iconDelete}
+                  style={{tintColor: colors.darkGrayText}}
+                />
+              </TouchableOpacity>
+            </View>
+          </LinearGradient>
+          <ViewItem
+            sourceImage={iconEdit}
+            title="表示名・補足情報"
+            content={`${user?.last_name} ${user?.first_name}  ${
+              user?.addition ? `・${user.addition}` : ''
+            }`}
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'name'});
+            }}
+          />
+          <ViewItem
+            sourceImage={iconEmail}
+            title="メールアドレス "
+            content={user?.mail}
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'email'});
+            }}
+          />
+          <ViewItem
+            sourceImage={iconPassword}
+            title="パスワード"
+            content="*******"
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.CHANGE_PASSWORD);
+            }}
+          />
+          <ViewItem
+            sourceImage={iconCompany}
+            title="クライアント選択"
+            onPress={() => {
+              navigation.navigate(ROUTE_NAME.SETTING_COMPANY);
+            }}
+            hideBorder
+          />
+        </ScrollView>
       </View>
+      <ModalConfirm
+        visible={modal}
+        onCancel={onCancelModal}
+        titleHeader="本当にログアウトしますか？"
+        onConfirm={onLogout}
+      />
     </AppSafeView>
   );
 };

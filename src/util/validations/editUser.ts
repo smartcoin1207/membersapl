@@ -1,4 +1,5 @@
 import {object} from 'yup';
+
 import {validateForm} from './validate';
 
 export const validationSchemaName = object().shape({

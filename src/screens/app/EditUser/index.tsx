@@ -1,18 +1,20 @@
 import {AppButton, AppInput, Header} from '@component';
+import AppSafeView from '@component/AppSafeView';
 import {iconClose} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {saveInfoUser} from '@redux';
 import {GlobalService, updateProfile} from '@services';
+import {
+  validationSchemaEmail,
+  validationSchemaName,
+} from '@util/validations/editUser';
 import {Formik} from 'formik';
 import React, {useCallback} from 'react';
 import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
+
 import {styles} from './styles';
-import {
-  validationSchemaEmail,
-  validationSchemaName,
-} from '@util/validations/editUser';
 
 const getInitialValues = (type: 'name' | 'email', user: any) => {
   if (!user) {
@@ -59,7 +61,7 @@ const EditUser = ({route}: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <AppSafeView style={styles.container}>
       <Header
         title="個人情報"
         imageCenter
@@ -131,7 +133,7 @@ const EditUser = ({route}: any) => {
           }}
         </Formik>
       </View>
-    </View>
+    </AppSafeView>
   );
 };
 
