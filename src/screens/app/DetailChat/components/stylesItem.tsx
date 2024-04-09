@@ -99,9 +99,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(5),
     paddingVertical: scale(3),
     borderRadius: moderateScale(16),
-    backgroundColor: '#DDDDDD',
+    backgroundColor: colors.grey.A200,
     borderWidth: 1.5,
-    borderColor: '#FFFFFF',
+    borderColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   txtBoldAndBackGroundColor: {
     fontWeight: 'bold',
     fontSize: moderateScale(13),
-    backgroundColor: '#bbbbbb',
+    backgroundColor: colors.grey.A400,
   },
   bottomMenu: {
     marginTop: verticalScale(-100),
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     height: moderateScale(10),
   },
   containerMenuDelete: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -279,12 +279,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: moderateScale(11),
     paddingHorizontal: moderateScale(10),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     ...stylesCommon.fontWeight500,
   },
   decoContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
+    backgroundColor: colors.grey.A100,
     position: 'relative',
     paddingLeft: moderateScale(15),
     paddingBottom: moderateScale(30),
@@ -293,15 +293,15 @@ const styles = StyleSheet.create({
   decoButton: {
     width: moderateScale(56),
     height: moderateScale(32),
-    backgroundColor: '#ffffff',
-    borderColor: '#D6D6D6',
+    backgroundColor: colors.white,
+    borderColor: colors.grey[250],
     borderWidth: 1,
     borderRadius: 16,
     paddingVertical: 0,
     marginLeft: 5,
   },
   decoText: {
-    color: '#444444',
+    color: colors.grey[800],
     fontSize: moderateScale(14),
   },
 });

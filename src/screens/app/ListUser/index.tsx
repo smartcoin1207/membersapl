@@ -1,23 +1,23 @@
-import React, {useState, useCallback} from 'react';
-import {View, FlatList} from 'react-native';
-import {styles} from './styles';
 import {Header, ModalRemoveUser} from '@component';
+import AppSafeView from '@component/AppSafeView';
 import {iconAddUser} from '@images';
-import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
-import {AppSocket} from '@util';
-
+import {useNavigation} from '@react-navigation/native';
 import {getDetailMessageSocketSuccess} from '@redux';
-import {useDispatch, useSelector} from 'react-redux';
+import {ROUTE_NAME} from '@routeName';
 import {
   getListUserOfRoomApi,
   GlobalService,
   removeUser,
   changeRole,
 } from '@services';
+import {AppSocket} from '@util';
+import React, {useState, useCallback} from 'react';
+import {View, FlatList} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
+import {Item} from './components/Item';
+import {styles} from './styles';
 
 const ListUser = (props: any) => {
   const dispatch = useDispatch();
@@ -32,15 +32,15 @@ const ListUser = (props: any) => {
   const [idUser, setIdUser] = useState<any>(null);
   const [modal, setModal] = useState<boolean>(false);
 
-  const callApiChangeRole = async (value: any, idUser: any) => {
+  const callApiChangeRole = async (value: any, userId: any) => {
     try {
       GlobalService.showLoading();
       const body = {
         room_id: idRoomChat,
-        user_id: Math.abs(idUser),
+        user_id: Math.abs(userId),
         role: value,
       };
-      const res = await changeRole(body);
+      await changeRole(body);
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch {
@@ -60,7 +60,7 @@ const ListUser = (props: any) => {
         );
         onCancelModal();
       }}
-      changeRole={(value: any, idUser: any) => callApiChangeRole(value, idUser)}
+      changeRole={(value: any, userId: any) => callApiChangeRole(value, userId)}
       showChange={is_admin === 1 ? true : false}
     />
   );
@@ -138,7 +138,7 @@ const ListUser = (props: any) => {
   }, [modal]);
 
   return (
-    <View style={styles.container}>
+    <AppSafeView style={styles.container}>
       <Header
         title="メンバー"
         imageCenter
@@ -162,7 +162,7 @@ const ListUser = (props: any) => {
         onConfirm={onConfirm}
         nameUser={nameUser}
       />
-    </View>
+    </AppSafeView>
   );
 };
 

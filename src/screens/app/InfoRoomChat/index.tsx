@@ -1,4 +1,5 @@
 import {Header, ModalConfirm, ModalLink} from '@component';
+import AppSafeView from '@component/AppSafeView';
 import {IS_IOS} from '@constants/dimensions';
 import {
   defaultAvatar,
@@ -39,6 +40,7 @@ import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+
 import {ViewItem} from './components/ViewItem';
 import {styles} from './styles';
 
@@ -227,7 +229,7 @@ const InfoRoomChat = (props: any) => {
   };
 
   return (
-    <View style={styles.container}>
+    <AppSafeView style={styles.container}>
       <Header
         title={
           dataDetail?.name && dataDetail?.name?.length > 0
@@ -439,7 +441,7 @@ const InfoRoomChat = (props: any) => {
         titleHeader="このグループを削除しますか?"
         onConfirm={onDelete}
       />
-    </View>
+    </AppSafeView>
   );
 };
 

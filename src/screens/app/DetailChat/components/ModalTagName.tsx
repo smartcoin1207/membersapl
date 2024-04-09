@@ -94,7 +94,7 @@ const ModalTagName = React.memo((props: any) => {
 
               <UserAddition
                 content="AdditionAddit"
-                customStyle={[styles.txtTitle, {marginTop: scale(4)}]}
+                customStyle={styles.txtAddition}
               />
             </View>
           </>
@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
   },
   viewItemContent: {
     paddingLeft: scale(8),
+    justifyContent: 'center',
     flex: 1,
   },
   image: {
@@ -150,8 +151,11 @@ const styles = StyleSheet.create({
   txtTitle: {
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(13),
-    marginTop: verticalScale(5),
     color: colors.backgroundTab,
+    maxWidth: '90%',
+  },
+  txtAddition: {
+    marginTop: verticalScale(4),
     maxWidth: '90%',
   },
 });

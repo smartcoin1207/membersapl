@@ -1,6 +1,7 @@
 import {number, ref, string} from 'yup';
-import {REQUIRED_ERROR, maxLengthString, minLengthString} from '../formError';
+
 import {NON_NUMBER_REGEX} from '../../constants/regex';
+import {REQUIRED_ERROR, maxLengthString, minLengthString} from '../formError';
 
 export const validateForm = () => {
   return {

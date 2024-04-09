@@ -17,7 +17,8 @@ const GREY = {
   800: '#444444',
   A100: '#f2f2f2',
   A200: '#DDDDDD',
-  A400: '#999999',
+  A400: '#bbbbbb',
+  A700: '#999999',
 };
 
 const YELLOW = {
