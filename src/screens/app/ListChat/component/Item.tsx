@@ -1,4 +1,3 @@
-import UserAddition from '@component/UserAddition';
 import {
   defaultAvatar,
   iconBellSlash,
@@ -242,8 +241,6 @@ const Item = React.memo((props: any) => {
                     }`}
               </Text>
             </View>
-
-            <UserAddition content="AdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAddition" />
 
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
