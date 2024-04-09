@@ -1,7 +1,12 @@
 import {number, ref, string} from 'yup';
 
 import {NON_NUMBER_REGEX} from '../../constants/regex';
-import {REQUIRED_ERROR, maxLengthString, minLengthString} from '../formError';
+import {
+  REQUIRED_ERROR,
+  maxLengthString,
+  minLengthString,
+  nonNumberString,
+} from '../formError';
 
 export const validateForm = () => {
   return {
@@ -10,11 +15,11 @@ export const validateForm = () => {
     password: string().required(REQUIRED_ERROR),
     first_name: string()
       .required(REQUIRED_ERROR)
-      .matches(NON_NUMBER_REGEX, '氏名(名)には数字以外を入力してください'),
+      .matches(NON_NUMBER_REGEX, nonNumberString('氏名（名）')),
     last_name: string()
       .required(REQUIRED_ERROR)
-      .matches(NON_NUMBER_REGEX, '氏名(姓)には数字以外を入力してください」'),
-    addition: string().max(50, '50文字以内で入力してください'),
+      .matches(NON_NUMBER_REGEX, nonNumberString('氏名（姓）')),
+    addition: string().max(50, maxLengthString(50)),
     email: string().required(REQUIRED_ERROR).email('電子メールが無効です'),
     confirmPassword: string()
       .required(REQUIRED_ERROR)
@@ -27,11 +32,11 @@ export const validateForm = () => {
 
     fullname: string()
       .required(REQUIRED_ERROR)
-      .max(100, maxLengthString('フルネーム', 100)),
+      .max(100, maxLengthString(100, 'フルネーム')),
     phone: string()
       .required(REQUIRED_ERROR)
-      .min(7, minLengthString('電話番号', 7))
-      .max(11, maxLengthString('電話番号', 11)),
+      .min(7, minLengthString(7, '電話番号'))
+      .max(11, maxLengthString(11, '電話番号')),
     prefix: string().required(REQUIRED_ERROR),
     is_volunteer: number().required(REQUIRED_ERROR),
     dob: string().required(REQUIRED_ERROR),
