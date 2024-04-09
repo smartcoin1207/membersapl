@@ -410,24 +410,33 @@ const DetailChat = (props: any) => {
                       <ModalTagName
                         idRoomChat={idRoomChat}
                         choseUser={(value: any, title: string, id: any) => {
-                          setIds(ids?.concat([id]));
                           setShowTag(false);
+                          let mentionUserIds = [];
                           if (id === 'All') {
-                            setListUserSelect(
-                              listUserChat.map(el => {
-                                return {
-                                  userId: el.id,
-                                  userName: el.last_name + el.first_name,
-                                };
-                              }),
+                            // メンション先のユーザ情報（ルームメンバー全員）
+                            const allMentionUsers = listUserChat.map(el => {
+                              return {
+                                userId: el.id,
+                                userName: el.last_name + el.first_name,
+                              };
+                            });
+                            // メンション先のユーザID（ルームメンバー全員）
+                            mentionUserIds = allMentionUsers.map(
+                              (user: {[x: string]: any}) => user.userId,
                             );
+                            setListUserSelect(allMentionUsers);
                           } else {
+                            // メンション先のユーザID（指定ユーザ）
+                            mentionUserIds = [id];
+                            // メンション先のユーザ情報（指定ユーザ）
                             listUserSelect.push({
                               userId: id,
                               userName: value,
                             });
                             setListUserSelect(listUserSelect);
                           }
+                          // メンション通知を送る対象のユーザID
+                          setIds(ids?.concat(mentionUserIds));
 
                           if (value) {
                             mentionedUsers.push('@' + value + title);
