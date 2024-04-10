@@ -10,7 +10,7 @@ import {describeSuccessResponse, describeErrorResponse} from './logger';
 
 const api = axios.create();
 
-export const BASEURL = `http://${API_DOMAIN}/mobile`;
+export const BASEURL = `https://${API_DOMAIN}/mobile`;
 
 api.interceptors.request.use(
   async (config: any) => {
