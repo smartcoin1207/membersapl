@@ -1,5 +1,4 @@
 import {Header, ModalRemoveUser} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {iconAddUser} from '@images';
 import {useFocusEffect} from '@react-navigation/native';
 import {useNavigation} from '@react-navigation/native';
@@ -138,7 +137,7 @@ const ListUser = (props: any) => {
   }, [modal]);
 
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <Header
         title="メンバー"
         imageCenter
@@ -162,7 +161,7 @@ const ListUser = (props: any) => {
         onConfirm={onConfirm}
         nameUser={nameUser}
       />
-    </AppSafeView>
+    </View>
   );
 };
 

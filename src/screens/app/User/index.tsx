@@ -1,5 +1,4 @@
 import {Header, ModalConfirm} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {IS_IOS} from '@constants/dimensions';
 import {
   defaultAvatar,
@@ -95,13 +94,17 @@ const User = () => {
     }
   }, []);
 
+  const userNameAndAddition = `${user?.last_name} ${user?.first_name}${
+    user?.addition ? `・${user.addition}` : ''
+  }`;
+
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <Header title="個人設定" imageCenter />
       <View style={styles.container}>
         <ScrollView alwaysBounceVertical={false}>
           <LinearGradient
-            colors={['#1AA1AA', '#989898']}
+            colors={[colors.primary, colors.grey[400]]}
             style={styles.viewHeader}>
             <View style={styles.viewAvatar}>
               {user?.icon_image ? (
@@ -134,9 +137,8 @@ const User = () => {
           <ViewItem
             sourceImage={iconEdit}
             title="表示名・補足情報"
-            content={`${user?.last_name} ${user?.first_name}  ${
-              user?.addition ? `・${user.addition}` : ''
-            }`}
+            content={userNameAndAddition}
+            textContentProps={{numberOfLines: 1}}
             onPress={() => {
               navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'name'});
             }}
@@ -173,7 +175,7 @@ const User = () => {
         titleHeader="本当にログアウトしますか？"
         onConfirm={onLogout}
       />
-    </AppSafeView>
+    </View>
   );
 };
 

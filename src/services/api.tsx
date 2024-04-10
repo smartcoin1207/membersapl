@@ -1,14 +1,16 @@
-import axios from 'axios';
-import {describeSuccessResponse, describeErrorResponse} from './logger';
-import {showMessage} from 'react-native-flash-message';
-import {store} from '../redux/store';
 import {NavigationUtils} from '@navigation';
 import {ROUTE_NAME} from '@routeName';
 import {API_DOMAIN} from '@util';
+import axios from 'axios';
+import {showMessage} from 'react-native-flash-message';
+
+import {store} from '../redux/store';
+
+import {describeSuccessResponse, describeErrorResponse} from './logger';
 
 const api = axios.create();
 
-export const BASEURL = `https://${API_DOMAIN}/mobile`;
+export const BASEURL = `http://${API_DOMAIN}/mobile`;
 
 api.interceptors.request.use(
   async (config: any) => {

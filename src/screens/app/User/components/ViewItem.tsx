@@ -1,13 +1,36 @@
+import {iconNext} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 import React from 'react';
+import type {
+  GestureResponderEvent,
+  ImageSourcePropType,
+  TextProps,
+} from 'react-native';
 import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext} from '@images';
 
-const ViewItem = React.memo((props: any) => {
-  const {sourceImage, title, content, hideBorder, hideNext, isLogout, onPress} =
-    props;
+type ViewItemProps = {
+  sourceImage: ImageSourcePropType;
+  title?: string;
+  content?: string;
+  hideBorder?: boolean;
+  hideNext?: boolean;
+  isLogout?: boolean;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
+  textContentProps?: TextProps;
+};
+
+const ViewItem = React.memo((props: ViewItemProps) => {
+  const {
+    sourceImage,
+    title,
+    content,
+    hideBorder,
+    hideNext,
+    isLogout,
+    onPress,
+    textContentProps = {},
+  } = props;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.viewContent}>
@@ -15,7 +38,9 @@ const ViewItem = React.memo((props: any) => {
           <Image
             source={sourceImage}
             style={{
-              tintColor: isLogout ? '#EA5A31' : colors.darkGrayText,
+              tintColor: isLogout
+                ? colors.deepOrange[700]
+                : colors.darkGrayText,
               width: scale(25),
               height: scale(25),
             }}
@@ -26,7 +51,9 @@ const ViewItem = React.memo((props: any) => {
             <>
               {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
               {content ? (
-                <Text style={styles.txtContent}>{content}</Text>
+                <Text style={styles.txtContent} {...textContentProps}>
+                  {content}
+                </Text>
               ) : null}
             </>
           ) : (
@@ -81,7 +108,7 @@ const styles = StyleSheet.create({
     color: colors.backgroundTab,
   },
   txtContentLogout: {
-    color: '#EA5A31',
+    color: colors.deepOrange[700],
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },

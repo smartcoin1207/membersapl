@@ -1,5 +1,4 @@
 import {Header, AppInput} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {iconSearch, iconAddListChat, iconFilterChat, iconNext} from '@images';
 import notifee from '@notifee/react-native';
 import {useFocusEffect} from '@react-navigation/native';
@@ -253,7 +252,7 @@ const ListChat = (props: any) => {
   }, [showSearchMessage]);
 
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <Header
         title="チャットグループ一覧"
         imageCenter
@@ -337,7 +336,7 @@ const ListChat = (props: any) => {
         onClose={onCloseModal}
         keySearch={key}
       />
-    </AppSafeView>
+    </View>
   );
 };
 

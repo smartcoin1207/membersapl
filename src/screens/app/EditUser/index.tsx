@@ -1,5 +1,4 @@
 import {AppButton, AppInput, Header} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {iconClose} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {saveInfoUser} from '@redux';
@@ -61,7 +60,7 @@ const EditUser = ({route}: any) => {
   };
 
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <Header
         title="個人情報"
         imageCenter
@@ -133,7 +132,7 @@ const EditUser = ({route}: any) => {
           }}
         </Formik>
       </View>
-    </AppSafeView>
+    </View>
   );
 };
 

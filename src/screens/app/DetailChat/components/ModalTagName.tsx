@@ -36,6 +36,7 @@ const ModalTagName = React.memo((props: any) => {
         };
       }),
     ];
+
     setDataLocal(dataAddAll);
   }, [listUserChat]);
 
@@ -92,10 +93,12 @@ const ModalTagName = React.memo((props: any) => {
                 </Text>
               )}
 
-              <UserAddition
-                content="AdditionAddit"
-                customStyle={styles.txtAddition}
-              />
+              {!!item?.addition && (
+                <UserAddition
+                  content={item.addition}
+                  customStyle={styles.txtAddition}
+                />
+              )}
             </View>
           </>
         )}

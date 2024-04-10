@@ -1,5 +1,4 @@
 import {Header} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {IS_IOS} from '@constants/dimensions';
 import {
   iconDetail,
@@ -289,7 +288,7 @@ const DetailChat = (props: any) => {
   });
 
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <View style={showTaskForm ? [styles.blackout] : []} />
       <View style={{height: '100%'}}>
         <Header
@@ -555,7 +554,7 @@ const DetailChat = (props: any) => {
           </TouchableOpacity>
         </View>
       )}
-    </AppSafeView>
+    </View>
   );
 };
 

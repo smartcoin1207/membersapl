@@ -1,5 +1,4 @@
 import {Header, ModalConfirm, ModalLink} from '@component';
-import AppSafeView from '@component/AppSafeView';
 import {IS_IOS} from '@constants/dimensions';
 import {
   defaultAvatar,
@@ -229,7 +228,7 @@ const InfoRoomChat = (props: any) => {
   };
 
   return (
-    <AppSafeView style={styles.container}>
+    <View style={styles.container}>
       <Header
         title={
           dataDetail?.name && dataDetail?.name?.length > 0
@@ -441,7 +440,7 @@ const InfoRoomChat = (props: any) => {
         titleHeader="このグループを削除しますか?"
         onConfirm={onDelete}
       />
-    </AppSafeView>
+    </View>
   );
 };
 

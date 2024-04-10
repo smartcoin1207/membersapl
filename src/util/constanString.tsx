@@ -3,8 +3,11 @@
 // export const SOCKETIO_DOMAIN = 'v3mbs-msg01.mem-bers.jp';
 
 // STG向け
-export const API_DOMAIN = 'stage.mem-bers.jp';
-export const SOCKETIO_DOMAIN = 'stage-v3mbs-msg01.mem-bers.jp';
+// export const API_DOMAIN = 'stage.mem-bers.jp';
+// export const SOCKETIO_DOMAIN = 'stage-v3mbs-msg01.mem-bers.jp';
+
+export const API_DOMAIN = '192.168.80.213';
+export const SOCKETIO_DOMAIN = '192.168.80.213:8082';
 
 export const HITSLOP = {top: 20, left: 20, right: 20, bottom: 20};
 export const LINK_URL_REGEX =

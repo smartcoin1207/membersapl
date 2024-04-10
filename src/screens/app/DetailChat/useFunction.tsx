@@ -37,11 +37,13 @@ import {
 import {AppSocket, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
 import moment from 'moment/moment';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Keyboard, KeyboardEvent, Text} from 'react-native';
+import type {KeyboardEvent} from 'react-native';
+import {Keyboard, Text} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
+
 import {store} from '../../../redux/store';
 
 interface partCopyType {
@@ -155,6 +157,7 @@ export const useFunction = (props: any) => {
         name: message?.user_send
           ? `${message?.user_send?.last_name}${message?.user_send?.first_name}`
           : null,
+        addition: message?.user_send?.addition,
       },
       reaction: message?.reactions,
       msg_type: message?.msg_type,

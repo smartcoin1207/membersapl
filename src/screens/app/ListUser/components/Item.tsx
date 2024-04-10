@@ -75,7 +75,7 @@ const Item = React.memo((props: any) => {
               </Text>
             )}
 
-            <UserAddition content="AdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAdditionAddition" />
+            {!!item?.addition && <UserAddition content={item.addition} />}
           </>
 
           {renderViewRole()}

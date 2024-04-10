@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+
 import {ROUTE_NAME} from '../navigation/routeName';
 
 const width = Dimensions.get('window').width;
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: width,
     paddingTop: verticalScale(12),
-    paddingBottom: verticalScale(12) + SAFE_BOTTOM_PADDING,
+    paddingBottom: SAFE_BOTTOM_PADDING,
     backgroundColor: colors.primary,
   },
   button: {

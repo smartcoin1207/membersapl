@@ -230,7 +230,7 @@ const ItemMessage = React.memo((props: any) => {
               key={parseInt(index, 10) + 1}
               style={{
                 alignSelf: 'flex-start',
-                color: 'black',
+                color: colors.black,
               }}>
               {''}
             </Text>
@@ -329,8 +329,8 @@ const ItemMessage = React.memo((props: any) => {
     return (
       <View style={styles.senderInfo}>
         <Text style={styles.txtNameSend} numberOfLines={1}>
-          {user?.name ? `${user.name} ` : ''}
-          <UserAddition content="AdditionAddition" />
+          {user?.name ?? ''}{' '}
+          {user?.addition && <UserAddition content={user.addition} />}
         </Text>
       </View>
     );
