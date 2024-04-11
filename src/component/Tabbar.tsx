@@ -1,4 +1,3 @@
-import {SAFE_BOTTOM_PADDING} from '@constants/dimensions';
 import {defaultAvatar, iconTabChat, iconTabSetting, menuPinChat} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 import React from 'react';

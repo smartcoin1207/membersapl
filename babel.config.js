@@ -15,7 +15,6 @@ module.exports = {
           '@services': './src/services',
           '@routeName': './src/navigation/routeName',
           '@images': './src/images',
-          '@constants': './src/constants',
         },
       },
     ],

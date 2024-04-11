@@ -110,7 +110,7 @@ const EditUser = ({route}: any) => {
                       <Text style={styles.txtTitle}>Eメール</Text>
                       <AppInput
                         placeholder="Eメール"
-                        onChange={props.handleChange('Email')}
+                        onChange={props.handleChange('email')}
                         value={props.values.email}
                         error={props.errors.email}
                       />
