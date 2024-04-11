@@ -1,4 +1,12 @@
+import moment from 'moment/moment';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import {showMessage} from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
+
 import {
   deleteMessage,
   editMessageAction,
@@ -19,12 +27,12 @@ import {
 } from '@redux';
 import {ROUTE_NAME} from '@routeName';
 import {
-  GlobalService,
   addBookmark,
   callApiChatBot,
   deleteMessageApi,
   detailRoomchat,
   editMessageApi,
+  GlobalService,
   pinMessageApi,
   replyMessageApi,
   saveTask,
@@ -33,16 +41,10 @@ import {
   sendReactionApi,
   updateTask,
 } from '@services';
-import {AppSocket, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
-import moment from 'moment/moment';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
-import DocumentPicker from 'react-native-document-picker';
-import {showMessage} from 'react-native-flash-message';
-import ImagePicker from 'react-native-image-crop-picker';
-import {useDispatch, useSelector} from 'react-redux';
-import {store} from '../../../redux/store';
 import {colors} from '@stylesCommon';
+import {AppSocket, convertArrUnique, MESSAGE_RANGE_TYPE} from '@util';
+
+import {store} from '../../../redux/store';
 
 interface partCopyType {
   me: boolean;

@@ -1,32 +1,33 @@
-import {UserAddition} from '@component';
-import {
-  iconFile,
-  iconPdf,
-  iconDoc,
-  iconXls,
-  defaultAvatar,
-  iconEdit,
-  iconReply,
-  iconQuote2,
-} from '@images';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
-import {colors} from '@stylesCommon';
-import {API_DOMAIN} from '@util';
 import moment from 'moment';
-import React, {useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import React, {useCallback, useState} from 'react';
+import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {showMessage} from 'react-native-flash-message';
 import LinearGradient from 'react-native-linear-gradient';
 import {Menu} from 'react-native-material-menu';
-import {scale, moderateVerticalScale} from 'react-native-size-matters';
+import {moderateVerticalScale, scale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useNavigation} from '@react-navigation/native';
+
+import {UserAddition} from '@component';
+import {
+  defaultAvatar,
+  iconDoc,
+  iconEdit,
+  iconFile,
+  iconPdf,
+  iconQuote2,
+  iconReply,
+  iconXls,
+} from '@images';
+
+import {ROUTE_NAME} from '@routeName';
+import {colors} from '@stylesCommon';
+import {API_DOMAIN} from '@util';
 
 import {MenuFeature} from '../components/MenuFeature';
 import MessageInfo from '../components/MessageInfo';
-
 import {MenuOption} from './MenuOption';
 import {MsgFile} from './MsgFile';
 import {Reaction} from './Reaction';

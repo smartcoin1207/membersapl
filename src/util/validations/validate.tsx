@@ -18,11 +18,7 @@ export const validateForm = () => {
     last_name: string()
       .required(REQUIRED_ERROR)
       .matches(NON_NUMBER_REGEX, nonNumberString('氏名（姓）')),
-    addition: string()
-      .nullable()
-      .test('check-max-length', maxLengthString(50), val => {
-        return !!([...(val ?? '')].length <= 50);
-      }),
+    addition: string().nullable(),
     email: string().required(REQUIRED_ERROR).email('電子メールが無効です'),
     confirmPassword: string()
       .required(REQUIRED_ERROR)

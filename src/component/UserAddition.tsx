@@ -1,8 +1,14 @@
-import {colors} from '@stylesCommon';
 import React from 'react';
-import type {StyleProp, TextProps, TextStyle} from 'react-native';
-import {StyleSheet, Text} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  type StyleProp,
+  type TextProps,
+  type TextStyle,
+} from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
+
+import {colors} from '@stylesCommon';
 
 const UserAddition = ({
   customStyle,

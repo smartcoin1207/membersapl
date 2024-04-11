@@ -1,15 +1,17 @@
-import {AppButton, AppInput, Header} from '@component';
-import {iconClose} from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {saveInfoUser} from '@redux';
-import {GlobalService, updateProfile} from '@services';
 import {Formik} from 'formik';
 import React, {useCallback} from 'react';
 import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
-import {styles} from './styles';
+
+import {AppButton, AppInput, Header} from '@component';
+import {iconClose} from '@images';
+import {useNavigation} from '@react-navigation/native';
+import {saveInfoUser} from '@redux';
+import {GlobalService, updateProfile} from '@services';
 import {validationSchemaEmail, validationSchemaName} from '@util';
+
+import {styles} from './styles';
 
 const getInitialValues = (type: 'Name' | 'Email', user: any) => {
   if (!user) {

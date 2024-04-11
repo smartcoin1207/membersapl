@@ -1,6 +1,3 @@
-import {UserAddition} from '@component';
-import {defaultAvatar} from '@images';
-import {colors, stylesCommon} from '@stylesCommon';
 import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
@@ -13,6 +10,10 @@ import {
 import FastImage from 'react-native-fast-image';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+
+import {UserAddition} from '@component';
+import {defaultAvatar} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 
 const width = Dimensions.get('window').width;
 
