@@ -46,3 +46,5 @@ export const WEBSOCKET_METHOD_TYPE = {
   CHAT_ROOM_MEMBER_DELETE: 12,
   CHAT_ROOM_MEMBER_EDIT: 13,
 };
+
+export const NON_NUMBER_REGEX = /^[^0-9０-９]+$/;

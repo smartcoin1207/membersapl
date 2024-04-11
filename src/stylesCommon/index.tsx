@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+
 const GREY = {
   50: '#F4F2EF',
   100: '#DFDFDF',
@@ -46,7 +47,7 @@ const CYAN = {
 };
 
 const BLUE = {
-  700: '##3366CC',
+  700: '#3366CC',
   800: '#0000ff',
   900: '#3071EB',
 };

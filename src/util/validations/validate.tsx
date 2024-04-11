@@ -5,7 +5,7 @@ import {
   minLengthString,
   nonNumberString,
 } from '../formError';
-import {NON_NUMBER_REGEX} from './regex';
+import {NON_NUMBER_REGEX} from '../constanString';
 
 export const validateForm = () => {
   return {
