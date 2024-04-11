@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import {Image, StyleSheet, Platform, View, Text, TextInput, ScrollView} from 'react-native';
 import {InputToolbar, Actions, Composer, Send} from 'react-native-gifted-chat';
 import {iconEmoji} from '@images';
