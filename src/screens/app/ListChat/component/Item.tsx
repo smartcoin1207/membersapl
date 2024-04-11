@@ -1,27 +1,28 @@
-import {
-  defaultAvatar,
-  iconBellSlash,
-  iconDoc,
-  iconFile,
-  iconNext,
-  iconPdf,
-  iconPin,
-  iconXls,
-} from '@images';
-import notifee from '@notifee/react-native';
-import {useNavigation} from '@react-navigation/native';
-import {getRoomList, resetDataChat, saveIdRoomChat} from '@redux';
-import {ROUTE_NAME} from '@routeName';
-import {GlobalService, pinFlag} from '@services';
-import {colors, stylesCommon} from '@stylesCommon';
-import {AppSocket, HITSLOP, convertString} from '@util';
-import {decode} from 'html-entities';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {colors, stylesCommon} from '@stylesCommon';
+import {
+  iconNext,
+  defaultAvatar,
+  iconPin,
+  iconFile,
+  iconPdf,
+  iconDoc,
+  iconXls,
+  iconBellSlash,
+} from '@images';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
 import FastImage from 'react-native-fast-image';
+import {convertString, HITSLOP, AppSocket} from '@util';
+import {pinFlag, GlobalService} from '@services';
+
+import {saveIdRoomChat, getRoomList, resetDataChat} from '@redux';
 import {showMessage} from 'react-native-flash-message';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {decode} from 'html-entities';
+import notifee from '@notifee/react-native';
 
 const Item = React.memo((props: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -34,7 +35,7 @@ const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
   const {item, idRoomChat} = props;
   const [pin, setStatusPin] = useState<number | null>(null);
-  const [, setNoIdRoomChatFlg] = useState<boolean>(false);
+  const [noIdRoomChatFlg, setNoIdRoomChatFlg] = useState<boolean>(false);
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
 
@@ -95,12 +96,8 @@ const Item = React.memo((props: any) => {
       };
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
-          if (room.message_unread) {
-            sock_body.unread_count++;
-          }
-          if (room.message_mention_unread) {
-            sock_body.unread_mention++;
-          }
+          if (room.message_unread) sock_body.unread_count++;
+          if (room.message_mention_unread) sock_body.unread_mention++;
         }
       });
       // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
@@ -236,12 +233,17 @@ const Item = React.memo((props: any) => {
                 numberOfLines={1}>
                 {item?.name && item?.name?.length > 0
                   ? renderNameRoom(item?.name)
-                  : `${item?.one_one_check?.[0]?.last_name || ''} ${
-                      item?.one_one_check?.[0]?.first_name || ''
+                  : `${
+                      item?.one_one_check
+                        ? item?.one_one_check[0]?.last_name
+                        : ''
+                    } ${
+                      item?.one_one_check
+                        ? item?.one_one_check[0]?.first_name
+                        : ''
                     }`}
               </Text>
             </View>
-
             {item?.lastMessageJoin?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
                 {item?.lastMessageJoin?.attachment_files?.map((el: any) => (

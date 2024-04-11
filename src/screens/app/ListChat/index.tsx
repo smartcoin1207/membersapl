@@ -1,8 +1,24 @@
+import React, {useState, useCallback, useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator,
+  Image,
+  AppState,
+  AppStateStatus,
+  Linking,
+} from 'react-native';
+import {styles} from './styles';
 import {Header, AppInput} from '@component';
 import {iconSearch, iconAddListChat, iconFilterChat, iconNext} from '@images';
-import notifee from '@notifee/react-native';
+import {Item} from './component/Item';
 import {useFocusEffect} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
+import {debounce} from 'lodash';
+import {Menu} from 'react-native-material-menu';
+import {MenuOption} from './component/MenuOption';
 import {
   getRoomList,
   getUserInfo,
@@ -13,32 +29,14 @@ import {
   showHideModalFilterListChat,
   getUnreadMessageCount,
 } from '@redux';
-import {ROUTE_NAME} from '@routeName';
-import {colors} from '@stylesCommon';
-import {AppNotification} from '@util';
-import {debounce} from 'lodash';
-import React, {useState, useCallback, useEffect, useRef} from 'react';
-import type {AppStateStatus} from 'react-native';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  RefreshControl,
-  ActivityIndicator,
-  Image,
-  AppState,
-  Linking,
-} from 'react-native';
-import {Menu} from 'react-native-material-menu';
 import {useDispatch, useSelector} from 'react-redux';
-
-import {FilterListChat} from '../FilterListChat';
-
-import {Item} from './component/Item';
-import {MenuOption} from './component/MenuOption';
 import {ModalSearchMessage} from './component/ModalSearchMessage';
-import {styles} from './styles';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {AppNotification} from '@util';
+import {colors} from '@stylesCommon';
+import notifee from '@notifee/react-native';
+import {FilterListChat} from '../FilterListChat';
 
 const ListChat = (props: any) => {
   const refInput = useRef<any>(null);
