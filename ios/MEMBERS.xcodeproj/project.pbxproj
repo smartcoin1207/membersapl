@@ -13,7 +13,6 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		89B8A9D8515122A62155F922 /* libPods-MEMBERS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A492C31AFA85941F9A344C78 /* libPods-MEMBERS.a */; };
-		A328F66F35BC4932BDA526B6 /* Hiragino-Kaku.otf in Resources */ = {isa = PBXBuildFile; fileRef = AC2D891772194511BB3225B4 /* Hiragino-Kaku.otf */; };
 		A531E71BAEE6A6BA165361FB /* libPods-MEMBERS-MEMBERSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2667B4AC037EF6C9367E5F9C /* libPods-MEMBERS-MEMBERSTests.a */; };
 		ACD75F7823184650AE580BC6 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86C4DFA65B054104A52CEE87 /* Inter-SemiBold.ttf */; };
 		BF82EB53CFAC4E9C9A08CE0F /* Inter-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 103559E1A2B449A5A638A207 /* Inter-Medium.ttf */; };
@@ -48,7 +47,6 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MEMBERS/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		86C4DFA65B054104A52CEE87 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Inter-SemiBold.ttf"; path = "../src/assets/fonts/Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		A492C31AFA85941F9A344C78 /* libPods-MEMBERS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEMBERS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		AC2D891772194511BB3225B4 /* Hiragino-Kaku.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = "Hiragino-Kaku.otf"; path = "../src/assets/fonts/Hiragino-Kaku.otf"; sourceTree = "<group>"; };
 		BBA1B4C6DA6C4080BF29A889 /* Pods-MEMBERS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEMBERS.debug.xcconfig"; path = "Target Support Files/Pods-MEMBERS/Pods-MEMBERS.debug.xcconfig"; sourceTree = "<group>"; };
 		E1A490042AEF56E20008F781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -165,7 +163,6 @@
 			children = (
 				103559E1A2B449A5A638A207 /* Inter-Medium.ttf */,
 				86C4DFA65B054104A52CEE87 /* Inter-SemiBold.ttf */,
-				AC2D891772194511BB3225B4 /* Hiragino-Kaku.otf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -269,7 +266,6 @@
 				E1A490052AEF56E20008F781 /* GoogleService-Info.plist in Resources */,
 				BF82EB53CFAC4E9C9A08CE0F /* Inter-Medium.ttf in Resources */,
 				ACD75F7823184650AE580BC6 /* Inter-SemiBold.ttf in Resources */,
-				A328F66F35BC4932BDA526B6 /* Hiragino-Kaku.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
