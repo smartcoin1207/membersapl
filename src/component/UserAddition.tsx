@@ -1,4 +1,3 @@
-import {HIRAGINO_KAKU_GOTHIC_PRON} from '@constants/fonts';
 import {colors} from '@stylesCommon';
 import React from 'react';
 import type {StyleProp, TextProps, TextStyle} from 'react-native';
@@ -22,12 +21,11 @@ const UserAddition = ({
   );
 };
 
-export default UserAddition;
+export {UserAddition};
 
 const styles = StyleSheet.create({
   txtAddition: {
     fontSize: moderateScale(9),
-    fontFamily: HIRAGINO_KAKU_GOTHIC_PRON,
     letterSpacing: -0.18,
     color: colors.grey[400],
   },

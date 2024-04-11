@@ -1,11 +1,18 @@
-import {IS_IOS} from '@constants/dimensions';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  StyleSheet,
+  Platform,
+  View,
+  Text,
+  TextInput,
+  ScrollView,
+} from 'react-native';
+import {InputToolbar, Actions, Composer, Send} from 'react-native-gifted-chat';
 import {iconEmoji} from '@images';
-import {colors} from '@stylesCommon';
-import React from 'react';
-import {Image, ScrollView, StyleSheet, TextInput, View} from 'react-native';
-import {InputToolbar, Send} from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {colors} from '@stylesCommon';
+import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
 export const renderSend = (props: any) => {
   return (
@@ -81,7 +88,7 @@ const styles = StyleSheet.create({
   toolBar: {
     backgroundColor: colors.background,
     borderTopWidth: 0,
-    marginBottom: IS_IOS ? (isIphoneX() ? 0 : 0) : 6,
+    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
     paddingTop: 8,
   },
   scrollMessage: {
@@ -96,7 +103,7 @@ const styles = StyleSheet.create({
   },
   inputMessage: {
     paddingLeft: scale(10),
-    paddingTop: IS_IOS ? verticalScale(12) : undefined,
+    paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
     paddingRight: scale(43),
   },
 

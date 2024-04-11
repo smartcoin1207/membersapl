@@ -1,5 +1,4 @@
 import {Header, ModalConfirm} from '@component';
-import {IS_IOS} from '@constants/dimensions';
 import {
   defaultAvatar,
   iconCamera,
@@ -15,13 +14,18 @@ import {ROUTE_NAME} from '@routeName';
 import {GlobalService, deleteImageUser, updateImageProfile} from '@services';
 import {colors} from '@stylesCommon';
 import React, {useCallback, useEffect, useState} from 'react';
-import {Image, ScrollView, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import {verticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {ViewItem} from './components/ViewItem';
 import {styles} from './styles';
 
@@ -46,7 +50,10 @@ const User = () => {
     try {
       const data = new FormData();
       const imageUpload = {
-        uri: IS_IOS ? image?.path.replace('file://', '') : image?.path,
+        uri:
+          Platform.OS === 'ios'
+            ? image?.path.replace('file://', '')
+            : image?.path,
         type: 'image/jpeg',
         name: image?.filename ? image?.filename : image?.path,
       };
@@ -73,11 +80,15 @@ const User = () => {
       width: verticalScale(126),
       height: verticalScale(126),
     })
-      .then(async (uploadImage: any) => {
-        setImage(uploadImage);
+      .then(async (image: any) => {
+        setImage(image);
       })
-      .catch(() => {});
+      .catch(err => {});
   };
+
+  const userNameAndAddition = `${user?.last_name} ${user?.first_name}${
+    user?.addition ? `・${user.addition}` : ''
+  }`;
 
   const deleteAvatar = useCallback(async () => {
     try {
@@ -93,10 +104,6 @@ const User = () => {
       GlobalService.hideLoading();
     }
   }, []);
-
-  const userNameAndAddition = `${user?.last_name} ${user?.first_name}${
-    user?.addition ? `・${user.addition}` : ''
-  }`;
 
   return (
     <View style={styles.container}>
@@ -140,7 +147,7 @@ const User = () => {
             content={userNameAndAddition}
             textContentProps={{numberOfLines: 1}}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'name'});
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Name'});
             }}
           />
           <ViewItem
@@ -148,7 +155,7 @@ const User = () => {
             title="メールアドレス "
             content={user?.mail}
             onPress={() => {
-              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'email'});
+              navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Email'});
             }}
           />
           <ViewItem

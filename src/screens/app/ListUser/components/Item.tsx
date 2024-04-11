@@ -1,4 +1,4 @@
-import UserAddition from '@component/UserAddition';
+import {UserAddition} from '@component';
 import {defaultAvatar, iconPin, iconReload, iconRemove} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 import React, {useState} from 'react';

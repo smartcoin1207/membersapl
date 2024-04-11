@@ -1,24 +1,27 @@
-import {Header, ModalConfirm} from '@component';
-import {IS_IOS} from '@constants/dimensions';
+import React, {useState, useCallback, useEffect} from 'react';
+import {View, Text, ScrollView, Image, Platform, Linking} from 'react-native';
+import {styles} from './styles';
+import {Header} from '@component';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   defaultAvatar,
-  iconBell,
-  iconBook,
-  iconDocument,
   iconLogout,
+  iconBell,
+  iconDocument,
+  iconBook,
 } from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {logOut, saveInfoUser} from '@redux';
-import {ROUTE_NAME} from '@routeName';
-import {updateImageProfile} from '@services';
-import {AppNotification, AppSocket} from '@util';
-import React, {useCallback, useEffect, useState} from 'react';
-import {Image, Linking, ScrollView, Text, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
-import LinearGradient from 'react-native-linear-gradient';
-import {useDispatch, useSelector} from 'react-redux';
 import {ViewItem} from './components/ViewItem';
-import {styles} from './styles';
+import {ModalConfirm} from '@component';
+import {useDispatch, useSelector} from 'react-redux';
+import {logOut, saveInfoUser} from '@redux';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
+import {colors} from '@stylesCommon';
+import ImagePicker from 'react-native-image-crop-picker';
+import {verticalScale} from 'react-native-size-matters';
+import {updateImageProfile} from '@services';
+import {showMessage} from 'react-native-flash-message';
+import {AppSocket, AppNotification} from '@util';
 
 const Setting = () => {
   const {removeBadge} = AppNotification;
@@ -45,7 +48,10 @@ const Setting = () => {
     try {
       const data = new FormData();
       const imageUpload = {
-        uri: IS_IOS ? image?.path.replace('file://', '') : image?.path,
+        uri:
+          Platform.OS === 'ios'
+            ? image?.path.replace('file://', '')
+            : image?.path,
         type: 'image/jpeg',
         name: image?.filename ? image?.filename : image?.path,
       };
@@ -66,17 +72,17 @@ const Setting = () => {
     }
   }, [image]);
 
-  // const upLoadImage = () => {
-  //   ImagePicker.openPicker({
-  //     cropping: true,
-  //     width: verticalScale(126),
-  //     height: verticalScale(126),
-  //   })
-  //     .then(async (image: any) => {
-  //       setImage(image);
-  //     })
-  //     .catch(err => {});
-  // };
+  const upLoadImage = () => {
+    ImagePicker.openPicker({
+      cropping: true,
+      width: verticalScale(126),
+      height: verticalScale(126),
+    })
+      .then(async (image: any) => {
+        setImage(image);
+      })
+      .catch(err => {});
+  };
 
   return (
     <View style={styles.container}>

@@ -1,4 +1,3 @@
-import {IS_IOS} from '@constants/dimensions';
 import {useNavigation} from '@react-navigation/native';
 import {
   deleteMessage,
@@ -37,14 +36,13 @@ import {
 import {AppSocket, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
 import moment from 'moment/moment';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import type {KeyboardEvent} from 'react-native';
-import {Keyboard, Text} from 'react-native';
+import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {store} from '../../../redux/store';
+import {colors} from '@stylesCommon';
 
 interface partCopyType {
   me: boolean;
@@ -404,7 +402,7 @@ export const useFunction = (props: any) => {
           element?.props?.children?.startsWith('@') &&
           element?.props?.children?.length > 1 &&
           element?.props?.children?.length <
-            (formattedText[index] as any)?.props?.children.length
+            formattedText[index]?.props?.children.length
         ) {
           result = true;
         }
@@ -432,7 +430,7 @@ export const useFunction = (props: any) => {
         } else if (numberOfMember > 1) {
           // グループチャットではメンションのみ送信対象
           if (inputText.indexOf('@all') > -1) {
-            mentionMembers = listUserChat.map((el: any) => ({
+            mentionMembers = listUserChat.map(el => ({
               userId: el.id,
               userName: `${el.last_name}${el.first_name}`,
             }));
@@ -537,7 +535,7 @@ export const useFunction = (props: any) => {
               key={word + index}
               style={{
                 alignSelf: 'flex-start',
-                color: '#3366CC',
+                color: colors.blue[700],
                 fontWeight: 'bold',
               }}>
               {word}
@@ -623,12 +621,12 @@ export const useFunction = (props: any) => {
         text2: null,
         time: res?.data?.data?.created_at,
       });
-      const joinUsers = listUserChat?.map((el: any) => {
+      const joinUsers = listUserChat?.map(el => {
         return {userId: el.id, userName: el.last_name + el.first_name};
       });
       const toInfo = {
         type: MESSAGE_RANGE_TYPE.USER,
-        ids: listUserChat?.map((el: any) => el.id),
+        ids: listUserChat?.map(el => el.id),
       };
       socket.emit('notification_ind2', {
         user_id: user_id,
@@ -719,13 +717,14 @@ export const useFunction = (props: any) => {
                 uri: item?.path,
                 path: item?.path,
                 size: item?.size,
-                type: IS_IOS
-                  ? `image/${
-                      isHEIC
-                        ? item?.path?.split('.')[0] + '.JPG'
-                        : item?.path?.split('.').pop()
-                    }}`
-                  : item?.mime,
+                type:
+                  Platform.OS === 'ios'
+                    ? `image/${
+                        isHEIC
+                          ? item?.path?.split('.')[0] + '.JPG'
+                          : item?.path?.split('.').pop()
+                      }}`
+                    : item?.mime,
                 height: item?.height,
               });
               data.append('msg_type', 2);
@@ -736,9 +735,10 @@ export const useFunction = (props: any) => {
               data.append('attachment[]', {
                 name: item?.name,
                 type: item?.type,
-                uri: IS_IOS
-                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
-                  : decodeURIComponent(item?.fileCopyUri),
+                uri:
+                  Platform.OS === 'ios'
+                    ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                    : decodeURIComponent(item?.fileCopyUri),
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
@@ -817,12 +817,12 @@ export const useFunction = (props: any) => {
         text2: null,
         time: res?.data?.data?.created_at,
       });
-      const joinUsers = listUserChat?.map((el: any) => {
+      const joinUsers = listUserChat?.map(el => {
         return {userId: el.id, userName: el.last_name + el.first_name};
       });
       const toInfo = {
         type: MESSAGE_RANGE_TYPE.USER,
-        ids: listUserChat?.map((el: any) => el.id),
+        ids: listUserChat?.map(el => el.id),
       };
       socket.emit('notification_ind2', {
         user_id: user_id,
@@ -945,12 +945,12 @@ export const useFunction = (props: any) => {
             text2: null,
             time: res?.data?.data?.created_at,
           });
-          const joinUsers = listUserChat?.map((el: any) => {
+          const joinUsers = listUserChat?.map(el => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map((el: any) => el.id),
+            ids: listUserChat?.map(el => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1004,12 +1004,12 @@ export const useFunction = (props: any) => {
             time: res?.data?.data?.created_at,
             time2: res?.data?.data?.updated_at,
           });
-          const joinUsers = listUserChat?.map((el: any) => {
+          const joinUsers = listUserChat?.map(el => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map((el: any) => el.id),
+            ids: listUserChat?.map(el => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1071,12 +1071,12 @@ export const useFunction = (props: any) => {
             text2: messageQuote?.text,
             time: res?.data?.data?.created_at,
           });
-          const joinUsers = listUserChat?.map((el: any) => {
+          const joinUsers = listUserChat?.map(el => {
             return {userId: el.id, userName: el.last_name + el.first_name};
           });
           const toInfo = {
             type: MESSAGE_RANGE_TYPE.USER,
-            ids: listUserChat?.map((el: any) => el.id),
+            ids: listUserChat?.map(el => el.id),
           };
           socket.emit('notification_ind2', {
             user_id: mes[0]?.user?._id,
@@ -1131,12 +1131,12 @@ export const useFunction = (props: any) => {
               text2: null,
               time: res?.data?.data?.created_at,
             });
-            const joinUsers = listUserChat?.map((el: any) => {
+            const joinUsers = listUserChat?.map(el => {
               return {userId: el.id, userName: el.last_name + el.first_name};
             });
             const toInfo = {
               type: MESSAGE_RANGE_TYPE.USER,
-              ids: listUserChat?.map((el: any) => el.id),
+              ids: listUserChat?.map(el => el.id),
             };
             socket.emit('notification_ind2', {
               user_id: mes[0]?.user?._id,
@@ -1159,12 +1159,12 @@ export const useFunction = (props: any) => {
               res?.data?.data?.id,
             );
           } else {
-            const joinUsers = listUserChat?.map((el: any) => {
+            const joinUsers = listUserChat?.map(el => {
               return {userId: el.id, userName: el.last_name + el.first_name};
             });
             const toInfo = {
               type: MESSAGE_RANGE_TYPE.USER,
-              ids: listUserChat?.map((el: any) => el.id),
+              ids: listUserChat?.map(el => el.id),
             };
             socket.emit('notification_ind2', {
               user_id: mes[0]?.user?._id,
@@ -1516,7 +1516,7 @@ export const useFunction = (props: any) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if ((formattedText[0] as any)?.props?.children === '') {
+      if (formattedText[0]?.props?.children === '') {
         formattedText.shift();
         setFormattedText([...formattedText]);
       }

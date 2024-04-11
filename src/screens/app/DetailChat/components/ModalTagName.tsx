@@ -1,4 +1,4 @@
-import UserAddition from '@component/UserAddition';
+import {UserAddition} from '@component';
 import {defaultAvatar} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
 import React, {useEffect, useState} from 'react';

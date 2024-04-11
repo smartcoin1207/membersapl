@@ -1,4 +1,4 @@
-import UserAddition from '@component/UserAddition';
+import {UserAddition} from '@component';
 import {
   iconFile,
   iconPdf,

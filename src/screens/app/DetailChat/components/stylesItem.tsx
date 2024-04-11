@@ -1,6 +1,5 @@
-import {IS_IOS} from '@constants/dimensions';
 import {colors, stylesCommon} from '@stylesCommon';
-import {StyleSheet} from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {
   moderateScale,
   moderateVerticalScale,
@@ -288,7 +287,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingLeft: moderateScale(15),
     paddingBottom: moderateScale(30),
-    paddingTop: IS_IOS ? moderateScale(16) : moderateScale(6),
+    paddingTop: Platform.OS === 'ios' ? moderateScale(16) : moderateScale(6),
   },
   decoButton: {
     width: moderateScale(56),

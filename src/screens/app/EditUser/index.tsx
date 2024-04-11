@@ -3,19 +3,15 @@ import {iconClose} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {saveInfoUser} from '@redux';
 import {GlobalService, updateProfile} from '@services';
-import {
-  validationSchemaEmail,
-  validationSchemaName,
-} from '@util/validations/editUser';
 import {Formik} from 'formik';
 import React, {useCallback} from 'react';
 import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
-
 import {styles} from './styles';
+import {validationSchemaEmail, validationSchemaName} from '@util';
 
-const getInitialValues = (type: 'name' | 'email', user: any) => {
+const getInitialValues = (type: 'Name' | 'Email', user: any) => {
   if (!user) {
     return;
   }
@@ -30,7 +26,7 @@ const getInitialValues = (type: 'name' | 'email', user: any) => {
     email: user.mail,
   };
 
-  return type === 'name' ? formInitialValuesName : formInitialValuesEmail;
+  return type === 'Name' ? formInitialValuesName : formInitialValuesEmail;
 };
 
 const EditUser = ({route}: any) => {
@@ -46,7 +42,7 @@ const EditUser = ({route}: any) => {
   const handleSubmit = async (value: any) => {
     const body = {
       ...value,
-      type,
+      type: type === 'Email' ? 'email' : 'name',
     };
     try {
       GlobalService.showLoading();
@@ -71,7 +67,7 @@ const EditUser = ({route}: any) => {
         <Formik
           initialValues={getInitialValues(type, user)}
           validationSchema={
-            type === 'name' ? validationSchemaName : validationSchemaEmail
+            type === 'Name' ? validationSchemaName : validationSchemaEmail
           }
           validateOnChange={false}
           onSubmit={handleSubmit}>
@@ -82,7 +78,7 @@ const EditUser = ({route}: any) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  {type === 'name' ? (
+                  {type === 'Name' ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
@@ -109,12 +105,12 @@ const EditUser = ({route}: any) => {
                     </>
                   ) : null}
 
-                  {type === 'email' ? (
+                  {type === 'Email' ? (
                     <>
                       <Text style={styles.txtTitle}>Eメール</Text>
                       <AppInput
                         placeholder="Eメール"
-                        onChange={props.handleChange('email')}
+                        onChange={props.handleChange('Email')}
                         value={props.values.email}
                         error={props.errors.email}
                       />

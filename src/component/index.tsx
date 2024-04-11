@@ -5,3 +5,4 @@ export * from './Header';
 export * from './Modal';
 export * from './GlobalUI';
 export * from './Toogle';
+export * from './UserAddition';

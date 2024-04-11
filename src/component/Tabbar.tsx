@@ -14,6 +14,7 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 import {ROUTE_NAME} from '../navigation/routeName';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
 
 const width = Dimensions.get('window').width;
 const active_color = colors.activeTab;
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: width,
     paddingTop: verticalScale(12),
-    paddingBottom: SAFE_BOTTOM_PADDING,
+    paddingBottom: initialWindowMetrics?.insets?.bottom || verticalScale(12),
     backgroundColor: colors.primary,
   },
   button: {

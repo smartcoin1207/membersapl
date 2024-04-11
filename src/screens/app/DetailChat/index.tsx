@@ -1,46 +1,45 @@
-import {Header} from '@component';
-import {IS_ANDROID, IS_IOS} from '@constants/dimensions';
-import {
-  iconDetail,
-  iconLike,
-  iconSearch,
-  iconSend,
-  iconTask,
-  iconUpload,
-} from '@images';
 import React, {useCallback, useRef} from 'react';
 import {
+  View,
   Image,
-  Keyboard,
-  TextInput,
+  Platform,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  View,
+  TextInput,
+  Keyboard,
 } from 'react-native';
+import {styles} from './styles';
+import {Header} from '@component';
+import {
+  iconSearch,
+  iconUpload,
+  iconLike,
+  iconDetail,
+  iconSend,
+  iconTask,
+} from '@images';
+import {useFunction} from './useFunction';
+import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
-
-import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
-
+import {ItemMessage} from './components/ItemMessage';
 import DecoButton from './components/DecoButton';
 import {
-  renderComposer,
-  renderInputToolbar,
   renderSend,
+  renderInputToolbar,
+  renderComposer,
 } from './components/InputToolbar';
-import {ItemMessage} from './components/ItemMessage';
-import {ModalEdit} from './components/ModalEdit';
 import {ModalPickFile} from './components/ModalPickFile';
-import {ModalPin} from './components/ModalPin';
-import {ModalQuote} from './components/ModalQuote';
-import {ModalReply} from './components/ModalReply';
+import {ShowPickedFile} from './components/ShowPickedFile';
+
 import {ModalStamp} from './components/ModalStamp';
+import {ModalReply} from './components/ModalReply';
+import {ModalQuote} from './components/ModalQuote';
+import {ModalEdit} from './components/ModalEdit';
+import {ModalPin} from './components/ModalPin';
 import {ModalTagName} from './components/ModalTagName';
 import {ModalTask} from './components/ModalTask';
 import {ModalUserList} from './components/ModalUserList';
-import {ShowPickedFile} from './components/ShowPickedFile';
-import {styles} from './styles';
-import {useFunction} from './useFunction';
+import {useSelector} from 'react-redux';
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -266,7 +265,7 @@ const DetailChat = (props: any) => {
   //Check phạm vi để gọi hàm loadmore
   const isCloseToTop = useCallback(
     ({layoutMeasurement, contentOffset, contentSize}: any) => {
-      const paddingToTop = IS_IOS ? -20 : 10;
+      const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
       return (
         contentSize.height - layoutMeasurement.height - paddingToTop <=
         contentOffset.y
@@ -415,14 +414,12 @@ const DetailChat = (props: any) => {
                           let mentionUserIds = [];
                           if (id === 'All') {
                             // メンション先のユーザ情報（ルームメンバー全員）
-                            const allMentionUsers = listUserChat.map(
-                              (el: any) => {
-                                return {
-                                  userId: el.id,
-                                  userName: el.last_name + el.first_name,
-                                };
-                              },
-                            );
+                            const allMentionUsers = listUserChat.map(el => {
+                              return {
+                                userId: el.id,
+                                userName: el.last_name + el.first_name,
+                              };
+                            });
                             // メンション先のユーザID（ルームメンバー全員）
                             mentionUserIds = allMentionUsers.map(
                               (user: {[x: string]: any}) => user.userId,
@@ -547,7 +544,7 @@ const DetailChat = (props: any) => {
                 end={{x: 0, y: 0}}
                 style={styles.containerChat}>
                 <TextInput
-                  editable={IS_ANDROID}
+                  editable={Platform.OS === 'android'}
                   multiline
                   scrollEnabled={true}
                   selectTextOnFocus={true}

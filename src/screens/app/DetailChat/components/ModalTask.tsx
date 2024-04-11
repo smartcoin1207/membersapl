@@ -1,29 +1,29 @@
-import {AppButton, AppInput} from '@component';
-import {IS_IOS} from '@constants/dimensions';
-import {iconClose} from '@images';
-import CheckBox from '@react-native-community/checkbox';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import {colors, stylesCommon} from '@stylesCommon';
-import {HITSLOP} from '@util';
-import moment from 'moment/moment';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
-  Image,
-  Keyboard,
-  Modal,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   View,
+  StyleSheet,
+  Modal,
+  Text,
+  TouchableOpacity,
+  Image,
+  StatusBar,
+  TextInput,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
 } from 'react-native';
-import {MultiSelect} from 'react-native-element-dropdown';
-import {getBottomSpace} from 'react-native-iphone-x-helper';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+import CheckBox from '@react-native-community/checkbox';
+import {AppButton, AppInput} from '@component';
+import {iconClose} from '@images';
+import {getBottomSpace} from 'react-native-iphone-x-helper';
+import {colors, stylesCommon} from '@stylesCommon';
+import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import {HITSLOP} from '@util';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {MultiSelect} from 'react-native-element-dropdown';
 import {Colors} from '../../Project/Task/component/Colors';
+import moment from 'moment/moment';
 
 type PropType = {
   onCancel: () => void;
@@ -78,7 +78,7 @@ const ModalTask = React.memo((prop: PropType) => {
       '-' +
       ('0' + currentDate.getDate()).slice(-2);
     setDate(formartedDate);
-    setShow1(IS_IOS);
+    setShow1(Platform.OS === 'ios');
   };
   const onChange2 = (event, selectedDate) => {
     const currentDate = selectedDate || date2;
@@ -89,7 +89,7 @@ const ModalTask = React.memo((prop: PropType) => {
       ('0' + currentDate.getMinutes()).slice(-2) +
       ':00';
     setTime(formartedTime);
-    setShow2(IS_IOS);
+    setShow2(Platform.OS === 'ios');
   };
 
   const showDatepicker = () => {

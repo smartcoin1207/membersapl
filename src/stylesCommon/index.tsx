@@ -1,4 +1,3 @@
-import {INTER_MEDIUM, INTER_SEMIBOLD} from '@constants/fonts';
 import {StyleSheet} from 'react-native';
 const GREY = {
   50: '#F4F2EF',
@@ -82,10 +81,10 @@ const stylesCommon = StyleSheet.create({
     backgroundColor: colors.white,
   },
   fontWeight500: {
-    fontFamily: INTER_MEDIUM,
+    fontFamily: 'Inter-Medium',
   },
   fontWeight600: {
-    fontFamily: INTER_SEMIBOLD,
+    fontFamily: 'Inter-SemiBold',
   },
 });
 

@@ -1,12 +1,11 @@
 import {number, ref, string} from 'yup';
-
-import {NON_NUMBER_REGEX} from '../../constants/regex';
 import {
   REQUIRED_ERROR,
   maxLengthString,
   minLengthString,
   nonNumberString,
 } from '../formError';
+import {NON_NUMBER_REGEX} from './regex';
 
 export const validateForm = () => {
   return {
@@ -19,7 +18,7 @@ export const validateForm = () => {
     last_name: string()
       .required(REQUIRED_ERROR)
       .matches(NON_NUMBER_REGEX, nonNumberString('氏名（姓）')),
-    addition: string().max(50, maxLengthString(50)),
+    addition: string().max(50, maxLengthString(50)).nullable(),
     email: string().required(REQUIRED_ERROR).email('電子メールが無効です'),
     confirmPassword: string()
       .required(REQUIRED_ERROR)

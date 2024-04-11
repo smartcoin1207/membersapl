@@ -1,11 +1,10 @@
-import {iconClose, iconQuote} from '@images';
-import {saveMessageQuote} from '@redux';
-import {colors, stylesCommon} from '@stylesCommon';
 import React, {useCallback} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector, useDispatch} from 'react-redux';
-
+import {iconClose, iconQuote} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {saveMessageQuote} from '@redux';
 import MessageInfo from '../components/MessageInfo';
 
 const ModalQuote = React.memo(() => {
