@@ -112,7 +112,7 @@ const ListChat = (props: any) => {
           }),
         );
       })();
-    }, [type_Filter, categoryID_Filter, dispatch, idCompany, key]),
+    }, [type_Filter, categoryID_Filter, dispatch, idCompany]),
   );
 
   const openScheme = useCallback(
@@ -198,7 +198,7 @@ const ListChat = (props: any) => {
             category_id: categoryID_Filter,
           }),
         ),
-      500,
+      250,
     ),
     [categoryID_Filter, dispatch, idCompany, page, type_Filter],
   );
