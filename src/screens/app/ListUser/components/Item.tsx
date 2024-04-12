@@ -1,6 +1,3 @@
-import {UserAddition} from '@component';
-import {defaultAvatar, iconPin, iconReload, iconRemove} from '@images';
-import {colors, stylesCommon} from '@stylesCommon';
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Menu} from 'react-native-material-menu';
@@ -10,6 +7,10 @@ import {
   scale,
   verticalScale,
 } from 'react-native-size-matters';
+
+import {UserAddition} from '@component';
+import {defaultAvatar, iconPin, iconReload, iconRemove} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 
 import {MenuOption} from './MenuOption';
 
