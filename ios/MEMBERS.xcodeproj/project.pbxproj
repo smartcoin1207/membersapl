@@ -11,6 +11,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		3937FF662BC7B4ED00C05D1A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 3937FF652BC7B4ED00C05D1A /* PrivacyInfo.xcprivacy */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		89B8A9D8515122A62155F922 /* libPods-MEMBERS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A492C31AFA85941F9A344C78 /* libPods-MEMBERS.a */; };
 		A531E71BAEE6A6BA165361FB /* libPods-MEMBERS-MEMBERSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2667B4AC037EF6C9367E5F9C /* libPods-MEMBERS-MEMBERSTests.a */; };
@@ -42,6 +43,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = MEMBERS/main.m; sourceTree = "<group>"; };
 		2667B4AC037EF6C9367E5F9C /* libPods-MEMBERS-MEMBERSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MEMBERS-MEMBERSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2CF38E69A016ED4D4053BA2D /* Pods-MEMBERS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEMBERS.release.xcconfig"; path = "Target Support Files/Pods-MEMBERS/Pods-MEMBERS.release.xcconfig"; sourceTree = "<group>"; };
+		3937FF652BC7B4ED00C05D1A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3BD806D1C9382E11B669E619 /* Pods-MEMBERS-MEMBERSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEMBERS-MEMBERSTests.debug.xcconfig"; path = "Target Support Files/Pods-MEMBERS-MEMBERSTests/Pods-MEMBERS-MEMBERSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		6A9BDEA0D185474F527C30B1 /* Pods-MEMBERS-MEMBERSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MEMBERS-MEMBERSTests.release.xcconfig"; path = "Target Support Files/Pods-MEMBERS-MEMBERSTests/Pods-MEMBERS-MEMBERSTests.release.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MEMBERS/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -124,6 +126,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				3937FF652BC7B4ED00C05D1A /* PrivacyInfo.xcprivacy */,
 				E1A490042AEF56E20008F781 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* MEMBERS */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -261,6 +264,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3937FF662BC7B4ED00C05D1A /* PrivacyInfo.xcprivacy in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				E1A490052AEF56E20008F781 /* GoogleService-Info.plist in Resources */,
@@ -492,7 +496,7 @@
 				CODE_SIGN_ENTITLEMENTS = MEMBERS/MEMBERS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 265;
+				CURRENT_PROJECT_VERSION = 270;
 				DEVELOPMENT_TEAM = K8PL42RGXD;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = MEMBERS/Info.plist;
@@ -500,7 +504,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.83;
+				MARKETING_VERSION = 1.2.84;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -526,14 +530,14 @@
 				CODE_SIGN_ENTITLEMENTS = MEMBERS/MEMBERS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 265;
+				CURRENT_PROJECT_VERSION = 270;
 				DEVELOPMENT_TEAM = K8PL42RGXD;
 				INFOPLIST_FILE = MEMBERS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.83;
+				MARKETING_VERSION = 1.2.84;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
