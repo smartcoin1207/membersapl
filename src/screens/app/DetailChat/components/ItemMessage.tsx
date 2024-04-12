@@ -330,8 +330,14 @@ const ItemMessage = React.memo((props: any) => {
     return (
       <View style={styles.senderInfo}>
         <Text style={styles.txtNameSend} numberOfLines={1}>
-          {user?.name ?? ''}{' '}
-          {user?.addition && <UserAddition content={user.addition} />}
+          {user?.name ?? ''}
+
+          {user?.addition && (
+            <>
+              <View style={{paddingLeft: scale(8)}} />
+              <UserAddition content={user.addition} />
+            </>
+          )}
         </Text>
       </View>
     );
