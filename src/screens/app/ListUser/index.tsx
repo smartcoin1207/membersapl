@@ -1,22 +1,23 @@
+import React, {useState, useCallback} from 'react';
+import {View, FlatList} from 'react-native';
+import {styles} from './styles';
 import {Header, ModalRemoveUser} from '@component';
 import {iconAddUser} from '@images';
+import {Item} from './components/Item';
 import {useFocusEffect} from '@react-navigation/native';
-import {useNavigation} from '@react-navigation/native';
+import {AppSocket} from '@util';
+
 import {getDetailMessageSocketSuccess} from '@redux';
-import {ROUTE_NAME} from '@routeName';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   getListUserOfRoomApi,
   GlobalService,
   removeUser,
   changeRole,
 } from '@services';
-import {AppSocket} from '@util';
-import React, {useState, useCallback} from 'react';
-import {View, FlatList} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
 
-import {Item} from './components/Item';
-import {styles} from './styles';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTE_NAME} from '@routeName';
 
 const ListUser = (props: any) => {
   const dispatch = useDispatch();
@@ -31,15 +32,15 @@ const ListUser = (props: any) => {
   const [idUser, setIdUser] = useState<any>(null);
   const [modal, setModal] = useState<boolean>(false);
 
-  const callApiChangeRole = async (value: any, userId: any) => {
+  const callApiChangeRole = async (value: any, idUser: any) => {
     try {
       GlobalService.showLoading();
       const body = {
         room_id: idRoomChat,
-        user_id: Math.abs(userId),
+        user_id: Math.abs(idUser),
         role: value,
       };
-      await changeRole(body);
+      const res = await changeRole(body);
       getListUserOfRoom();
       GlobalService.hideLoading();
     } catch {
@@ -59,7 +60,7 @@ const ListUser = (props: any) => {
         );
         onCancelModal();
       }}
-      changeRole={(value: any, userId: any) => callApiChangeRole(value, userId)}
+      changeRole={(value: any, idUser: any) => callApiChangeRole(value, idUser)}
       showChange={is_admin === 1 ? true : false}
     />
   );
