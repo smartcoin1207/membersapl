@@ -1,5 +1,3 @@
-import {defaultAvatar, iconTabChat, iconTabSetting, menuPinChat} from '@images';
-import {colors, stylesCommon} from '@stylesCommon';
 import React from 'react';
 import {
   Dimensions,
@@ -9,11 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
+import {defaultAvatar, iconTabChat, iconTabSetting, menuPinChat} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
+
 import {ROUTE_NAME} from '../navigation/routeName';
-import {initialWindowMetrics} from 'react-native-safe-area-context';
 
 const width = Dimensions.get('window').width;
 const active_color = colors.activeTab;

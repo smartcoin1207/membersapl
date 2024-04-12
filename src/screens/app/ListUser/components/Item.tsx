@@ -22,11 +22,7 @@ const Item = React.memo((props: any) => {
     switch (item?.is_admin) {
       case 1:
         return (
-          <View
-            style={[
-              styles.viewRole,
-              {backgroundColor: colors.deepOrange[200]},
-            ]}>
+          <View style={[styles.viewRole, {backgroundColor: '#FDEEEA'}]}>
             <Text style={styles.txtContent}>マスター</Text>
           </View>
         );
@@ -200,7 +196,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(10),
     marginTop: 6,
     borderRadius: 10,
-    backgroundColor: colors.grey[200],
+    backgroundColor: '#E7F6F6',
     justifyContent: 'center',
     alignItems: 'center',
   },

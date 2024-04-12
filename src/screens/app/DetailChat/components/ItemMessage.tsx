@@ -35,10 +35,10 @@ import {styles} from './stylesItem';
 import {ViewTask} from './ViewTask';
 import {ViewUserSeen} from './viewUserSeen';
 
-const colorCurrent = [colors.cyan[50], colors.cyan[100]];
-const color = [colors.yellow[100], colors.yellow[100]];
-const colorSelfMention = [colors.deepOrange[50], colors.deepOrange[50]];
-const colorReplyQuote = [colors.grey[150], colors.grey[150]];
+const colorCurrent = ['#CBEEF0', '#BFD6D8'];
+const color = ['#FDF5E6', '#FDF5E6'];
+const colorSelfMention = ['#FDE3E3', '#FDE3E3'];
+const colorReplyQuote = ['#DCDCDC', '#DCDCDC'];
 const width = Dimensions.get('window').width;
 
 const ItemMessage = React.memo((props: any) => {
@@ -220,7 +220,7 @@ const ItemMessage = React.memo((props: any) => {
               key={word + index}
               style={{
                 alignSelf: 'flex-start',
-                color: colors.blue[700],
+                color: '#3366CC',
                 fontWeight: 'bold',
               }}>
               {word}

@@ -1,12 +1,13 @@
+import React, {useCallback} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import {initialWindowMetrics} from 'react-native-safe-area-context';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+
 import {iconBack, iconBellSlash, logoImage} from '@images';
 import {useNavigation} from '@react-navigation/native';
 import {colors, stylesCommon} from '@stylesCommon';
 import {HITSLOP} from '@util';
-import React, {useCallback} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import {initialWindowMetrics} from 'react-native-safe-area-context';
-import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
 interface HeaderProps {
   title?: string;

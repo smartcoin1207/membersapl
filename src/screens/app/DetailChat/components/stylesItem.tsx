@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: scale(5),
     paddingVertical: scale(3),
     borderRadius: moderateScale(16),
-    backgroundColor: colors.grey.A200,
+    backgroundColor: '#DDDDDD',
     borderWidth: 1.5,
     borderColor: colors.white,
     alignItems: 'center',
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
   txtBoldAndBackGroundColor: {
     fontWeight: 'bold',
     fontSize: moderateScale(13),
-    backgroundColor: colors.grey.A400,
+    backgroundColor: '#bbbbbb',
   },
   bottomMenu: {
     marginTop: verticalScale(-100),
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   },
   decoContainer: {
     flexDirection: 'row',
-    backgroundColor: colors.grey.A100,
+    backgroundColor: '#f2f2f2',
     position: 'relative',
     paddingLeft: moderateScale(15),
     paddingBottom: moderateScale(30),
@@ -294,14 +294,14 @@ const styles = StyleSheet.create({
     width: moderateScale(56),
     height: moderateScale(32),
     backgroundColor: colors.white,
-    borderColor: colors.grey[250],
+    borderColor: '#D6D6D6',
     borderWidth: 1,
     borderRadius: 16,
     paddingVertical: 0,
     marginLeft: 5,
   },
   decoText: {
-    color: colors.grey[800],
+    color: '#444444',
     fontSize: moderateScale(14),
   },
 });

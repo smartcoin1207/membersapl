@@ -111,7 +111,7 @@ const User = () => {
       <View style={styles.container}>
         <ScrollView alwaysBounceVertical={false}>
           <LinearGradient
-            colors={[colors.primary, colors.grey[400]]}
+            colors={['#1AA1AA', '#989898']}
             style={styles.viewHeader}>
             <View style={styles.viewAvatar}>
               {user?.icon_image ? (

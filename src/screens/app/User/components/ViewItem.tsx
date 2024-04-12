@@ -38,9 +38,7 @@ const ViewItem = React.memo((props: ViewItemProps) => {
           <Image
             source={sourceImage}
             style={{
-              tintColor: isLogout
-                ? colors.deepOrange[700]
-                : colors.darkGrayText,
+              tintColor: isLogout ? '#EA5A31' : colors.darkGrayText,
               width: scale(25),
               height: scale(25),
             }}
@@ -108,7 +106,7 @@ const styles = StyleSheet.create({
     color: colors.backgroundTab,
   },
   txtContentLogout: {
-    color: colors.deepOrange[700],
+    color: '#EA5A31',
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(10),
   },
   viewTxtArray: {
-    backgroundColor: colors.yellow[700],
+    backgroundColor: '#F4A217',
     marginTop: verticalScale(6),
     marginRight: scale(6),
     paddingVertical: verticalScale(7),

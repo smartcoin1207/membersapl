@@ -537,7 +537,7 @@ export const useFunction = (props: any) => {
               key={word + index}
               style={{
                 alignSelf: 'flex-start',
-                color: colors.blue[700],
+                color: '#3366CC',
                 fontWeight: 'bold',
               }}>
               {word}
