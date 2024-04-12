@@ -92,24 +92,21 @@ const Item = React.memo((props: any) => {
         change_flag: 0,
         unread_count: 0,
         unread_mention: 0,
-        room_id: item.id,
+        room_id: item.id
       };
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
-          if (room.message_unread) sock_body.unread_count++;
-          if (room.message_mention_unread) sock_body.unread_mention++;
+          if(room.message_unread) sock_body.unread_count++;
+          if(room.message_mention_unread) sock_body.unread_mention++;
         }
       });
-      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
+      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする 
       sock_body.change_flag = sock_body.unread_count > 0 ? 1 : 0;
       socket.emit('change_browser_icon2', sock_body);
 
       notifee.getBadgeCount().then(async (count: any) => {
         if (count > 0 && item.message_unread > 0) {
-          const countMessage =
-            count - Number(item?.message_unread) > 0
-              ? count - Number(item?.message_unread)
-              : 0;
+          const countMessage = count - Number(item?.message_unread) > 0 ? count - Number(item?.message_unread) : 0;
           notifee.setBadgeCount(countMessage);
         }
         await dispatch(saveIdRoomChat(item?.id));
