@@ -1,12 +1,12 @@
-import {Formik} from 'formik';
 import React, {useCallback} from 'react';
-import {Text, View} from 'react-native';
+import {View, Text} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Formik} from 'formik';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {AppButton, AppInput, Header} from '@component';
 import {iconClose} from '@images';
-import {useNavigation} from '@react-navigation/native';
 import {saveInfoUser} from '@redux';
 import {GlobalService, updateProfile} from '@services';
 import {validationSchemaEmail, validationSchemaName} from '@util';

@@ -21,7 +21,6 @@ import {
   iconReply,
   iconXls,
 } from '@images';
-
 import {ROUTE_NAME} from '@routeName';
 import {colors} from '@stylesCommon';
 import {API_DOMAIN} from '@util';

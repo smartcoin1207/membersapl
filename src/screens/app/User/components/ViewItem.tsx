@@ -1,15 +1,18 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  type GestureResponderEvent,
+  type ImageSourcePropType,
+  type TextProps,
+} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconNext} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
-
-import type {
-  GestureResponderEvent,
-  ImageSourcePropType,
-  TextProps,
-} from 'react-native';
 
 type ViewItemProps = {
   sourceImage: ImageSourcePropType;

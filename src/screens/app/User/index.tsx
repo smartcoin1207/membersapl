@@ -1,18 +1,3 @@
-import {Header, ModalConfirm} from '@component';
-import {
-  defaultAvatar,
-  iconCamera,
-  iconCompany,
-  iconDelete,
-  iconEdit,
-  iconEmail,
-  iconPassword,
-} from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {getUserInfo, logOut, saveInfoUser} from '@redux';
-import {ROUTE_NAME} from '@routeName';
-import {GlobalService, deleteImageUser, updateImageProfile} from '@services';
-import {colors} from '@stylesCommon';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   Image,
@@ -23,9 +8,26 @@ import {
 } from 'react-native';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import {verticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
+
+import {Header, ModalConfirm} from '@component';
+import {
+  defaultAvatar,
+  iconCamera,
+  iconCompany,
+  iconDelete,
+  iconEdit,
+  iconEmail,
+  iconPassword,
+} from '@images';
+import {getUserInfo, logOut, saveInfoUser} from '@redux';
+import {ROUTE_NAME} from '@routeName';
+import {deleteImageUser, GlobalService, updateImageProfile} from '@services';
+import {colors} from '@stylesCommon';
+
 import {ViewItem} from './components/ViewItem';
 import {styles} from './styles';
 
