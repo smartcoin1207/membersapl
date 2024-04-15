@@ -59,9 +59,12 @@ const EditUser = ({route}: any) => {
       onBack();
       GlobalService.hideLoading();
     } catch (error: any) {
-      setErrors({
-        addition: error?.response?.data?.message,
-      });
+      const additionError = error?.response?.data?.data?.errors?.addition;
+      if (additionError) {
+        setErrors({
+          addition: additionError,
+        });
+      }
       GlobalService.hideLoading();
     }
   };

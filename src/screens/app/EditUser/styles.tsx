@@ -1,6 +1,7 @@
-import {stylesCommon, colors} from '@stylesCommon';
 import {StyleSheet} from 'react-native';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+
+import {stylesCommon, colors} from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
