@@ -1,13 +1,12 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useCallback} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {initialWindowMetrics} from 'react-native-safe-area-context';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
-
-import {iconBack, iconBellSlash, logoImage} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
+import {getStatusBarHeight, ifIphoneX} from 'react-native-iphone-x-helper';
+import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
+import {iconBack, iconBellSlash, logoImage} from '@images';
 import {HITSLOP} from '@util';
+import {useNavigation} from '@react-navigation/native';
 
 interface HeaderProps {
   title?: string;
@@ -114,7 +113,14 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(1),
   },
   viewHeader: {
-    paddingTop: initialWindowMetrics?.insets?.top || verticalScale(15),
+    ...ifIphoneX(
+      {
+        paddingTop: verticalScale(40),
+      },
+      {
+        paddingTop: getStatusBarHeight() + verticalScale(15),
+      },
+    ),
     paddingBottom: verticalScale(15),
     flexDirection: 'row',
     paddingHorizontal: scale(16),
