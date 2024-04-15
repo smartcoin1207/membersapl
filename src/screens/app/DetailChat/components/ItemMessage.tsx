@@ -333,7 +333,7 @@ const ItemMessage = React.memo((props: any) => {
 
           {user?.addition && (
             <>
-              <View style={{paddingLeft: scale(8)}} />
+              <View style={styles.spaceName} />
               <UserAddition content={user.addition} />
             </>
           )}

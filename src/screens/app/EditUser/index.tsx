@@ -12,6 +12,17 @@ import {GlobalService, updateProfile} from '@services';
 import {validationSchemaEmail, validationSchemaName} from '@util';
 
 import {styles} from './styles';
+import {isAxiosError} from 'src/util/axios';
+
+type ResponseErrorType = {
+  data: {
+    errors: {
+      addition?: string[];
+      first_name?: string[];
+      last_name?: string[];
+    };
+  };
+};
 
 type FormInputs =
   | {first_name: any; last_name: any; addition: any}
@@ -58,13 +69,20 @@ const EditUser = ({route}: any) => {
       dispatch(saveInfoUser(res?.data?.user_info));
       onBack();
       GlobalService.hideLoading();
-    } catch (error: any) {
-      const additionError = error?.response?.data?.data?.errors?.addition;
-      if (additionError) {
-        setErrors({
-          addition: additionError,
-        });
+    } catch (error) {
+      if (
+        isAxiosError<ResponseErrorType>(error) &&
+        error?.response?.status === 422
+      ) {
+        const additionError = error?.response?.data?.data?.errors?.addition;
+
+        if (additionError?.length) {
+          setErrors({
+            addition: additionError,
+          });
+        }
       }
+
       GlobalService.hideLoading();
     }
   };

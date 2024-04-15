@@ -88,10 +88,6 @@ const User = () => {
       .catch(err => {});
   };
 
-  const userNameAndAddition = `${user?.last_name} ${user?.first_name}${
-    user?.addition ? `・${user.addition}` : ''
-  }`;
-
   const deleteAvatar = useCallback(async () => {
     try {
       GlobalService.showLoading();
@@ -146,8 +142,7 @@ const User = () => {
           <ViewItem
             sourceImage={iconEdit}
             title="表示名・補足情報"
-            content={userNameAndAddition}
-            textContentProps={{numberOfLines: 1}}
+            content={`${user?.last_name} ${user?.first_name}`}
             onPress={() => {
               navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Name'});
             }}

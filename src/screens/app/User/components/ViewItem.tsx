@@ -7,7 +7,6 @@ import {
   View,
   type GestureResponderEvent,
   type ImageSourcePropType,
-  type TextProps,
 } from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
@@ -22,20 +21,11 @@ type ViewItemProps = {
   hideNext?: boolean;
   isLogout?: boolean;
   onPress?: ((event: GestureResponderEvent) => void) | undefined;
-  textContentProps?: TextProps;
 };
 
 const ViewItem = React.memo((props: ViewItemProps) => {
-  const {
-    sourceImage,
-    title,
-    content,
-    hideBorder,
-    hideNext,
-    isLogout,
-    onPress,
-    textContentProps = {},
-  } = props;
+  const {sourceImage, title, content, hideBorder, hideNext, isLogout, onPress} =
+    props;
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.viewContent}>
@@ -54,9 +44,7 @@ const ViewItem = React.memo((props: ViewItemProps) => {
             <>
               {title ? <Text style={styles.txtTitle}>{title}</Text> : null}
               {content ? (
-                <Text style={styles.txtContent} {...textContentProps}>
-                  {content}
-                </Text>
+                <Text style={styles.txtContent}>{content}</Text>
               ) : null}
             </>
           ) : (

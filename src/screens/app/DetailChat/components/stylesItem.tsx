@@ -304,6 +304,9 @@ const styles = StyleSheet.create({
     color: '#444444',
     fontSize: moderateScale(14),
   },
+  spaceName: {
+    paddingLeft: scale(8),
+  },
 });
 
 export {styles};
