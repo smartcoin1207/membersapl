@@ -1,8 +1,8 @@
-import React, {useCallback} from 'react';
-import {View, Text} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Formik} from 'formik';
 import {useNavigation} from '@react-navigation/native';
+import {Formik, type FormikConfig, type FormikValues} from 'formik';
+import React, {useCallback} from 'react';
+import {Text, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {AppButton, AppInput, Header} from '@component';
@@ -13,19 +13,23 @@ import {validationSchemaEmail, validationSchemaName} from '@util';
 
 import {styles} from './styles';
 
-const getInitialValues = (type: 'Name' | 'Email', user: any) => {
-  if (!user) {
-    return;
-  }
+type FormInputs =
+  | {first_name: any; last_name: any; addition: any}
+  | {email: any}
+  | undefined;
 
+const getInitialValues = (
+  type: 'Name' | 'Email',
+  user: any,
+): (FormikValues & FormInputs) & ((FormInputs & FormikValues) | undefined) => {
   const formInitialValuesName = {
-    first_name: user.first_name,
-    last_name: user.last_name,
-    addition: user.addition,
+    first_name: user?.first_name,
+    last_name: user?.last_name,
+    addition: user?.addition,
   };
 
   const formInitialValuesEmail = {
-    email: user.mail,
+    email: user?.mail,
   };
 
   return type === 'Name' ? formInitialValuesName : formInitialValuesEmail;
@@ -41,7 +45,9 @@ const EditUser = ({route}: any) => {
     navigation.goBack();
   }, []);
 
-  const handleSubmit = async (value: any) => {
+  const handleSubmit: FormikConfig<
+    FormikValues & FormInputs
+  >['onSubmit'] = async (value, {setErrors}) => {
     const body = {
       ...value,
       type: type === 'Email' ? 'email' : 'name',
@@ -52,7 +58,10 @@ const EditUser = ({route}: any) => {
       dispatch(saveInfoUser(res?.data?.user_info));
       onBack();
       GlobalService.hideLoading();
-    } catch {
+    } catch (error: any) {
+      setErrors({
+        addition: error?.response?.data?.message,
+      });
       GlobalService.hideLoading();
     }
   };
