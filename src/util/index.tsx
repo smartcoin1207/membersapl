@@ -4,3 +4,4 @@ export * from './WebSocketHandle'; //Config Socket
 export * from './FirebaseMessage'; //Config Firebase
 export * from './function'; //Config function logic common in app
 export * from './validations/editUser';
+export * from './axios';

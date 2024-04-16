@@ -9,10 +9,9 @@ import {AppButton, AppInput, Header} from '@component';
 import {iconClose} from '@images';
 import {saveInfoUser} from '@redux';
 import {GlobalService, updateProfile} from '@services';
-import {validationSchemaEmail, validationSchemaName} from '@util';
+import {validationSchemaEmail, validationSchemaName, isAxiosError} from '@util';
 
 import {styles} from './styles';
-import {isAxiosError} from 'src/util/axios';
 
 type ResponseErrorType = {
   data: {
