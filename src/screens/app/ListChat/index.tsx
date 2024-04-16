@@ -64,7 +64,6 @@ const ListChat = (props: any) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showSearchMessage, setShowSearchMessage] = useState(false);
   const [isLoadMore, setIsLoadMore] = useState(false);
-  const [isDebounceRequest, setisDebounceRequest] = useState(false);
   const {route} = props;
 
   useEffect(() => {
