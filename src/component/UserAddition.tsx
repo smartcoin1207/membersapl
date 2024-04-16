@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import {moderateScale} from 'react-native-size-matters';
 
+import {colors} from '@stylesCommon';
+
 const UserAddition = ({
   customStyle,
   content,
@@ -31,6 +33,6 @@ const styles = StyleSheet.create({
   txtAddition: {
     fontSize: moderateScale(9),
     letterSpacing: -0.18,
-    color: '#989898',
+    color: colors.border,
   },
 });

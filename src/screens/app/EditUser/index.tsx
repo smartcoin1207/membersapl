@@ -7,30 +7,16 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {AppButton, AppInput, Header} from '@component';
 import {iconClose} from '@images';
-import {saveInfoUser} from '@redux';
+import {type User, saveInfoUser, type StateRedux} from '@redux';
 import {GlobalService, updateProfile} from '@services';
-import {validationSchemaEmail, validationSchemaName, isAxiosError} from '@util';
+import {isAxiosError, validationSchemaEmail, validationSchemaName} from '@util';
 
 import {styles} from './styles';
-
-type ResponseErrorType = {
-  data: {
-    errors: {
-      addition?: string[];
-      first_name?: string[];
-      last_name?: string[];
-    };
-  };
-};
-
-type FormInputs =
-  | {first_name: any; last_name: any; addition: any}
-  | {email: any}
-  | undefined;
+import type {EditUserScreenProps, FormInputs, ResponseErrorType} from './type';
 
 const getInitialValues = (
   type: 'Name' | 'Email',
-  user: any,
+  user: User,
 ): (FormikValues & FormInputs) & ((FormInputs & FormikValues) | undefined) => {
   const formInitialValuesName = {
     first_name: user?.first_name,
@@ -45,11 +31,12 @@ const getInitialValues = (
   return type === 'Name' ? formInitialValuesName : formInitialValuesEmail;
 };
 
-const EditUser = ({route}: any) => {
+const EditUser = ({route}: EditUserScreenProps) => {
   const {type} = route?.params;
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state?.auth?.userInfo);
-  const navigation = useNavigation<any>();
+  const user = useSelector((state: StateRedux) => state?.auth?.userInfo);
+
+  const navigation = useNavigation();
 
   const onBack = useCallback(() => {
     navigation.goBack();
