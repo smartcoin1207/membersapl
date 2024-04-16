@@ -64,6 +64,7 @@ const ListChat = (props: any) => {
   const [showMenu, setShowMenu] = useState(false);
   const [showSearchMessage, setShowSearchMessage] = useState(false);
   const [isLoadMore, setIsLoadMore] = useState(false);
+  const [isDebounceRequest, setisDebounceRequest] = useState(false);
   const {route} = props;
 
   useEffect(() => {
@@ -102,17 +103,10 @@ const ListChat = (props: any) => {
         await dispatch(resetDataChat());
         await dispatch(saveListUserChat([]));
         setPage(1);
-        dispatch(
-          getRoomList({
-            key: key,
-            company_id: idCompany,
-            page: 1,
-            type: type_Filter,
-            category_id: categoryID_Filter,
-          }),
-        );
+        // 検索文字列入力時の遅延リクエストとkey変更検知による多重リクエスト対策
+        debounceText(key);
       })();
-    }, [type_Filter, categoryID_Filter, dispatch, idCompany]),
+    }, [type_Filter, categoryID_Filter, dispatch, idCompany, key]),
   );
 
   const openScheme = useCallback(
@@ -204,8 +198,8 @@ const ListChat = (props: any) => {
   );
 
   const onChangeText = (text: any) => {
-    setKey(text);
     debounceText(text);
+    setKey(text);
   };
 
   const renderItem = ({item, index}: any) => {
