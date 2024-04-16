@@ -198,8 +198,8 @@ const ListChat = (props: any) => {
   );
 
   const onChangeText = (text: any) => {
-    debounceText(text);
     setKey(text);
+    debounceText(text);
   };
 
   const renderItem = ({item, index}: any) => {
