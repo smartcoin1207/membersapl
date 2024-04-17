@@ -94,10 +94,7 @@ const EditUser = ({route}: EditUserScreenProps) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  {type === 'Name' &&
-                  'last_name' in props.values &&
-                  'first_name' in props.values &&
-                  'addition' in props.values ? (
+                  {type === 'Name' && 'last_name' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
