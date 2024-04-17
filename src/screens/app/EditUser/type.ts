@@ -9,15 +9,18 @@ export type ResponseErrorType = {
       addition?: string[];
       first_name?: string[];
       last_name?: string[];
-      email?: string;
+      email?: string[];
     };
   };
 };
 
 export type FormInputs =
-  | {first_name: string; last_name: string; addition?: string}
-  | {email: string}
-  | undefined;
+  | {
+      first_name: string;
+      last_name: string;
+      addition?: string;
+    }
+  | {email: string};
 
 export type EditUserScreenNavigationProps = NativeStackNavigationProp<
   MainStackParamList,

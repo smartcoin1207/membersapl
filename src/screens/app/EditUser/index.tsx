@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {Formik, type FormikConfig, type FormikValues} from 'formik';
+import {Formik, type FormikConfig} from 'formik';
 import React, {useCallback} from 'react';
 import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -7,17 +7,14 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {AppButton, AppInput, Header} from '@component';
 import {iconClose} from '@images';
-import {type User, saveInfoUser, type StateRedux} from '@redux';
+import {saveInfoUser, type StateRedux} from '@redux';
 import {GlobalService, updateProfile} from '@services';
 import {isAxiosError, validationSchemaEmail, validationSchemaName} from '@util';
 
 import {styles} from './styles';
 import type {EditUserScreenProps, FormInputs, ResponseErrorType} from './type';
 
-const getInitialValues = (
-  type: 'Name' | 'Email',
-  user: User,
-): (FormikValues & FormInputs) & ((FormInputs & FormikValues) | undefined) => {
+const getInitialValues = (type: 'Name' | 'Email', user: any) => {
   const formInitialValuesName = {
     first_name: user?.first_name,
     last_name: user?.last_name,
@@ -42,9 +39,10 @@ const EditUser = ({route}: EditUserScreenProps) => {
     navigation.goBack();
   }, []);
 
-  const handleSubmit: FormikConfig<
-    FormikValues & FormInputs
-  >['onSubmit'] = async (value, {setErrors}) => {
+  const handleSubmit: FormikConfig<FormInputs>['onSubmit'] = async (
+    value,
+    {setErrors},
+  ) => {
     const body = {
       ...value,
       type: type === 'Email' ? 'email' : 'name',
@@ -60,7 +58,8 @@ const EditUser = ({route}: EditUserScreenProps) => {
         isAxiosError<ResponseErrorType>(error) &&
         error?.response?.status === 422
       ) {
-        const additionError = error?.response?.data?.data?.errors?.addition;
+        const additionError =
+          error?.response?.data?.data?.errors?.addition?.join('、');
 
         if (additionError?.length) {
           setErrors({
@@ -96,21 +95,27 @@ const EditUser = ({route}: EditUserScreenProps) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  {type === 'Name' ? (
+                  {type === 'Name' &&
+                  'last_name' in props.values &&
+                  'first_name' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
                         placeholder="姓"
                         onChange={props.handleChange('last_name')}
                         value={props.values.last_name}
-                        error={props.errors.last_name}
+                        {...('last_name' in props.errors
+                          ? {error: props.errors.last_name}
+                          : {})}
                       />
                       <Text style={styles.txtTitle}>名</Text>
                       <AppInput
                         placeholder="名"
                         onChange={props.handleChange('first_name')}
                         value={props.values.first_name}
-                        error={props.errors.first_name}
+                        {...('first_name' in props.errors
+                          ? {error: props.errors.first_name}
+                          : {})}
                       />
 
                       <Text style={styles.txtTitle}>補足情報</Text>
@@ -118,19 +123,23 @@ const EditUser = ({route}: EditUserScreenProps) => {
                         placeholder="補足情報"
                         onChange={props.handleChange('addition')}
                         value={props.values.addition}
-                        error={props.errors.addition}
+                        {...('addition' in props.errors
+                          ? {error: props.errors.addition}
+                          : {})}
                       />
                     </>
                   ) : null}
 
-                  {type === 'Email' ? (
+                  {type === 'Email' && 'email' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>Eメール</Text>
                       <AppInput
                         placeholder="Eメール"
                         onChange={props.handleChange('email')}
                         value={props.values.email}
-                        error={props.errors.email}
+                        {...('email' in props.errors
+                          ? {error: props.errors.email}
+                          : {})}
                       />
                     </>
                   ) : null}

@@ -1,12 +1,5 @@
-import React, {useRef, useImperativeHandle, useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import React, {useRef, useImperativeHandle} from 'react';
+import {View, Text, TextInput, Image, TouchableOpacity} from 'react-native';
 import {colors, stylesCommon} from '@stylesCommon';
 import {ScaledSheet} from 'react-native-size-matters';
 import {iconTabChat} from '@images';
@@ -44,14 +37,8 @@ const AppInput = React.forwardRef((props: inputType, ref) => {
     showObtion,
     onShowOption,
   } = props;
-  const initSelection = {start: 0, end: 0};
 
   const refTextInput = useRef<any>(null);
-  const [enableInitSelection, setEnableInitSelection] = useState(true);
-
-  const handleFocus = () => {
-    setEnableInitSelection(false);
-  };
 
   useImperativeHandle(
     ref,
@@ -79,11 +66,6 @@ const AppInput = React.forwardRef((props: inputType, ref) => {
           secureTextEntry={secureTextEntry}
           multiline={multiline}
           maxLength={maxLength}
-          onFocus={handleFocus}
-          onBlur={() => setEnableInitSelection(true)}
-          {...(enableInitSelection && Platform.OS === 'android'
-            ? {selection: initSelection}
-            : {})}
         />
         {showObtion ? (
           <TouchableOpacity hitSlop={HITSLOP} onPress={onShowOption}>
