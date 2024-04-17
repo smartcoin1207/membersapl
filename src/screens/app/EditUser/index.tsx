@@ -122,7 +122,7 @@ const EditUser = ({route}: EditUserScreenProps) => {
                       <AppInput
                         placeholder="補足情報"
                         onChange={props.handleChange('addition')}
-                        value={props.values.addition ?? undefined}
+                        value={props.values.addition ?? ''}
                         {...('addition' in props.errors
                           ? {error: props.errors.addition}
                           : {})}
