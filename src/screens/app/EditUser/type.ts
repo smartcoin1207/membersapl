@@ -18,7 +18,7 @@ export type FormInputs =
   | {
       first_name: string;
       last_name: string;
-      addition?: string;
+      addition: string | null;
     }
   | {email: string};
 

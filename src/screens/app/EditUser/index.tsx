@@ -96,7 +96,8 @@ const EditUser = ({route}: EditUserScreenProps) => {
                   showsVerticalScrollIndicator={false}>
                   {type === 'Name' &&
                   'last_name' in props.values &&
-                  'first_name' in props.values ? (
+                  'first_name' in props.values &&
+                  'addition' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
@@ -121,7 +122,7 @@ const EditUser = ({route}: EditUserScreenProps) => {
                       <AppInput
                         placeholder="補足情報"
                         onChange={props.handleChange('addition')}
-                        value={props.values.addition}
+                        value={props.values.addition ?? undefined}
                         {...('addition' in props.errors
                           ? {error: props.errors.addition}
                           : {})}
