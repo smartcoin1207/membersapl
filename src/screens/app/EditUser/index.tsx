@@ -58,12 +58,11 @@ const EditUser = ({route}: EditUserScreenProps) => {
         isAxiosError<ResponseErrorType>(error) &&
         error?.response?.status === 422
       ) {
-        const additionError =
-          error?.response?.data?.data?.errors?.addition?.join('、');
+        const additionError = error?.response?.data?.data?.errors?.addition;
 
         if (additionError?.length) {
           setErrors({
-            addition: additionError,
+            addition: additionError.join('、'),
           });
         }
       }
