@@ -102,15 +102,8 @@ const ListChat = (props: any) => {
         await dispatch(resetDataChat());
         await dispatch(saveListUserChat([]));
         setPage(1);
-        dispatch(
-          getRoomList({
-            key: key,
-            company_id: idCompany,
-            page: 1,
-            type: type_Filter,
-            category_id: categoryID_Filter,
-          }),
-        );
+        // 検索文字列入力時の遅延リクエストとkey変更検知による多重リクエスト対策
+        debounceText(key);
       })();
     }, [type_Filter, categoryID_Filter, dispatch, idCompany, key]),
   );
@@ -198,7 +191,7 @@ const ListChat = (props: any) => {
             category_id: categoryID_Filter,
           }),
         ),
-      500,
+      250,
     ),
     [categoryID_Filter, dispatch, idCompany, page, type_Filter],
   );
