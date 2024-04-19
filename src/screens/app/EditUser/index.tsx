@@ -102,18 +102,22 @@ const EditUser = ({route}: EditUserScreenProps) => {
                         placeholder="姓"
                         onChange={props.handleChange('last_name')}
                         value={props.values.last_name}
-                        {...('last_name' in props.errors
-                          ? {error: props.errors.last_name}
-                          : {})}
+                        error={
+                          'last_name' in props.errors
+                            ? props.errors.last_name
+                            : ''
+                        }
                       />
                       <Text style={styles.txtTitle}>名</Text>
                       <AppInput
                         placeholder="名"
                         onChange={props.handleChange('first_name')}
                         value={props.values.first_name}
-                        {...('first_name' in props.errors
-                          ? {error: props.errors.first_name}
-                          : {})}
+                        error={
+                          'first_name' in props.errors
+                            ? props.errors.first_name
+                            : ''
+                        }
                       />
 
                       <Text style={styles.txtTitle}>補足情報</Text>
