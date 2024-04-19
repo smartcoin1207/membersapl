@@ -88,7 +88,6 @@ const EditUser = ({route}: EditUserScreenProps) => {
           validateOnChange={false}
           onSubmit={handleSubmit}>
           {props => {
-            console.log(props.errors);
             return (
               <View style={styles.linearGradient}>
                 <KeyboardAwareScrollView
