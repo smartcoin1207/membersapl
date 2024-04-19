@@ -52,7 +52,10 @@ const ModalSearchMessage = React.memo((prop: any) => {
       key: keySearch,
       idCompany: idCompany,
     };
-    callApiSearch(params);
+    if (visible) {
+      // メッセージ検索の時のみリクエストする
+      callApiSearch(params);
+    }
   }, [keySearch, visible]);
 
   const onClickItem = (value: any) => {
