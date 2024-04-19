@@ -62,7 +62,7 @@ const EditUser = ({route}: EditUserScreenProps) => {
 
         if (additionError?.length) {
           setErrors({
-            addition: additionError.join('、'),
+            addition: additionError.join(''),
           });
         }
       }
