@@ -88,6 +88,7 @@ const EditUser = ({route}: EditUserScreenProps) => {
           validateOnChange={false}
           onSubmit={handleSubmit}>
           {props => {
+            console.log(props.errors);
             return (
               <View style={styles.linearGradient}>
                 <KeyboardAwareScrollView
@@ -120,9 +121,11 @@ const EditUser = ({route}: EditUserScreenProps) => {
                         placeholder="補足情報"
                         onChange={props.handleChange('addition')}
                         value={props.values.addition ?? ''}
-                        {...('addition' in props.errors
-                          ? {error: props.errors.addition}
-                          : {})}
+                        error={
+                          'addition' in props.errors
+                            ? props.errors.addition
+                            : ''
+                        }
                       />
                     </>
                   ) : null}
@@ -134,9 +137,9 @@ const EditUser = ({route}: EditUserScreenProps) => {
                         placeholder="Eメール"
                         onChange={props.handleChange('email')}
                         value={props.values.email}
-                        {...('email' in props.errors
-                          ? {error: props.errors.email}
-                          : {})}
+                        error={
+                          'email' in props.errors ? props.errors.email : ''
+                        }
                       />
                     </>
                   ) : null}
