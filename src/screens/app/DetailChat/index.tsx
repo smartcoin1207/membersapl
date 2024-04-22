@@ -453,7 +453,7 @@ const DetailChat = (props: any) => {
                               inputText.length,
                             );
                             // 入力した@を@敬称名に置換
-                            const replacedText = `${before} @${value}${title} ${after}`;
+                            const replacedText = `${before} @${honorificTitle} ${after}`;
                             formatText(replacedText, true);
                             setInputText(replacedText);
                           }
