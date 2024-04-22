@@ -452,7 +452,7 @@ const DetailChat = (props: any) => {
                               inputIndex,
                               inputText.length,
                             );
-                            // 入力した@を@敬称名に置換
+                            // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
                             const replacedText = `${before} @${honorificTitle} ${after}`;
                             formatText(replacedText, true);
                             setInputText(replacedText);
