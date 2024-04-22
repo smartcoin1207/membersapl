@@ -1,11 +1,12 @@
-import { StyleSheet, Platform } from 'react-native';
+import {Platform, StyleSheet} from 'react-native';
 import {
-  scale,
-  verticalScale,
   moderateScale,
   moderateVerticalScale,
+  scale,
+  verticalScale,
 } from 'react-native-size-matters';
-import { colors, stylesCommon } from '@stylesCommon';
+
+import {colors, stylesCommon} from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(16),
     backgroundColor: '#DDDDDD',
     borderWidth: 1.5,
-    borderColor: '#FFFFFF',
+    borderColor: colors.white,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -219,8 +220,12 @@ const styles = StyleSheet.create({
     marginHorizontal: moderateScale(2),
     tintColor: colors.primary,
   },
-  txtNameSend: {
+  senderInfo: {
     marginLeft: scale(34),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  txtNameSend: {
     color: colors.border,
     fontSize: moderateScale(10),
     ...stylesCommon.fontWeight500,
@@ -252,7 +257,7 @@ const styles = StyleSheet.create({
     height: moderateScale(10),
   },
   containerMenuDelete: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 1,
@@ -274,7 +279,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: moderateScale(11),
     paddingHorizontal: moderateScale(10),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     ...stylesCommon.fontWeight500,
   },
   decoContainer: {
@@ -288,7 +293,7 @@ const styles = StyleSheet.create({
   decoButton: {
     width: moderateScale(56),
     height: moderateScale(32),
-    backgroundColor: '#ffffff',
+    backgroundColor: colors.white,
     borderColor: '#D6D6D6',
     borderWidth: 1,
     borderRadius: 16,
@@ -299,6 +304,9 @@ const styles = StyleSheet.create({
     color: '#444444',
     fontSize: moderateScale(14),
   },
+  spaceName: {
+    paddingLeft: scale(8),
+  },
 });
 
-export { styles };
+export {styles};

@@ -1,37 +1,35 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  ScrollView,
   Image,
-  TouchableOpacity,
   Platform,
+  ScrollView,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {styles} from './styles';
-import {Header} from '@component';
+import {showMessage} from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-crop-picker';
+import {useNavigation} from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
+import {verticalScale} from 'react-native-size-matters';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {Header, ModalConfirm} from '@component';
 import {
   defaultAvatar,
   iconCamera,
+  iconCompany,
   iconDelete,
   iconEdit,
   iconEmail,
   iconPassword,
-  iconCompany,
-  iconBookmark,
 } from '@images';
-import {ViewItem} from './components/ViewItem';
-import {ModalConfirm} from '@component';
-import {useDispatch, useSelector} from 'react-redux';
-import {logOut, saveInfoUser} from '@redux';
-import {useNavigation} from '@react-navigation/native';
+import {getUserInfo, logOut, saveInfoUser} from '@redux';
 import {ROUTE_NAME} from '@routeName';
+import {deleteImageUser, GlobalService, updateImageProfile} from '@services';
 import {colors} from '@stylesCommon';
-import ImagePicker from 'react-native-image-crop-picker';
-import {verticalScale} from 'react-native-size-matters';
-import {updateImageProfile, deleteImageUser, GlobalService} from '@services';
-import {showMessage} from 'react-native-flash-message';
-import {getUserInfo} from '@redux';
+
+import {ViewItem} from './components/ViewItem';
+import {styles} from './styles';
 
 const User = () => {
   const dispatch = useDispatch();
@@ -143,7 +141,7 @@ const User = () => {
           </LinearGradient>
           <ViewItem
             sourceImage={iconEdit}
-            title="表示名"
+            title="表示名・補足情報"
             content={`${user?.last_name} ${user?.first_name}`}
             onPress={() => {
               navigation.navigate(ROUTE_NAME.EDIT_USER, {type: 'Name'});

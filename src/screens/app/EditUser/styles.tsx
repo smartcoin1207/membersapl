@@ -1,6 +1,7 @@
 import {StyleSheet} from 'react-native';
-import {stylesCommon, colors} from '@stylesCommon';
 import {scale, moderateScale, verticalScale} from 'react-native-size-matters';
+
+import {stylesCommon, colors} from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
   },
   viewSelectUser: {
     padding: scale(10),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.border,
     marginTop: verticalScale(20),
@@ -59,18 +60,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   txtArray: {
-    color: '#FFFFFF',
+    color: colors.white,
     fontSize: moderateScale(16),
     ...stylesCommon.fontWeight500,
   },
   iconClose: {
     width: moderateScale(9),
     height: moderateScale(9),
-    tintColor: '#FFFFFF',
+    tintColor: colors.white,
     marginLeft: scale(9),
   },
   viewResultSearch: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     marginHorizontal: 5,
   },
   button: {
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   inputMultiline: {
     textAlign: 'right',
     textAlignVertical: 'top',
-    paddingTop: verticalScale(8)
+    paddingTop: verticalScale(8),
   },
 });
 

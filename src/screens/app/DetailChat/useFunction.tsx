@@ -1,49 +1,50 @@
-import React, {useMemo, useEffect, useState, useCallback, useRef} from 'react';
-import {store} from '../../../redux/store';
+import moment from 'moment/moment';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
+import DocumentPicker from 'react-native-document-picker';
+import {showMessage} from 'react-native-flash-message';
+import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
+import {useNavigation} from '@react-navigation/native';
+
 import {
-  getDetailListChat,
-  getListUserChat,
   deleteMessage,
-  pinMessage,
-  getDetailMessageSocketSuccess,
-  saveMessageReply,
-  saveMessageEdit,
-  saveMessageQuote,
   editMessageAction,
   fetchResultMessageActionListRoom,
-  saveIdMessageSearch,
+  getDetailListChat,
+  getDetailMessageSocketSuccess,
+  getListUserChat,
+  pinMessage,
   resetDataChat,
+  saveIdMessageSearch,
   saveIdRoomChat,
   saveIsGetInfoRoom,
-  updateMuteStatusRoom,
   saveListUserChat,
+  saveMessageEdit,
+  saveMessageQuote,
+  saveMessageReply,
+  updateMuteStatusRoom,
 } from '@redux';
+import {ROUTE_NAME} from '@routeName';
 import {
-  deleteMessageApi,
-  GlobalService,
-  detailRoomchat,
-  sendMessageApi,
-  pinMessageApi,
-  replyMessageApi,
-  editMessageApi,
-  sendReactionApi,
-  sendLabelApi,
   addBookmark,
   callApiChatBot,
+  deleteMessageApi,
+  detailRoomchat,
+  editMessageApi,
+  GlobalService,
+  pinMessageApi,
+  replyMessageApi,
   saveTask,
+  sendLabelApi,
+  sendMessageApi,
+  sendReactionApi,
   updateTask,
 } from '@services';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
-import {AppSocket, MESSAGE_RANGE_TYPE} from '@util';
-import ImagePicker from 'react-native-image-crop-picker';
-import DocumentPicker from 'react-native-document-picker';
-import {Platform, Text} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
-import {convertArrUnique} from '@util';
-import moment from 'moment/moment';
-import {Keyboard, KeyboardEvent} from 'react-native';
+import {colors} from '@stylesCommon';
+import {AppSocket, convertArrUnique, MESSAGE_RANGE_TYPE} from '@util';
+
+import {store} from '../../../redux/store';
 
 interface partCopyType {
   me: boolean;
@@ -156,6 +157,7 @@ export const useFunction = (props: any) => {
         name: message?.user_send
           ? `${message?.user_send?.last_name}${message?.user_send?.first_name}`
           : null,
+        addition: message?.user_send?.addition,
       },
       reaction: message?.reactions,
       msg_type: message?.msg_type,
@@ -1370,7 +1372,7 @@ export const useFunction = (props: any) => {
       GlobalService.hideLoading();
     } else if (idMessageSearch > 0) {
       const index = listChat.findIndex(
-        (element: any) => element?.id === Number(idMessageSearch)
+        (element: any) => element?.id === Number(idMessageSearch),
       );
       if (index && index >= 0) {
         try {
