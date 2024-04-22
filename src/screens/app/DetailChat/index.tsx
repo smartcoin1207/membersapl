@@ -103,6 +103,7 @@ const DetailChat = (props: any) => {
     selected,
     setSelected,
     setInputText,
+    inputText,
     textSelection,
     onDecoSelected,
     keyboardHeight,
@@ -439,22 +440,22 @@ const DetailChat = (props: any) => {
                           setIds(ids?.concat(mentionUserIds));
 
                           if (value) {
-                            mentionedUsers.push('@' + value + title);
+                            // 敬称名
+                            const honorificTitle = value + title;
+                            // メンション先に追加
+                            mentionedUsers.push('@' + honorificTitle);
                             mentionedUsers.push('@' + value);
-                            const wordBeforeMention = getText(formattedText)
-                              ? getText(formattedText)
-                              : ' ';
-                            //前のテキストと今のテキストの違いをみつけてそれが@のみのはずなので、その@の位置にinsertする
-                            const first = wordBeforeMention.substring(
-                              0,
+                            // @の入力位置の前までの文字列を切り出す
+                            const before = inputText.slice(0, inputIndex - 1);
+                            // @の入力位置より後の文字を切り出す
+                            const after = inputText.slice(
                               inputIndex,
+                              inputText.length,
                             );
-                            const second = wordBeforeMention.substring(
-                              inputIndex + 1,
-                            );
-                            const newText = `${first} @${value}${title} ${second}`;
-                            formatText(newText, true);
-                            setInputText(newText);
+                            // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
+                            const replacedText = `${before} @${honorificTitle} ${after}`;
+                            formatText(replacedText, true);
+                            setInputText(replacedText);
                           }
                         }}
                       />
