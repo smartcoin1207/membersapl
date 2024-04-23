@@ -35,7 +35,7 @@ const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
   const {item, idRoomChat} = props;
   const [pin, setStatusPin] = useState<number | null>(null);
-  const [noIdRoomChatFlg, setNoIdRoomChatFlg] = useState<boolean>(false);
+  const [, setNoIdRoomChatFlg] = useState<boolean>(false);
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
 
@@ -92,21 +92,28 @@ const Item = React.memo((props: any) => {
         change_flag: 0,
         unread_count: 0,
         unread_mention: 0,
-        room_id: item.id
+        room_id: item.id,
       };
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
-          if(room.message_unread) sock_body.unread_count++;
-          if(room.message_mention_unread) sock_body.unread_mention++;
+          if (room.message_unread) {
+            sock_body.unread_count++;
+          }
+          if (room.message_mention_unread) {
+            sock_body.unread_mention++;
+          }
         }
       });
-      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする 
+      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
       sock_body.change_flag = sock_body.unread_count > 0 ? 1 : 0;
       socket.emit('change_browser_icon2', sock_body);
 
       notifee.getBadgeCount().then(async (count: any) => {
         if (count > 0 && item.message_unread > 0) {
-          const countMessage = count - Number(item?.message_unread) > 0 ? count - Number(item?.message_unread) : 0;
+          const countMessage =
+            count - Number(item?.message_unread) > 0
+              ? count - Number(item?.message_unread)
+              : 0;
           notifee.setBadgeCount(countMessage);
         }
         await dispatch(saveIdRoomChat(item?.id));
@@ -288,19 +295,7 @@ const Item = React.memo((props: any) => {
           ) : (
             <View style={styles.viewBellSlash} />
           )}
-          <View
-            style={
-              unreadMessageCount > 0 ? styles.viewUnread : styles.viewDefault
-            }>
-            {unreadMessageCount > 0 && (
-              <Text style={styles.txtMessageUnread} numberOfLines={1}>
-                {unreadMessageCount > 9 ? '9+' : unreadMessageCount}
-              </Text>
-            )}
-            {item?.message_mention_unread === true && (
-              <View style={styles.viewActiveTag} />
-            )}
-          </View>
+
           <TouchableOpacity hitSlop={HITSLOP} onPress={onPinRoomChat}>
             <Image
               source={iconPin}
@@ -310,7 +305,27 @@ const Item = React.memo((props: any) => {
               }}
             />
           </TouchableOpacity>
-          <Image source={iconNext} />
+
+          <View
+            style={
+              unreadMessageCount > 0 ? styles.viewUnread : styles.viewDefault
+            }>
+            {unreadMessageCount > 0 && (
+              <Text style={styles.txtMessageUnread} numberOfLines={1}>
+                {unreadMessageCount > 9 ? '9+' : unreadMessageCount}
+              </Text>
+            )}
+
+            {item?.message_mention_unread === true && (
+              <View style={styles.viewActiveTag} />
+            )}
+          </View>
+
+          {unreadMessageCount > 0 ? (
+            <Image source={iconNext} style={styles.viewNext} />
+          ) : (
+            <View style={styles.viewNext} />
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -431,6 +446,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     top: -2,
     right: -2,
+  },
+  viewNext: {
+    width: moderateScale(8),
+    height: moderateScale(14),
   },
 });
 
