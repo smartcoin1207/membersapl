@@ -72,7 +72,12 @@ const Item = React.memo((props: any) => {
               </Text>
             )}
 
-            {!!item?.addition && <UserAddition content={item.addition} />}
+            {!!item?.addition && (
+              <UserAddition
+                content={item.addition}
+                customStyle={styles.additionText}
+              />
+            )}
           </>
 
           {renderViewRole()}
@@ -214,6 +219,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
     elevation: 3,
+  },
+  additionText: {
+    fontSize: moderateScale(12),
   },
 });
 

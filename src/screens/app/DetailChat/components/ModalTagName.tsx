@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
     maxWidth: '90%',
   },
   txtAddition: {
-    marginTop: verticalScale(4),
+    fontSize: moderateScale(10),
     maxWidth: '90%',
   },
 });
