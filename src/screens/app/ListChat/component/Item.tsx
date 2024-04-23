@@ -3,7 +3,6 @@ import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
 import {
-  iconNext,
   defaultAvatar,
   iconPin,
   iconFile,
@@ -320,12 +319,6 @@ const Item = React.memo((props: any) => {
               <View style={styles.viewActiveTag} />
             )}
           </View>
-
-          {unreadMessageCount > 0 ? (
-            <Image source={iconNext} style={styles.viewNext} />
-          ) : (
-            <View style={styles.viewNext} />
-          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -351,11 +344,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   viewTxt: {
-    width: '50%',
+    width: '55%',
     justifyContent: 'center',
   },
   viewImageNext: {
-    width: '30%',
+    width: '25%',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -446,10 +439,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     top: -2,
     right: -2,
-  },
-  viewNext: {
-    width: moderateScale(8),
-    height: moderateScale(14),
   },
 });
 
