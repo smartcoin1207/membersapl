@@ -326,8 +326,8 @@ const Item = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: scale(10),
-    paddingRight: scale(8),
+    paddingLeft: 0,
+    paddingRight: scale(2),
   },
   viewContent: {
     paddingBottom: verticalScale(12),
@@ -338,16 +338,16 @@ const styles = StyleSheet.create({
     height: 1,
   },
   viewImage: {
-    width: '20%',
+    width: '17%',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   viewTxt: {
-    width: '55%',
+    width: '61%',
     justifyContent: 'center',
   },
   viewImageNext: {
-    width: '25%',
+    width: '22%',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
