@@ -299,8 +299,7 @@ const Item = React.memo((props: any) => {
             <Image
               source={iconPin}
               style={{
-                tintColor:
-                  Number(pin ?? 0) === 1 ? colors.secondPrimary : colors.border,
+                tintColor: pin === 1 ? colors.secondPrimary : colors.border,
               }}
             />
           </TouchableOpacity>
