@@ -166,6 +166,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#787878',
     opacity: 0.9,
   },
+  activeSendButton: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#1EB7C1',
+    width: scale(30),
+    height: scale(30),
+    borderRadius: scale(21),
+  },
 });
 
 export {styles};

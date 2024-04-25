@@ -1,45 +1,44 @@
 import React, {useCallback, useRef} from 'react';
 import {
-  View,
   Image,
+  Keyboard,
   Platform,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TextInput,
-  Keyboard,
+  View,
 } from 'react-native';
-import {styles} from './styles';
+import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
+
 import {Header} from '@component';
 import {
-  iconSearch,
-  iconUpload,
-  iconLike,
   iconDetail,
+  iconSearch,
   iconSend,
-  iconTask,
+  iconSendActive,
+  iconUpload,
 } from '@images';
-import {useFunction} from './useFunction';
-import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
-import LinearGradient from 'react-native-linear-gradient';
-import {ItemMessage} from './components/ItemMessage';
-import DecoButton from './components/DecoButton';
+
+import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import {
-  renderSend,
-  renderInputToolbar,
   renderComposer,
+  renderInputToolbar,
+  renderSend,
 } from './components/InputToolbar';
+import {ItemMessage} from './components/ItemMessage';
 import {ModalPickFile} from './components/ModalPickFile';
 import {ShowPickedFile} from './components/ShowPickedFile';
-
-import {ModalStamp} from './components/ModalStamp';
-import {ModalReply} from './components/ModalReply';
-import {ModalQuote} from './components/ModalQuote';
+import {styles} from './styles';
+import {useFunction} from './useFunction';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPin} from './components/ModalPin';
+import {ModalQuote} from './components/ModalQuote';
+import {ModalReply} from './components/ModalReply';
+import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
 import {ModalTask} from './components/ModalTask';
 import {ModalUserList} from './components/ModalUserList';
-import {useSelector} from 'react-redux';
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -92,7 +91,6 @@ const DetailChat = (props: any) => {
     idRedLine,
     navigateToMessage,
     indexRedLine,
-    onCreateTask,
     setShowTaskForm,
     showTaskForm,
     onSaveTask,
@@ -141,8 +139,7 @@ const DetailChat = (props: any) => {
         <>
           {showSendMessageButton && (
             <>
-              {inputProps.formattedText?.length > 0 ||
-              chosenFiles.length > 0 ? (
+              {
                 <Actions
                   {...inputProps}
                   containerStyle={styles.buttonRight}
@@ -157,28 +154,29 @@ const DetailChat = (props: any) => {
                     sendMessage(messages);
                     setFormattedText([]);
                   }}
-                  icon={() => <Image source={iconSend} />}
+                  icon={() =>
+                    inputProps.formattedText?.length > 0 ||
+                    chosenFiles.length > 0 ? (
+                      <View style={styles.activeSendButton}>
+                        <Image source={iconSendActive} />
+                      </View>
+                    ) : (
+                      <Image source={iconSend} />
+                    )
+                  }
                 />
-              ) : (
-                <Actions
-                  {...inputProps}
-                  containerStyle={styles.buttonRight}
-                  onPressActionButton={() => sendLabel(1)}
-                  icon={() => <Image source={iconLike} />}
-                />
-              )}
+              }
             </>
           )}
         </>
       );
     },
     [
-      chosenFiles,
       getText,
-      sendLabel,
       sendMessage,
       setFormattedText,
       showSendMessageButton,
+      chosenFiles.length,
     ],
   );
 
@@ -343,12 +341,12 @@ const DetailChat = (props: any) => {
           }}
           textSelection={textSelection}
           messages={getConvertedMessages(listChat)}
-          onSend={() => {
-            showModalStamp();
-          }}
+          onSend={showModalStamp}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={renderInputToolbar}
+          renderInputToolbar={toolbarProps =>
+            renderInputToolbar({...toolbarProps, onDecoSelected})
+          }
           renderComposer={renderComposer}
           user={chatUser}
           renderSend={renderSend}
@@ -415,12 +413,14 @@ const DetailChat = (props: any) => {
                           let mentionUserIds = [];
                           if (id === 'All') {
                             // メンション先のユーザ情報（ルームメンバー全員）
-                            const allMentionUsers = listUserChat.map(el => {
-                              return {
-                                userId: el.id,
-                                userName: el.last_name + el.first_name,
-                              };
-                            });
+                            const allMentionUsers = listUserChat.map(
+                              (el: any) => {
+                                return {
+                                  userId: el.id,
+                                  userName: el.last_name + el.first_name,
+                                };
+                              },
+                            );
                             // メンション先のユーザID（ルームメンバー全員）
                             mentionUserIds = allMentionUsers.map(
                               (user: {[x: string]: any}) => user.userId,
@@ -481,25 +481,10 @@ const DetailChat = (props: any) => {
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
         />
-        <DecoButton onDecoSelected={onDecoSelected} />
+
         {chosenFiles.length > 0 && (
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}
-        {/* create task icon */}
-        <View
-          style={
-            keyboardHeight === 0 && chosenFiles.length === 0
-              ? styles.viewTask
-              : chosenFiles.length > 0 && keyboardHeight === 0
-              ? styles.viewTaskWithFiles
-              : keyboardHeight > 0 && chosenFiles.length === 0
-              ? styles.viewTaskWithKeyboard
-              : styles.viewTaskWithKeyboardFiles
-          }>
-          <TouchableOpacity onPress={onCreateTask}>
-            <Image source={iconTask} style={styles.imageTask} />
-          </TouchableOpacity>
-        </View>
       </View>
       {showTaskForm && (
         <ModalTask

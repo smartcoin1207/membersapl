@@ -1,10 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
-import {Image, StyleSheet, Platform, View, Text, TextInput, ScrollView} from 'react-native';
-import {InputToolbar, Actions, Composer, Send} from 'react-native-gifted-chat';
-import {iconEmoji} from '@images';
+import React from 'react';
+import {
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  View,
+} from 'react-native';
+import {InputToolbar, Send} from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+
+import {iconEmoji} from '@images';
 import {colors} from '@stylesCommon';
-import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
 
 export const renderSend = (props: any) => {
   return (
@@ -27,7 +35,7 @@ export const renderInputToolbar = (props: any) => {
       <InputToolbar
         {...props}
         containerStyle={styles.toolBar}
-        primaryStyle={{alignItems: 'center'}}
+        primaryStyle={styles.toolbarPrimaryStyle}
       />
     </>
   );
@@ -105,11 +113,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-
-  sendIconStyle: {
-    height: 30,
-    width: 30,
-  },
   composerContainer: {
     width: '80%',
     height: 55,
@@ -142,5 +145,8 @@ const styles = StyleSheet.create({
   sendContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  toolbarPrimaryStyle: {
+    flexDirection: 'row',
   },
 });
