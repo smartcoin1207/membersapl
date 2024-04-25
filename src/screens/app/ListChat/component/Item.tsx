@@ -3,7 +3,6 @@ import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {colors, stylesCommon} from '@stylesCommon';
 import {
-  iconNext,
   defaultAvatar,
   iconPin,
   iconFile,
@@ -35,7 +34,7 @@ const Item = React.memo((props: any) => {
   const navigation = useNavigation<any>();
   const {item, idRoomChat} = props;
   const [pin, setStatusPin] = useState<number | null>(null);
-  const [noIdRoomChatFlg, setNoIdRoomChatFlg] = useState<boolean>(false);
+  const [, setNoIdRoomChatFlg] = useState<boolean>(false);
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
 
@@ -92,21 +91,28 @@ const Item = React.memo((props: any) => {
         change_flag: 0,
         unread_count: 0,
         unread_mention: 0,
-        room_id: item.id
+        room_id: item.id,
       };
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
-          if(room.message_unread) sock_body.unread_count++;
-          if(room.message_mention_unread) sock_body.unread_mention++;
+          if (room.message_unread) {
+            sock_body.unread_count++;
+          }
+          if (room.message_mention_unread) {
+            sock_body.unread_mention++;
+          }
         }
       });
-      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする 
+      // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
       sock_body.change_flag = sock_body.unread_count > 0 ? 1 : 0;
       socket.emit('change_browser_icon2', sock_body);
 
       notifee.getBadgeCount().then(async (count: any) => {
         if (count > 0 && item.message_unread > 0) {
-          const countMessage = count - Number(item?.message_unread) > 0 ? count - Number(item?.message_unread) : 0;
+          const countMessage =
+            count - Number(item?.message_unread) > 0
+              ? count - Number(item?.message_unread)
+              : 0;
           notifee.setBadgeCount(countMessage);
         }
         await dispatch(saveIdRoomChat(item?.id));
@@ -288,6 +294,16 @@ const Item = React.memo((props: any) => {
           ) : (
             <View style={styles.viewBellSlash} />
           )}
+
+          <TouchableOpacity hitSlop={HITSLOP} onPress={onPinRoomChat}>
+            <Image
+              source={iconPin}
+              style={{
+                tintColor: pin === 1 ? colors.secondPrimary : colors.border,
+              }}
+            />
+          </TouchableOpacity>
+
           <View
             style={
               unreadMessageCount > 0 ? styles.viewUnread : styles.viewDefault
@@ -297,20 +313,11 @@ const Item = React.memo((props: any) => {
                 {unreadMessageCount > 9 ? '9+' : unreadMessageCount}
               </Text>
             )}
+
             {item?.message_mention_unread === true && (
               <View style={styles.viewActiveTag} />
             )}
           </View>
-          <TouchableOpacity hitSlop={HITSLOP} onPress={onPinRoomChat}>
-            <Image
-              source={iconPin}
-              style={{
-                tintColor:
-                  Number(pin ?? 0) === 1 ? colors.secondPrimary : colors.border,
-              }}
-            />
-          </TouchableOpacity>
-          <Image source={iconNext} />
         </View>
       </View>
     </TouchableOpacity>
@@ -319,8 +326,8 @@ const Item = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: scale(10),
-    paddingRight: scale(8),
+    paddingLeft: 0,
+    paddingRight: scale(2),
   },
   viewContent: {
     paddingBottom: verticalScale(12),
@@ -331,16 +338,16 @@ const styles = StyleSheet.create({
     height: 1,
   },
   viewImage: {
-    width: '20%',
+    width: '17%',
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
   viewTxt: {
-    width: '50%',
+    width: '61%',
     justifyContent: 'center',
   },
   viewImageNext: {
-    width: '30%',
+    width: '22%',
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',

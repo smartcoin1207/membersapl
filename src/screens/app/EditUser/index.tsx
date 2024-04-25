@@ -1,49 +1,48 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text} from 'react-native';
-import {styles} from './styles';
-import {Header, AppInput, AppButton} from '@component';
-import {iconClose} from '@images';
-import {colors} from '@stylesCommon';
 import {useNavigation} from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-import {useSelector, useDispatch} from 'react-redux';
+import {Formik, type FormikConfig} from 'formik';
+import React, {useCallback} from 'react';
+import {Text, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-import {Formik} from 'formik';
-import * as yup from 'yup';
-import {validateForm} from '@util';
-import {saveInfoUser} from '@redux';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {AppButton, AppInput, Header} from '@component';
+import {iconClose} from '@images';
+import {saveInfoUser, type StateRedux} from '@redux';
 import {GlobalService, updateProfile} from '@services';
+import {isAxiosError, validationSchemaEmail, validationSchemaName} from '@util';
 
-const EditUser = (props: any) => {
-  const {route} = props;
-  const {type} = route?.params;
-  const dispatch = useDispatch();
-  const user = useSelector((state: any) => state?.auth?.userInfo);
-  const navigation = useNavigation<any>();
+import {styles} from './styles';
+import type {EditUserScreenProps, FormInputs, ResponseErrorType} from './type';
 
+const getInitialValues = (type: 'Name' | 'Email', user: any) => {
   const formInitialValuesName = {
     first_name: user?.first_name,
     last_name: user?.last_name,
+    addition: user?.addition,
   };
 
   const formInitialValuesEmail = {
     email: user?.mail,
   };
 
-  const validationSchemaName = yup.object().shape({
-    first_name: validateForm().first_name,
-    last_name: validateForm().last_name,
-  });
+  return type === 'Name' ? formInitialValuesName : formInitialValuesEmail;
+};
 
-  const validationSchemaEmail = yup.object().shape({
-    email: validateForm().email,
-  });
+const EditUser = ({route}: EditUserScreenProps) => {
+  const {type} = route?.params;
+  const dispatch = useDispatch();
+  const user = useSelector((state: StateRedux) => state?.auth?.userInfo);
+
+  const navigation = useNavigation();
 
   const onBack = useCallback(() => {
     navigation.goBack();
   }, []);
 
-  const handleSubmit = async (value: any) => {
+  const handleSubmit: FormikConfig<FormInputs>['onSubmit'] = async (
+    value,
+    {setErrors},
+  ) => {
     const body = {
       ...value,
       type: type === 'Email' ? 'email' : 'name',
@@ -54,7 +53,20 @@ const EditUser = (props: any) => {
       dispatch(saveInfoUser(res?.data?.user_info));
       onBack();
       GlobalService.hideLoading();
-    } catch {
+    } catch (error) {
+      if (
+        isAxiosError<ResponseErrorType>(error) &&
+        error?.response?.status === 422
+      ) {
+        const additionError = error?.response?.data?.data?.errors?.addition;
+
+        if (additionError?.length) {
+          setErrors({
+            addition: additionError.join(''),
+          });
+        }
+      }
+
       GlobalService.hideLoading();
     }
   };
@@ -69,9 +81,7 @@ const EditUser = (props: any) => {
       />
       <View style={styles.viewContent}>
         <Formik
-          initialValues={
-            type === 'Name' ? formInitialValuesName : formInitialValuesEmail
-          }
+          initialValues={getInitialValues(type, user)}
           validationSchema={
             type === 'Name' ? validationSchemaName : validationSchemaEmail
           }
@@ -84,41 +94,59 @@ const EditUser = (props: any) => {
                   alwaysBounceVertical={false}
                   style={styles.viewForm}
                   showsVerticalScrollIndicator={false}>
-                  {type === 'Name' ? (
+                  {type === 'Name' && 'last_name' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>姓</Text>
                       <AppInput
                         placeholder="姓"
                         onChange={props.handleChange('last_name')}
-                        //@ts-ignore
                         value={props.values.last_name}
-                        //@ts-ignore
-                        error={props.errors.last_name}
+                        error={
+                          'last_name' in props.errors
+                            ? props.errors.last_name
+                            : ''
+                        }
                       />
                       <Text style={styles.txtTitle}>名</Text>
                       <AppInput
                         placeholder="名"
                         onChange={props.handleChange('first_name')}
-                        //@ts-ignore
                         value={props.values.first_name}
-                        //@ts-ignore
-                        error={props.errors.first_name}
+                        error={
+                          'first_name' in props.errors
+                            ? props.errors.first_name
+                            : ''
+                        }
+                      />
+
+                      <Text style={styles.txtTitle}>補足情報</Text>
+                      <AppInput
+                        placeholder="補足情報"
+                        onChange={props.handleChange('addition')}
+                        value={props.values.addition ?? ''}
+                        error={
+                          'addition' in props.errors
+                            ? props.errors.addition
+                            : ''
+                        }
                       />
                     </>
                   ) : null}
-                  {type === 'Email' ? (
+
+                  {type === 'Email' && 'email' in props.values ? (
                     <>
                       <Text style={styles.txtTitle}>Eメール</Text>
                       <AppInput
                         placeholder="Eメール"
                         onChange={props.handleChange('email')}
-                        //@ts-ignore
                         value={props.values.email}
-                        //@ts-ignore
-                        error={props.errors.email}
+                        error={
+                          'email' in props.errors ? props.errors.email : ''
+                        }
                       />
                     </>
                   ) : null}
+
                   <AppButton
                     title="アップデート"
                     onPress={props.handleSubmit}

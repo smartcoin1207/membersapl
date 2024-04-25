@@ -58,7 +58,7 @@ const InfoRoomChat = (props: any) => {
       GlobalService.showLoading();
       const response = await detailRoomchat(idRoomChat);
       setData(response?.data?.room);
-    } catch (e) {
+    } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
       }
@@ -138,7 +138,7 @@ const InfoRoomChat = (props: any) => {
         type: 'success',
       });
       getDetail();
-    } catch (e) {
+    } catch (error) {
       if (error instanceof Error) {
         console.error(error.message);
       }

@@ -1,17 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {
-  StyleSheet,
-  View,
-  Text,
   Dimensions,
   FlatList,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
-import {colors, stylesCommon} from '@stylesCommon';
 import FastImage from 'react-native-fast-image';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
+
+import {UserAddition} from '@component';
 import {defaultAvatar} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 
 const width = Dimensions.get('window').width;
 
@@ -35,6 +37,7 @@ const ModalTagName = React.memo((props: any) => {
         };
       }),
     ];
+
     setDataLocal(dataAddAll);
   }, [listUserChat]);
 
@@ -56,7 +59,9 @@ const ModalTagName = React.memo((props: any) => {
         {item?.id === 'All' ? (
           <>
             <FastImage source={defaultAvatar} style={styles.imageIconTag} />
-            <Text style={styles.txtTitle} numberOfLines={2}>
+            <Text
+              style={[styles.txtTitle, styles.viewItemContent]}
+              numberOfLines={2}>
               <Text style={styles.txtTitle} numberOfLines={2}>
                 {item?.last_name}
                 {item?.first_name}
@@ -77,16 +82,25 @@ const ModalTagName = React.memo((props: any) => {
               }
               style={styles.image}
             />
-            {item?.id < 0 ? (
-              <Text style={styles.txtTitle} numberOfLines={2}>
-                {item?.name}
-              </Text>
-            ) : (
-              <Text style={styles.txtTitle} numberOfLines={2}>
-                {item?.last_name}
-                {item?.first_name}
-              </Text>
-            )}
+            <View style={styles.viewItemContent}>
+              {item?.id < 0 ? (
+                <Text style={styles.txtTitle} numberOfLines={2}>
+                  {item?.name}
+                </Text>
+              ) : (
+                <Text style={styles.txtTitle} numberOfLines={2}>
+                  {item?.last_name}
+                  {item?.first_name}
+                </Text>
+              )}
+
+              {!!item?.addition && (
+                <UserAddition
+                  content={item.addition}
+                  customStyle={styles.txtAddition}
+                />
+              )}
+            </View>
           </>
         )}
       </>
@@ -109,7 +123,7 @@ const styles = StyleSheet.create({
   container: {
     width: width,
     maxHeight: verticalScale(200),
-    backgroundColor: '#FFFFFF',
+    backgroundColor: colors.white,
     paddingBottom: verticalScale(8),
   },
   viewLoading: {
@@ -124,6 +138,11 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(8),
     alignItems: 'center',
   },
+  viewItemContent: {
+    paddingLeft: scale(8),
+    justifyContent: 'center',
+    flex: 1,
+  },
   image: {
     width: moderateScale(35),
     height: moderateScale(35),
@@ -136,9 +155,11 @@ const styles = StyleSheet.create({
   txtTitle: {
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(13),
-    marginTop: verticalScale(5),
     color: colors.backgroundTab,
-    marginLeft: scale(5),
+    maxWidth: '90%',
+  },
+  txtAddition: {
+    fontSize: moderateScale(10),
     maxWidth: '90%',
   },
 });

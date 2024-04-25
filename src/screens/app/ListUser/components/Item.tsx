@@ -1,21 +1,20 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Menu} from 'react-native-material-menu';
 import {
-  scale,
-  verticalScale,
   moderateScale,
   moderateVerticalScale,
+  scale,
+  verticalScale,
 } from 'react-native-size-matters';
-import LinearGradient from 'react-native-linear-gradient';
+
+import {UserAddition} from '@component';
+import {defaultAvatar, iconPin, iconReload, iconRemove} from '@images';
 import {colors, stylesCommon} from '@stylesCommon';
-import {iconRemove, defaultAvatar, iconPin, iconReload} from '@images';
-import {useNavigation} from '@react-navigation/native';
-import {ROUTE_NAME} from '@routeName';
-import {Menu} from 'react-native-material-menu';
+
 import {MenuOption} from './MenuOption';
 
 const Item = React.memo((props: any) => {
-  const navigation = useNavigation<any>();
   const {item, deleteUser, changeRole, showChange} = props;
 
   const [showPopup, setShowPopUp] = useState<boolean>(false);
@@ -72,7 +71,15 @@ const Item = React.memo((props: any) => {
                 {item?.last_name} {item?.first_name}
               </Text>
             )}
+
+            {!!item?.addition && (
+              <UserAddition
+                content={item.addition}
+                customStyle={styles.additionText}
+              />
+            )}
           </>
+
           {renderViewRole()}
         </View>
         {showChange === true && item?.id > 0 ? (
@@ -106,20 +113,22 @@ const Item = React.memo((props: any) => {
         ) : (
           <View style={styles.viewImageNext} />
         )}
-        {showChange === true ? <TouchableOpacity
-          onPress={() => {
-            deleteUser(item);
-          }}
-          style={[
-            styles.viewImageNext,
-            {
-              justifyContent:
-                item?.pin_flag == 1 ? 'space-between' : 'flex-end',
-            },
-          ]}>
-          {item?.pin_flag == 1 && <Image source={iconPin} />}
-          <Image source={iconRemove} />
-        </TouchableOpacity> : null}
+        {showChange === true ? (
+          <TouchableOpacity
+            onPress={() => {
+              deleteUser(item);
+            }}
+            style={[
+              styles.viewImageNext,
+              {
+                justifyContent:
+                  item?.pin_flag == 1 ? 'space-between' : 'flex-end',
+              },
+            ]}>
+            {item?.pin_flag == 1 && <Image source={iconPin} />}
+            <Image source={iconRemove} />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </View>
   );
@@ -127,7 +136,7 @@ const Item = React.memo((props: any) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: verticalScale(14),
+    marginTop: verticalScale(14),
   },
   viewContent: {
     flexDirection: 'row',
@@ -143,7 +152,7 @@ const styles = StyleSheet.create({
   },
   viewTxt: {
     width: '57%',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   viewImageNext: {
     width: '10%',
@@ -159,11 +168,10 @@ const styles = StyleSheet.create({
   txtTitle: {
     ...stylesCommon.fontWeight500,
     fontSize: moderateScale(16),
-    marginTop: verticalScale(5),
     color: colors.backgroundTab,
   },
   txtContentLogout: {
-    color: '#EA5A31',
+    color: colors.secondPrimary,
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(16),
   },
@@ -191,8 +199,7 @@ const styles = StyleSheet.create({
   },
   viewRole: {
     maxWidth: '45%',
-    paddingVertical: 3,
-    paddingHorizontal: 10,
+    paddingHorizontal: scale(10),
     marginTop: 6,
     borderRadius: 10,
     backgroundColor: '#E7F6F6',
@@ -204,15 +211,17 @@ const styles = StyleSheet.create({
     height: moderateVerticalScale(25),
   },
   containerMenuDelete: {
-    shadowColor: '#000',
+    shadowColor: colors.black,
     shadowOffset: {
       width: 0,
       height: 1,
     },
     shadowOpacity: 0.22,
     shadowRadius: 2.22,
-
     elevation: 3,
+  },
+  additionText: {
+    fontSize: moderateScale(12),
   },
 });
 

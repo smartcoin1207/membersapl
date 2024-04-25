@@ -1,35 +1,38 @@
-import {colors} from '@stylesCommon';
-import React, {useState, useCallback} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import moment from 'moment';
+import React, {useCallback, useState} from 'react';
+import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
+import {showMessage} from 'react-native-flash-message';
+import LinearGradient from 'react-native-linear-gradient';
+import {Menu} from 'react-native-material-menu';
+import {moderateVerticalScale, scale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
+import Clipboard from '@react-native-clipboard/clipboard';
+import {useNavigation} from '@react-navigation/native';
+
+import {UserAddition} from '@component';
 import {
+  defaultAvatar,
+  iconDoc,
+  iconEdit,
   iconFile,
   iconPdf,
-  iconDoc,
-  iconXls,
-  defaultAvatar,
-  iconEdit,
-  iconReply,
   iconQuote2,
+  iconReply,
+  iconXls,
 } from '@images';
-import {Menu} from 'react-native-material-menu';
+import {ROUTE_NAME} from '@routeName';
+import {colors} from '@stylesCommon';
+import {API_DOMAIN} from '@util';
+
 import {MenuFeature} from '../components/MenuFeature';
 import MessageInfo from '../components/MessageInfo';
-import moment from 'moment';
-import Clipboard from '@react-native-clipboard/clipboard';
-import {showMessage} from 'react-native-flash-message';
-import {useSelector} from 'react-redux';
-import {Reaction} from './Reaction';
-import {ROUTE_NAME} from '@routeName';
-import {useNavigation} from '@react-navigation/native';
-import {styles} from './stylesItem';
-import {scale, moderateVerticalScale} from 'react-native-size-matters';
-import {MsgFile} from './MsgFile';
-import {ViewUserSeen} from './viewUserSeen';
-import {ViewTask} from './ViewTask';
 import {MenuOption} from './MenuOption';
-import {API_DOMAIN} from '@util';
+import {MsgFile} from './MsgFile';
+import {Reaction} from './Reaction';
+import {styles} from './stylesItem';
+import {ViewTask} from './ViewTask';
+import {ViewUserSeen} from './viewUserSeen';
 
 const colorCurrent = ['#CBEEF0', '#BFD6D8'];
 const color = ['#FDF5E6', '#FDF5E6'];
@@ -162,7 +165,7 @@ const ItemMessage = React.memo((props: any) => {
           showMessage({
             message: 'コピー',
             backgroundColor: colors.backgroundTab,
-            color: '#FFFFFF',
+            color: colors.white,
             position: {
               bottom: 0,
               left: width / 2 - scale(50 + 10),
@@ -227,7 +230,7 @@ const ItemMessage = React.memo((props: any) => {
               key={parseInt(index, 10) + 1}
               style={{
                 alignSelf: 'flex-start',
-                color: 'black',
+                color: colors.black,
               }}>
               {''}
             </Text>
@@ -269,7 +272,7 @@ const ItemMessage = React.memo((props: any) => {
           showMessage({
             message: 'リンクをコピーしました',
             backgroundColor: colors.backgroundTab,
-            color: '#FFFFFF',
+            color: colors.white,
             position: {
               bottom: 0,
               left: width / 2 - scale(100 + 10),
@@ -323,7 +326,20 @@ const ItemMessage = React.memo((props: any) => {
   }, 0);
 
   const renderTxtName = () => {
-    return <Text style={styles.txtNameSend}>{user?.name}</Text>;
+    return (
+      <View style={styles.senderInfo}>
+        <Text style={styles.txtNameSend} numberOfLines={1}>
+          {user?.name ?? ''}
+
+          {user?.addition && (
+            <>
+              <View style={styles.spaceName} />
+              <UserAddition content={user.addition} />
+            </>
+          )}
+        </Text>
+      </View>
+    );
   };
 
   const renderImgaeFile = useCallback((typeFile: any) => {

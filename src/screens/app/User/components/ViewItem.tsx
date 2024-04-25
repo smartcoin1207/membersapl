@@ -1,11 +1,29 @@
 import React from 'react';
-import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
-import LinearGradient from 'react-native-linear-gradient';
-import {colors, stylesCommon} from '@stylesCommon';
-import {iconNext} from '@images';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  type GestureResponderEvent,
+  type ImageSourcePropType,
+} from 'react-native';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
-const ViewItem = React.memo((props: any) => {
+import {iconNext} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
+
+type ViewItemProps = {
+  sourceImage: ImageSourcePropType;
+  title?: string;
+  content?: string;
+  hideBorder?: boolean;
+  hideNext?: boolean;
+  isLogout?: boolean;
+  onPress?: ((event: GestureResponderEvent) => void) | undefined;
+};
+
+const ViewItem = React.memo((props: ViewItemProps) => {
   const {sourceImage, title, content, hideBorder, hideNext, isLogout, onPress} =
     props;
   return (
