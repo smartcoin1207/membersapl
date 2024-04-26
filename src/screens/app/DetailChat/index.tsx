@@ -494,27 +494,7 @@ const DetailChat = (props: any) => {
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}
       </View>
-      {showTaskForm && (
-        <ModalTask
-          visible={showTaskForm}
-          onCancel={() => setShowTaskForm(false)}
-          onSaveTask={onSaveTask}
-          idRoomChat={idRoomChat}
-          selected={selected}
-          setSelected={setSelected}
-          showTaskForm={showTaskForm}
-        />
-      )}
-      {showUserList && (
-        <ModalUserList
-          visible={showUserList}
-          onCancel={() => setShowUserList(false)}
-          setShowTaskForm={setShowTaskForm}
-          setShowUserList={setShowUserList}
-          setSelected={setSelected}
-          keyboardHeight={keyboardHeight}
-        />
-      )}
+
       {/* UI modal chọn ảnh, video và file */}
       <ModalPickFile
         visible={pickFile}

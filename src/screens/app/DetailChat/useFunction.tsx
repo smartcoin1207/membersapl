@@ -1262,48 +1262,6 @@ export const useFunction = (props: any) => {
     setTimeout(() => setPartCopy(data), 200);
   }, []);
 
-  const onSaveTask = useCallback(async input => {
-    const data = {
-      project_id: 1,
-      item_id: 1,
-      task_name: input.taskName,
-      actual_start_date: moment().format('YYYY/MM/DD'),
-      actual_start_time: '00:00:00',
-      actual_end_date: moment(input.date).format('YYYY/MM/DD'),
-      actual_end_time: input.time,
-      plans_end_date: input.date,
-      plans_end_time: input.time,
-      plans_time: 0,
-      actual_time: 0,
-      plans_cnt: 0,
-      actual_cnt: 0,
-      cost: 0,
-      task_person_id: input.selected,
-      description: input.taskDescription,
-      cost_flg: 0,
-      remaindar_flg: 0,
-      repeat_flag: 0,
-      gcalendar_flg: input.isGoogleCalendar,
-      all_day_flg: input.isAllDay,
-      chat_room_id: input.chat_room_id,
-    };
-    const res = await saveTask(data);
-    if (res.data?.errors) {
-      showMessage({
-        message: res.data?.errors
-          ? JSON.stringify(res.data?.errors)
-          : 'Network Error',
-        type: 'danger',
-      });
-    } else {
-      showMessage({
-        message: '保存しました。',
-        type: 'success',
-      });
-    }
-    setShowTaskForm(false);
-  }, []);
-
   const onUpdateTask = useCallback(async data => {
     await updateTask(data);
     setShowTaskForm(false);
@@ -1586,7 +1544,6 @@ export const useFunction = (props: any) => {
     onCreateTask,
     setShowTaskForm,
     showTaskForm,
-    onSaveTask,
     onUpdateTask,
     setShowUserList,
     showUserList,

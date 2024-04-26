@@ -36,6 +36,11 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
   },
+  createTaskButtonView: {
+    paddingHorizontal: scale(10),
+    marginTop: scale(26),
+    marginBottom: scale(40),
+  },
   viewIcon: {
     width: '10%',
     alignItems: 'flex-end',
