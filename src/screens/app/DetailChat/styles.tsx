@@ -167,13 +167,15 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   activeSendButton: {
+    backgroundColor: '#1EB7C1',
+    borderRadius: scale(21),
+  },
+  sendButton: {
+    width: scale(30),
+    height: scale(30),
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#1EB7C1',
-    width: scale(30),
-    height: scale(30),
-    borderRadius: scale(21),
   },
 });
 

@@ -11,17 +11,20 @@ import {InputToolbar, Send} from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
-import {iconEmoji} from '@images';
+import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
 
-export const renderSend = (props: any) => {
+export const renderSend = ({
+  showModalStamp,
+  ...rest
+}: Send['props'] & {showModalStamp: boolean}) => {
   return (
     <Send
-      {...props}
+      {...rest}
       // disabled={!props.text.trim()}
       containerStyle={styles.sendBtn}>
       <Image
-        source={iconEmoji}
+        source={showModalStamp ? iconEmojiActive : iconEmoji}
         style={styles.iconEmojiStyle}
         resizeMode="contain"
       />
@@ -32,11 +35,7 @@ export const renderSend = (props: any) => {
 export const renderInputToolbar = (props: any) => {
   return (
     <>
-      <InputToolbar
-        {...props}
-        containerStyle={styles.toolBar}
-        primaryStyle={styles.toolbarPrimaryStyle}
-      />
+      <InputToolbar {...props} containerStyle={styles.toolBar} />
     </>
   );
 };
@@ -89,16 +88,15 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderTopWidth: 0,
     marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
-    paddingTop: 8,
+    paddingTop: scale(16),
+    paddingBottom: scale(36),
   },
   scrollMessage: {
     backgroundColor: '#FFFFFF',
-    borderRadius: moderateScale(8),
+    borderRadius: moderateScale(21),
     marginRight: scale(10),
     marginLeft: scale(10),
     minHeight: verticalScale(39),
-    borderWidth: 1,
-    borderColor: '#989898',
     width: '94%',
   },
   inputMessage: {
@@ -108,33 +106,20 @@ const styles = StyleSheet.create({
   },
 
   iconEmojiStyle: {
-    width: 29,
-    height: 29,
+    width: 18,
+    height: 18,
     alignSelf: 'center',
     flex: 1,
   },
   composerContainer: {
     width: '80%',
-    height: 55,
+    height: 'auto',
     flexDirection: 'row',
-    paddingTop: 5,
   },
   inputContainer: {
     flexDirection: 'row',
     backgroundColor: '#f2f2f2',
     marginLeft: scale(10),
-  },
-  textInput: {
-    fontSize: 14,
-    letterSpacing: 1,
-    height: 50,
-    minWidth: 250,
-    maxWidth: 250,
-    borderWidth: 0,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
   },
   sendWrapperStyle: {
     width: '15%',
@@ -145,8 +130,5 @@ const styles = StyleSheet.create({
   sendContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  toolbarPrimaryStyle: {
-    flexDirection: 'row',
   },
 });

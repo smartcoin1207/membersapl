@@ -13,11 +13,11 @@ import {useSelector} from 'react-redux';
 
 import {Header} from '@component';
 import {
+  iconAttach,
   iconDetail,
   iconSearch,
   iconSend,
   iconSendActive,
-  iconUpload,
 } from '@images';
 
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
@@ -27,11 +27,8 @@ import {
   renderSend,
 } from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
-import {ModalPickFile} from './components/ModalPickFile';
-import {ShowPickedFile} from './components/ShowPickedFile';
-import {styles} from './styles';
-import {useFunction} from './useFunction';
 import {ModalEdit} from './components/ModalEdit';
+import {ModalPickFile} from './components/ModalPickFile';
 import {ModalPin} from './components/ModalPin';
 import {ModalQuote} from './components/ModalQuote';
 import {ModalReply} from './components/ModalReply';
@@ -39,6 +36,9 @@ import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
 import {ModalTask} from './components/ModalTask';
 import {ModalUserList} from './components/ModalUserList';
+import {ShowPickedFile} from './components/ShowPickedFile';
+import {styles} from './styles';
+import {useFunction} from './useFunction';
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -126,7 +126,7 @@ const DetailChat = (props: any) => {
           {...inputProps}
           containerStyle={styles.addBtn}
           onPressActionButton={cancelModal}
-          icon={() => <Image source={iconUpload} />}
+          icon={() => <Image source={iconAttach} />}
         />
       );
     },
@@ -154,16 +154,22 @@ const DetailChat = (props: any) => {
                     sendMessage(messages);
                     setFormattedText([]);
                   }}
-                  icon={() =>
-                    inputProps.formattedText?.length > 0 ||
-                    chosenFiles.length > 0 ? (
-                      <View style={styles.activeSendButton}>
+                  icon={() => {
+                    const isActiveSend =
+                      inputProps.formattedText?.length > 0 ||
+                      chosenFiles.length > 0;
+
+                    return isActiveSend ? (
+                      <View
+                        style={[styles.activeSendButton, styles.sendButton]}>
                         <Image source={iconSendActive} />
                       </View>
                     ) : (
-                      <Image source={iconSend} />
-                    )
-                  }
+                      <View style={styles.sendButton}>
+                        <Image source={iconSend} />
+                      </View>
+                    );
+                  }}
                 />
               }
             </>
@@ -344,12 +350,12 @@ const DetailChat = (props: any) => {
           onSend={showModalStamp}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={toolbarProps =>
-            renderInputToolbar({...toolbarProps, onDecoSelected})
-          }
+          renderInputToolbar={renderInputToolbar}
           renderComposer={renderComposer}
           user={chatUser}
-          renderSend={renderSend}
+          renderSend={sendProps =>
+            renderSend({showModalStamp: modalStamp, ...sendProps})
+          }
           renderFooter={() => <View style={styles.viewBottom} />}
           renderActions={renderActions}
           renderActionsRight={renderActionsRight}
@@ -480,6 +486,8 @@ const DetailChat = (props: any) => {
           }
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
+          minComposerHeight={45}
+          minInputToolbarHeight={97}
         />
 
         {chosenFiles.length > 0 && (
