@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     ...stylesCommon.fontWeight500,
   },
   viewBottom: {
-    height: height_screen >= 812 ? verticalScale(50) : verticalScale(25),
+    height: height_screen >= 812 ? verticalScale(142) : verticalScale(117),
   },
   colorIcon: {
     tintColor: colors.darkGrayText,

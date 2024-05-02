@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Dimensions, Keyboard, View} from 'react-native';
-import {AppButton} from '@component';
-import {styles} from './stylesItem';
+import React from 'react';
+import {View} from 'react-native';
 
-const height = Dimensions.get('window').height;
+import {AppButton} from '@component';
+
+import {styles} from './stylesItem';
 
 const decoButtonArr = [
   {
@@ -35,17 +35,8 @@ export type DecoButtonProps = {
 };
 
 export default function DecoButton({onDecoSelected}: DecoButtonProps) {
-  const [bottom, setBottom] = useState(0);
-
-  Keyboard.addListener('keyboardWillShow', () => {
-    setBottom(height >= 812 ? 340 : 250);
-  });
-  Keyboard.addListener('keyboardWillHide', () => {
-    setBottom(0);
-  });
-
   return (
-    <View style={[styles.decoContainer, {bottom: bottom}]}>
+    <View style={[styles.decoContainer]}>
       {decoButtonArr.map(item => {
         return (
           <AppButton

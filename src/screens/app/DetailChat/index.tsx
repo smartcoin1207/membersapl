@@ -21,6 +21,7 @@ import {
 } from '@images';
 
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
+import DecoButton from './components/DecoButton';
 import {
   renderComposer,
   renderInputToolbar,
@@ -34,8 +35,6 @@ import {ModalQuote} from './components/ModalQuote';
 import {ModalReply} from './components/ModalReply';
 import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
-import {ModalTask} from './components/ModalTask';
-import {ModalUserList} from './components/ModalUserList';
 import {ShowPickedFile} from './components/ShowPickedFile';
 import {styles} from './styles';
 import {useFunction} from './useFunction';
@@ -91,15 +90,9 @@ const DetailChat = (props: any) => {
     idRedLine,
     navigateToMessage,
     indexRedLine,
-    setShowTaskForm,
     showTaskForm,
-    onSaveTask,
-    setShowUserList,
-    showUserList,
     partCopy,
     changePartCopy,
-    selected,
-    setSelected,
     setInputText,
     inputText,
     textSelection,
@@ -402,13 +395,14 @@ const DetailChat = (props: any) => {
             },
           }}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
-          renderAccessory={
-            messageReply ||
-            message_edit ||
-            messageQuote ||
-            modalStamp === true ||
-            showTagModal === true
-              ? () => (
+          renderAccessory={() => {
+            return (
+              <>
+                {messageReply ||
+                message_edit ||
+                messageQuote ||
+                modalStamp === true ||
+                showTagModal === true ? (
                   <>
                     {/* UI modal tag name */}
                     {showTagModal && (
@@ -481,13 +475,14 @@ const DetailChat = (props: any) => {
                       />
                     )}
                   </>
-                )
-              : undefined
-          }
+                ) : (
+                  <DecoButton onDecoSelected={onDecoSelected} />
+                )}
+              </>
+            );
+          }}
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
-          minComposerHeight={45}
-          minInputToolbarHeight={97}
         />
 
         {chosenFiles.length > 0 && (

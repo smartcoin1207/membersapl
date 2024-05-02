@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     position: 'absolute',
-    right: 50,
+    right: scale(50),
   },
   iconStyle: {
     width: 20,
@@ -98,6 +98,7 @@ const styles = StyleSheet.create({
     marginLeft: scale(10),
     minHeight: verticalScale(39),
     width: '94%',
+    maxHeight: 117,
   },
   inputMessage: {
     paddingLeft: scale(10),
