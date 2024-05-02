@@ -112,7 +112,6 @@ const styles = StyleSheet.create({
     width: 23,
     height: 23,
   },
-  addBtn: {},
   imageSmall: {
     width: moderateScale(50),
     height: moderateScale(50),
@@ -123,7 +122,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(5),
   },
-  buttonRight: {marginRight: 16, marginLeft: 0},
+  buttonRight: {
+    marginRight: 16,
+    marginLeft: 0,
+    bottom: scale(5),
+  },
   imageFile: {
     width: moderateScale(25),
     height: moderateScale(25),

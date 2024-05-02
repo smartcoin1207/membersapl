@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: scale(50),
+    bottom: scale(4),
   },
   iconStyle: {
     width: 20,
@@ -105,12 +106,9 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
     paddingRight: scale(43),
   },
-
   iconEmojiStyle: {
     width: 18,
     height: 18,
-    alignSelf: 'center',
-    flex: 1,
   },
   composerContainer: {
     width: '80%',

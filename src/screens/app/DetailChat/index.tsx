@@ -117,7 +117,6 @@ const DetailChat = (props: any) => {
       return (
         <Actions
           {...inputProps}
-          containerStyle={styles.addBtn}
           onPressActionButton={cancelModal}
           icon={() => <Image source={iconAttach} />}
         />
