@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     marginLeft: scale(10),
     minHeight: verticalScale(39),
     width: '94%',
-    maxHeight: 117,
+    maxHeight: 110,
   },
   inputMessage: {
     paddingLeft: scale(10),
