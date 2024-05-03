@@ -41,7 +41,6 @@ import {
   sendReactionApi,
   updateTask,
 } from '@services';
-import {colors} from '@stylesCommon';
 import {AppSocket, convertArrUnique, MESSAGE_RANGE_TYPE} from '@util';
 
 import {store} from '../../../redux/store';
