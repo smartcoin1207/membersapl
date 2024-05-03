@@ -107,6 +107,8 @@ const DetailChat = (props: any) => {
     inputIndex,
     showSendMessageButton,
     setPageLoading,
+    isFocusInput,
+    setIsFocusInput,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -348,7 +350,12 @@ const DetailChat = (props: any) => {
               ...inputToolbarProps,
             })
           }
-          renderComposer={renderComposer}
+          renderComposer={composerProps =>
+            renderComposer({
+              setIsFocusInput,
+              ...composerProps,
+            })
+          }
           user={chatUser}
           renderSend={sendProps =>
             renderSend({showModalStamp: modalStamp, ...sendProps})
@@ -479,9 +486,9 @@ const DetailChat = (props: any) => {
                       />
                     )}
                   </>
-                ) : (
+                ) : isFocusInput ? (
                   <DecoButton onDecoSelected={onDecoSelected} />
-                )}
+                ) : undefined}
               </>
             );
           }}

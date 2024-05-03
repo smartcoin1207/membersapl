@@ -46,27 +46,29 @@ export const renderInputToolbar = (props: any) => {
   );
 };
 
-export const renderComposer = (props: any) => {
-  if (props && props.textInputProps) {
+export const renderComposer = ({setIsFocusInput, ...rest}: any) => {
+  if (rest && rest.textInputProps) {
     return (
       <View style={styles.composerContainer}>
         <View style={styles.inputContainer}>
           <ScrollView style={styles.scrollMessage}>
             <TextInput
-              {...props}
+              {...rest}
               placeholder={'メッセージ.'}
               style={styles.inputMessage}
               multiline={true}
               scrollEnabled={false}
-              onTextInput={props.textInputProps.onTextInput}
-              onKeyPress={props.textInputProps.onKeyPress}
+              onTextInput={rest.textInputProps.onTextInput}
+              onKeyPress={rest.textInputProps.onKeyPress}
               value={null}
+              onFocus={() => setIsFocusInput(true)}
+              onBlur={() => setIsFocusInput(false)}
               // selection={props.textSelection}
-              onSelectionChange={props.textInputProps.onSelectionChange}
+              onSelectionChange={rest.textInputProps.onSelectionChange}
               onChangeText={(value: any) => {
-                props.onInputTextChanged(value);
+                rest.onInputTextChanged(value);
               }}>
-              {props.formattedText}
+              {rest.formattedText}
             </TextInput>
           </ScrollView>
         </View>

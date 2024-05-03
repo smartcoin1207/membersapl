@@ -114,7 +114,7 @@ export const useFunction = (props: any) => {
   const [irregularMessageIds, setIrregularMessageIds] = useState<any[]>([]);
   const [showSendMessageButton, setShowSendMessageButton] =
     useState<boolean>(true);
-
+  const [isFocusInput, setIsFocusInput] = useState(false);
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
     idMessage => {
@@ -1608,5 +1608,7 @@ export const useFunction = (props: any) => {
     inputIndex,
     showSendMessageButton,
     setPageLoading,
+    isFocusInput,
+    setIsFocusInput,
   };
 };
