@@ -99,9 +99,9 @@ export default class InputToolbar extends React.Component {
         <View
           style={[
             styles.accessory,
-            this.props.accessoryStyle,
             {position: 'absolute'},
             {bottom: this.state.heightInput},
+            this.props.accessoryStyle,
           ]}>
           {this.props.renderAccessory(this.props)}
         </View>

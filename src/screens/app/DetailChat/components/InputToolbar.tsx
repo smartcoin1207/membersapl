@@ -35,7 +35,13 @@ export const renderSend = ({
 export const renderInputToolbar = (props: any) => {
   return (
     <>
-      <InputToolbar {...props} containerStyle={styles.toolBar} />
+      <InputToolbar
+        {...props}
+        containerStyle={styles.toolBar}
+        accessoryStyle={
+          props.showModalStamp ? styles.inputToolbarWithStamp : {}
+        }
+      />
     </>
   );
 };
@@ -77,7 +83,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: scale(50),
-    bottom: scale(4),
   },
   iconStyle: {
     width: 20,
@@ -129,5 +134,9 @@ const styles = StyleSheet.create({
   sendContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  inputToolbarWithStamp: {
+    position: 'relative',
+    bottom: 36,
   },
 });

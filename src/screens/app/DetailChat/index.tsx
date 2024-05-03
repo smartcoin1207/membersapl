@@ -342,7 +342,12 @@ const DetailChat = (props: any) => {
           onSend={showModalStamp}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={renderInputToolbar}
+          renderInputToolbar={inputToolbarProps =>
+            renderInputToolbar({
+              showModalStamp: modalStamp,
+              ...inputToolbarProps,
+            })
+          }
           renderComposer={renderComposer}
           user={chatUser}
           renderSend={sendProps =>
