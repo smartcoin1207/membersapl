@@ -109,6 +109,12 @@ const DetailChat = (props: any) => {
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
+    setToolbarHeight,
+    toolbarHeight,
+    bottom,
+    setBottom,
+    setIsShowKeyboard,
+    isShowKeyboard,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -347,6 +353,12 @@ const DetailChat = (props: any) => {
           renderInputToolbar={inputToolbarProps =>
             renderInputToolbar({
               showModalStamp: modalStamp,
+              setToolbarHeight,
+              bottom,
+              setBottom,
+              toolbarHeight,
+              setIsShowKeyboard,
+              isShowKeyboard,
               ...inputToolbarProps,
             })
           }
@@ -495,7 +507,6 @@ const DetailChat = (props: any) => {
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
         />
-
         {chosenFiles.length > 0 && (
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}

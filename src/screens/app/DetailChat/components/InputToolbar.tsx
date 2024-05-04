@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   Image,
+  Keyboard,
+  LayoutChangeEvent,
   Platform,
   ScrollView,
   StyleSheet,
@@ -32,15 +34,51 @@ export const renderSend = ({
   );
 };
 
-export const renderInputToolbar = (props: any) => {
+const MAX_INPUT_HEIGHT = 115;
+
+export const renderInputToolbar = ({
+  setToolbarHeight,
+  setBottom,
+  showModalStamp,
+  toolbarHeight,
+  bottom,
+  setIsShowKeyboard,
+  isShowKeyboard,
+  ...rest
+}: any) => {
+  Keyboard.addListener('keyboardWillShow', () => {
+    setBottom(toolbarHeight);
+  });
+
+  Keyboard.addListener('keyboardWillHide', () => {
+    setBottom(5);
+    setIsShowKeyboard(false);
+  });
+
+  Keyboard.addListener('keyboardDidShow', () => {
+    setIsShowKeyboard(true);
+  });
+
+  Keyboard.addListener('keyboardDidHide', () => {
+    setIsShowKeyboard(false);
+  });
+
   return (
     <>
       <InputToolbar
-        {...props}
-        containerStyle={styles.toolBar}
-        accessoryStyle={
-          props.showModalStamp ? styles.inputToolbarWithStamp : {}
-        }
+        {...rest}
+        containerStyle={[styles.toolBar, Platform.OS === 'ios' ? {bottom} : {}]}
+        accessoryStyle={[showModalStamp ? styles.inputToolbarWithStamp : {}]}
+        onLayout={(event: LayoutChangeEvent) => {
+          const height = !bottom ? 5 : event.nativeEvent.layout?.height;
+
+          if (height <= MAX_INPUT_HEIGHT) {
+            setToolbarHeight(height);
+            if (isShowKeyboard) {
+              setBottom(height);
+            }
+          }
+        }}
       />
     </>
   );
@@ -104,14 +142,14 @@ const styles = StyleSheet.create({
     borderRadius: moderateScale(21),
     marginRight: scale(10),
     marginLeft: scale(10),
-    minHeight: verticalScale(39),
+    minHeight: verticalScale(40),
     width: '94%',
-    maxHeight: 110,
+    maxHeight: MAX_INPUT_HEIGHT,
   },
   inputMessage: {
     paddingLeft: scale(10),
-    paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
     paddingRight: scale(43),
+    paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
   },
   iconEmojiStyle: {
     width: 18,

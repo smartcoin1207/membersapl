@@ -114,6 +114,28 @@ export const useFunction = (props: any) => {
   const [showSendMessageButton, setShowSendMessageButton] =
     useState<boolean>(true);
   const [isFocusInput, setIsFocusInput] = useState(false);
+  const [toolbarHeight, setToolbarHeight] = useState(0);
+  const [bottom, setBottom] = useState(0);
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+
+  useEffect(() => {
+    if (
+      messageReply ||
+      message_edit ||
+      messageQuote ||
+      modalStamp === true ||
+      showTagModal === true
+    ) {
+      Keyboard.dismiss();
+    }
+  }, [messageReply, message_edit, messageQuote, modalStamp, showTagModal]);
+
+  useEffect(() => {
+    if (isFocusInput) {
+      setShowModalStamp(false);
+    }
+  }, [isFocusInput]);
+
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
     idMessage => {
@@ -1609,5 +1631,11 @@ export const useFunction = (props: any) => {
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
+    toolbarHeight,
+    setToolbarHeight,
+    bottom,
+    setBottom,
+    isShowKeyboard,
+    setIsShowKeyboard,
   };
 };
