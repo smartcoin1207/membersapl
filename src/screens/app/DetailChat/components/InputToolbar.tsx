@@ -15,6 +15,7 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
+import {Dimensions} from 'react-native';
 
 export const renderSend = ({
   showModalStamp,
@@ -35,6 +36,9 @@ export const renderSend = ({
 };
 
 const MAX_INPUT_HEIGHT = 115;
+const windowHeight = Dimensions.get('window').height;
+const INIT_BOTTOM = windowHeight >= 812 ? 5 : 0;
+export const TOOLBAR_PADDING = 52;
 
 export const renderInputToolbar = ({
   setToolbarHeight,
@@ -51,7 +55,7 @@ export const renderInputToolbar = ({
   });
 
   Keyboard.addListener('keyboardWillHide', () => {
-    setBottom(5);
+    setBottom(INIT_BOTTOM);
     setIsShowKeyboard(false);
   });
 
@@ -70,7 +74,10 @@ export const renderInputToolbar = ({
         containerStyle={[styles.toolBar, Platform.OS === 'ios' ? {bottom} : {}]}
         accessoryStyle={[showModalStamp ? styles.inputToolbarWithStamp : {}]}
         onLayout={(event: LayoutChangeEvent) => {
-          const height = !bottom ? 5 : event.nativeEvent.layout?.height;
+          const height =
+            !bottom && windowHeight >= 812
+              ? 5
+              : event.nativeEvent.layout?.height;
 
           if (height <= MAX_INPUT_HEIGHT) {
             setToolbarHeight(height);

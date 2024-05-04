@@ -7,7 +7,9 @@ import Actions from './Actions';
 import Color from './Color';
 import {StylePropType} from './utils';
 import {scale} from 'react-native-size-matters';
-const heigth = Dimensions.get('window').height;
+const height = Dimensions.get('window').height;
+export const TOOLBAR_PADDING = 52;
+
 const styles = StyleSheet.create({
   container: {
     borderTopWidth: StyleSheet.hairlineWidth,
@@ -118,7 +120,7 @@ export default class InputToolbar extends React.Component {
             {position: this.state.position},
             {
               bottom:
-                this.state.position === 'relative' && heigth >= 812 ? 50 : 5,
+                this.state.position === 'relative' && height >= 812 ? 50 : 5,
             },
             this.props.containerStyle,
           ]}>
@@ -128,7 +130,8 @@ export default class InputToolbar extends React.Component {
             onLayout={event => {
               this.setState({
                 //custom for padding of input toolbar
-                heightInput: event?.nativeEvent?.layout?.height + scale(52),
+                heightInput:
+                  event?.nativeEvent?.layout?.height + scale(TOOLBAR_PADDING),
               });
             }}>
             {this.renderActions()}

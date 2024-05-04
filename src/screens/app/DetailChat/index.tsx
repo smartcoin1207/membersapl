@@ -2,6 +2,7 @@ import React, {useCallback, useRef} from 'react';
 import {
   Image,
   Keyboard,
+  type LayoutChangeEvent,
   Platform,
   TextInput,
   TouchableOpacity,
@@ -10,6 +11,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
+import {verticalScale} from 'react-native-size-matters';
 
 import {Header} from '@component';
 import {
@@ -23,6 +25,7 @@ import {
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
 import {
+  TOOLBAR_PADDING,
   renderComposer,
   renderInputToolbar,
   renderSend,
@@ -115,6 +118,8 @@ const DetailChat = (props: any) => {
     setBottom,
     setIsShowKeyboard,
     isShowKeyboard,
+    accessoryHeight,
+    setAccessoryHeight,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -372,7 +377,15 @@ const DetailChat = (props: any) => {
           renderSend={sendProps =>
             renderSend({showModalStamp: modalStamp, ...sendProps})
           }
-          renderFooter={() => <View style={styles.viewBottom} />}
+          renderFooter={() => (
+            <View
+              style={{
+                height: verticalScale(
+                  toolbarHeight + accessoryHeight + TOOLBAR_PADDING,
+                ),
+              }}
+            />
+          )}
           renderActions={renderActions}
           renderActionsRight={renderActionsRight}
           //Các props của flatlist nhúng vào gifted chat
@@ -420,7 +433,10 @@ const DetailChat = (props: any) => {
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (
-              <>
+              <View
+                onLayout={(event: LayoutChangeEvent) => {
+                  setAccessoryHeight(event.nativeEvent.layout.height);
+                }}>
                 {messageReply ||
                 message_edit ||
                 messageQuote ||
@@ -501,7 +517,7 @@ const DetailChat = (props: any) => {
                 ) : isFocusInput ? (
                   <DecoButton onDecoSelected={onDecoSelected} />
                 ) : undefined}
-              </>
+              </View>
             );
           }}
           bottomOffset={0}

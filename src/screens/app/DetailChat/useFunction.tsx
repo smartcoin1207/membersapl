@@ -117,6 +117,7 @@ export const useFunction = (props: any) => {
   const [toolbarHeight, setToolbarHeight] = useState(0);
   const [bottom, setBottom] = useState(0);
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   useEffect(() => {
     if (
@@ -1637,5 +1638,7 @@ export const useFunction = (props: any) => {
     setBottom,
     isShowKeyboard,
     setIsShowKeyboard,
+    accessoryHeight,
+    setAccessoryHeight,
   };
 };
