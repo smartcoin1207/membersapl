@@ -1,8 +1,7 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors, stylesCommon} from '@stylesCommon';
+import {StyleSheet} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
-const height_screen = Dimensions.get('window').height;
+import {colors, stylesCommon} from '@stylesCommon';
 
 const styles = StyleSheet.create({
   container: {
@@ -101,9 +100,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
-  },
-  viewBottom: {
-    height: height_screen >= 812 ? verticalScale(142) : verticalScale(117),
   },
   colorIcon: {
     tintColor: colors.darkGrayText,

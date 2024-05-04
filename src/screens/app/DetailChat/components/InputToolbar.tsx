@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Dimensions,
   Image,
   Keyboard,
   LayoutChangeEvent,
@@ -9,13 +10,17 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import {InputToolbar, Send} from 'react-native-gifted-chat';
+import {
+  GiftedChatProps,
+  InputToolbar,
+  Send,
+  type ComposerProps,
+} from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
-import {Dimensions} from 'react-native';
 
 export const renderSend = ({
   showModalStamp,
@@ -91,7 +96,14 @@ export const renderInputToolbar = ({
   );
 };
 
-export const renderComposer = ({setIsFocusInput, ...rest}: any) => {
+export const renderComposer = ({
+  setIsFocusInput,
+  formattedText,
+  onInputTextChanged,
+  ...rest
+}: ComposerProps & {
+  setIsFocusInput: (isFocus: boolean) => void;
+} & GiftedChatProps) => {
   if (rest && rest.textInputProps) {
     return (
       <View style={styles.composerContainer}>
@@ -105,15 +117,15 @@ export const renderComposer = ({setIsFocusInput, ...rest}: any) => {
               scrollEnabled={false}
               onTextInput={rest.textInputProps.onTextInput}
               onKeyPress={rest.textInputProps.onKeyPress}
-              value={null}
+              value={undefined}
               onFocus={() => setIsFocusInput(true)}
               onBlur={() => setIsFocusInput(false)}
               // selection={props.textSelection}
               onSelectionChange={rest.textInputProps.onSelectionChange}
               onChangeText={(value: any) => {
-                rest.onInputTextChanged(value);
+                onInputTextChanged?.(value);
               }}>
-              {rest.formattedText}
+              {formattedText}
             </TextInput>
           </ScrollView>
         </View>

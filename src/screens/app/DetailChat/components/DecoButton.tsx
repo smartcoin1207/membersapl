@@ -36,7 +36,7 @@ export type DecoButtonProps = {
 
 export default function DecoButton({onDecoSelected}: DecoButtonProps) {
   return (
-    <View style={[styles.decoContainer]}>
+    <View style={styles.decoContainer}>
       {decoButtonArr.map(item => {
         return (
           <AppButton
