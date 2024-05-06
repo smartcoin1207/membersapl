@@ -108,7 +108,9 @@ export const renderComposer = ({
     return (
       <View style={styles.composerContainer}>
         <View style={styles.inputContainer}>
-          <ScrollView style={styles.scrollMessage}>
+          <ScrollView
+            style={styles.scrollMessage}
+            onLayout={e => console.log({a: e.nativeEvent.layout.height})}>
             <TextInput
               {...rest}
               placeholder={'メッセージ.'}
@@ -142,6 +144,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: scale(50),
+    bottom: verticalScale(12),
+    height: 18,
   },
   iconStyle: {
     width: 20,
