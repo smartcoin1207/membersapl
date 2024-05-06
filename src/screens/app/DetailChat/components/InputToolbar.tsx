@@ -11,8 +11,9 @@ import {
   View,
 } from 'react-native';
 import {
-  GiftedChatProps,
+  type GiftedChatProps,
   InputToolbar,
+  type InputToolbarProps,
   Send,
   type ComposerProps,
 } from 'react-native-gifted-chat';
@@ -54,7 +55,18 @@ export const renderInputToolbar = ({
   setIsShowKeyboard,
   isShowKeyboard,
   ...rest
-}: any) => {
+}: Readonly<InputToolbarProps> &
+  Readonly<{
+    children?: React.ReactNode;
+  }> & {
+    setToolbarHeight: (height: number) => void;
+    setBottom: (bottom: number) => void;
+    showModalStamp: boolean;
+    toolbarHeight: number;
+    bottom: number;
+    setIsShowKeyboard: (isShowKeyboard: boolean) => void;
+    isShowKeyboard: boolean;
+  }) => {
   Keyboard.addListener('keyboardWillShow', () => {
     setBottom(toolbarHeight);
   });
@@ -108,9 +120,7 @@ export const renderComposer = ({
     return (
       <View style={styles.composerContainer}>
         <View style={styles.inputContainer}>
-          <ScrollView
-            style={styles.scrollMessage}
-            onLayout={e => console.log({a: e.nativeEvent.layout.height})}>
+          <ScrollView style={styles.scrollMessage}>
             <TextInput
               {...rest}
               placeholder={'メッセージ.'}

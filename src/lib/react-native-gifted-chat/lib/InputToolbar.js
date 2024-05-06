@@ -115,6 +115,7 @@ export default class InputToolbar extends React.Component {
     return (
       <>
         <View
+          onLayout={this.props.onLayout}
           style={[
             styles.container,
             {position: this.state.position},
