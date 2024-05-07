@@ -20,13 +20,12 @@ const DATA = [
 
 const CONTAINER_PADDING_HORIZONTAL = 20;
 const CONTAINER_PADDING_VERTICAL = 12;
+const WINDOW_WIDTH = Dimensions.get('screen').width;
 
 const GAP = 12;
-const ITEM_PER_ROW = 4;
+const ITEM_PER_ROW = WINDOW_WIDTH < 500 ? 4 : WINDOW_WIDTH / 100;
 const TOTAL_GAP = (ITEM_PER_ROW - 1) * GAP;
 const TOTAL_ROW = DATA.length / ITEM_PER_ROW;
-
-const WINDOW_WIDTH = Dimensions.get('screen').width;
 const CHILD_WIDTH =
   (WINDOW_WIDTH - scale(CONTAINER_PADDING_HORIZONTAL * 2) - scale(TOTAL_GAP)) /
   ITEM_PER_ROW;

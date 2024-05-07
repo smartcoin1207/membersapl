@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     height: 18,
   },
   composerContainer: {
-    width: '80%',
+    flex: 1,
     height: 'auto',
     flexDirection: 'row',
   },

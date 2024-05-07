@@ -380,7 +380,9 @@ const DetailChat = (props: any) => {
             <View
               style={{
                 height: verticalScale(
-                  toolbarHeight + accessoryHeight + TOOLBAR_PADDING,
+                  (Platform.OS === 'ios' ? toolbarHeight : 25) +
+                    accessoryHeight +
+                    TOOLBAR_PADDING,
                 ),
               }}
             />
