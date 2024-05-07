@@ -11,7 +11,6 @@ import {scale, verticalScale} from 'react-native-size-matters';
 
 import {chatStamp1, chatStamp2, chatStamp3, chatStamp4} from '@images';
 
-//Các image Stamp được đánh tên và trọng số trùng với id VD: chatStamp2 => tương ứng với id là 2
 const DATA = [
   {id: 1, url: chatStamp1},
   {id: 2, url: chatStamp2},
