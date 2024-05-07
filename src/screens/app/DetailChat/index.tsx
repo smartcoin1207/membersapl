@@ -25,7 +25,6 @@ import {
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
 import {
-  TOOLBAR_PADDING,
   renderComposer,
   renderInputToolbar,
   renderSend,
@@ -41,6 +40,8 @@ import {ModalTagName} from './components/ModalTagName';
 import {ShowPickedFile} from './components/ShowPickedFile';
 import {styles} from './styles';
 import {useFunction} from './useFunction';
+
+const TOOLBAR_PADDING = 52;
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -93,7 +94,6 @@ const DetailChat = (props: any) => {
     idRedLine,
     navigateToMessage,
     indexRedLine,
-    showTaskForm,
     partCopy,
     changePartCopy,
     setInputText,
@@ -297,7 +297,6 @@ const DetailChat = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <View style={showTaskForm ? [styles.blackout] : []} />
       <View style={{height: '100%'}}>
         <Header
           back

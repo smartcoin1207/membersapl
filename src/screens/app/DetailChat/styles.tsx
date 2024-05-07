@@ -155,16 +155,6 @@ const styles = StyleSheet.create({
   displayNone: {
     display: 'none',
   },
-  blackout: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 1000,
-    backgroundColor: '#787878',
-    opacity: 0.9,
-  },
   activeSendButton: {
     backgroundColor: '#1EB7C1',
     borderRadius: scale(21),

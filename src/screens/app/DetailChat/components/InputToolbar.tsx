@@ -44,7 +44,6 @@ export const renderSend = ({
 const MAX_INPUT_HEIGHT = 115;
 const windowHeight = Dimensions.get('window').height;
 const INIT_BOTTOM = windowHeight >= 812 ? 5 : 0;
-export const TOOLBAR_PADDING = 52;
 
 export const renderInputToolbar = ({
   setToolbarHeight,
