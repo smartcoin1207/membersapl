@@ -128,7 +128,6 @@ const DetailChat = (props: any) => {
     modalStamp === true ||
     showTagModal === true;
 
-  console.log({toolbarHeight, accessoryHeight});
   //Render ra UI chọn ảnh, video, file
   const renderActions = useCallback(
     (inputProps: any) => {
