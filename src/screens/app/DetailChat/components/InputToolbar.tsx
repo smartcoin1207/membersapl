@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-  Dimensions,
   Image,
   Keyboard,
-  LayoutChangeEvent,
   Platform,
   ScrollView,
   StyleSheet,
@@ -11,11 +9,11 @@ import {
   View,
 } from 'react-native';
 import {
-  type GiftedChatProps,
   InputToolbar,
-  type InputToolbarProps,
   Send,
   type ComposerProps,
+  type GiftedChatProps,
+  type InputToolbarProps,
 } from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
@@ -42,36 +40,23 @@ export const renderSend = ({
 };
 
 const MAX_INPUT_HEIGHT = 115;
-const windowHeight = Dimensions.get('window').height;
-const INIT_BOTTOM = windowHeight >= 812 ? 5 : 0;
 
 export const renderInputToolbar = ({
-  setToolbarHeight,
-  setBottom,
   showModalStamp,
-  toolbarHeight,
-  bottom,
   setIsShowKeyboard,
   isShowKeyboard,
+  toolbarRef,
   ...rest
 }: Readonly<InputToolbarProps> &
   Readonly<{
     children?: React.ReactNode;
   }> & {
-    setToolbarHeight: (height: number) => void;
-    setBottom: (bottom: number) => void;
     showModalStamp: boolean;
-    toolbarHeight: number;
-    bottom: number;
     setIsShowKeyboard: (isShowKeyboard: boolean) => void;
     isShowKeyboard: boolean;
+    toolbarRef: any;
   }) => {
-  Keyboard.addListener('keyboardWillShow', () => {
-    setBottom(toolbarHeight);
-  });
-
   Keyboard.addListener('keyboardWillHide', () => {
-    setBottom(INIT_BOTTOM);
     setIsShowKeyboard(false);
   });
 
@@ -87,21 +72,16 @@ export const renderInputToolbar = ({
     <>
       <InputToolbar
         {...rest}
-        containerStyle={[styles.toolBar, Platform.OS === 'ios' ? {bottom} : {}]}
+        ref={toolbarRef}
+        containerStyle={[
+          styles.toolBar,
+          Platform.OS === 'ios' && isShowKeyboard
+            ? {
+                bottom: toolbarRef?.current?.state?.heightInput,
+              }
+            : {},
+        ]}
         accessoryStyle={[showModalStamp ? styles.inputToolbarWithStamp : {}]}
-        onLayout={(event: LayoutChangeEvent) => {
-          const height =
-            !bottom && windowHeight >= 812
-              ? 5
-              : event.nativeEvent.layout?.height;
-
-          if (height <= MAX_INPUT_HEIGHT) {
-            setToolbarHeight(height);
-            if (isShowKeyboard) {
-              setBottom(height);
-            }
-          }
-        }}
       />
     </>
   );

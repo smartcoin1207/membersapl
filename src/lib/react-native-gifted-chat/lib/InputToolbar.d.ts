@@ -1,11 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  EmitterSubscription,
-  LayoutChangeEvent,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import {EmitterSubscription, StyleProp, ViewStyle} from 'react-native';
 import Composer from './Composer';
 import Send from './Send';
 import Actions from './Actions';
@@ -22,7 +17,6 @@ export interface InputToolbarProps {
   renderSend?(props: Send['props']): React.ReactNode;
   renderComposer?(props: Composer['props']): React.ReactNode;
   onPressActionButton?(): void;
-  onLayout: (event: LayoutChangeEvent) => void;
 }
 export default class InputToolbar extends React.Component<
   InputToolbarProps,

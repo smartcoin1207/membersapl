@@ -166,6 +166,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  accessoryView: {
+    bottom: 58,
+  },
 });
 
 export {styles};

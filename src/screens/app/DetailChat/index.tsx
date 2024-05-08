@@ -2,16 +2,16 @@ import React, {useCallback, useRef} from 'react';
 import {
   Image,
   Keyboard,
-  type LayoutChangeEvent,
   Platform,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  type LayoutChangeEvent,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {useSelector} from 'react-redux';
 import {verticalScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 
 import {Header} from '@component';
 import {
@@ -22,6 +22,7 @@ import {
   iconSendActive,
 } from '@images';
 
+import {Dimensions} from 'react-native';
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
 import {
@@ -40,8 +41,6 @@ import {ModalTagName} from './components/ModalTagName';
 import {ShowPickedFile} from './components/ShowPickedFile';
 import {styles} from './styles';
 import {useFunction} from './useFunction';
-
-const TOOLBAR_PADDING = 52;
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -112,18 +111,24 @@ const DetailChat = (props: any) => {
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
-    setToolbarHeight,
-    toolbarHeight,
-    bottom,
-    setBottom,
     setIsShowKeyboard,
     isShowKeyboard,
     accessoryHeight,
     setAccessoryHeight,
   } = useFunction(props);
 
+  const toolbarRef: React.LegacyRef<any> | undefined = useRef(null);
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
+  const toolbarHeight = toolbarRef?.current?.state?.heightInput || 0;
+  const isShowAccessory =
+    messageReply ||
+    message_edit ||
+    messageQuote ||
+    modalStamp === true ||
+    showTagModal === true;
+
+  console.log({toolbarHeight, accessoryHeight});
   //Render ra UI chọn ảnh, video, file
   const renderActions = useCallback(
     (inputProps: any) => {
@@ -357,12 +362,9 @@ const DetailChat = (props: any) => {
           renderInputToolbar={inputToolbarProps =>
             renderInputToolbar({
               showModalStamp: modalStamp,
-              setToolbarHeight,
-              bottom,
-              setBottom,
-              toolbarHeight,
               setIsShowKeyboard,
               isShowKeyboard,
+              toolbarRef,
               ...inputToolbarProps,
             })
           }
@@ -380,9 +382,11 @@ const DetailChat = (props: any) => {
             <View
               style={{
                 height: verticalScale(
-                  (Platform.OS === 'ios' ? toolbarHeight : 25) +
-                    accessoryHeight +
-                    TOOLBAR_PADDING,
+                  isShowAccessory || isFocusInput
+                    ? accessoryHeight +
+                        toolbarHeight +
+                        (Dimensions.get('window').height <= 812 ? 25 : 0)
+                    : toolbarHeight + 24,
                 ),
               }}
             />
@@ -435,14 +439,11 @@ const DetailChat = (props: any) => {
           renderAccessory={() => {
             return (
               <View
+                style={styles.accessoryView}
                 onLayout={(event: LayoutChangeEvent) => {
                   setAccessoryHeight(event.nativeEvent.layout.height);
                 }}>
-                {messageReply ||
-                message_edit ||
-                messageQuote ||
-                modalStamp === true ||
-                showTagModal === true ? (
+                {isShowAccessory ? (
                   <>
                     {/* UI modal tag name */}
                     {showTagModal && (
