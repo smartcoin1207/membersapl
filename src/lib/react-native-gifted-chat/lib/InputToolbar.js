@@ -90,8 +90,9 @@ export default class InputToolbar extends React.Component {
     }
     renderAccessory() {
         if (this.props.renderAccessory) {
-            return (<View style={[styles.accessory, this.props.accessoryStyle, { position: 'absolute' },
-            { bottom: this.state.heightInput }]}>
+            return (<View style={[styles.accessory,  { position: 'absolute' },{ bottom: this.state.heightInput }, 
+                this.props.accessoryStyle
+            ]}>
                 {this.props.renderAccessory(this.props)}
             </View>);
         }

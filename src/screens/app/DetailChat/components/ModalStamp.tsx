@@ -34,48 +34,53 @@ const ModalStamp = React.memo((props: any) => {
   const {onChose} = props;
 
   return (
-    <ScrollView
-      style={[
-        styles.scrollView,
-        {
-          maxHeight:
-            CHILD_WIDTH * 2 + scale(GAP + CONTAINER_PADDING_VERTICAL * 2 + 12),
-        },
-      ]}>
-      <View style={styles.container}>
-        {DATA.map((item: any, index) => {
-          return (
-            <TouchableOpacity
-              key={item?.id}
-              onPress={() => {
-                onChose(item?.id);
-              }}>
-              <Image
-                source={item?.url}
-                style={[
-                  styles.image,
-                  (index + 1) % ITEM_PER_ROW !== 0
-                    ? styles.imageMarginRight
-                    : styles.imageNoMarginRight,
-                  (index + 1) / ITEM_PER_ROW < TOTAL_ROW
-                    ? styles.imageMarginBottom
-                    : styles.imageNoMarginBottom,
-                ]}
-                resizeMode="contain"
-              />
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </ScrollView>
+    <View style={styles.wrap}>
+      <ScrollView
+        style={[
+          styles.scrollView,
+          {
+            maxHeight:
+              CHILD_WIDTH * 2 +
+              scale(GAP + CONTAINER_PADDING_VERTICAL * 2 + 12),
+          },
+        ]}>
+        <View style={styles.container}>
+          {DATA.map((item: any, index) => {
+            return (
+              <TouchableOpacity
+                key={item?.id}
+                onPress={() => {
+                  onChose(item?.id);
+                }}>
+                <Image
+                  source={item?.url}
+                  style={[
+                    styles.image,
+                    (index + 1) % ITEM_PER_ROW !== 0
+                      ? styles.imageMarginRight
+                      : styles.imageNoMarginRight,
+                    (index + 1) / ITEM_PER_ROW < TOTAL_ROW
+                      ? styles.imageMarginBottom
+                      : styles.imageNoMarginBottom,
+                  ]}
+                  resizeMode="contain"
+                />
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
   );
 });
 
 const styles = StyleSheet.create({
+  wrap: {
+    width: '100%',
+    flexDirection: 'row',
+  },
   container: {
     flexDirection: 'row',
-    width: Dimensions.get('window').width,
-    backgroundColor: '#FFFFFF',
     shadowColor: '#D6D6D6',
     shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.8,
@@ -87,6 +92,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     paddingTop: scale(12),
+    width: '100%',
+    backgroundColor: '#fff',
   },
   image: {
     width: CHILD_WIDTH,

@@ -189,6 +189,6 @@ const styles = StyleSheet.create({
   },
   inputToolbarWithStamp: {
     position: 'relative',
-    bottom: 36,
+    bottom: -42,
   },
 });
