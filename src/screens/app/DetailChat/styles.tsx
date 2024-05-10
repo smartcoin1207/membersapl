@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accessoryView: {
-    bottom: 61,
+    bottom: 57,
   },
 });
 

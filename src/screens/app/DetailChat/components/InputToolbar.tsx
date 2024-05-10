@@ -42,7 +42,6 @@ export const renderSend = ({
 const MAX_INPUT_HEIGHT = 115;
 
 export const renderInputToolbar = ({
-  showModalStamp,
   setIsShowKeyboard,
   isShowKeyboard,
   toolbarRef,
@@ -51,7 +50,6 @@ export const renderInputToolbar = ({
   Readonly<{
     children?: React.ReactNode;
   }> & {
-    showModalStamp: boolean;
     setIsShowKeyboard: (isShowKeyboard: boolean) => void;
     isShowKeyboard: boolean;
     toolbarRef: any;
@@ -81,7 +79,6 @@ export const renderInputToolbar = ({
               }
             : {},
         ]}
-        accessoryStyle={[showModalStamp ? styles.inputToolbarWithStamp : {}]}
       />
     </>
   );
@@ -186,9 +183,5 @@ const styles = StyleSheet.create({
   sendContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  inputToolbarWithStamp: {
-    position: 'relative',
-    bottom: -42,
   },
 });

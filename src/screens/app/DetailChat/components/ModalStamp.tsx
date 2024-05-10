@@ -2,11 +2,11 @@ import React from 'react';
 import {
   Dimensions,
   Image,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {scale, verticalScale} from 'react-native-size-matters';
 
 import {chatStamp1, chatStamp2, chatStamp3, chatStamp4} from '@images';
