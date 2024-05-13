@@ -360,7 +360,6 @@ const DetailChat = (props: any) => {
           renderMessage={renderMessage}
           renderInputToolbar={inputToolbarProps =>
             renderInputToolbar({
-              showModalStamp: modalStamp,
               setIsShowKeyboard,
               isShowKeyboard,
               toolbarRef,
