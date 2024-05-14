@@ -103,7 +103,6 @@ export const renderComposer = ({
             keyboardShouldPersistTaps="always">
             <TextInput
               {...rest}
-              autoFocus
               ref={inputRef}
               showSoftInputOnFocus={true}
               placeholder={'メッセージ.'}
