@@ -98,11 +98,14 @@ export const renderComposer = ({
     return (
       <View style={styles.composerContainer}>
         <View style={styles.inputContainer}>
-          <ScrollView style={styles.scrollMessage}>
+          <ScrollView
+            style={styles.scrollMessage}
+            keyboardShouldPersistTaps="always">
             <TextInput
               {...rest}
               autoFocus
               ref={inputRef}
+              showSoftInputOnFocus={true}
               placeholder={'メッセージ.'}
               style={styles.inputMessage}
               multiline={true}
