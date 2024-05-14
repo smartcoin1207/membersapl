@@ -88,9 +88,11 @@ export const renderComposer = ({
   setIsFocusInput,
   formattedText,
   onInputTextChanged,
+  inputRef,
   ...rest
 }: ComposerProps & {
   setIsFocusInput: (isFocus: boolean) => void;
+  inputRef: React.LegacyRef<TextInput> | undefined;
 } & GiftedChatProps) => {
   if (rest && rest.textInputProps) {
     return (
@@ -99,6 +101,8 @@ export const renderComposer = ({
           <ScrollView style={styles.scrollMessage}>
             <TextInput
               {...rest}
+              autoFocus
+              ref={inputRef}
               placeholder={'メッセージ.'}
               style={styles.inputMessage}
               multiline={true}

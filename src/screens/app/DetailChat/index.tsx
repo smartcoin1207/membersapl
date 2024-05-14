@@ -118,6 +118,8 @@ const DetailChat = (props: any) => {
   } = useFunction(props);
 
   const toolbarRef: React.LegacyRef<any> | undefined = useRef(null);
+  const inputRef: React.LegacyRef<TextInput> | undefined = useRef(null);
+
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
   const toolbarHeight = toolbarRef?.current?.state?.heightInput || 0;
@@ -128,7 +130,7 @@ const DetailChat = (props: any) => {
     modalStamp === true ||
     showTagModal === true;
 
-  //Render ra UI chọn ảnh, video, file
+  //Render ra UI chọn ảnh, vid`eo, file
   const renderActions = useCallback(
     (inputProps: any) => {
       return (
@@ -201,6 +203,7 @@ const DetailChat = (props: any) => {
       return (
         <>
           <ItemMessage
+            inputRef={inputRef}
             {...inputProps}
             idRoomChat={idRoomChat}
             deleteMsg={(id: any) => {
@@ -343,9 +346,11 @@ const DetailChat = (props: any) => {
             }
           />
         )}
+
         {/* UI list chat message */}
         <GiftedChat
           text={text}
+          keyboardShouldPersistTaps={'handled'}
           formattedText={formattedText}
           keyboardHeight={keyboardHeight}
           ref={giftedChatRef}
@@ -369,6 +374,7 @@ const DetailChat = (props: any) => {
           renderComposer={composerProps =>
             renderComposer({
               setIsFocusInput,
+              inputRef,
               ...composerProps,
             })
           }

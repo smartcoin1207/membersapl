@@ -114,16 +114,10 @@ export const useFunction = (props: any) => {
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   useEffect(() => {
-    if (
-      messageReply ||
-      message_edit ||
-      messageQuote ||
-      modalStamp === true ||
-      showTagModal === true
-    ) {
+    if (modalStamp === true || showTagModal === true) {
       Keyboard.dismiss();
     }
-  }, [messageReply, message_edit, messageQuote, modalStamp, showTagModal]);
+  }, [modalStamp, showTagModal]);
 
   useEffect(() => {
     if (isFocusInput) {
