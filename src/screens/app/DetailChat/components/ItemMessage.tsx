@@ -103,8 +103,6 @@ const ItemMessage = React.memo((props: any) => {
   const onShowMenu = useCallback(() => {
     if (visible && props.inputRef?.current) {
       setTimeout(() => {
-        props.inputRef.current.blur();
-
         props.inputRef.current.focus();
       }, 600);
     }
