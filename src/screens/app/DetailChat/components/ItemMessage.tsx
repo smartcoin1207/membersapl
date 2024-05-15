@@ -106,7 +106,7 @@ const ItemMessage = React.memo((props: any) => {
         props.inputRef.current.blur();
 
         props.inputRef.current.focus();
-      }, 100);
+      }, 600);
     }
     setVisible(!visible);
   }, [visible, props.inputRef]);
