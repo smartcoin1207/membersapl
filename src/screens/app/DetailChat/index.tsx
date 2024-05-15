@@ -167,8 +167,7 @@ const DetailChat = (props: any) => {
                   }}
                   icon={() => {
                     const isActiveSend =
-                      inputProps.formattedText?.length > 0 ||
-                      chosenFiles.length > 0;
+                      inputText.length > 0 || chosenFiles.length > 0;
 
                     return isActiveSend ? (
                       <View
@@ -194,6 +193,7 @@ const DetailChat = (props: any) => {
       setFormattedText,
       showSendMessageButton,
       chosenFiles.length,
+      inputText.length,
     ],
   );
 
