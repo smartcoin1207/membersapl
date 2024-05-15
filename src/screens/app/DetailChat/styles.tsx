@@ -169,6 +169,9 @@ const styles = StyleSheet.create({
   accessoryView: {
     bottom: 53,
   },
+  accessoryViewWithDeco: {
+    bottom: 61,
+  },
 });
 
 export {styles};

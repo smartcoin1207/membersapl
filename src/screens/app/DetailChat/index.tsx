@@ -146,10 +146,12 @@ const DetailChat = (props: any) => {
 
   const renderActionsRight = useCallback(
     (inputProps: any) => {
+      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
+
       return (
         <>
           {showSendMessageButton && (
-            <>
+            <View pointerEvents={isActiveSend ? 'auto' : 'none'}>
               {
                 <Actions
                   {...inputProps}
@@ -166,9 +168,6 @@ const DetailChat = (props: any) => {
                     setFormattedText([]);
                   }}
                   icon={() => {
-                    const isActiveSend =
-                      inputText.length > 0 || chosenFiles.length > 0;
-
                     return isActiveSend ? (
                       <View
                         style={[styles.activeSendButton, styles.sendButton]}>
@@ -182,7 +181,7 @@ const DetailChat = (props: any) => {
                   }}
                 />
               }
-            </>
+            </View>
           )}
         </>
       );
@@ -389,7 +388,7 @@ const DetailChat = (props: any) => {
                   isShowAccessory || isFocusInput
                     ? accessoryHeight +
                         toolbarHeight +
-                        (Dimensions.get('window').height <= 812 ? 25 : 0)
+                        (Dimensions.get('window').height <= 812 ? 25 : 8)
                     : toolbarHeight + 24,
                 ),
               }}
@@ -443,7 +442,11 @@ const DetailChat = (props: any) => {
           renderAccessory={() => {
             return (
               <View
-                style={styles.accessoryView}
+                style={
+                  !isShowAccessory && isFocusInput
+                    ? styles.accessoryViewWithDeco
+                    : styles.accessoryView
+                }
                 onLayout={(event: LayoutChangeEvent) => {
                   setAccessoryHeight(event.nativeEvent.layout.height);
                 }}>
