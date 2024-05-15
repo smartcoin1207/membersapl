@@ -146,7 +146,10 @@ const DetailChat = (props: any) => {
 
   const renderActionsRight = useCallback(
     (inputProps: any) => {
-      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
+      const isActiveSend =
+        inputText.length > 0 ||
+        formattedText.length > 0 ||
+        chosenFiles.length > 0;
 
       return (
         <>
