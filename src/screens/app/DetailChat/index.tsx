@@ -196,6 +196,7 @@ const DetailChat = (props: any) => {
       showSendMessageButton,
       chosenFiles.length,
       inputText.length,
+      formattedText.length,
     ],
   );
 
