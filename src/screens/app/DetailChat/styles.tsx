@@ -170,10 +170,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   accessoryView: {
-    bottom: 53,
+    bottom: 33,
   },
   accessoryViewWithDeco: {
-    bottom: 61,
+    bottom: 41,
   },
 });
 

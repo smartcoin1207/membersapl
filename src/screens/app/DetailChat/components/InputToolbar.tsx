@@ -146,11 +146,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderTopWidth: 0,
     marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
-    paddingTop: scale(16),
-    paddingBottom: scale(36),
+    paddingVertical: scale(16),
   },
   scrollMessage: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#FFF',
     borderRadius: moderateScale(21),
     marginRight: scale(10),
     minHeight: verticalScale(40),
