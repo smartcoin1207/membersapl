@@ -16,7 +16,7 @@ import {
   type InputToolbarProps,
 } from 'react-native-gifted-chat';
 import {isIphoneX} from 'react-native-iphone-x-helper';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
@@ -98,6 +98,7 @@ export const renderComposer = ({
         <View style={styles.inputContainer}>
           <ScrollView
             style={styles.scrollMessage}
+            onLayout={e => console.log(e.nativeEvent.layout.height)}
             keyboardShouldPersistTaps="always">
             <TextInput
               {...rest}
@@ -133,7 +134,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'absolute',
     right: scale(50),
-    bottom: verticalScale(12),
+    bottom: 13,
     height: 18,
   },
   iconStyle: {
@@ -152,14 +153,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
     borderRadius: moderateScale(21),
     marginRight: scale(10),
-    minHeight: verticalScale(40),
+    minHeight: 44,
     width: '94%',
     maxHeight: MAX_INPUT_HEIGHT,
   },
   inputMessage: {
     paddingLeft: scale(10),
     paddingRight: scale(43),
-    paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
+    paddingTop: Platform.OS === 'ios' ? 16 : 7,
+    paddingBottom: Platform.OS === 'ios' ? undefined : 7,
   },
   iconEmojiStyle: {
     width: 18,
