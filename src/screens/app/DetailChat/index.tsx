@@ -135,6 +135,7 @@ const DetailChat = (props: any) => {
       return (
         <Actions
           {...inputProps}
+          containerStyle={styles.actionContainer}
           onPressActionButton={cancelModal}
           icon={() => <Image source={iconAttach} />}
         />
@@ -145,46 +146,43 @@ const DetailChat = (props: any) => {
 
   const renderActionsRight = useCallback(
     (inputProps: any) => {
-      const isActiveSend =
-        inputText.length > 0 ||
-        formattedText.length > 0 ||
-        chosenFiles.length > 0;
+      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
 
       return (
         <>
-          {showSendMessageButton && (
-            <View pointerEvents={isActiveSend ? 'auto' : 'none'}>
-              {
-                <Actions
-                  {...inputProps}
-                  containerStyle={styles.buttonRight}
-                  onPressActionButton={() => {
-                    const messages = [
-                      {
-                        text: getText(inputProps.formattedText),
-                        user: {_id: inputProps.user?._id},
-                        createdAt: new Date(Date.now()),
-                      },
-                    ];
-                    sendMessage(messages);
-                    setFormattedText([]);
-                  }}
-                  icon={() => {
-                    return isActiveSend ? (
-                      <View
-                        style={[styles.activeSendButton, styles.sendButton]}>
-                        <Image source={iconSendActive} />
-                      </View>
-                    ) : (
-                      <View style={styles.sendButton}>
-                        <Image source={iconSend} />
-                      </View>
-                    );
-                  }}
-                />
-              }
-            </View>
-          )}
+          <View
+            pointerEvents={
+              !isActiveSend || !showSendMessageButton ? 'none' : 'auto'
+            }>
+            {
+              <Actions
+                {...inputProps}
+                containerStyle={styles.buttonRight}
+                onPressActionButton={() => {
+                  const messages = [
+                    {
+                      text: getText(inputProps.formattedText),
+                      user: {_id: inputProps.user?._id},
+                      createdAt: new Date(Date.now()),
+                    },
+                  ];
+                  sendMessage(messages);
+                  setFormattedText([]);
+                }}
+                icon={() => {
+                  return isActiveSend && showSendMessageButton ? (
+                    <View style={[styles.activeSendButton, styles.sendButton]}>
+                      <Image source={iconSendActive} />
+                    </View>
+                  ) : (
+                    <View style={styles.sendButton}>
+                      <Image source={iconSend} />
+                    </View>
+                  );
+                }}
+              />
+            }
+          </View>
         </>
       );
     },
@@ -195,7 +193,6 @@ const DetailChat = (props: any) => {
       showSendMessageButton,
       chosenFiles.length,
       inputText.length,
-      formattedText.length,
     ],
   );
 

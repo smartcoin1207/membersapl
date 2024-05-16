@@ -153,7 +153,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: moderateScale(21),
     marginRight: scale(10),
-    marginLeft: scale(10),
     minHeight: verticalScale(40),
     width: '94%',
     maxHeight: MAX_INPUT_HEIGHT,

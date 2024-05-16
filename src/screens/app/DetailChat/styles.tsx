@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
   container: {
     ...stylesCommon.viewContainer,
   },
+  actionContainer: {
+    width: 23,
+    height: 23,
+  },
   viewPinMessage: {
     backgroundColor: '#FFFFFF',
     paddingHorizontal: scale(16),
