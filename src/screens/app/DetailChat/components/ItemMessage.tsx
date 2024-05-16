@@ -101,13 +101,8 @@ const ItemMessage = React.memo((props: any) => {
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const onShowMenu = useCallback(() => {
-    if (visible && props.inputRef?.current) {
-      setTimeout(() => {
-        props.inputRef.current.focus();
-      }, 600);
-    }
     setVisible(!visible);
-  }, [visible, props.inputRef]);
+  }, [visible]);
 
   const onShowModalDelete = useCallback(() => {
     setShowModalDelete(!showModalDelete);

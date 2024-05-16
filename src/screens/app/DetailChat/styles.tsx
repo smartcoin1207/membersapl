@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '18%',
   },
-  imageTask: {},
   displayNone: {
     display: 'none',
   },

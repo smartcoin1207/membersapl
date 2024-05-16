@@ -118,7 +118,6 @@ const DetailChat = (props: any) => {
   } = useFunction(props);
 
   const toolbarRef: React.LegacyRef<any> | undefined = useRef(null);
-  const inputRef: React.LegacyRef<TextInput> | undefined = useRef(null);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
@@ -206,7 +205,6 @@ const DetailChat = (props: any) => {
       return (
         <>
           <ItemMessage
-            inputRef={inputRef}
             {...inputProps}
             idRoomChat={idRoomChat}
             deleteMsg={(id: any) => {
@@ -377,7 +375,6 @@ const DetailChat = (props: any) => {
           renderComposer={composerProps =>
             renderComposer({
               setIsFocusInput,
-              inputRef,
               ...composerProps,
             })
           }

@@ -88,11 +88,9 @@ export const renderComposer = ({
   setIsFocusInput,
   formattedText,
   onInputTextChanged,
-  inputRef,
   ...rest
 }: ComposerProps & {
   setIsFocusInput: (isFocus: boolean) => void;
-  inputRef: React.LegacyRef<TextInput> | undefined;
 } & GiftedChatProps) => {
   if (rest && rest.textInputProps) {
     return (
@@ -103,7 +101,6 @@ export const renderComposer = ({
             keyboardShouldPersistTaps="always">
             <TextInput
               {...rest}
-              ref={inputRef}
               showSoftInputOnFocus={true}
               placeholder={'メッセージ.'}
               style={styles.inputMessage}
