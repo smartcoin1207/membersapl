@@ -19,15 +19,17 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
 
-const MAX_INPUT_HEIGHT = 110;
+const MAX_INPUT_HEIGHT = 117;
 
 type ComposerExtraProps = {
   setIsFocusInput: (isFocus: boolean) => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: string | Element[];
+  onInputTextChanged: (text: string) => void;
 };
-const renderComposer = (
+
+export const renderComposer = (
   props: ComposerProps & ComposerExtraProps & GiftedChatProps,
 ) => {
   const {
@@ -44,15 +46,22 @@ const renderComposer = (
       <Composer
         multiline
         {...rest}
-        textInputStyle={styles.scrollMessage}
+        textInputStyle={[
+          styles.scrollMessage,
+          {
+            maxHeight:
+              formattedText?.length > 0
+                ? MAX_INPUT_HEIGHT
+                : styles.scrollMessage.minHeight,
+          },
+        ]}
         textInputProps={{
           value: undefined,
           onChangeText: onInputTextChanged,
           onFocus: () => setIsFocusInput(true),
           onBlur: () => setIsFocusInput(false),
-          children: <>{formattedText}</>,
+          children: <>{formattedText?.length > 0 ? formattedText : ''}</>,
           placeholder: 'メッセージ.',
-
           ...textInputProps,
         }}
       />
@@ -84,7 +93,6 @@ export const renderInputToolbar = (
     renderSend,
     renderAccessory,
     accessoryStyle,
-    setIsFocusInput,
     ...rest
   } = inputProps;
   return (
@@ -96,7 +104,7 @@ export const renderInputToolbar = (
       <View style={styles.toolbarPrimaryStyles}>
         {renderActions?.(rest) ||
           (onPressActionButton && <Actions {...rest} />)}
-        {renderComposer?.({...rest, setIsFocusInput}) || <Composer {...rest} />}
+        {renderComposer?.(rest) || <Composer {...rest} />}
         {renderSend?.(rest) || <Send {...rest} />}
       </View>
     </View>
