@@ -7,8 +7,9 @@ import {
   View,
 } from 'react-native';
 import {
+  Actions,
   Composer,
-  InputToolbar,
+  Send,
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
@@ -20,37 +21,24 @@ import {colors} from '@stylesCommon';
 
 const MAX_INPUT_HEIGHT = 110;
 
-export const renderInputToolbar = (
-  inputProps: Readonly<InputToolbarProps> &
-    Readonly<{
-      children?: React.ReactNode;
-    }>,
-) => {
-  return (
-    <>
-      <InputToolbar
-        {...inputProps}
-        containerStyle={styles.toolBar}
-        primaryStyle={styles.toolbarPrimaryStyles}
-      />
-    </>
-  );
-};
-
-export const renderComposer = ({
-  setIsFocusInput,
-  formattedText,
-  onInputTextChanged,
-  showModalStamp,
-  isShowModalStamp,
-  textInputProps,
-  ...rest
-}: ComposerProps & {
+type ComposerExtraProps = {
   setIsFocusInput: (isFocus: boolean) => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: string | Element[];
-} & GiftedChatProps) => {
+};
+const renderComposer = (
+  props: ComposerProps & ComposerExtraProps & GiftedChatProps,
+) => {
+  const {
+    setIsFocusInput,
+    formattedText,
+    onInputTextChanged,
+    showModalStamp,
+    isShowModalStamp,
+    textInputProps,
+    ...rest
+  } = props;
   return (
     <View style={styles.composerContainer}>
       <Composer
@@ -79,6 +67,42 @@ export const renderComposer = ({
   );
 };
 
+export const renderInputToolbar = (
+  inputProps: Readonly<InputToolbarProps> &
+    Readonly<
+      {
+        children?: React.ReactNode;
+      } & {
+        isShowKeyboard: boolean;
+      } & ComposerExtraProps
+    >,
+) => {
+  const {
+    isShowKeyboard,
+    onPressActionButton,
+    renderActions,
+    renderSend,
+    renderAccessory,
+    accessoryStyle,
+    setIsFocusInput,
+    ...rest
+  } = inputProps;
+  return (
+    <View
+      style={[styles.toolBar, isShowKeyboard ? styles.relativeToolbar : {}]}>
+      {renderAccessory && (
+        <View style={accessoryStyle}>{renderAccessory(rest)}</View>
+      )}
+      <View style={styles.toolbarPrimaryStyles}>
+        {renderActions?.(rest) ||
+          (onPressActionButton && <Actions {...rest} />)}
+        {renderComposer?.({...rest, setIsFocusInput}) || <Composer {...rest} />}
+        {renderSend?.(rest) || <Send {...rest} />}
+      </View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   container: {
     bottom: 0,
@@ -96,12 +120,21 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toolBar: {
-    backgroundColor: colors.background,
     borderTopWidth: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    position: 'absolute',
+  },
+  relativeToolbar: {
+    position: 'relative',
   },
   toolbarPrimaryStyles: {
     paddingTop: verticalScale(16),
     paddingBottom: verticalScale(30),
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    backgroundColor: colors.background,
   },
   scrollMessage: {
     backgroundColor: '#FFF',

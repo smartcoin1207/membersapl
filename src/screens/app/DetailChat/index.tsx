@@ -104,6 +104,7 @@ const DetailChat = (props: any) => {
     setIsFocusInput,
     accessoryHeight,
     setAccessoryHeight,
+    isShowKeyboard,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -347,20 +348,21 @@ const DetailChat = (props: any) => {
           onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={renderInputToolbar}
-          renderComposer={composerProps =>
-            renderComposer({
+          renderInputToolbar={inputProps =>
+            renderInputToolbar({
+              ...inputProps,
+              isShowKeyboard,
               setIsFocusInput,
               formattedText,
               showModalStamp,
               isShowModalStamp: modalStamp,
-              onInputTextChanged: txt => {
+              onInputTextChanged: (txt: string) => {
                 formatText(txt, false);
                 setInputText(txt);
               },
-              ...composerProps,
             })
           }
+          renderComposer={renderComposer}
           wrapInSafeArea={false}
           user={chatUser}
           renderSend={renderSend}

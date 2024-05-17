@@ -112,6 +112,22 @@ export const useFunction = (props: any) => {
   const [bottom, setBottom] = useState(0);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  useEffect(() => {
+    const keyboardWillShowListener = Keyboard.addListener(
+      'keyboardWillShow',
+      () => setIsShowKeyboard('relative'),
+    );
+    const keyboardWillHideListener = Keyboard.addListener(
+      'keyboardWillHide',
+      () => setIsShowKeyboard('absolute'),
+    );
+    return () => {
+      keyboardWillShowListener?.remove();
+      keyboardWillHideListener?.remove();
+    };
+  }, []);
+
   useEffect(() => {
     if (modalStamp === true || showTagModal === true) {
       Keyboard.dismiss();
@@ -1565,5 +1581,6 @@ export const useFunction = (props: any) => {
     setBottom,
     accessoryHeight,
     setAccessoryHeight,
+    isShowKeyboard,
   };
 };
