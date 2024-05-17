@@ -121,7 +121,7 @@ const DetailChat = (props: any) => {
       return (
         <Actions
           {...inputProps}
-          containerStyle={styles.actionContainer}
+          containerStyle={styles.attachIcon}
           onPressActionButton={cancelModal}
           icon={() => <Image source={iconAttach} />}
         />
@@ -408,7 +408,7 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
-          renderFooter={() => <View style={{height: accessoryHeight + 80}} />}
+          renderFooter={() => <View style={{height: accessoryHeight + 50}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (

@@ -1,15 +1,25 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Platform} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {colors, stylesCommon} from '@stylesCommon';
+
+const ATTACH_ICON_WIDTH = 24;
+export const TOOLBAR_MIN_HEIGHT = 44;
+const SEND_BUTTON_WIDTH = 30;
+const COMPOSER_MARGIN_BOTTOM = Platform.OS === 'ios' ? 5 : 3;
+export const calPositionButton = (height: number) =>
+  (TOOLBAR_MIN_HEIGHT - height) / 2 + COMPOSER_MARGIN_BOTTOM;
 
 const styles = StyleSheet.create({
   container: {
     ...stylesCommon.viewContainer,
   },
-  actionContainer: {
-    width: 23,
-    height: 23,
+  attachIcon: {
+    width: ATTACH_ICON_WIDTH,
+    height: ATTACH_ICON_WIDTH,
+    bottom: calPositionButton(ATTACH_ICON_WIDTH),
+    marginBottom: 0,
+    marginLeft: scale(15),
   },
   viewPinMessage: {
     backgroundColor: '#FFFFFF',
@@ -125,7 +135,10 @@ const styles = StyleSheet.create({
   buttonRight: {
     marginRight: 16,
     marginLeft: 10,
-    bottom: scale(5),
+    marginBottom: 0,
+    width: SEND_BUTTON_WIDTH,
+    height: SEND_BUTTON_WIDTH,
+    bottom: calPositionButton(SEND_BUTTON_WIDTH),
   },
   imageFile: {
     width: moderateScale(25),
@@ -160,20 +173,13 @@ const styles = StyleSheet.create({
   },
   activeSendButton: {
     backgroundColor: '#1EB7C1',
-    borderRadius: scale(21),
+    borderRadius: 21,
   },
   sendButton: {
-    width: scale(30),
-    height: scale(30),
+    flex: 1,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  accessoryView: {
-    bottom: 33,
-  },
-  accessoryViewWithDeco: {
-    bottom: 41,
   },
 });
 

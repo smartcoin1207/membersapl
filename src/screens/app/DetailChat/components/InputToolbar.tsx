@@ -16,8 +16,10 @@ import {
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
+import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 
 const MAX_INPUT_HEIGHT = Platform.OS === 'ios' ? 110 : 118;
+const EMOJI_ICON_WIDTH = 18;
 
 export const renderInputToolbar = (
   inputProps: Readonly<InputToolbarProps> &
@@ -86,15 +88,6 @@ export const renderComposer = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  primary: {
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-  },
   iconStyle: {
     width: 20,
     height: 20,
@@ -106,23 +99,24 @@ const styles = StyleSheet.create({
   },
   toolbarPrimaryStyles: {
     backgroundColor: '#F4F2EF',
-    paddingTop: verticalScale(16),
+    justifyContent: 'flex-end',
+    paddingTop: verticalScale(12),
     paddingBottom:
-      Platform.OS === 'ios' ? verticalScale(16) : verticalScale(30),
+      Platform.OS === 'ios' ? verticalScale(16) : verticalScale(12),
   },
   scrollMessage: {
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF',
     borderRadius: moderateScale(21),
     maxHeight: MAX_INPUT_HEIGHT,
     lineHeight: 17,
     fontSize: 14,
     paddingLeft: 12,
     paddingTop: Platform.OS === 'ios' ? 12 : undefined,
-    minHeight: 44,
+    minHeight: TOOLBAR_MIN_HEIGHT,
   },
   iconEmojiStyle: {
-    width: 18,
-    height: 18,
+    width: EMOJI_ICON_WIDTH,
+    height: EMOJI_ICON_WIDTH,
   },
   composerContainer: {
     flex: 1,
@@ -131,7 +125,6 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
     marginLeft: scale(10),
     bottom: 0,
     left: 0,
@@ -139,7 +132,7 @@ const styles = StyleSheet.create({
   },
   showStampButton: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 18 : 15,
+    bottom: calPositionButton(EMOJI_ICON_WIDTH),
     right: 12,
   },
 });
