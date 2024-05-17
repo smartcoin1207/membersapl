@@ -110,7 +110,6 @@ export const useFunction = (props: any) => {
   const [isFocusInput, setIsFocusInput] = useState(false);
   const [toolbarHeight, setToolbarHeight] = useState(0);
   const [bottom, setBottom] = useState(0);
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   useEffect(() => {
@@ -1564,8 +1563,6 @@ export const useFunction = (props: any) => {
     setToolbarHeight,
     bottom,
     setBottom,
-    isShowKeyboard,
-    setIsShowKeyboard,
     accessoryHeight,
     setAccessoryHeight,
   };

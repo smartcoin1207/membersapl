@@ -7,10 +7,8 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  type LayoutChangeEvent,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {verticalScale} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 
 import {Header} from '@component';
@@ -22,14 +20,9 @@ import {
   iconSendActive,
 } from '@images';
 
-import {Dimensions} from 'react-native';
-import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
+import {Actions, GiftedChat} from 'react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
-import {
-  renderComposer,
-  renderInputToolbar,
-  renderSend,
-} from './components/InputToolbar';
+import {renderComposer, renderInputToolbar} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPickFile} from './components/ModalPickFile';
@@ -72,7 +65,6 @@ const DetailChat = (props: any) => {
     showModalStamp,
     modalStamp,
     giftedChatRef,
-    text,
     setShowTag,
     showTagModal,
     listUserChat,
@@ -99,7 +91,6 @@ const DetailChat = (props: any) => {
     inputText,
     textSelection,
     onDecoSelected,
-    keyboardHeight,
     chosenFiles,
     deleteFile,
     setListUserSelect,
@@ -111,17 +102,12 @@ const DetailChat = (props: any) => {
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
-    setIsShowKeyboard,
-    isShowKeyboard,
     accessoryHeight,
     setAccessoryHeight,
   } = useFunction(props);
 
-  const toolbarRef: React.LegacyRef<any> | undefined = useRef(null);
-
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
-  const toolbarHeight = toolbarRef?.current?.state?.heightInput || 0;
   const isShowAccessory =
     messageReply ||
     message_edit ||
@@ -144,9 +130,12 @@ const DetailChat = (props: any) => {
     [cancelModal],
   );
 
-  const renderActionsRight = useCallback(
+  const renderSend = useCallback(
     (inputProps: any) => {
-      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
+      const isActiveSend =
+        inputText.length > 0 ||
+        formattedText?.length > 0 ||
+        chosenFiles.length > 0;
 
       return (
         <>
@@ -161,7 +150,7 @@ const DetailChat = (props: any) => {
                 onPressActionButton={() => {
                   const messages = [
                     {
-                      text: getText(inputProps.formattedText),
+                      text: getText(formattedText),
                       user: {_id: inputProps.user?._id},
                       createdAt: new Date(Date.now()),
                     },
@@ -193,6 +182,7 @@ const DetailChat = (props: any) => {
       showSendMessageButton,
       chosenFiles.length,
       inputText.length,
+      formattedText,
     ],
   );
 
@@ -347,53 +337,35 @@ const DetailChat = (props: any) => {
 
         {/* UI list chat message */}
         <GiftedChat
-          text={text}
           keyboardShouldPersistTaps={'handled'}
-          formattedText={formattedText}
-          keyboardHeight={keyboardHeight}
           ref={giftedChatRef}
           onInputTextChanged={txt => {
             formatText(txt, false);
             setInputText(txt);
           }}
-          textSelection={textSelection}
           messages={getConvertedMessages(listChat)}
-          onSend={showModalStamp}
+          onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={inputToolbarProps =>
-            renderInputToolbar({
-              setIsShowKeyboard,
-              isShowKeyboard,
-              toolbarRef,
-              ...inputToolbarProps,
-            })
-          }
+          renderInputToolbar={renderInputToolbar}
           renderComposer={composerProps =>
             renderComposer({
               setIsFocusInput,
+              formattedText,
+              showModalStamp,
+              isShowModalStamp: modalStamp,
+              onInputTextChanged: txt => {
+                formatText(txt, false);
+                setInputText(txt);
+              },
               ...composerProps,
             })
           }
+          wrapInSafeArea={false}
           user={chatUser}
-          renderSend={sendProps =>
-            renderSend({showModalStamp: modalStamp, ...sendProps})
-          }
-          renderFooter={() => (
-            <View
-              style={{
-                height: verticalScale(
-                  isShowAccessory || isFocusInput
-                    ? accessoryHeight +
-                        toolbarHeight +
-                        (Dimensions.get('window').height <= 812 ? 25 : 8)
-                    : toolbarHeight + 24,
-                ),
-              }}
-            />
-          )}
+          renderSend={renderSend}
           renderActions={renderActions}
-          renderActionsRight={renderActionsRight}
+          maxComposerHeight={118}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{
             scrollEventThrottle: 400,
@@ -436,18 +408,14 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
+          renderFooter={() => <View style={{height: accessoryHeight + 80}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (
               <View
-                style={
-                  !isShowAccessory && isFocusInput
-                    ? styles.accessoryViewWithDeco
-                    : styles.accessoryView
-                }
-                onLayout={(event: LayoutChangeEvent) => {
-                  setAccessoryHeight(event.nativeEvent.layout.height);
-                }}>
+                onLayout={event =>
+                  setAccessoryHeight(event.nativeEvent.layout.height)
+                }>
                 {isShowAccessory ? (
                   <>
                     {/* UI modal tag name */}

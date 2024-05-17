@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
   },
   buttonRight: {
     marginRight: 16,
-    marginLeft: 0,
+    marginLeft: 10,
     bottom: scale(5),
   },
   imageFile: {

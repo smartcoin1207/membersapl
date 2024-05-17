@@ -1,84 +1,37 @@
 import React from 'react';
 import {
   Image,
-  Keyboard,
   Platform,
-  ScrollView,
   StyleSheet,
-  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import {
+  Composer,
   InputToolbar,
-  Send,
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
 } from 'react-native-gifted-chat';
-import {isIphoneX} from 'react-native-iphone-x-helper';
-import {moderateScale, scale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {colors} from '@stylesCommon';
 
-export const renderSend = ({
-  showModalStamp,
-  ...rest
-}: Send['props'] & {showModalStamp: boolean}) => {
-  return (
-    <Send
-      {...rest}
-      // disabled={!props.text.trim()}
-      containerStyle={styles.sendBtn}>
-      <Image
-        source={showModalStamp ? iconEmojiActive : iconEmoji}
-        style={styles.iconEmojiStyle}
-        resizeMode="contain"
-      />
-    </Send>
-  );
-};
+const MAX_INPUT_HEIGHT = 110;
 
-const MAX_INPUT_HEIGHT = 115;
-
-export const renderInputToolbar = ({
-  setIsShowKeyboard,
-  isShowKeyboard,
-  toolbarRef,
-  ...rest
-}: Readonly<InputToolbarProps> &
-  Readonly<{
-    children?: React.ReactNode;
-  }> & {
-    setIsShowKeyboard: (isShowKeyboard: boolean) => void;
-    isShowKeyboard: boolean;
-    toolbarRef: any;
-  }) => {
-  Keyboard.addListener('keyboardWillHide', () => {
-    setIsShowKeyboard(false);
-  });
-
-  Keyboard.addListener('keyboardDidShow', () => {
-    setIsShowKeyboard(true);
-  });
-
-  Keyboard.addListener('keyboardDidHide', () => {
-    setIsShowKeyboard(false);
-  });
-
+export const renderInputToolbar = (
+  inputProps: Readonly<InputToolbarProps> &
+    Readonly<{
+      children?: React.ReactNode;
+    }>,
+) => {
   return (
     <>
       <InputToolbar
-        {...rest}
-        ref={toolbarRef}
-        containerStyle={[
-          styles.toolBar,
-          Platform.OS === 'ios' && isShowKeyboard
-            ? {
-                bottom: toolbarRef?.current?.state?.heightInput,
-              }
-            : {},
-        ]}
+        {...inputProps}
+        containerStyle={styles.toolBar}
+        primaryStyle={styles.toolbarPrimaryStyles}
       />
     </>
   );
@@ -88,54 +41,53 @@ export const renderComposer = ({
   setIsFocusInput,
   formattedText,
   onInputTextChanged,
+  showModalStamp,
+  isShowModalStamp,
+  textInputProps,
   ...rest
 }: ComposerProps & {
   setIsFocusInput: (isFocus: boolean) => void;
+  isShowModalStamp: boolean;
+  showModalStamp: () => void;
+  formattedText: string | Element[];
 } & GiftedChatProps) => {
-  if (rest && rest.textInputProps) {
-    return (
-      <View style={styles.composerContainer}>
-        <View style={styles.inputContainer}>
-          <ScrollView
-            style={styles.scrollMessage}
-            onLayout={e => console.log(e.nativeEvent.layout.height)}
-            keyboardShouldPersistTaps="always">
-            <TextInput
-              {...rest}
-              showSoftInputOnFocus={true}
-              placeholder={'メッセージ.'}
-              style={styles.inputMessage}
-              multiline={true}
-              scrollEnabled={false}
-              onTextInput={rest.textInputProps.onTextInput}
-              onKeyPress={rest.textInputProps.onKeyPress}
-              value={undefined}
-              onFocus={() => setIsFocusInput(true)}
-              onBlur={() => setIsFocusInput(false)}
-              // selection={props.textSelection}
-              onSelectionChange={rest.textInputProps.onSelectionChange}
-              onChangeText={(value: any) => {
-                onInputTextChanged?.(value);
-              }}>
-              {formattedText}
-            </TextInput>
-          </ScrollView>
-        </View>
-      </View>
-    );
-  }
-  return null;
+  return (
+    <View style={styles.composerContainer}>
+      <Composer
+        multiline
+        {...rest}
+        textInputStyle={styles.scrollMessage}
+        textInputProps={{
+          value: undefined,
+          onChangeText: onInputTextChanged,
+          onFocus: () => setIsFocusInput(true),
+          onBlur: () => setIsFocusInput(false),
+          children: <>{formattedText}</>,
+          placeholder: 'メッセージ.',
+
+          ...textInputProps,
+        }}
+      />
+      <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
+        <Image
+          source={isShowModalStamp ? iconEmojiActive : iconEmoji}
+          style={styles.iconEmojiStyle}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  sendBtn: {
-    marginHorizontal: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    right: scale(50),
-    bottom: 13,
-    height: 18,
+  container: {
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  primary: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   iconStyle: {
     width: 20,
@@ -146,22 +98,20 @@ const styles = StyleSheet.create({
   toolBar: {
     backgroundColor: colors.background,
     borderTopWidth: 0,
-    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
-    paddingVertical: scale(16),
+  },
+  toolbarPrimaryStyles: {
+    paddingTop: verticalScale(16),
+    paddingBottom: verticalScale(30),
   },
   scrollMessage: {
     backgroundColor: '#FFF',
     borderRadius: moderateScale(21),
-    marginRight: scale(10),
-    minHeight: 44,
-    width: '94%',
     maxHeight: MAX_INPUT_HEIGHT,
-  },
-  inputMessage: {
-    paddingLeft: scale(10),
-    paddingRight: scale(43),
-    paddingTop: Platform.OS === 'ios' ? 16 : 7,
-    paddingBottom: Platform.OS === 'ios' ? undefined : 7,
+    lineHeight: 17,
+    fontSize: 14,
+    paddingLeft: 12,
+    paddingTop: Platform.OS === 'ios' ? 12 : undefined,
+    minHeight: 44,
   },
   iconEmojiStyle: {
     width: 18,
@@ -169,22 +119,20 @@ const styles = StyleSheet.create({
   },
   composerContainer: {
     flex: 1,
-    height: 'auto',
     flexDirection: 'row',
+    position: 'relative',
   },
   inputContainer: {
     flexDirection: 'row',
     backgroundColor: '#f2f2f2',
     marginLeft: scale(10),
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  sendWrapperStyle: {
-    width: '15%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  showStampButton: {
+    position: 'absolute',
+    bottom: Platform.OS === 'ios' ? 18 : 12,
+    right: 12,
   },
 });
