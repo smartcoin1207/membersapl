@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
   },
   showStampButton: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 18 : 12,
+    bottom: Platform.OS === 'ios' ? 18 : 15,
     right: 12,
   },
 });
