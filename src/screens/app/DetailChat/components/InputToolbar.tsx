@@ -7,9 +7,8 @@ import {
   View,
 } from 'react-native';
 import {
-  Actions,
   Composer,
-  Send,
+  InputToolbar,
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
@@ -17,30 +16,40 @@ import {
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
-import {colors} from '@stylesCommon';
 
-const MAX_INPUT_HEIGHT = 117;
+const MAX_INPUT_HEIGHT = Platform.OS === 'ios' ? 110 : 118;
 
-type ComposerExtraProps = {
+export const renderInputToolbar = (
+  inputProps: Readonly<InputToolbarProps> &
+    Readonly<{
+      children?: React.ReactNode;
+    }>,
+) => {
+  return (
+    <>
+      <InputToolbar
+        {...inputProps}
+        containerStyle={styles.toolBar}
+        primaryStyle={styles.toolbarPrimaryStyles}
+      />
+    </>
+  );
+};
+
+export const renderComposer = ({
+  setIsFocusInput,
+  formattedText,
+  onInputTextChanged,
+  showModalStamp,
+  isShowModalStamp,
+  textInputProps,
+  ...rest
+}: ComposerProps & {
   setIsFocusInput: (isFocus: boolean) => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: string | Element[];
-  onInputTextChanged: (text: string) => void;
-};
-
-export const renderComposer = (
-  props: ComposerProps & ComposerExtraProps & GiftedChatProps,
-) => {
-  const {
-    setIsFocusInput,
-    formattedText,
-    onInputTextChanged,
-    showModalStamp,
-    isShowModalStamp,
-    textInputProps,
-    ...rest
-  } = props;
+} & GiftedChatProps) => {
   return (
     <View style={styles.composerContainer}>
       <Composer
@@ -60,7 +69,7 @@ export const renderComposer = (
           onChangeText: onInputTextChanged,
           onFocus: () => setIsFocusInput(true),
           onBlur: () => setIsFocusInput(false),
-          children: <>{formattedText?.length > 0 ? formattedText : ''}</>,
+          children: <>{formattedText}</>,
           placeholder: 'メッセージ.',
           ...textInputProps,
         }}
@@ -72,41 +81,6 @@ export const renderComposer = (
           resizeMode="contain"
         />
       </TouchableOpacity>
-    </View>
-  );
-};
-
-export const renderInputToolbar = (
-  inputProps: Readonly<InputToolbarProps> &
-    Readonly<
-      {
-        children?: React.ReactNode;
-      } & {
-        isShowKeyboard: boolean;
-      } & ComposerExtraProps
-    >,
-) => {
-  const {
-    isShowKeyboard,
-    onPressActionButton,
-    renderActions,
-    renderSend,
-    renderAccessory,
-    accessoryStyle,
-    ...rest
-  } = inputProps;
-  return (
-    <View
-      style={[styles.toolBar, isShowKeyboard ? styles.relativeToolbar : {}]}>
-      {renderAccessory && (
-        <View style={accessoryStyle}>{renderAccessory(rest)}</View>
-      )}
-      <View style={styles.toolbarPrimaryStyles}>
-        {renderActions?.(rest) ||
-          (onPressActionButton && <Actions {...rest} />)}
-        {renderComposer?.(rest) || <Composer {...rest} />}
-        {renderSend?.(rest) || <Send {...rest} />}
-      </View>
     </View>
   );
 };
@@ -129,23 +103,15 @@ const styles = StyleSheet.create({
   },
   toolBar: {
     borderTopWidth: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    position: 'absolute',
-  },
-  relativeToolbar: {
-    position: 'relative',
   },
   toolbarPrimaryStyles: {
+    backgroundColor: '#F4F2EF',
     paddingTop: verticalScale(16),
-    paddingBottom: verticalScale(30),
-    flexDirection: 'row',
-    alignItems: 'flex-end',
-    backgroundColor: colors.background,
+    paddingBottom:
+      Platform.OS === 'ios' ? verticalScale(16) : verticalScale(30),
   },
   scrollMessage: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#fff',
     borderRadius: moderateScale(21),
     maxHeight: MAX_INPUT_HEIGHT,
     lineHeight: 17,
@@ -173,7 +139,7 @@ const styles = StyleSheet.create({
   },
   showStampButton: {
     position: 'absolute',
-    bottom: Platform.OS === 'ios' ? 18 : 14,
+    bottom: Platform.OS === 'ios' ? 18 : 12,
     right: 12,
   },
 });

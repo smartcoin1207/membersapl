@@ -108,19 +108,17 @@ export const useFunction = (props: any) => {
   const [showSendMessageButton, setShowSendMessageButton] =
     useState<boolean>(true);
   const [isFocusInput, setIsFocusInput] = useState(false);
-  const [toolbarHeight, setToolbarHeight] = useState(0);
-  const [bottom, setBottom] = useState(0);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   useEffect(() => {
     const keyboardWillShowListener = Keyboard.addListener(
       'keyboardWillShow',
-      () => setIsShowKeyboard('relative'),
+      () => setIsShowKeyboard(true),
     );
     const keyboardWillHideListener = Keyboard.addListener(
       'keyboardWillHide',
-      () => setIsShowKeyboard('absolute'),
+      () => setIsShowKeyboard(false),
     );
     return () => {
       keyboardWillShowListener?.remove();
@@ -1575,10 +1573,6 @@ export const useFunction = (props: any) => {
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
-    toolbarHeight,
-    setToolbarHeight,
-    bottom,
-    setBottom,
     accessoryHeight,
     setAccessoryHeight,
     isShowKeyboard,

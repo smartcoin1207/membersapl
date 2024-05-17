@@ -104,7 +104,6 @@ const DetailChat = (props: any) => {
     setIsFocusInput,
     accessoryHeight,
     setAccessoryHeight,
-    isShowKeyboard,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -348,21 +347,20 @@ const DetailChat = (props: any) => {
           onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={inputProps =>
-            renderInputToolbar({
-              ...inputProps,
-              isShowKeyboard,
+          renderInputToolbar={renderInputToolbar}
+          renderComposer={composerProps =>
+            renderComposer({
               setIsFocusInput,
               formattedText,
               showModalStamp,
               isShowModalStamp: modalStamp,
-              onInputTextChanged: (txt: string) => {
+              onInputTextChanged: txt => {
                 formatText(txt, false);
                 setInputText(txt);
               },
+              ...composerProps,
             })
           }
-          renderComposer={renderComposer}
           wrapInSafeArea={false}
           user={chatUser}
           renderSend={renderSend}
@@ -410,7 +408,7 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
-          renderFooter={() => <View style={{height: accessoryHeight + 50}} />}
+          renderFooter={() => <View style={{height: accessoryHeight + 80}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (
