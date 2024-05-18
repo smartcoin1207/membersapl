@@ -33,6 +33,7 @@ export const renderInputToolbar = (
         {...inputProps}
         containerStyle={styles.toolBar}
         primaryStyle={styles.toolbarPrimaryStyles}
+        accessoryStyle={styles.accessoryStyle}
       />
     </>
   );
@@ -96,6 +97,9 @@ const styles = StyleSheet.create({
   },
   toolBar: {
     borderTopWidth: 0,
+  },
+  accessoryStyle: {
+    height: 'auto',
   },
   toolbarPrimaryStyles: {
     backgroundColor: '#F4F2EF',

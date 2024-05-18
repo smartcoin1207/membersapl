@@ -98,7 +98,7 @@ const DetailChat = (props: any) => {
     customBack,
     setInputIndex,
     inputIndex,
-    showSendMessageButton,
+    isSendingMessage,
     setPageLoading,
     isFocusInput,
     setIsFocusInput,
@@ -137,12 +137,11 @@ const DetailChat = (props: any) => {
         formattedText?.length > 0 ||
         chosenFiles.length > 0;
 
+      const isActiveSendButton = isActiveSend && !isSendingMessage;
+
       return (
         <>
-          <View
-            pointerEvents={
-              !isActiveSend || !showSendMessageButton ? 'none' : 'auto'
-            }>
+          <View pointerEvents={!isActiveSendButton ? 'none' : 'auto'}>
             {
               <Actions
                 {...inputProps}
@@ -159,7 +158,7 @@ const DetailChat = (props: any) => {
                   setFormattedText([]);
                 }}
                 icon={() => {
-                  return isActiveSend && showSendMessageButton ? (
+                  return isActiveSendButton ? (
                     <View style={[styles.activeSendButton, styles.sendButton]}>
                       <Image source={iconSendActive} />
                     </View>
@@ -179,7 +178,7 @@ const DetailChat = (props: any) => {
       getText,
       sendMessage,
       setFormattedText,
-      showSendMessageButton,
+      isSendingMessage,
       chosenFiles.length,
       inputText.length,
       formattedText,
