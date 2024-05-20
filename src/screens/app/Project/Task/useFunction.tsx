@@ -20,8 +20,7 @@ const taskStatus = {
 
 export const useFunction = (idRoom_chat: string) => {
   const [showTaskForm, setShowTaskForm] = useState(false);
-  const [showTaskFormCreate, setShowTaskFormCreate] = useState(false);
-  const [showUserList, setShowUserList] = useState(false);
+  const [isShowTaskCreateForm, setIsShowTaskCreateForm] = useState(false);
   const [selected, setSelected] = useState<any[]>([]);
   const [reload, setReload] = useState(false);
   const idCompany = useSelector((state: any) => state.chat.idCompany);
@@ -31,6 +30,8 @@ export const useFunction = (idRoom_chat: string) => {
   const [lastPage, setLastPage] = useState(1);
   const [page, setPage] = useState(1);
   const [currentPage, setCurrentPage] = useState<number | null>(null);
+
+  const toggleShowTaskCreateForm = () => setIsShowTaskCreateForm(prev => !prev);
 
   const callApiSearch = useCallback(
     async (params: any) => {
@@ -113,10 +114,6 @@ export const useFunction = (idRoom_chat: string) => {
     [reload, setReload],
   );
 
-  const onCreateTask = useCallback(() => {
-    setShowUserList(!showUserList);
-  }, [showUserList]);
-
   const onUpdateTask = useCallback(
     async data => {
       if (reload) {
@@ -184,23 +181,20 @@ export const useFunction = (idRoom_chat: string) => {
       });
       resetGetListTaskParams();
     }
-    setShowTaskFormCreate(false);
+    setIsShowTaskCreateForm(false);
   }, []);
 
   return {
-    onCreateTask,
     setShowTaskForm,
     showTaskForm,
     onUpdateTask,
-    setShowUserList,
-    showUserList,
     selected,
     setSelected,
     reload,
     setReload,
     onSaveTask,
-    showTaskFormCreate,
-    setShowTaskFormCreate,
+    isShowTaskCreateForm,
+    setIsShowTaskCreateForm,
     onFinishTask,
     setSpecificItem,
     specificItem,
@@ -208,5 +202,6 @@ export const useFunction = (idRoom_chat: string) => {
     handleLoadMore,
     resetGetListTaskParams,
     listTask,
+    toggleShowTaskCreateForm,
   };
 };

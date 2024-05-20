@@ -1,8 +1,9 @@
-import {AppButton, Header} from '@component';
 import React from 'react';
 import {FlatList, RefreshControl, Text, View} from 'react-native';
+
+import {AppButton, Header} from '@component';
+
 import {ModalTask} from '../../DetailChat/components/ModalTask';
-import {ModalUserList} from '../../DetailChat/components/ModalUserList';
 import {Accordion} from './component/Accordion';
 import {styles} from './styles';
 import {useFunction} from './useFunction';
@@ -15,13 +16,10 @@ const Task = ({route}: any) => {
     showTaskForm,
     onUpdateTask,
     selected,
-    showUserList,
-    onCreateTask,
     setSelected,
-    setShowUserList,
     onSaveTask,
-    showTaskFormCreate,
-    setShowTaskFormCreate,
+    isShowTaskCreateForm,
+    toggleShowTaskCreateForm,
     onFinishTask,
     setSpecificItem,
     specificItem,
@@ -50,7 +48,10 @@ const Task = ({route}: any) => {
         <Header title="タスク一覧" back imageCenter />
         <View style={styles.viewContent}>
           <View style={styles.createTaskButtonView}>
-            <AppButton title="タスクを作成する" onPress={onCreateTask} />
+            <AppButton
+              title="タスクを作成する"
+              onPress={toggleShowTaskCreateForm}
+            />
           </View>
 
           <FlatList
@@ -79,26 +80,15 @@ const Task = ({route}: any) => {
         setSelected={setSelected}
       />
 
-      {showTaskFormCreate && (
+      {isShowTaskCreateForm && (
         <ModalTask
-          visible={showTaskFormCreate}
-          onCancel={() => setShowTaskFormCreate(false)}
+          visible={isShowTaskCreateForm}
+          onCancel={toggleShowTaskCreateForm}
           onSaveTask={onSaveTask}
           idRoomChat={idRoom_chat}
           selected={selected}
           setSelected={setSelected}
-          showTaskForm={showTaskFormCreate}
-        />
-      )}
-
-      {showUserList && (
-        <ModalUserList
-          visible={showUserList}
-          onCancel={() => setShowUserList(false)}
-          setShowTaskForm={setShowTaskFormCreate}
-          setShowUserList={setShowUserList}
-          setSelected={setSelected}
-          keyboardHeight={0}
+          showTaskForm={isShowTaskCreateForm}
         />
       )}
     </View>
