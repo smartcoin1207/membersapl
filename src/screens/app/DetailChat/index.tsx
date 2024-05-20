@@ -20,7 +20,7 @@ import {
   iconSendActive,
 } from '@images';
 
-import {Actions, GiftedChat} from 'react-native-gifted-chat';
+import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
 import {renderComposer, renderInputToolbar} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
@@ -132,10 +132,7 @@ const DetailChat = (props: any) => {
 
   const renderSend = useCallback(
     (inputProps: any) => {
-      const isActiveSend =
-        inputText.length > 0 ||
-        formattedText?.length > 0 ||
-        chosenFiles.length > 0;
+      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
 
       const isActiveSendButton = isActiveSend && !isSendingMessage;
 
@@ -407,7 +404,7 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
-          renderFooter={() => <View style={{height: accessoryHeight + 50}} />}
+          renderFooter={() => <View style={{height: accessoryHeight + 70}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (

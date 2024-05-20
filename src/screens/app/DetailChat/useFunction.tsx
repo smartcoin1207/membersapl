@@ -126,16 +126,10 @@ export const useFunction = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (modalStamp === true || showTagModal === true) {
+    if (modalStamp || showTagModal) {
       Keyboard.dismiss();
     }
   }, [modalStamp, showTagModal]);
-
-  useEffect(() => {
-    if (isFocusInput) {
-      setShowModalStamp(false);
-    }
-  }, [isFocusInput]);
 
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(

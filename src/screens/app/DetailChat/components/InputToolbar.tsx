@@ -70,10 +70,15 @@ export const renderComposer = ({
         textInputProps={{
           value: undefined,
           onChangeText: onInputTextChanged,
-          onFocus: () => setIsFocusInput(true),
+          onFocus: () => {
+            setIsFocusInput(true);
+            if (isShowModalStamp) {
+              showModalStamp();
+            }
+          },
           onBlur: () => setIsFocusInput(false),
           children: <>{formattedText}</>,
-          placeholder: 'メッセージ.',
+          placeholder: 'メッセージ',
           ...textInputProps,
         }}
       />
@@ -104,9 +109,8 @@ const styles = StyleSheet.create({
   toolbarPrimaryStyles: {
     backgroundColor: '#F4F2EF',
     justifyContent: 'flex-end',
-    paddingTop: verticalScale(12),
-    paddingBottom:
-      Platform.OS === 'ios' ? verticalScale(16) : verticalScale(12),
+    paddingTop: 12,
+    paddingBottom: Platform.OS === 'ios' ? 31 : 33,
   },
   scrollMessage: {
     backgroundColor: '#FFF',
