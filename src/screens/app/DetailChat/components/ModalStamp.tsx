@@ -16,7 +16,7 @@ const DATA = [
   {id: 2, url: chatStamp2},
   {id: 3, url: chatStamp3},
   {id: 4, url: chatStamp4},
-];
+] as const;
 
 const CONTAINER_PADDING_HORIZONTAL = 20;
 const CONTAINER_PADDING_VERTICAL = 12;
