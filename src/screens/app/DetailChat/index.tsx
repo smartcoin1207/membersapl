@@ -132,9 +132,8 @@ const DetailChat = (props: any) => {
 
   const renderSend = useCallback(
     (inputProps: any) => {
-      const isActiveSend = inputText.length > 0 || chosenFiles.length > 0;
-
-      const isActiveSendButton = isActiveSend && !isSendingMessage;
+      const isActiveSendButton =
+        (inputText.length > 0 || chosenFiles.length > 0) && !isSendingMessage;
 
       return (
         <>

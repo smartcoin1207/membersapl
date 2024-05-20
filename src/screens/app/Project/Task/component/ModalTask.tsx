@@ -25,7 +25,7 @@ import {iconClose} from '@images';
 import {HITSLOP} from '@util';
 import {colors, stylesCommon} from '@stylesCommon';
 
-import {Colors} from '../../Project/Task/component/Colors';
+import {Colors} from './Colors';
 
 type PropType = {
   onCancel: () => void;

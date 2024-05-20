@@ -125,12 +125,6 @@ export const useFunction = (props: any) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (modalStamp || showTagModal) {
-      Keyboard.dismiss();
-    }
-  }, [modalStamp, showTagModal]);
-
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
     idMessage => {
@@ -878,6 +872,9 @@ export const useFunction = (props: any) => {
   }, [idRoomChat, navigation]);
 
   const showModalStamp = useCallback(() => {
+    if (!modalStamp) {
+      Keyboard.dismiss();
+    }
     setShowModalStamp(!modalStamp);
   }, [modalStamp]);
 

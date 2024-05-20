@@ -3,7 +3,7 @@ import {FlatList, RefreshControl, Text, View} from 'react-native';
 
 import {AppButton, Header} from '@component';
 
-import {ModalTask} from '../../DetailChat/components/ModalTask';
+import {ModalTask} from './component/ModalTask';
 import {Accordion} from './component/Accordion';
 import {styles} from './styles';
 import {useFunction} from './useFunction';
