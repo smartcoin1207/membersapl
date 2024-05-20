@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   txtEmpty: {
     textAlign: 'center',
     color: colors.darkGrayText,
+    marginTop: scale(5),
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(18),
   },
