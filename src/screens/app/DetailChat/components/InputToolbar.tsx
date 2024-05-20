@@ -13,7 +13,7 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from 'react-native-gifted-chat';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
@@ -60,12 +60,9 @@ export const renderComposer = ({
         {...rest}
         textInputStyle={[
           styles.scrollMessage,
-          {
-            maxHeight:
-              formattedText?.length > 0
-                ? MAX_INPUT_HEIGHT
-                : styles.scrollMessage.minHeight,
-          },
+          !formattedText.length
+            ? {maxHeight: styles.scrollMessage.minHeight}
+            : {},
         ]}
         textInputProps={{
           value: undefined,
