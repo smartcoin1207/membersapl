@@ -17,7 +17,7 @@ import MessageInfo from '../components/MessageInfo';
 
 const ModalEdit = React.memo(() => {
   const dispatch = useDispatch();
-  const message_edit = useSelector((state: any) => state.chat?.messageEdit);
+  const messageEdit = useSelector((state: any) => state.chat?.messageEdit);
   const removeEditMessage = useCallback(() => {
     dispatch(saveMessageEdit(null));
   }, []);
@@ -42,11 +42,14 @@ const ModalEdit = React.memo(() => {
       </View>
       <View style={styles.viewTxtRepMessage}>
         <Text style={styles.name}>メッセージの編集</Text>
-        {message_edit?.text ? (
-          <MessageInfo text={message_edit?.text} textSetting={{numberOfLines: 1}} />
+        {messageEdit?.text ? (
+          <MessageInfo
+            text={messageEdit?.text}
+            textSetting={{numberOfLines: 1}}
+          />
         ) : (
           <View style={styles.viewRow}>
-            {message_edit?.attachment_files?.map((item: any) => (
+            {messageEdit?.attachment_files?.map((item: any) => (
               <View key={item?.id}>
                 {item?.type == 4 ? (
                   <FastImage

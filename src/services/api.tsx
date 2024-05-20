@@ -8,7 +8,7 @@ import {API_DOMAIN} from '@util';
 
 const api = axios.create();
 
-export const BASEURL = `https://${API_DOMAIN}/mobile`;
+export const BASEURL = `http://${API_DOMAIN}/mobile`;
 
 api.interceptors.request.use(
   async (config: any) => {

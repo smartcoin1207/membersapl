@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
+import {Keyboard, KeyboardEvent, Text} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -38,7 +38,7 @@ import {
   sendMessageApi,
   sendReactionApi,
 } from '@services';
-import {AppSocket, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
+import {AppSocket, IS_IOS, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
 
 import {store} from '../../../redux/store';
 
@@ -68,7 +68,7 @@ export const useFunction = (props: any) => {
   const message_pinned = useSelector(
     (state: any) => state.chat?.message_pinned,
   );
-  const message_edit = useSelector((state: any) => state.chat?.messageEdit);
+  const messageEdit = useSelector((state: any) => state.chat?.messageEdit);
   const messageReply = useSelector((state: any) => state.chat?.messageReply);
   const messageQuote = useSelector((state: any) => state.chat?.messageQuote);
   const idMessageSearch = useSelector(
@@ -86,12 +86,12 @@ export const useFunction = (props: any) => {
   const [pageLoading, setPageLoading] = useState(true);
   const [pickFile, setPickFile] = useState(false);
   const [chosenFiles, setChosenFiles] = useState<any[]>([]);
-  const [modalStamp, setShowModalStamp] = useState(false);
+  const [isShowModalStamp, setShowModalStamp] = useState(false);
   const [text, setText] = useState('');
   const [formattedText, setFormattedText] = useState<(string | JSX.Element)[]>(
     [],
   );
-  const [showTagModal, setShowTag] = useState(false);
+  const [isShowTagModal, setShowTag] = useState(false);
   const [ids, setIds] = useState<any[]>([]);
   const [newIndexArray, setIndex] = useState<any>(null);
   const [listUserSelect, setListUserSelect] = useState<any[]>([]);
@@ -106,7 +106,7 @@ export const useFunction = (props: any) => {
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [irregularMessageIds, setIrregularMessageIds] = useState<any[]>([]);
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
-  const [isFocusInput, setIsFocusInput] = useState(false);
+  const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
@@ -324,8 +324,8 @@ export const useFunction = (props: any) => {
   );
 
   const showHideModalTagName = useCallback(() => {
-    setShowTag(!showTagModal);
-  }, [showTagModal]);
+    setShowTag(!isShowTagModal);
+  }, [isShowTagModal]);
 
   const updateGimMessage = useCallback(
     async (id, status) => {
@@ -401,10 +401,6 @@ export const useFunction = (props: any) => {
     },
     [dispatch],
   );
-
-  const removeQuoteMessage = useCallback(() => {
-    dispatch(saveMessageQuote(null));
-  }, [dispatch]);
 
   const checkDeletedMension = useCallback(
     (formattedText1: any[]) => {
@@ -729,14 +725,13 @@ export const useFunction = (props: any) => {
                 uri: item?.path,
                 path: item?.path,
                 size: item?.size,
-                type:
-                  Platform.OS === 'ios'
-                    ? `image/${
-                        isHEIC
-                          ? item?.path?.split('.')[0] + '.JPG'
-                          : item?.path?.split('.').pop()
-                      }}`
-                    : item?.mime,
+                type: IS_IOS
+                  ? `image/${
+                      isHEIC
+                        ? item?.path?.split('.')[0] + '.JPG'
+                        : item?.path?.split('.').pop()
+                    }}`
+                  : item?.mime,
                 height: item?.height,
               });
               data.append('msg_type', 2);
@@ -747,10 +742,9 @@ export const useFunction = (props: any) => {
               data.append('attachment[]', {
                 name: item?.name,
                 type: item?.type,
-                uri:
-                  Platform.OS === 'ios'
-                    ? decodeURIComponent(item?.uri?.replace('file://', ''))
-                    : decodeURIComponent(item?.fileCopyUri),
+                uri: IS_IOS
+                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                  : decodeURIComponent(item?.fileCopyUri),
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
@@ -872,11 +866,26 @@ export const useFunction = (props: any) => {
   }, [idRoomChat, navigation]);
 
   const showModalStamp = useCallback(() => {
-    if (!modalStamp) {
+    if (!isShowModalStamp) {
       Keyboard.dismiss();
+      if (isShowTagModal) {
+        setShowTag(false);
+      }
     }
-    setShowModalStamp(!modalStamp);
-  }, [modalStamp]);
+    setShowModalStamp(!isShowModalStamp);
+  }, [isShowModalStamp, isShowTagModal]);
+
+  const toggleDecoButtons = useCallback(() => {
+    if (!isShowDecoButtons) {
+      if (isShowTagModal) {
+        setShowTag(false);
+      }
+      if (isShowModalStamp) {
+        setShowModalStamp(false);
+      }
+    }
+    setIsShowDecoButtons(prev => !prev);
+  }, [isShowDecoButtons, isShowModalStamp, isShowTagModal]);
 
   const getUserListChat = useCallback(async () => {
     try {
@@ -994,14 +1003,14 @@ export const useFunction = (props: any) => {
             console.error(error.message);
           }
         }
-      } else if (message_edit) {
+      } else if (messageEdit) {
         try {
           const param = {
             room_id: idRoomChat,
             message: mes[0]?.text?.split('\n').join('<br>'),
             ids: ids,
           };
-          const res = await editMessageApi(message_edit?.id, param);
+          const res = await editMessageApi(messageEdit?.id, param);
           socket.emit('message_ind2', {
             user_id: mes[0]?.user?._id,
             room_id: idRoomChat,
@@ -1225,7 +1234,7 @@ export const useFunction = (props: any) => {
     },
     [
       messageReply,
-      message_edit,
+      messageEdit,
       ids,
       messageQuote,
       idRoomChat,
@@ -1447,19 +1456,13 @@ export const useFunction = (props: any) => {
   }, [listChat, pageLoading, dispatch, idMessageSearch, idRoomChat, page]);
 
   useEffect(() => {
-    if (message_edit || messageReply || messageQuote) {
-      setShowModalStamp(false);
-    }
-  }, [message_edit, messageReply, messageQuote]);
-
-  useEffect(() => {
-    if (!message_edit) {
+    if (!messageEdit) {
       setText('');
     }
-  }, [message_edit]);
+  }, [messageEdit]);
 
   useEffect(() => {
-    if (message_edit) {
+    if (messageEdit) {
       dispatch(saveMessageReply(null));
       dispatch(saveMessageQuote(null));
     } else if (messageReply) {
@@ -1469,15 +1472,7 @@ export const useFunction = (props: any) => {
       dispatch(saveMessageEdit(null));
       dispatch(saveMessageReply(null));
     }
-  }, [message_edit, messageReply, messageQuote, dispatch]);
-
-  useEffect(() => {
-    if (modalStamp === true) {
-      removeReplyMessage();
-      removeEditMessage();
-      removeQuoteMessage();
-    }
-  }, [modalStamp, removeEditMessage, removeQuoteMessage, removeReplyMessage]);
+  }, [messageEdit, messageReply, messageQuote, dispatch]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -1508,7 +1503,7 @@ export const useFunction = (props: any) => {
     removeReplyMessage,
     editMessage,
     removeEditMessage,
-    message_edit,
+    messageEdit,
     reactionMessage,
     navigatiteToListReaction,
     pickFile,
@@ -1518,12 +1513,13 @@ export const useFunction = (props: any) => {
     sendLabel,
     searchMessage,
     showModalStamp,
-    modalStamp,
+    isShowModalStamp,
+    setShowModalStamp,
     giftedChatRef,
     text,
     showHideModalTagName,
     setShowTag,
-    showTagModal,
+    isShowTagModal,
     listUserChat,
     setText,
     bookmarkMessage,
@@ -1561,10 +1557,11 @@ export const useFunction = (props: any) => {
     inputIndex,
     isSendingMessage,
     setPageLoading,
-    isFocusInput,
-    setIsFocusInput,
+    isShowDecoButtons,
+    setIsShowDecoButtons,
     accessoryHeight,
     setAccessoryHeight,
     isShowKeyboard,
+    toggleDecoButtons,
   };
 };

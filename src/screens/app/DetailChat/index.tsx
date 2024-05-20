@@ -19,6 +19,7 @@ import {
   iconSend,
   iconSendActive,
 } from '@images';
+import {IS_IOS} from '@util';
 
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
@@ -53,7 +54,7 @@ const DetailChat = (props: any) => {
     replyMessage,
     messageReply,
     editMessage,
-    message_edit,
+    messageEdit,
     reactionMessage,
     navigatiteToListReaction,
     pickFile,
@@ -63,10 +64,10 @@ const DetailChat = (props: any) => {
     sendLabel,
     searchMessage,
     showModalStamp,
-    modalStamp,
+    isShowModalStamp,
     giftedChatRef,
     setShowTag,
-    showTagModal,
+    isShowTagModal,
     listUserChat,
     bookmarkMessage,
     ids,
@@ -100,20 +101,13 @@ const DetailChat = (props: any) => {
     inputIndex,
     isSendingMessage,
     setPageLoading,
-    isFocusInput,
-    setIsFocusInput,
+    isShowDecoButtons,
     accessoryHeight,
     setAccessoryHeight,
+    toggleDecoButtons,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
-
-  const isShowAccessory =
-    messageReply ||
-    message_edit ||
-    messageQuote ||
-    modalStamp === true ||
-    showTagModal === true;
 
   //Render ra UI chọn ảnh, vid`eo, file
   const renderActions = useCallback(
@@ -265,7 +259,7 @@ const DetailChat = (props: any) => {
   //Check phạm vi để gọi hàm loadmore
   const isCloseToTop = useCallback(
     ({layoutMeasurement, contentOffset, contentSize}: any) => {
-      const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
+      const paddingToTop = IS_IOS ? -20 : 10;
       return (
         contentSize.height - layoutMeasurement.height - paddingToTop <=
         contentOffset.y
@@ -345,10 +339,10 @@ const DetailChat = (props: any) => {
           renderInputToolbar={renderInputToolbar}
           renderComposer={composerProps =>
             renderComposer({
-              setIsFocusInput,
+              toggleDecoButtons,
               formattedText,
               showModalStamp,
-              isShowModalStamp: modalStamp,
+              isShowModalStamp: isShowModalStamp,
               onInputTextChanged: txt => {
                 formatText(txt, false);
                 setInputText(txt);
@@ -411,81 +405,87 @@ const DetailChat = (props: any) => {
                 onLayout={event =>
                   setAccessoryHeight(event.nativeEvent.layout.height)
                 }>
-                {isShowAccessory ? (
-                  <>
-                    {/* UI modal tag name */}
-                    {showTagModal && (
-                      <ModalTagName
-                        idRoomChat={idRoomChat}
-                        choseUser={(value: any, title: string, id: any) => {
-                          setShowTag(false);
-                          let mentionUserIds = [];
-                          if (id === 'All') {
-                            // メンション先のユーザ情報（ルームメンバー全員）
-                            const allMentionUsers = listUserChat.map(
-                              (el: any) => {
-                                return {
-                                  userId: el.id,
-                                  userName: el.last_name + el.first_name,
-                                };
-                              },
-                            );
-                            // メンション先のユーザID（ルームメンバー全員）
-                            mentionUserIds = allMentionUsers.map(
-                              (user: {[x: string]: any}) => user.userId,
-                            );
-                            setListUserSelect(allMentionUsers);
-                          } else {
-                            // メンション先のユーザID（指定ユーザ）
-                            mentionUserIds = [id];
-                            // メンション先のユーザ情報（指定ユーザ）
-                            listUserSelect.push({
-                              userId: id,
-                              userName: value,
-                            });
-                            setListUserSelect(listUserSelect);
-                          }
-                          // メンション通知を送る対象のユーザID
-                          setIds(ids?.concat(mentionUserIds));
+                <>
+                  {isShowTagModal || isShowModalStamp ? (
+                    <>
+                      {isShowTagModal && (
+                        <ModalTagName
+                          idRoomChat={idRoomChat}
+                          choseUser={(value: any, title: string, id: any) => {
+                            setShowTag(false);
+                            let mentionUserIds = [];
+                            if (id === 'All') {
+                              // メンション先のユーザ情報（ルームメンバー全員）
+                              const allMentionUsers = listUserChat.map(
+                                (el: any) => {
+                                  return {
+                                    userId: el.id,
+                                    userName: el.last_name + el.first_name,
+                                  };
+                                },
+                              );
+                              // メンション先のユーザID（ルームメンバー全員）
+                              mentionUserIds = allMentionUsers.map(
+                                (user: {[x: string]: any}) => user.userId,
+                              );
+                              setListUserSelect(allMentionUsers);
+                            } else {
+                              // メンション先のユーザID（指定ユーザ）
+                              mentionUserIds = [id];
+                              // メンション先のユーザ情報（指定ユーザ）
+                              listUserSelect.push({
+                                userId: id,
+                                userName: value,
+                              });
+                              setListUserSelect(listUserSelect);
+                            }
+                            // メンション通知を送る対象のユーザID
+                            setIds(ids?.concat(mentionUserIds));
 
-                          if (value) {
-                            // 敬称名
-                            const honorificTitle = value + title;
-                            // メンション先に追加
-                            mentionedUsers.push('@' + honorificTitle);
-                            mentionedUsers.push('@' + value);
-                            // @の入力位置の前までの文字列を切り出す
-                            const before = inputText.slice(0, inputIndex - 1);
-                            // @の入力位置より後の文字を切り出す
-                            const after = inputText.slice(
-                              inputIndex,
-                              inputText.length,
-                            );
-                            // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
-                            const replacedText = `${before} @${honorificTitle} ${after}`;
-                            formatText(replacedText, true);
-                            setInputText(replacedText);
-                          }
-                        }}
-                      />
-                    )}
+                            if (value) {
+                              // 敬称名
+                              const honorificTitle = value + title;
+                              // メンション先に追加
+                              mentionedUsers.push('@' + honorificTitle);
+                              mentionedUsers.push('@' + value);
+                              // @の入力位置の前までの文字列を切り出す
+                              const before = inputText.slice(0, inputIndex - 1);
+                              // @の入力位置より後の文字を切り出す
+                              const after = inputText.slice(
+                                inputIndex,
+                                inputText.length,
+                              );
+                              // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
+                              const replacedText = `${before} @${honorificTitle} ${after}`;
+                              formatText(replacedText, true);
+                              setInputText(replacedText);
+                            }
+                          }}
+                        />
+                      )}
+                      {/* UI chọn stamp */}
+                      {isShowModalStamp && (
+                        <ModalStamp
+                          onChose={(value: any) => {
+                            sendLabel(value);
+                          }}
+                        />
+                      )}
+                    </>
+                  ) : isShowDecoButtons ? (
+                    <DecoButton onDecoSelected={onDecoSelected} />
+                  ) : null}
+                </>
+
+                {messageReply || messageEdit || messageQuote ? (
+                  <>
                     {/* UI reply message */}
                     {messageReply && <ModalReply />}
                     {/* UI Edit message */}
-                    {message_edit && <ModalEdit />}
+                    {messageEdit && <ModalEdit />}
                     {/* UI message quote */}
                     {messageQuote && <ModalQuote />}
-                    {/* UI chọn stamp */}
-                    {modalStamp && (
-                      <ModalStamp
-                        onChose={(value: any) => {
-                          sendLabel(value);
-                        }}
-                      />
-                    )}
                   </>
-                ) : isFocusInput ? (
-                  <DecoButton onDecoSelected={onDecoSelected} />
                 ) : undefined}
               </View>
             );

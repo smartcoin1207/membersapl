@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
   Composer,
   InputToolbar,
@@ -16,9 +10,11 @@ import {
 import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
+import {IS_IOS} from '@util';
+
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 
-const MAX_INPUT_HEIGHT = Platform.OS === 'ios' ? 110 : 118;
+const MAX_INPUT_HEIGHT = IS_IOS ? 110 : 118;
 const EMOJI_ICON_WIDTH = 18;
 
 export const renderInputToolbar = (
@@ -40,7 +36,7 @@ export const renderInputToolbar = (
 };
 
 export const renderComposer = ({
-  setIsFocusInput,
+  toggleDecoButtons,
   formattedText,
   onInputTextChanged,
   showModalStamp,
@@ -48,7 +44,7 @@ export const renderComposer = ({
   textInputProps,
   ...rest
 }: ComposerProps & {
-  setIsFocusInput: (isFocus: boolean) => void;
+  toggleDecoButtons: () => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: string | Element[];
@@ -68,12 +64,9 @@ export const renderComposer = ({
           value: undefined,
           onChangeText: onInputTextChanged,
           onFocus: () => {
-            setIsFocusInput(true);
-            if (isShowModalStamp) {
-              showModalStamp();
-            }
+            toggleDecoButtons();
           },
-          onBlur: () => setIsFocusInput(false),
+          onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
           placeholder: 'メッセージ',
           ...textInputProps,
@@ -107,7 +100,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#F4F2EF',
     justifyContent: 'flex-end',
     paddingTop: 12,
-    paddingBottom: Platform.OS === 'ios' ? 31 : 33,
+    paddingBottom: IS_IOS ? 31 : 33,
   },
   scrollMessage: {
     backgroundColor: '#FFF',
@@ -116,7 +109,7 @@ const styles = StyleSheet.create({
     lineHeight: 17,
     fontSize: 14,
     paddingLeft: 12,
-    paddingTop: Platform.OS === 'ios' ? 12 : undefined,
+    paddingTop: IS_IOS ? 12 : undefined,
     minHeight: TOOLBAR_MIN_HEIGHT,
   },
   iconEmojiStyle: {
