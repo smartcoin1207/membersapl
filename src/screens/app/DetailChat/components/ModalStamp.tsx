@@ -98,7 +98,6 @@ const styles = StyleSheet.create({
   image: {
     width: CHILD_WIDTH,
     height: CHILD_WIDTH,
-    zIndex: 9999,
   },
   imageMarginRight: {
     marginRight: scale(GAP),
