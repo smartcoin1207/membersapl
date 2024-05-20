@@ -323,9 +323,12 @@ export const useFunction = (props: any) => {
     [idRoomChat, dispatch, socket, user_id],
   );
 
-  const showHideModalTagName = useCallback(() => {
-    setShowTag(!isShowTagModal);
-  }, [isShowTagModal]);
+  const showModalTagName = useCallback(() => {
+    if (isShowModalStamp) {
+      setShowModalStamp(false);
+    }
+    setShowTag(true);
+  }, [isShowModalStamp]);
 
   const updateGimMessage = useCallback(
     async (id, status) => {
@@ -867,7 +870,6 @@ export const useFunction = (props: any) => {
 
   const showModalStamp = useCallback(() => {
     if (!isShowModalStamp) {
-      Keyboard.dismiss();
       if (isShowTagModal) {
         setShowTag(false);
       }
@@ -1517,7 +1519,7 @@ export const useFunction = (props: any) => {
     setShowModalStamp,
     giftedChatRef,
     text,
-    showHideModalTagName,
+    showModalTagName,
     setShowTag,
     isShowTagModal,
     listUserChat,

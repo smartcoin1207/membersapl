@@ -68,6 +68,7 @@ const DetailChat = (props: any) => {
     giftedChatRef,
     setShowTag,
     isShowTagModal,
+    showModalTagName,
     listUserChat,
     bookmarkMessage,
     ids,
@@ -389,7 +390,7 @@ const DetailChat = (props: any) => {
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
             onTextInput: ({nativeEvent}: any) => {
-              nativeEvent.text === '@' ? setShowTag(true) : setShowTag(false);
+              nativeEvent.text === '@' ? showModalTagName() : setShowTag(false);
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;

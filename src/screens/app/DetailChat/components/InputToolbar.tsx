@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     paddingLeft: 12,
     paddingTop: IS_IOS ? 12 : undefined,
+    paddingRight: 30,
     minHeight: TOOLBAR_MIN_HEIGHT,
   },
   iconEmojiStyle: {
