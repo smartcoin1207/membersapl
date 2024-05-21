@@ -2,7 +2,6 @@ import React, {useCallback, useRef} from 'react';
 import {
   Image,
   Keyboard,
-  Platform,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
@@ -19,7 +18,7 @@ import {
   iconSend,
   iconSendActive,
 } from '@images';
-import {IS_IOS} from '@util';
+import {IS_ANDROID, IS_IOS} from '@util';
 
 import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
@@ -341,6 +340,7 @@ const DetailChat = (props: any) => {
           renderComposer={composerProps =>
             renderComposer({
               toggleDecoButtons,
+              inputText,
               formattedText,
               showModalStamp,
               isShowModalStamp: isShowModalStamp,
@@ -522,7 +522,7 @@ const DetailChat = (props: any) => {
                 end={{x: 0, y: 0}}
                 style={styles.containerChat}>
                 <TextInput
-                  editable={Platform.OS === 'android'}
+                  editable={IS_ANDROID}
                   multiline
                   scrollEnabled={true}
                   selectTextOnFocus={true}

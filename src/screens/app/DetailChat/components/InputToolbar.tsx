@@ -42,12 +42,14 @@ export const renderComposer = ({
   showModalStamp,
   isShowModalStamp,
   textInputProps,
+  inputText,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: string | Element[];
+  inputText: string;
 } & GiftedChatProps) => {
   return (
     <View style={styles.composerContainer}>
@@ -56,9 +58,7 @@ export const renderComposer = ({
         {...rest}
         textInputStyle={[
           styles.scrollMessage,
-          !formattedText.length
-            ? {maxHeight: styles.scrollMessage.minHeight}
-            : {},
+          !inputText.length ? {maxHeight: styles.scrollMessage.minHeight} : {},
         ]}
         textInputProps={{
           value: undefined,
