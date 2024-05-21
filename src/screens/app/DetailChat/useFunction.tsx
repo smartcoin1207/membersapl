@@ -109,22 +109,6 @@ export const useFunction = (props: any) => {
   const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
 
-  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  useEffect(() => {
-    const keyboardWillShowListener = Keyboard.addListener(
-      'keyboardWillShow',
-      () => setIsShowKeyboard(true),
-    );
-    const keyboardWillHideListener = Keyboard.addListener(
-      'keyboardWillHide',
-      () => setIsShowKeyboard(false),
-    );
-    return () => {
-      keyboardWillShowListener?.remove();
-      keyboardWillHideListener?.remove();
-    };
-  }, []);
-
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
     idMessage => {
@@ -1595,7 +1579,6 @@ export const useFunction = (props: any) => {
     setIsShowDecoButtons,
     accessoryHeight,
     setAccessoryHeight,
-    isShowKeyboard,
     toggleDecoButtons,
   };
 };

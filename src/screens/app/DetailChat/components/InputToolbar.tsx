@@ -64,9 +64,7 @@ export const renderComposer = ({
         textInputProps={{
           value: undefined,
           onChangeText: onInputTextChanged,
-          onFocus: () => {
-            toggleDecoButtons();
-          },
+          onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
           placeholder: 'メッセージ',

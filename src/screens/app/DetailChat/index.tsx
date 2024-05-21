@@ -109,7 +109,7 @@ const DetailChat = (props: any) => {
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
-  //Render ra UI chọn ảnh, vid`eo, file
+  //Render ra UI chọn ảnh, video, file
   const renderActions = useCallback(
     (inputProps: any) => {
       return (
@@ -141,7 +141,7 @@ const DetailChat = (props: any) => {
                     {
                       text: getText(formattedText),
                       user: {_id: inputProps.user?._id},
-                      createdAt: new Date(Date.now()),
+                      createdAt: new Date(),
                     },
                   ];
                   sendMessage(messages);
