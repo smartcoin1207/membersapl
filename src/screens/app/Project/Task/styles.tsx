@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   createTaskButtonView: {
     paddingHorizontal: scale(10),
     marginTop: scale(26),
-    marginBottom: scale(35),
+    marginBottom: scale(20),
   },
   viewIcon: {
     width: '10%',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   txtEmpty: {
     textAlign: 'center',
     color: colors.darkGrayText,
-    marginTop: scale(5),
+    marginTop: scale(15),
     ...stylesCommon.fontWeight600,
     fontSize: moderateScale(18),
   },
