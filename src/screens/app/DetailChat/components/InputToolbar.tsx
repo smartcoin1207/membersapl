@@ -42,7 +42,6 @@ export const renderComposer = ({
   showModalStamp,
   isShowModalStamp,
   textInputProps,
-  inputText,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
@@ -58,7 +57,9 @@ export const renderComposer = ({
         {...rest}
         textInputStyle={[
           styles.scrollMessage,
-          !inputText.length ? {maxHeight: styles.scrollMessage.minHeight} : {},
+          !formattedText.length
+            ? {maxHeight: styles.scrollMessage.minHeight}
+            : {},
         ]}
         textInputProps={{
           value: undefined,

@@ -323,13 +323,6 @@ export const useFunction = (props: any) => {
     [idRoomChat, dispatch, socket, user_id],
   );
 
-  const showModalTagName = useCallback(() => {
-    if (isShowModalStamp) {
-      setShowModalStamp(false);
-    }
-    setShowTag(true);
-  }, [isShowModalStamp]);
-
   const updateGimMessage = useCallback(
     async (id, status) => {
       try {
@@ -393,6 +386,10 @@ export const useFunction = (props: any) => {
     },
     [dispatch],
   );
+
+  const removeQuoteMessage = useCallback(() => {
+    dispatch(saveMessageQuote(null));
+  }, [dispatch]);
 
   const removeReplyMessage = useCallback(() => {
     dispatch(saveMessageReply(null));
@@ -868,14 +865,43 @@ export const useFunction = (props: any) => {
     navigation.navigate(ROUTE_NAME.SEARCH_MESSAGE, {idRoomChat: idRoomChat});
   }, [idRoomChat, navigation]);
 
+  const removeMessageModals = useCallback(() => {
+    if (messageReply) {
+      removeReplyMessage();
+    }
+    if (messageEdit) {
+      removeEditMessage();
+    }
+    if (messageQuote) {
+      removeQuoteMessage();
+    }
+  }, [
+    messageQuote,
+    messageEdit,
+    messageReply,
+    removeEditMessage,
+    removeReplyMessage,
+    removeQuoteMessage,
+  ]);
+
   const showModalStamp = useCallback(() => {
     if (!isShowModalStamp) {
       if (isShowTagModal) {
         setShowTag(false);
       }
+      removeMessageModals();
     }
+
     setShowModalStamp(!isShowModalStamp);
-  }, [isShowModalStamp, isShowTagModal]);
+  }, [isShowModalStamp, isShowTagModal, removeMessageModals]);
+
+  const showModalTagName = useCallback(() => {
+    if (isShowModalStamp) {
+      setShowModalStamp(false);
+    }
+
+    setShowTag(true);
+  }, [isShowModalStamp]);
 
   const toggleDecoButtons = useCallback(() => {
     if (!isShowDecoButtons) {
@@ -1456,6 +1482,12 @@ export const useFunction = (props: any) => {
       }
     }
   }, [listChat, pageLoading, dispatch, idMessageSearch, idRoomChat, page]);
+
+  useEffect(() => {
+    if (messageEdit || messageReply || messageQuote) {
+      setShowModalStamp(false);
+    }
+  }, [messageEdit, messageReply, messageQuote]);
 
   useEffect(() => {
     if (!messageEdit) {
