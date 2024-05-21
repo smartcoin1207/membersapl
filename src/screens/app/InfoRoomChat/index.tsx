@@ -38,7 +38,6 @@ import {useSelector} from 'react-redux';
 const InfoRoomChat = (props: any) => {
   const {route} = props;
   const {idRoomChat} = route?.params;
-  const user = useSelector((state: any) => state.auth.userInfo);
   const listUserChat = useSelector((state: any) => state.chat?.listUserChat);
   const navigation = useNavigation<any>();
   const [dataDetail, setData] = useState<any>(null);
@@ -47,11 +46,6 @@ const InfoRoomChat = (props: any) => {
   const [modalDelete, setModalDelete] = useState(false);
   const [modalLink, setModalLink] = useState(false);
   const [image, setImage] = useState<any>(null);
-
-  const count_user =
-    dataDetail?.name?.length > 0
-      ? (dataDetail?.name.match(/、/g) || []).length
-      : 0;
 
   const getDetail = useCallback(async () => {
     try {
@@ -209,17 +203,7 @@ const InfoRoomChat = (props: any) => {
   };
 
   const renderName = (name: any) => {
-    if (count_user > 0) {
-      let dataName = '';
-      listUserChat?.forEach((item: any) => {
-        dataName = `${dataName}${item?.last_name}${item?.first_name},`;
-      });
-      return `${dataName.replace(/.$/, '')},${user?.last_name}${
-        user?.first_name
-      }`;
-    } else {
-      return name;
-    }
+    return name;
   };
 
   return (

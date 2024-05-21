@@ -38,9 +38,6 @@ const Item = React.memo((props: any) => {
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
 
-  let count_user =
-    item?.name?.length > 0 ? (item?.name.match(/、/g) || []).length : 0;
-
   useEffect(() => {
     if (item?.pin_flag) {
       setStatusPin(Number(item?.pin_flag));
@@ -61,24 +58,7 @@ const Item = React.memo((props: any) => {
   }, [listRoom, item]);
 
   const renderNameRoom = (name: any) => {
-    if (count_user > 0) {
-      let dataName = '';
-      item?.room_users?.forEach((el: any) => {
-        if (el?.user?.last_name) {
-          dataName = `${dataName}${el?.user?.last_name}${el?.user?.first_name}、`;
-        }
-      });
-      if (dataName) {
-        return `${dataName.replace(/.$/, '')}、${user?.last_name}${
-          user?.first_name
-        }`;
-      } else {
-        // 名無しのルームにwebsocketから通知された場合の対応
-        return item.name;
-      }
-    } else {
-      return name;
-    }
+    return name;
   };
 
   const navigateDetail = () => {
