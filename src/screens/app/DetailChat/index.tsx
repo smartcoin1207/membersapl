@@ -259,58 +259,56 @@ const DetailChat = (props: any) => {
   const renderAccessoryModals = useCallback(() => {
     if (isShowTagModal) {
       return (
-        <>
-          <ModalTagName
-            idRoomChat={idRoomChat}
-            choseUser={(value: any, title: string, id: any) => {
-              setShowTag(false);
-              let mentionUserIds = [];
-              if (id === 'All') {
-                // メンション先のユーザ情報（ルームメンバー全員）
-                const allMentionUsers = listUserChat.map((el: any) => {
-                  return {
-                    userId: el.id,
-                    userName: el.last_name + el.first_name,
-                  };
-                });
-                // メンション先のユーザID（ルームメンバー全員）
-                mentionUserIds = allMentionUsers.map(
-                  (user: {[x: string]: any}) => user.userId,
-                );
-                setListUserSelect(allMentionUsers);
-              } else {
-                // メンション先のユーザID（指定ユーザ）
-                mentionUserIds = [id];
-                // メンション先のユーザ情報（指定ユーザ）
-                listUserSelect.push({
-                  userId: id,
-                  userName: value,
-                });
-                setListUserSelect(listUserSelect);
-              }
-              // メンション通知を送る対象のユーザID
-              setIds(ids?.concat(mentionUserIds));
+        <ModalTagName
+          idRoomChat={idRoomChat}
+          choseUser={(value: any, title: string, id: any) => {
+            setShowTag(false);
+            let mentionUserIds = [];
+            if (id === 'All') {
+              // メンション先のユーザ情報（ルームメンバー全員）
+              const allMentionUsers = listUserChat.map((el: any) => ({
+                userId: el.id,
+                userName: el.last_name + el.first_name,
+              }));
+              // メンション先のユーザID（ルームメンバー全員）
+              mentionUserIds = allMentionUsers.map(
+                (user: {[x: string]: any}) => user.userId,
+              );
+              setListUserSelect(allMentionUsers);
+            } else {
+              // メンション先のユーザID（指定ユーザ）
+              mentionUserIds = [id];
+              // メンション先のユーザ情報（指定ユーザ）
+              listUserSelect.push({
+                userId: id,
+                userName: value,
+              });
+              setListUserSelect(listUserSelect);
+            }
+            // メンション通知を送る対象のユーザID
+            setIds(ids?.concat(mentionUserIds));
 
-              if (value) {
-                // 敬称名
-                const honorificTitle = value + title;
-                // メンション先に追加
-                mentionedUsers.push('@' + honorificTitle);
-                mentionedUsers.push('@' + value);
-                // @の入力位置の前までの文字列を切り出す
-                const before = inputText.slice(0, inputIndex - 1);
-                // @の入力位置より後の文字を切り出す
-                const after = inputText.slice(inputIndex, inputText.length);
-                // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
-                const replacedText = `${before} @${honorificTitle} ${after}`;
-                formatText(replacedText, true);
-                setInputText(replacedText);
-              }
-            }}
-          />
-        </>
+            if (value) {
+              // 敬称名
+              const honorificTitle = value + title;
+              // メンション先に追加
+              mentionedUsers.push('@' + honorificTitle);
+              mentionedUsers.push('@' + value);
+              // @の入力位置の前までの文字列を切り出す
+              const before = inputText.slice(0, inputIndex - 1);
+              // @の入力位置より後の文字を切り出す
+              const after = inputText.slice(inputIndex, inputText.length);
+              // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
+              const replacedText = `${before} @${honorificTitle} ${after}`;
+              formatText(replacedText, true);
+              setInputText(replacedText);
+            }
+          }}
+        />
       );
-    } else if (isShowModalStamp) {
+    }
+
+    if (isShowModalStamp) {
       return (
         <ModalStamp
           onChose={(value: any) => {
@@ -318,11 +316,13 @@ const DetailChat = (props: any) => {
           }}
         />
       );
-    } else if (isShowDecoButtons) {
-      return <DecoButton onDecoSelected={onDecoSelected} />;
-    } else {
-      return null;
     }
+
+    if (isShowDecoButtons) {
+      return <DecoButton onDecoSelected={onDecoSelected} />;
+    }
+
+    return null;
   }, [
     isShowTagModal,
     isShowModalStamp,
