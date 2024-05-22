@@ -427,7 +427,6 @@ const DetailChat = (props: any) => {
           renderComposer={composerProps =>
             renderComposer({
               toggleDecoButtons,
-              inputText,
               formattedText,
               showModalStamp,
               isShowModalStamp: isShowModalStamp,

@@ -47,8 +47,7 @@ export const renderComposer = ({
   toggleDecoButtons: () => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
-  formattedText: string | Element[];
-  inputText: string;
+  formattedText: (string | JSX.Element)[];
 } & GiftedChatProps) => {
   return (
     <View style={styles.composerContainer}>
