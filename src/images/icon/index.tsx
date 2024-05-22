@@ -21,7 +21,8 @@ const iconDocument = require('./IconDocument.png');
 const iconBook = require('./IconBook.png');
 const iconAddUser = require('./IconAddUser.png');
 const iconSend = require('./IconSend.png');
-const iconUpload = require('./UpFile.png');
+const iconSendActive = require('./IconSendActive.png');
+const iconAttach = require('./IconAttach.png');
 const iconLink = require('./IconLink.png');
 const iconPlay = require('./IconPlayVideo.png');
 const iconPdf = require('./Iconpdf.png');
@@ -30,6 +31,7 @@ const iconXls = require('./IconXls.png');
 const iconLike = require('./IconLike.png');
 const iconFile = require('./IconFile.png');
 const iconEmoji = require('./IconEmoji.png');
+const iconEmojiActive = require('./IconEmojiActive.png');
 const iconDetail = require('./IconDetail.png');
 const iconCompany = require('./IconCompany.png');
 const iconDowload = require('./IconDowload.png');
@@ -47,7 +49,6 @@ const iconActiveGroup = require('./ActiveIconGroup.png');
 const iconInActiveGroup = require('./InActiveIconGroup.png');
 const iconDown = require('./IconDown.png');
 const iconUp = require('./IconUp.png');
-const iconTask = require('./IconTask.png');
 const iconCreated = require('./IconCreated.png');
 const iconTaskCutting = require('./IconTaskCutting.png');
 
@@ -76,7 +77,7 @@ export {
   iconBook,
   iconAddUser,
   iconSend,
-  iconUpload,
+  iconAttach,
   iconLink,
   iconPlay,
   iconPdf,
@@ -85,6 +86,7 @@ export {
   iconLike,
   iconFile,
   iconEmoji,
+  iconEmojiActive,
   iconCompany,
   iconDowload,
   iconBookmark,
@@ -101,7 +103,7 @@ export {
   iconInActiveGroup,
   iconDown,
   iconUp,
-  iconTask,
   iconCreated,
   iconTaskCutting,
+  iconSendActive,
 };

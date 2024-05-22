@@ -1,76 +1,87 @@
-import React, { useEffect, useRef, useState } from "react";
-import {Image, StyleSheet, Platform, View, Text, TextInput, ScrollView} from 'react-native';
-import {InputToolbar, Actions, Composer, Send} from 'react-native-gifted-chat';
-import {iconEmoji} from '@images';
-import {isIphoneX} from 'react-native-iphone-x-helper';
-import {colors} from '@stylesCommon';
-import {verticalScale, scale, moderateScale} from 'react-native-size-matters';
+import React from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {
+  Composer,
+  InputToolbar,
+  type ComposerProps,
+  type GiftedChatProps,
+  type InputToolbarProps,
+} from 'react-native-gifted-chat';
+import {moderateScale, scale} from 'react-native-size-matters';
 
-export const renderSend = (props: any) => {
-  return (
-    <Send
-      {...props}
-      // disabled={!props.text.trim()}
-      containerStyle={styles.sendBtn}>
-      <Image
-        source={iconEmoji}
-        style={styles.iconEmojiStyle}
-        resizeMode="contain"
-      />
-    </Send>
-  );
-};
+import {iconEmoji, iconEmojiActive} from '@images';
+import {IS_IOS} from '@util';
 
-export const renderInputToolbar = (props: any) => {
+import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
+
+const MAX_INPUT_HEIGHT = IS_IOS ? 110 : 118;
+const EMOJI_ICON_WIDTH = 18;
+
+export const renderInputToolbar = (
+  inputProps: Readonly<InputToolbarProps> &
+    Readonly<{
+      children?: React.ReactNode;
+    }>,
+) => {
   return (
     <>
       <InputToolbar
-        {...props}
+        {...inputProps}
         containerStyle={styles.toolBar}
-        primaryStyle={{alignItems: 'center'}}
+        primaryStyle={styles.toolbarPrimaryStyles}
+        accessoryStyle={styles.accessoryStyle}
       />
     </>
   );
 };
 
-export const renderComposer = (props: any) => {
-  if (props && props.textInputProps) {
-    return (
-      <View style={styles.composerContainer}>
-        <View style={styles.inputContainer}>
-          <ScrollView style={styles.scrollMessage}>
-            <TextInput
-              {...props}
-              placeholder={'メッセージ.'}
-              style={styles.inputMessage}
-              multiline={true}
-              scrollEnabled={false}
-              onTextInput={props.textInputProps.onTextInput}
-              onKeyPress={props.textInputProps.onKeyPress}
-              value={null}
-              // selection={props.textSelection}
-              onSelectionChange={props.textInputProps.onSelectionChange}
-              onChangeText={(value: any) => {
-                props.onInputTextChanged(value);
-              }}>
-              {props.formattedText}
-            </TextInput>
-          </ScrollView>
-        </View>
-      </View>
-    );
-  }
-  return null;
+export const renderComposer = ({
+  toggleDecoButtons,
+  formattedText,
+  onInputTextChanged,
+  showModalStamp,
+  isShowModalStamp,
+  textInputProps,
+  ...rest
+}: ComposerProps & {
+  toggleDecoButtons: () => void;
+  isShowModalStamp: boolean;
+  showModalStamp: () => void;
+  formattedText: (string | JSX.Element)[];
+} & GiftedChatProps) => {
+  return (
+    <View style={styles.composerContainer}>
+      <Composer
+        multiline
+        {...rest}
+        textInputStyle={[
+          styles.scrollMessage,
+          !formattedText.length
+            ? {maxHeight: styles.scrollMessage.minHeight}
+            : {},
+        ]}
+        textInputProps={{
+          value: undefined,
+          onChangeText: onInputTextChanged,
+          onFocus: toggleDecoButtons,
+          onBlur: toggleDecoButtons,
+          children: <>{formattedText}</>,
+          placeholder: 'メッセージ',
+          ...textInputProps,
+        }}
+      />
+      <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
+        <Image
+          source={isShowModalStamp ? iconEmojiActive : iconEmoji}
+          style={styles.iconEmojiStyle}
+          resizeMode="contain"
+        />
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  sendBtn: {
-    marginHorizontal: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    right: 50,
-  },
   iconStyle: {
     width: 20,
     height: 20,
@@ -78,69 +89,47 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   toolBar: {
-    backgroundColor: colors.background,
     borderTopWidth: 0,
-    marginBottom: Platform.OS === 'ios' ? (isIphoneX() ? 0 : 0) : 6,
-    paddingTop: 8,
+  },
+  accessoryStyle: {
+    height: 'auto',
+  },
+  toolbarPrimaryStyles: {
+    backgroundColor: '#F4F2EF',
+    justifyContent: 'flex-end',
+    paddingTop: 12,
+    paddingBottom: IS_IOS ? 31 : 33,
   },
   scrollMessage: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: moderateScale(8),
-    marginRight: scale(10),
-    marginLeft: scale(10),
-    minHeight: verticalScale(39),
-    borderWidth: 1,
-    borderColor: '#989898',
-    width: '94%',
+    backgroundColor: '#FFF',
+    borderRadius: moderateScale(21),
+    maxHeight: MAX_INPUT_HEIGHT,
+    lineHeight: 17,
+    fontSize: 14,
+    paddingLeft: 12,
+    paddingTop: IS_IOS ? 12 : undefined,
+    paddingRight: 30,
+    minHeight: TOOLBAR_MIN_HEIGHT,
   },
-  inputMessage: {
-    paddingLeft: scale(10),
-    paddingTop: Platform.OS === 'ios' ? verticalScale(12) : undefined,
-    paddingRight: scale(43),
-  },
-
   iconEmojiStyle: {
-    width: 29,
-    height: 29,
-    alignSelf: 'center',
-    flex: 1,
-  },
-
-  sendIconStyle: {
-    height: 30,
-    width: 30,
+    width: EMOJI_ICON_WIDTH,
+    height: EMOJI_ICON_WIDTH,
   },
   composerContainer: {
-    width: '80%',
-    height: 55,
+    flex: 1,
     flexDirection: 'row',
-    paddingTop: 5,
+    position: 'relative',
   },
   inputContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f2f2f2',
     marginLeft: scale(10),
+    bottom: 0,
+    left: 0,
+    right: 0,
   },
-  textInput: {
-    fontSize: 14,
-    letterSpacing: 1,
-    height: 50,
-    minWidth: 250,
-    maxWidth: 250,
-    borderWidth: 0,
-    paddingTop: 5,
-    paddingBottom: 5,
-    paddingLeft: 10,
-    paddingRight: 10,
-  },
-  sendWrapperStyle: {
-    width: '15%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  sendContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  showStampButton: {
+    position: 'absolute',
+    bottom: calPositionButton(EMOJI_ICON_WIDTH),
+    right: 12,
   },
 });

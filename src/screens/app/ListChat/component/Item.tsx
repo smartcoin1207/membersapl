@@ -23,7 +23,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import {decode} from 'html-entities';
 import notifee from '@notifee/react-native';
 
-const Item = React.memo((props: any) => {
+const Item = React.memo(({item}: any) => {
   const idCompany = useSelector((state: any) => state.chat.idCompany);
   const user = useSelector((state: any) => state.auth.userInfo);
   const dispatch = useDispatch();
@@ -32,23 +32,9 @@ const Item = React.memo((props: any) => {
     (state: any) => state.chat.categoryID_Filter,
   );
   const navigation = useNavigation<any>();
-  const {item, idRoomChat} = props;
-  const [pin, setStatusPin] = useState<number | null>(null);
-  const [, setNoIdRoomChatFlg] = useState<boolean>(false);
+  const pin = Number(item?.pin_flag);
   const listRoom = useSelector((state: any) => state.chat.roomList);
   const socket = AppSocket.getSocket();
-
-  useEffect(() => {
-    if (item?.pin_flag) {
-      setStatusPin(Number(item?.pin_flag));
-    }
-  }, [item?.pin_flag]);
-
-  useEffect(() => {
-    if (idRoomChat && item?.message_unread > 0) {
-      setNoIdRoomChatFlg(true);
-    }
-  }, [item?.message_unread, idRoomChat]);
 
   useEffect(() => {
     const roomArray = listRoom?.filter((room: any) => room.id === item.id);
@@ -63,10 +49,9 @@ const Item = React.memo((props: any) => {
 
   const navigateDetail = () => {
     try {
-      setNoIdRoomChatFlg(false);
       dispatch(resetDataChat());
 
-      const sock_body = {
+      const sockBody = {
         user_id: user.id,
         change_flag: 0,
         unread_count: 0,
@@ -76,23 +61,21 @@ const Item = React.memo((props: any) => {
       listRoom.forEach((room: any) => {
         if (room.id !== item.id) {
           if (room.message_unread) {
-            sock_body.unread_count++;
+            sockBody.unread_count++;
           }
           if (room.message_mention_unread) {
-            sock_body.unread_mention++;
+            sockBody.unread_mention++;
           }
         }
       });
       // change_flag: 0 => ブラウザアイコンを未読なしにする、1 => ブラウザアイコンを未読ありにする
-      sock_body.change_flag = sock_body.unread_count > 0 ? 1 : 0;
-      socket.emit('change_browser_icon2', sock_body);
+      sockBody.change_flag = sockBody.unread_count > 0 ? 1 : 0;
+      socket.emit('change_browser_icon2', sockBody);
 
       notifee.getBadgeCount().then(async (count: any) => {
         if (count > 0 && item.message_unread > 0) {
           const countMessage =
-            count - Number(item?.message_unread) > 0
-              ? count - Number(item?.message_unread)
-              : 0;
+            count - item.message_unread > 0 ? count - item.message_unread : 0;
           notifee.setBadgeCount(countMessage);
         }
         await dispatch(saveIdRoomChat(item?.id));

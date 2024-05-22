@@ -1,45 +1,39 @@
 import React, {useCallback, useRef} from 'react';
 import {
-  View,
   Image,
-  Platform,
+  Keyboard,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  TextInput,
-  Keyboard,
+  View,
 } from 'react-native';
-import {styles} from './styles';
+import LinearGradient from 'react-native-linear-gradient';
+import {useSelector} from 'react-redux';
+
 import {Header} from '@component';
 import {
-  iconSearch,
-  iconUpload,
-  iconLike,
+  iconAttach,
   iconDetail,
+  iconSearch,
   iconSend,
-  iconTask,
+  iconSendActive,
 } from '@images';
-import {useFunction} from './useFunction';
-import {GiftedChat, Actions} from '../../../lib/react-native-gifted-chat';
-import LinearGradient from 'react-native-linear-gradient';
-import {ItemMessage} from './components/ItemMessage';
-import DecoButton from './components/DecoButton';
-import {
-  renderSend,
-  renderInputToolbar,
-  renderComposer,
-} from './components/InputToolbar';
-import {ModalPickFile} from './components/ModalPickFile';
-import {ShowPickedFile} from './components/ShowPickedFile';
+import {IS_ANDROID, IS_IOS} from '@util';
 
-import {ModalStamp} from './components/ModalStamp';
-import {ModalReply} from './components/ModalReply';
-import {ModalQuote} from './components/ModalQuote';
+import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
+import DecoButton from './components/DecoButton';
+import {renderComposer, renderInputToolbar} from './components/InputToolbar';
+import {ItemMessage} from './components/ItemMessage';
 import {ModalEdit} from './components/ModalEdit';
+import {ModalPickFile} from './components/ModalPickFile';
 import {ModalPin} from './components/ModalPin';
+import {ModalQuote} from './components/ModalQuote';
+import {ModalReply} from './components/ModalReply';
+import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
-import {ModalTask} from './components/ModalTask';
-import {ModalUserList} from './components/ModalUserList';
-import {useSelector} from 'react-redux';
+import {ShowPickedFile} from './components/ShowPickedFile';
+import {styles} from './styles';
+import {useFunction} from './useFunction';
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -59,7 +53,7 @@ const DetailChat = (props: any) => {
     replyMessage,
     messageReply,
     editMessage,
-    message_edit,
+    messageEdit,
     reactionMessage,
     navigatiteToListReaction,
     pickFile,
@@ -69,11 +63,11 @@ const DetailChat = (props: any) => {
     sendLabel,
     searchMessage,
     showModalStamp,
-    modalStamp,
+    isShowModalStamp,
     giftedChatRef,
-    text,
     setShowTag,
-    showTagModal,
+    isShowTagModal,
+    showModalTagName,
     listUserChat,
     bookmarkMessage,
     ids,
@@ -92,21 +86,12 @@ const DetailChat = (props: any) => {
     idRedLine,
     navigateToMessage,
     indexRedLine,
-    onCreateTask,
-    setShowTaskForm,
-    showTaskForm,
-    onSaveTask,
-    setShowUserList,
-    showUserList,
     partCopy,
     changePartCopy,
-    selected,
-    setSelected,
     setInputText,
     inputText,
     textSelection,
     onDecoSelected,
-    keyboardHeight,
     chosenFiles,
     deleteFile,
     setListUserSelect,
@@ -114,8 +99,12 @@ const DetailChat = (props: any) => {
     customBack,
     setInputIndex,
     inputIndex,
-    showSendMessageButton,
+    isSendingMessage,
     setPageLoading,
+    isShowDecoButtons,
+    accessoryHeight,
+    setAccessoryHeight,
+    toggleDecoButtons,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
@@ -126,59 +115,63 @@ const DetailChat = (props: any) => {
       return (
         <Actions
           {...inputProps}
-          containerStyle={styles.addBtn}
+          containerStyle={styles.attachIcon}
           onPressActionButton={cancelModal}
-          icon={() => <Image source={iconUpload} />}
+          icon={() => <Image source={iconAttach} />}
         />
       );
     },
     [cancelModal],
   );
 
-  const renderActionsRight = useCallback(
+  const renderSend = useCallback(
     (inputProps: any) => {
+      const isActiveSendButton =
+        (inputText.length > 0 || chosenFiles.length > 0) && !isSendingMessage;
+
       return (
         <>
-          {showSendMessageButton && (
-            <>
-              {inputProps.formattedText?.length > 0 ||
-              chosenFiles.length > 0 ? (
-                <Actions
-                  {...inputProps}
-                  containerStyle={styles.buttonRight}
-                  onPressActionButton={() => {
-                    const messages = [
-                      {
-                        text: getText(inputProps.formattedText),
-                        user: {_id: inputProps.user?._id},
-                        createdAt: new Date(Date.now()),
-                      },
-                    ];
-                    sendMessage(messages);
-                    setFormattedText([]);
-                  }}
-                  icon={() => <Image source={iconSend} />}
-                />
-              ) : (
-                <Actions
-                  {...inputProps}
-                  containerStyle={styles.buttonRight}
-                  onPressActionButton={() => sendLabel(1)}
-                  icon={() => <Image source={iconLike} />}
-                />
-              )}
-            </>
-          )}
+          <View pointerEvents={!isActiveSendButton ? 'none' : 'auto'}>
+            {
+              <Actions
+                {...inputProps}
+                containerStyle={styles.buttonRight}
+                onPressActionButton={() => {
+                  const messages = [
+                    {
+                      text: getText(formattedText),
+                      user: {_id: inputProps.user?._id},
+                      createdAt: new Date(),
+                    },
+                  ];
+                  sendMessage(messages);
+                  setFormattedText([]);
+                }}
+                icon={() => {
+                  return isActiveSendButton ? (
+                    <View style={[styles.activeSendButton, styles.sendButton]}>
+                      <Image source={iconSendActive} />
+                    </View>
+                  ) : (
+                    <View style={styles.sendButton}>
+                      <Image source={iconSend} />
+                    </View>
+                  );
+                }}
+              />
+            }
+          </View>
         </>
       );
     },
     [
-      chosenFiles,
       getText,
-      sendLabel,
       sendMessage,
       setFormattedText,
-      showSendMessageButton,
+      isSendingMessage,
+      chosenFiles.length,
+      inputText.length,
+      formattedText,
     ],
   );
 
@@ -263,10 +256,97 @@ const DetailChat = (props: any) => {
     ],
   );
 
+  const renderAccessoryModals = useCallback(() => {
+    if (isShowTagModal) {
+      return (
+        <ModalTagName
+          idRoomChat={idRoomChat}
+          choseUser={(value: any, title: string, id: any) => {
+            setShowTag(false);
+            let mentionUserIds = [];
+            if (id === 'All') {
+              // メンション先のユーザ情報（ルームメンバー全員）
+              const allMentionUsers = listUserChat.map((el: any) => ({
+                userId: el.id,
+                userName: el.last_name + el.first_name,
+              }));
+              // メンション先のユーザID（ルームメンバー全員）
+              mentionUserIds = allMentionUsers.map(
+                (user: {[x: string]: any}) => user.userId,
+              );
+              setListUserSelect(allMentionUsers);
+            } else {
+              // メンション先のユーザID（指定ユーザ）
+              mentionUserIds = [id];
+              // メンション先のユーザ情報（指定ユーザ）
+              listUserSelect.push({
+                userId: id,
+                userName: value,
+              });
+              setListUserSelect(listUserSelect);
+            }
+            // メンション通知を送る対象のユーザID
+            setIds(ids?.concat(mentionUserIds));
+
+            if (value) {
+              // 敬称名
+              const honorificTitle = value + title;
+              // メンション先に追加
+              mentionedUsers.push('@' + honorificTitle);
+              mentionedUsers.push('@' + value);
+              // @の入力位置の前までの文字列を切り出す
+              const before = inputText.slice(0, inputIndex - 1);
+              // @の入力位置より後の文字を切り出す
+              const after = inputText.slice(inputIndex, inputText.length);
+              // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
+              const replacedText = `${before} @${honorificTitle} ${after}`;
+              formatText(replacedText, true);
+              setInputText(replacedText);
+            }
+          }}
+        />
+      );
+    }
+
+    if (isShowModalStamp) {
+      return (
+        <ModalStamp
+          onChose={(value: any) => {
+            sendLabel(value);
+          }}
+        />
+      );
+    }
+
+    if (isShowDecoButtons) {
+      return <DecoButton onDecoSelected={onDecoSelected} />;
+    }
+
+    return null;
+  }, [
+    isShowTagModal,
+    isShowModalStamp,
+    isShowDecoButtons,
+    idRoomChat,
+    setShowTag,
+    setIds,
+    ids,
+    listUserChat,
+    setListUserSelect,
+    listUserSelect,
+    mentionedUsers,
+    inputText,
+    inputIndex,
+    formatText,
+    setInputText,
+    sendLabel,
+    onDecoSelected,
+  ]);
+
   //Check phạm vi để gọi hàm loadmore
   const isCloseToTop = useCallback(
     ({layoutMeasurement, contentOffset, contentSize}: any) => {
-      const paddingToTop = Platform.OS === 'ios' ? -20 : 10;
+      const paddingToTop = IS_IOS ? -20 : 10;
       return (
         contentSize.height - layoutMeasurement.height - paddingToTop <=
         contentOffset.y
@@ -288,7 +368,6 @@ const DetailChat = (props: any) => {
 
   return (
     <View style={styles.container}>
-      <View style={showTaskForm ? [styles.blackout] : []} />
       <View style={{height: '100%'}}>
         <Header
           back
@@ -331,30 +410,38 @@ const DetailChat = (props: any) => {
             }
           />
         )}
+
         {/* UI list chat message */}
         <GiftedChat
-          text={text}
-          formattedText={formattedText}
-          keyboardHeight={keyboardHeight}
+          keyboardShouldPersistTaps={'handled'}
           ref={giftedChatRef}
           onInputTextChanged={txt => {
             formatText(txt, false);
             setInputText(txt);
           }}
-          textSelection={textSelection}
           messages={getConvertedMessages(listChat)}
-          onSend={() => {
-            showModalStamp();
-          }}
+          onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}
           renderInputToolbar={renderInputToolbar}
-          renderComposer={renderComposer}
+          renderComposer={composerProps =>
+            renderComposer({
+              toggleDecoButtons,
+              formattedText,
+              showModalStamp,
+              isShowModalStamp: isShowModalStamp,
+              onInputTextChanged: txt => {
+                formatText(txt, false);
+                setInputText(txt);
+              },
+              ...composerProps,
+            })
+          }
+          wrapInSafeArea={false}
           user={chatUser}
           renderSend={renderSend}
-          renderFooter={() => <View style={styles.viewBottom} />}
           renderActions={renderActions}
-          renderActionsRight={renderActionsRight}
+          maxComposerHeight={118}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{
             scrollEventThrottle: 400,
@@ -389,7 +476,7 @@ const DetailChat = (props: any) => {
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
             onTextInput: ({nativeEvent}: any) => {
-              nativeEvent.text === '@' ? setShowTag(true) : setShowTag(false);
+              nativeEvent.text === '@' ? showModalTagName() : setShowTag(false);
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;
@@ -397,131 +484,37 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
+          renderFooter={() => <View style={{height: accessoryHeight + 70}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
-          renderAccessory={
-            messageReply ||
-            message_edit ||
-            messageQuote ||
-            modalStamp === true ||
-            showTagModal === true
-              ? () => (
-                  <>
-                    {/* UI modal tag name */}
-                    {showTagModal && (
-                      <ModalTagName
-                        idRoomChat={idRoomChat}
-                        choseUser={(value: any, title: string, id: any) => {
-                          setShowTag(false);
-                          let mentionUserIds = [];
-                          if (id === 'All') {
-                            // メンション先のユーザ情報（ルームメンバー全員）
-                            const allMentionUsers = listUserChat.map(el => {
-                              return {
-                                userId: el.id,
-                                userName: el.last_name + el.first_name,
-                              };
-                            });
-                            // メンション先のユーザID（ルームメンバー全員）
-                            mentionUserIds = allMentionUsers.map(
-                              (user: {[x: string]: any}) => user.userId,
-                            );
-                            setListUserSelect(allMentionUsers);
-                          } else {
-                            // メンション先のユーザID（指定ユーザ）
-                            mentionUserIds = [id];
-                            // メンション先のユーザ情報（指定ユーザ）
-                            listUserSelect.push({
-                              userId: id,
-                              userName: value,
-                            });
-                            setListUserSelect(listUserSelect);
-                          }
-                          // メンション通知を送る対象のユーザID
-                          setIds(ids?.concat(mentionUserIds));
+          renderAccessory={() => {
+            return (
+              <View
+                onLayout={event =>
+                  setAccessoryHeight(event.nativeEvent.layout.height)
+                }>
+                {renderAccessoryModals()}
 
-                          if (value) {
-                            // 敬称名
-                            const honorificTitle = value + title;
-                            // メンション先に追加
-                            mentionedUsers.push('@' + honorificTitle);
-                            mentionedUsers.push('@' + value);
-                            // @の入力位置の前までの文字列を切り出す
-                            const before = inputText.slice(0, inputIndex - 1);
-                            // @の入力位置より後の文字を切り出す
-                            const after = inputText.slice(
-                              inputIndex,
-                              inputText.length,
-                            );
-                            // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
-                            const replacedText = `${before} @${honorificTitle} ${after}`;
-                            formatText(replacedText, true);
-                            setInputText(replacedText);
-                          }
-                        }}
-                      />
-                    )}
+                {messageReply || messageEdit || messageQuote ? (
+                  <>
                     {/* UI reply message */}
                     {messageReply && <ModalReply />}
                     {/* UI Edit message */}
-                    {message_edit && <ModalEdit />}
+                    {messageEdit && <ModalEdit />}
                     {/* UI message quote */}
                     {messageQuote && <ModalQuote />}
-                    {/* UI chọn stamp */}
-                    {modalStamp && (
-                      <ModalStamp
-                        onChose={(value: any) => {
-                          sendLabel(value);
-                        }}
-                      />
-                    )}
                   </>
-                )
-              : undefined
-          }
+                ) : undefined}
+              </View>
+            );
+          }}
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
         />
-        <DecoButton onDecoSelected={onDecoSelected} />
         {chosenFiles.length > 0 && (
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}
-        {/* create task icon */}
-        <View
-          style={
-            keyboardHeight === 0 && chosenFiles.length === 0
-              ? styles.viewTask
-              : chosenFiles.length > 0 && keyboardHeight === 0
-              ? styles.viewTaskWithFiles
-              : keyboardHeight > 0 && chosenFiles.length === 0
-              ? styles.viewTaskWithKeyboard
-              : styles.viewTaskWithKeyboardFiles
-          }>
-          <TouchableOpacity onPress={onCreateTask}>
-            <Image source={iconTask} style={styles.imageTask} />
-          </TouchableOpacity>
-        </View>
       </View>
-      {showTaskForm && (
-        <ModalTask
-          visible={showTaskForm}
-          onCancel={() => setShowTaskForm(false)}
-          onSaveTask={onSaveTask}
-          idRoomChat={idRoomChat}
-          selected={selected}
-          setSelected={setSelected}
-          showTaskForm={showTaskForm}
-        />
-      )}
-      {showUserList && (
-        <ModalUserList
-          visible={showUserList}
-          onCancel={() => setShowUserList(false)}
-          setShowTaskForm={setShowTaskForm}
-          setShowUserList={setShowUserList}
-          setSelected={setSelected}
-          keyboardHeight={keyboardHeight}
-        />
-      )}
+
       {/* UI modal chọn ảnh, video và file */}
       <ModalPickFile
         visible={pickFile}
@@ -545,7 +538,7 @@ const DetailChat = (props: any) => {
                 end={{x: 0, y: 0}}
                 style={styles.containerChat}>
                 <TextInput
-                  editable={Platform.OS === 'android'}
+                  editable={IS_ANDROID}
                   multiline
                   scrollEnabled={true}
                   selectTextOnFocus={true}

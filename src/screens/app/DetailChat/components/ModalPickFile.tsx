@@ -21,6 +21,7 @@ const ModalPickFile = React.memo((prop: any) => {
   };
   return (
     <Modal
+      supportedOrientations={['landscape', 'portrait']}
       transparent={true}
       visible={visible}
       onRequestClose={() => {}}
