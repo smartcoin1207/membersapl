@@ -12,9 +12,7 @@ import {moderateScale, scale} from 'react-native-size-matters';
 import {iconEmoji, iconEmojiActive} from '@images';
 import {IS_IOS} from '@util';
 
-import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
-
-const MAX_INPUT_HEIGHT = IS_IOS ? 110 : 118;
+const MAX_INPUT_HEIGHT = 102;
 const EMOJI_ICON_WIDTH = 18;
 
 export const renderInputToolbar = (
@@ -101,15 +99,15 @@ const styles = StyleSheet.create({
     paddingBottom: IS_IOS ? 31 : 33,
   },
   scrollMessage: {
-    backgroundColor: '#FFF',
-    borderRadius: moderateScale(21),
     maxHeight: MAX_INPUT_HEIGHT,
     lineHeight: 17,
     fontSize: 14,
-    paddingLeft: 12,
-    paddingTop: IS_IOS ? 12 : undefined,
-    paddingRight: 30,
-    minHeight: TOOLBAR_MIN_HEIGHT,
+    paddingRight: 18,
+    marginTop: 0,
+    marginLeft: 0,
+    flex: 1,
+    marginBottom: 0,
+    minHeight: 17,
   },
   iconEmojiStyle: {
     width: EMOJI_ICON_WIDTH,
@@ -119,6 +117,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     position: 'relative',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 12,
+    marginLeft: 15,
+    backgroundColor: '#fff',
+    alignItems: 'flex-end',
+    borderRadius: moderateScale(21),
   },
   inputContainer: {
     flexDirection: 'row',
@@ -128,8 +133,6 @@ const styles = StyleSheet.create({
     right: 0,
   },
   showStampButton: {
-    position: 'absolute',
-    bottom: calPositionButton(EMOJI_ICON_WIDTH),
     right: 12,
   },
 });

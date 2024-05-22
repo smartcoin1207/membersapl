@@ -2,14 +2,12 @@ import {StyleSheet} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {colors, stylesCommon} from '@stylesCommon';
-import {IS_IOS} from '@util';
 
 const ATTACH_ICON_WIDTH = 24;
-export const TOOLBAR_MIN_HEIGHT = 44;
+export const TOOLBAR_MIN_HEIGHT = 41;
 const SEND_BUTTON_WIDTH = 30;
-const COMPOSER_MARGIN_BOTTOM = IS_IOS ? 5 : 3;
 export const calPositionButton = (height: number) =>
-  (TOOLBAR_MIN_HEIGHT - height) / 2 + COMPOSER_MARGIN_BOTTOM;
+  (TOOLBAR_MIN_HEIGHT - height) / 2;
 
 const styles = StyleSheet.create({
   container: {
