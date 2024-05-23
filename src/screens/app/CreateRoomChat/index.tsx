@@ -84,12 +84,11 @@ const CreateRoomChat = (props: any) => {
     setListUser(prev => prev.filter(element => element?.id !== item?.id));
   }, []);
 
-  const renderIdUser = useCallback(() => {
-    let data = [];
+  const renderIdUser = useCallback((arr: Array<number> = []) => {
     for (let i = 0; i < listUser.length; i++) {
-      data.push(listUser[i].id);
+      arr.push(listUser[i].id);
     }
-    return data;
+    return arr;
   }, [listUser]);
 
   const renderNameRoom = useCallback(() => {
@@ -110,19 +109,20 @@ const CreateRoomChat = (props: any) => {
     if (typeScreen === 'CREATE') {
       try {
         GlobalService.showLoading();
+        const user_ids = renderIdUser([user_id]);
         const body = {
           name: name ?? renderNameRoom(),
-          user_id: renderIdUser(),
+          user_id: user_ids,
         };
         const result = await createRoom(body);
         socket.emit('ChatGroup_update_ind2', {
           user_id: user_id,
           room_id: result?.data?.data?.id,
           member_info: {
-            type: 11,
-            ids: renderIdUser(),
+            type: 1,
+            ids: user_ids,
           },
-          method: 2,
+          method: 11,
           room_name: name ?? renderNameRoom(),
         });
         navigation.goBack();

@@ -32,7 +32,7 @@ const ListUser = (props: any) => {
   const [idUser, setIdUser] = useState<any>(null);
   const [modal, setModal] = useState<boolean>(false);
 
-  const callApiChangeRole = async (value: any, idUser: any) => {
+  const callApiChangeRole = async (value: any, idUser: number) => {
     try {
       GlobalService.showLoading();
       const body = {
@@ -60,7 +60,7 @@ const ListUser = (props: any) => {
         );
         onCancelModal();
       }}
-      changeRole={(value: any, idUser: any) => callApiChangeRole(value, idUser)}
+      changeRole={(value: any, idUser: number) => callApiChangeRole(value, idUser)}
       showChange={is_admin === 1 ? true : false}
     />
   );
@@ -72,6 +72,10 @@ const ListUser = (props: any) => {
         room_id: idRoomChat,
         user_id: idUser,
       };
+      // websocket用のアクションをemitする際に必要となる配列を取得
+      // delete前にdeleteするユーザーを除いた配列を作成
+      const userIds = listUser.map(({id}) => id).filter((id) => id !== idUser);
+
       const result = await removeUser(body);
       socket.emit('message_ind2', {
         user_id: user_id,
@@ -94,16 +98,22 @@ const ListUser = (props: any) => {
         room_id: idRoomChat,
         member_info: {
           type: 1,
-          ids: [user_id],
+          ids: userIds,
         },
         method: 12,
         room_name: null,
         task_id: null,
       });
-      dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
-      getListUserOfRoom();
+      if(user_id == idUser) {
+        // 自分自身を削除した場合、listChatに戻る（退出と同様の動作）
+        navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
+      } else {
+        dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
+        getListUserOfRoom();
+      }
       GlobalService.hideLoading();
     } catch (error) {
+      // エラー発生時の挙動を定義すること
       GlobalService.hideLoading();
     }
   };
