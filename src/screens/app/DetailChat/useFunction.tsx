@@ -931,6 +931,9 @@ export const useFunction = (props: any) => {
 
   const sendMessage = useCallback(
     async mes => {
+      if (isSendingMessage) {
+        return;
+      }
       setShowTag(false);
       setShowModalStamp(false);
       setShowRedLine(false);
