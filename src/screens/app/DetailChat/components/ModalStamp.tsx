@@ -22,13 +22,17 @@ const CONTAINER_PADDING_HORIZONTAL = 20;
 const CONTAINER_PADDING_VERTICAL = 12;
 const WINDOW_WIDTH = Dimensions.get('screen').width;
 
-const GAP = 12;
+const GAPX = 12;
+const GAPY = 12;
 const ITEM_PER_ROW = WINDOW_WIDTH < 500 ? 4 : WINDOW_WIDTH / 100;
-const TOTAL_GAP = (ITEM_PER_ROW - 1) * GAP;
+const TOTAL_GAP = Math.ceil((ITEM_PER_ROW - 1) * scale(GAPX));
 const TOTAL_ROW = DATA.length / ITEM_PER_ROW;
 const CHILD_WIDTH =
-  (WINDOW_WIDTH - scale(CONTAINER_PADDING_HORIZONTAL * 2) - scale(TOTAL_GAP)) /
+  (WINDOW_WIDTH -
+    Math.ceil(scale(CONTAINER_PADDING_HORIZONTAL) * 2) -
+    TOTAL_GAP) /
   ITEM_PER_ROW;
+const MAX_ROW = 1;
 
 const ModalStamp = React.memo((props: any) => {
   const {onChose} = props;
@@ -40,8 +44,10 @@ const ModalStamp = React.memo((props: any) => {
           styles.scrollView,
           {
             maxHeight:
-              CHILD_WIDTH * 2 +
-              scale(GAP + CONTAINER_PADDING_VERTICAL * 2 + 12),
+              CHILD_WIDTH * MAX_ROW +
+              (scale(GAPY) * (MAX_ROW - 1) +
+                scale(CONTAINER_PADDING_VERTICAL) * 2 +
+                12),
           },
         ]}>
         <View style={styles.container}>
@@ -100,13 +106,13 @@ const styles = StyleSheet.create({
     height: CHILD_WIDTH,
   },
   imageMarginRight: {
-    marginRight: scale(GAP),
+    marginRight: scale(GAPX),
   },
   imageNoMarginRight: {
     marginRight: 0,
   },
   imageMarginBottom: {
-    marginBottom: scale(GAP),
+    marginBottom: scale(GAPY),
   },
   imageNoMarginBottom: {
     marginBottom: 0,

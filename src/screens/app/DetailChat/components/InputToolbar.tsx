@@ -1,7 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {
-  Composer,
   InputToolbar,
   type ComposerProps,
   type GiftedChatProps,
@@ -11,8 +10,9 @@ import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {IS_IOS} from '@util';
+import Composer from './Composer';
 
-const MAX_INPUT_HEIGHT = 102;
+const MAX_INPUT_HEIGHT = 114;
 const EMOJI_ICON_WIDTH = 18;
 
 export const renderInputToolbar = (
@@ -64,8 +64,10 @@ export const renderComposer = ({
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
+          onLayout: e => console.log(e.nativeEvent.layout.height),
           placeholder: 'メッセージ',
           ...textInputProps,
+          textAlignVertical: 'center',
         }}
       />
       <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
@@ -100,13 +102,10 @@ const styles = StyleSheet.create({
   },
   scrollMessage: {
     maxHeight: MAX_INPUT_HEIGHT,
-    lineHeight: 17,
     fontSize: 14,
+    paddingTop: 0,
     paddingRight: 18,
-    marginTop: 0,
-    marginLeft: 0,
     flex: 1,
-    marginBottom: 0,
     minHeight: 17,
   },
   iconEmojiStyle: {
