@@ -2,14 +2,11 @@ import React, {useCallback, useRef} from 'react';
 import {
   Image,
   Keyboard,
-  Platform,
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
-import {initialWindowMetrics} from 'react-native-safe-area-context';
-
 import LinearGradient from 'react-native-linear-gradient';
 import {useSelector} from 'react-redux';
 
@@ -488,19 +485,7 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
-          renderFooter={() => (
-            <View
-              style={{
-                height:
-                  accessoryHeight +
-                  (Platform.OS === 'ios'
-                    ? initialWindowMetrics?.insets?.bottom ?? 0
-                    : 0) +
-                  25,
-              }}
-            />
-          )}
-          minInputToolbarHeight={68}
+          renderFooter={() => <View style={{height: accessoryHeight + 70}} />}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (
