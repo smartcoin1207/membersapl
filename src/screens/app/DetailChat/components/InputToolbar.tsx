@@ -6,7 +6,7 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from 'react-native-gifted-chat';
-import {moderateScale, scale} from 'react-native-size-matters';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {IS_IOS} from '@util';
@@ -64,7 +64,6 @@ export const renderComposer = ({
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
-          onLayout: e => console.log(e.nativeEvent.layout.height),
           placeholder: 'メッセージ',
           ...textInputProps,
           textAlignVertical: 'center',
@@ -97,8 +96,8 @@ const styles = StyleSheet.create({
   toolbarPrimaryStyles: {
     backgroundColor: '#F4F2EF',
     justifyContent: 'flex-end',
-    paddingTop: 12,
-    paddingBottom: IS_IOS ? 31 : 33,
+    paddingTop: verticalScale(12),
+    paddingBottom: verticalScale(IS_IOS ? 31 : 33),
   },
   scrollMessage: {
     maxHeight: MAX_INPUT_HEIGHT,
