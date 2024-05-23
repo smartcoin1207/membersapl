@@ -40,6 +40,7 @@ export const renderComposer = ({
   showModalStamp,
   isShowModalStamp,
   textInputProps,
+  composerHeight,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
@@ -48,7 +49,16 @@ export const renderComposer = ({
   formattedText: (string | JSX.Element)[];
 } & GiftedChatProps) => {
   return (
-    <View style={styles.composerContainer}>
+    <View
+      style={[
+        styles.composerContainer,
+        {
+          borderRadius:
+            (composerHeight || 0) > styles.scrollMessage.minHeight
+              ? moderateScale(12)
+              : moderateScale(21),
+        },
+      ]}>
       <Composer
         multiline
         {...rest}
@@ -121,7 +131,6 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     backgroundColor: '#fff',
     alignItems: 'flex-end',
-    borderRadius: moderateScale(21),
   },
   inputContainer: {
     flexDirection: 'row',
