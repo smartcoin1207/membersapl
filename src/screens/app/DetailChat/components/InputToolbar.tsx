@@ -6,7 +6,7 @@ import {
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
-} from 'react-native-gifted-chat';
+} from '../../../../lib/react-native-gifted-chat';
 import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
@@ -14,7 +14,7 @@ import {IS_IOS} from '@util';
 
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 
-const MAX_INPUT_HEIGHT = IS_IOS ? 110 : 118;
+const MAX_INPUT_HEIGHT = 118;
 const EMOJI_ICON_WIDTH = 18;
 
 export const renderInputToolbar = (

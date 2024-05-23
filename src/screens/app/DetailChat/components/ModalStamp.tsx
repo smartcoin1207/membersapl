@@ -7,7 +7,6 @@ import {
   View,
 } from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
-import {scale, verticalScale} from 'react-native-size-matters';
 
 import {chatStamp1, chatStamp2, chatStamp3, chatStamp4} from '@images';
 
@@ -22,13 +21,15 @@ const CONTAINER_PADDING_HORIZONTAL = 20;
 const CONTAINER_PADDING_VERTICAL = 12;
 const WINDOW_WIDTH = Dimensions.get('screen').width;
 
-const GAP = 12;
+const GAPX = 12;
+const GAPY = 12;
 const ITEM_PER_ROW = WINDOW_WIDTH < 500 ? 4 : WINDOW_WIDTH / 100;
-const TOTAL_GAP = (ITEM_PER_ROW - 1) * GAP;
+const TOTAL_GAP = (ITEM_PER_ROW - 1) * GAPX;
 const TOTAL_ROW = DATA.length / ITEM_PER_ROW;
-const CHILD_WIDTH =
-  (WINDOW_WIDTH - scale(CONTAINER_PADDING_HORIZONTAL * 2) - scale(TOTAL_GAP)) /
-  ITEM_PER_ROW;
+const CHILD_WIDTH = Math.floor(
+  (WINDOW_WIDTH - CONTAINER_PADDING_HORIZONTAL * 2 - TOTAL_GAP) / ITEM_PER_ROW,
+);
+const MAX_ROW = 1;
 
 const ModalStamp = React.memo((props: any) => {
   const {onChose} = props;
@@ -40,8 +41,9 @@ const ModalStamp = React.memo((props: any) => {
           styles.scrollView,
           {
             maxHeight:
-              CHILD_WIDTH * 2 +
-              scale(GAP + CONTAINER_PADDING_VERTICAL * 2 + 12),
+              CHILD_WIDTH * MAX_ROW +
+              (GAPY * (MAX_ROW - 1) + CONTAINER_PADDING_VERTICAL * 2) +
+              12,
           },
         ]}>
         <View style={styles.container}>
@@ -78,20 +80,21 @@ const styles = StyleSheet.create({
   wrap: {
     width: '100%',
     flexDirection: 'row',
-  },
-  container: {
-    flexDirection: 'row',
+    paddingTop: 12,
     shadowColor: '#D6D6D6',
     shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.8,
     shadowRadius: 8,
     elevation: 14,
-    paddingHorizontal: scale(CONTAINER_PADDING_HORIZONTAL),
+  },
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: CONTAINER_PADDING_HORIZONTAL,
     flexWrap: 'wrap',
-    paddingVertical: verticalScale(CONTAINER_PADDING_VERTICAL),
+    paddingVertical: CONTAINER_PADDING_VERTICAL,
   },
   scrollView: {
-    paddingTop: scale(12),
     width: '100%',
     backgroundColor: '#fff',
   },
@@ -100,13 +103,13 @@ const styles = StyleSheet.create({
     height: CHILD_WIDTH,
   },
   imageMarginRight: {
-    marginRight: scale(GAP),
+    marginRight: GAPX,
   },
   imageNoMarginRight: {
     marginRight: 0,
   },
   imageMarginBottom: {
-    marginBottom: scale(GAP),
+    marginBottom: GAPY,
   },
   imageNoMarginBottom: {
     marginBottom: 0,
