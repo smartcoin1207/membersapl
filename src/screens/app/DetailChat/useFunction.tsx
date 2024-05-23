@@ -1262,6 +1262,7 @@ export const useFunction = (props: any) => {
       user_id,
       listUserChat,
       dataDetail,
+      isSendingMessage,
     ],
   );
 
