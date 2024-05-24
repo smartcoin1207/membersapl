@@ -2,10 +2,10 @@ import React, {useEffect} from 'react';
 import {Alert, Linking, LogBox, StatusBar} from 'react-native';
 import RNExitApp from 'react-native-exit-app';
 import FlashMessage from 'react-native-flash-message';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import VersionCheck from 'react-native-version-check';
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
-
 import {GlobalUI} from '@component';
 import {NavigationUtils} from '@navigation';
 import {GlobalService} from '@services';
@@ -52,7 +52,7 @@ const App = () => {
     }
   }, []);
   return (
-    <>
+    <GestureHandlerRootView style={{flex: 1}}>
       <StatusBar
         barStyle={'dark-content'}
         translucent={true}
@@ -69,7 +69,7 @@ const App = () => {
       </Provider>
       <FlashMessage position="top" floating={true} hideStatusBar={false} />
       <GlobalUI ref={GlobalService.globalUIRef} />
-    </>
+    </GestureHandlerRootView>
   );
 };
 

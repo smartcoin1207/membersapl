@@ -1,11 +1,10 @@
-import moment from 'moment/moment';
+import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Keyboard, KeyboardEvent, Platform, Text} from 'react-native';
+import {Keyboard, KeyboardEvent, Text} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {showMessage} from 'react-native-flash-message';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch, useSelector} from 'react-redux';
-import {useNavigation} from '@react-navigation/native';
 
 import {
   deleteMessage,
@@ -27,22 +26,19 @@ import {
 } from '@redux';
 import {ROUTE_NAME} from '@routeName';
 import {
+  GlobalService,
   addBookmark,
   callApiChatBot,
   deleteMessageApi,
   detailRoomchat,
   editMessageApi,
-  GlobalService,
   pinMessageApi,
   replyMessageApi,
-  saveTask,
   sendLabelApi,
   sendMessageApi,
   sendReactionApi,
-  updateTask,
 } from '@services';
-import {colors} from '@stylesCommon';
-import {AppSocket, convertArrUnique, MESSAGE_RANGE_TYPE} from '@util';
+import {AppSocket, IS_IOS, MESSAGE_RANGE_TYPE, convertArrUnique} from '@util';
 
 import {store} from '../../../redux/store';
 
@@ -72,7 +68,7 @@ export const useFunction = (props: any) => {
   const message_pinned = useSelector(
     (state: any) => state.chat?.message_pinned,
   );
-  const message_edit = useSelector((state: any) => state.chat?.messageEdit);
+  const messageEdit = useSelector((state: any) => state.chat?.messageEdit);
   const messageReply = useSelector((state: any) => state.chat?.messageReply);
   const messageQuote = useSelector((state: any) => state.chat?.messageQuote);
   const idMessageSearch = useSelector(
@@ -90,12 +86,12 @@ export const useFunction = (props: any) => {
   const [pageLoading, setPageLoading] = useState(true);
   const [pickFile, setPickFile] = useState(false);
   const [chosenFiles, setChosenFiles] = useState<any[]>([]);
-  const [modalStamp, setShowModalStamp] = useState(false);
+  const [isShowModalStamp, setShowModalStamp] = useState(false);
   const [text, setText] = useState('');
   const [formattedText, setFormattedText] = useState<(string | JSX.Element)[]>(
     [],
   );
-  const [showTagModal, setShowTag] = useState(false);
+  const [isShowTagModal, setShowTag] = useState(false);
   const [ids, setIds] = useState<any[]>([]);
   const [newIndexArray, setIndex] = useState<any>(null);
   const [listUserSelect, setListUserSelect] = useState<any[]>([]);
@@ -103,17 +99,15 @@ export const useFunction = (props: any) => {
   const [showRedLine, setShowRedLine] = useState(true);
   const [idRedLine, setIdRedLine] = useState<number | null>(null);
   const [indexRedLine, setIndexRedLine] = useState<number | null>(null);
-  const [showTaskForm, setShowTaskForm] = useState(false);
-  const [showUserList, setShowUserList] = useState(false);
   const [partCopy, setPartCopy] = useState<partCopyType | null>(null);
-  const [selected, setSelected] = useState<any[]>([]);
   const [inputText, setInputText] = useState('');
   const [inputIndex, setInputIndex] = useState<number>(-1);
   const [textSelection, setTextSelection] = useState<any>({start: 0, end: 0});
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [irregularMessageIds, setIrregularMessageIds] = useState<any[]>([]);
-  const [showSendMessageButton, setShowSendMessageButton] =
-    useState<boolean>(true);
+  const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
+  const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
+  const [accessoryHeight, setAccessoryHeight] = useState(0);
 
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
@@ -313,10 +307,6 @@ export const useFunction = (props: any) => {
     [idRoomChat, dispatch, socket, user_id],
   );
 
-  const showHideModalTagName = useCallback(() => {
-    setShowTag(!showTagModal);
-  }, [showTagModal]);
-
   const updateGimMessage = useCallback(
     async (id, status) => {
       try {
@@ -381,6 +371,10 @@ export const useFunction = (props: any) => {
     [dispatch],
   );
 
+  const removeQuoteMessage = useCallback(() => {
+    dispatch(saveMessageQuote(null));
+  }, [dispatch]);
+
   const removeReplyMessage = useCallback(() => {
     dispatch(saveMessageReply(null));
   }, [dispatch]);
@@ -391,10 +385,6 @@ export const useFunction = (props: any) => {
     },
     [dispatch],
   );
-
-  const removeQuoteMessage = useCallback(() => {
-    dispatch(saveMessageQuote(null));
-  }, [dispatch]);
 
   const checkDeletedMension = useCallback(
     (formattedText1: any[]) => {
@@ -719,14 +709,13 @@ export const useFunction = (props: any) => {
                 uri: item?.path,
                 path: item?.path,
                 size: item?.size,
-                type:
-                  Platform.OS === 'ios'
-                    ? `image/${
-                        isHEIC
-                          ? item?.path?.split('.')[0] + '.JPG'
-                          : item?.path?.split('.').pop()
-                      }}`
-                    : item?.mime,
+                type: IS_IOS
+                  ? `image/${
+                      isHEIC
+                        ? item?.path?.split('.')[0] + '.JPG'
+                        : item?.path?.split('.').pop()
+                    }}`
+                  : item?.mime,
                 height: item?.height,
               });
               data.append('msg_type', 2);
@@ -737,10 +726,9 @@ export const useFunction = (props: any) => {
               data.append('attachment[]', {
                 name: item?.name,
                 type: item?.type,
-                uri:
-                  Platform.OS === 'ios'
-                    ? decodeURIComponent(item?.uri?.replace('file://', ''))
-                    : decodeURIComponent(item?.fileCopyUri),
+                uri: IS_IOS
+                  ? decodeURIComponent(item?.uri?.replace('file://', ''))
+                  : decodeURIComponent(item?.fileCopyUri),
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
@@ -861,9 +849,55 @@ export const useFunction = (props: any) => {
     navigation.navigate(ROUTE_NAME.SEARCH_MESSAGE, {idRoomChat: idRoomChat});
   }, [idRoomChat, navigation]);
 
+  const removeMessageModals = useCallback(() => {
+    if (messageReply) {
+      removeReplyMessage();
+    }
+    if (messageEdit) {
+      removeEditMessage();
+    }
+    if (messageQuote) {
+      removeQuoteMessage();
+    }
+  }, [
+    messageQuote,
+    messageEdit,
+    messageReply,
+    removeEditMessage,
+    removeReplyMessage,
+    removeQuoteMessage,
+  ]);
+
   const showModalStamp = useCallback(() => {
-    setShowModalStamp(!modalStamp);
-  }, [modalStamp]);
+    if (!isShowModalStamp) {
+      if (isShowTagModal) {
+        setShowTag(false);
+      }
+      removeMessageModals();
+    }
+
+    setShowModalStamp(!isShowModalStamp);
+  }, [isShowModalStamp, isShowTagModal, removeMessageModals]);
+
+  const showModalTagName = useCallback(() => {
+    if (isShowModalStamp) {
+      setShowModalStamp(false);
+    }
+
+    setShowTag(true);
+  }, [isShowModalStamp]);
+
+  const toggleDecoButtons = useCallback(() => {
+    if (!isShowDecoButtons) {
+      if (isShowTagModal) {
+        setShowTag(false);
+      }
+      if (isShowModalStamp) {
+        setShowModalStamp(false);
+      }
+    }
+    setIsShowDecoButtons(prev => !prev);
+  }, [isShowDecoButtons, isShowModalStamp, isShowTagModal]);
 
   const getUserListChat = useCallback(async () => {
     try {
@@ -897,10 +931,13 @@ export const useFunction = (props: any) => {
 
   const sendMessage = useCallback(
     async mes => {
+      if (isSendingMessage) {
+        return;
+      }
       setShowTag(false);
       setShowModalStamp(false);
       setShowRedLine(false);
-      setShowSendMessageButton(false);
+      setIsSendingMessage(true);
       if (messageReply) {
         try {
           // 現在表示中のルームIDと返信元のルームIDが違う場合はエラー
@@ -981,14 +1018,14 @@ export const useFunction = (props: any) => {
             console.error(error.message);
           }
         }
-      } else if (message_edit) {
+      } else if (messageEdit) {
         try {
           const param = {
             room_id: idRoomChat,
             message: mes[0]?.text?.split('\n').join('<br>'),
             ids: ids,
           };
-          const res = await editMessageApi(message_edit?.id, param);
+          const res = await editMessageApi(messageEdit?.id, param);
           socket.emit('message_ind2', {
             user_id: mes[0]?.user?._id,
             room_id: idRoomChat,
@@ -1193,10 +1230,11 @@ export const useFunction = (props: any) => {
         await sendFile(mes[0]?.text === '');
       }
       // Khi call api gửi tin nhắn xong sẽ auto scroll xuống tin nhắn cuối cùng
-      giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+      giftedChatRef.current?.scrollToBottom({
         animated: true,
         index: 0,
       });
+
       setIds([]);
       // prevent from becoming blue character after sending mention message.
       const formattedText1: (string | JSX.Element)[] = [];
@@ -1207,11 +1245,11 @@ export const useFunction = (props: any) => {
       // メッセージが送信完了の後、メッセージ入力のstateがemptyになる。
       setInputText('');
       setListUserSelect([]);
-      setShowSendMessageButton(true);
+      setIsSendingMessage(false);
     },
     [
       messageReply,
-      message_edit,
+      messageEdit,
       ids,
       messageQuote,
       idRoomChat,
@@ -1224,6 +1262,7 @@ export const useFunction = (props: any) => {
       user_id,
       listUserChat,
       dataDetail,
+      isSendingMessage,
     ],
   );
 
@@ -1254,59 +1293,8 @@ export const useFunction = (props: any) => {
     setFormattedText([newText]);
   };
 
-  const onCreateTask = useCallback(() => {
-    setShowUserList(!showUserList);
-  }, [showUserList]);
-
   const changePartCopy = useCallback((data: any) => {
     setTimeout(() => setPartCopy(data), 200);
-  }, []);
-
-  const onSaveTask = useCallback(async input => {
-    const data = {
-      project_id: 1,
-      item_id: 1,
-      task_name: input.taskName,
-      actual_start_date: moment().format('YYYY/MM/DD'),
-      actual_start_time: '00:00:00',
-      actual_end_date: moment(input.date).format('YYYY/MM/DD'),
-      actual_end_time: input.time,
-      plans_end_date: input.date,
-      plans_end_time: input.time,
-      plans_time: 0,
-      actual_time: 0,
-      plans_cnt: 0,
-      actual_cnt: 0,
-      cost: 0,
-      task_person_id: input.selected,
-      description: input.taskDescription,
-      cost_flg: 0,
-      remaindar_flg: 0,
-      repeat_flag: 0,
-      gcalendar_flg: input.isGoogleCalendar,
-      all_day_flg: input.isAllDay,
-      chat_room_id: input.chat_room_id,
-    };
-    const res = await saveTask(data);
-    if (res.data?.errors) {
-      showMessage({
-        message: res.data?.errors
-          ? JSON.stringify(res.data?.errors)
-          : 'Network Error',
-        type: 'danger',
-      });
-    } else {
-      showMessage({
-        message: '保存しました。',
-        type: 'success',
-      });
-    }
-    setShowTaskForm(false);
-  }, []);
-
-  const onUpdateTask = useCallback(async data => {
-    await updateTask(data);
-    setShowTaskForm(false);
   }, []);
 
   const deleteFile = useCallback(
@@ -1484,19 +1472,19 @@ export const useFunction = (props: any) => {
   }, [listChat, pageLoading, dispatch, idMessageSearch, idRoomChat, page]);
 
   useEffect(() => {
-    if (message_edit || messageReply || messageQuote) {
+    if (messageEdit || messageReply || messageQuote) {
       setShowModalStamp(false);
     }
-  }, [message_edit, messageReply, messageQuote]);
+  }, [messageEdit, messageReply, messageQuote]);
 
   useEffect(() => {
-    if (!message_edit) {
+    if (!messageEdit) {
       setText('');
     }
-  }, [message_edit]);
+  }, [messageEdit]);
 
   useEffect(() => {
-    if (message_edit) {
+    if (messageEdit) {
       dispatch(saveMessageReply(null));
       dispatch(saveMessageQuote(null));
     } else if (messageReply) {
@@ -1506,15 +1494,7 @@ export const useFunction = (props: any) => {
       dispatch(saveMessageEdit(null));
       dispatch(saveMessageReply(null));
     }
-  }, [message_edit, messageReply, messageQuote, dispatch]);
-
-  useEffect(() => {
-    if (modalStamp === true) {
-      removeReplyMessage();
-      removeEditMessage();
-      removeQuoteMessage();
-    }
-  }, [modalStamp, removeEditMessage, removeQuoteMessage, removeReplyMessage]);
+  }, [messageEdit, messageReply, messageQuote, dispatch]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -1545,7 +1525,7 @@ export const useFunction = (props: any) => {
     removeReplyMessage,
     editMessage,
     removeEditMessage,
-    message_edit,
+    messageEdit,
     reactionMessage,
     navigatiteToListReaction,
     pickFile,
@@ -1555,12 +1535,13 @@ export const useFunction = (props: any) => {
     sendLabel,
     searchMessage,
     showModalStamp,
-    modalStamp,
+    isShowModalStamp,
+    setShowModalStamp,
     giftedChatRef,
     text,
-    showHideModalTagName,
+    showModalTagName,
     setShowTag,
-    showTagModal,
+    isShowTagModal,
     listUserChat,
     setText,
     bookmarkMessage,
@@ -1583,17 +1564,8 @@ export const useFunction = (props: any) => {
     idRedLine,
     navigateToMessage,
     indexRedLine,
-    onCreateTask,
-    setShowTaskForm,
-    showTaskForm,
-    onSaveTask,
-    onUpdateTask,
-    setShowUserList,
-    showUserList,
     partCopy,
     changePartCopy,
-    selected,
-    setSelected,
     setInputText,
     inputText,
     textSelection,
@@ -1605,7 +1577,12 @@ export const useFunction = (props: any) => {
     deleteFile,
     setInputIndex,
     inputIndex,
-    showSendMessageButton,
+    isSendingMessage,
     setPageLoading,
+    isShowDecoButtons,
+    setIsShowDecoButtons,
+    accessoryHeight,
+    setAccessoryHeight,
+    toggleDecoButtons,
   };
 };

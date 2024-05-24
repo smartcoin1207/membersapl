@@ -1,12 +1,26 @@
-import {StyleSheet, Dimensions} from 'react-native';
-import {colors, stylesCommon} from '@stylesCommon';
+import {StyleSheet} from 'react-native';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
-const height_screen = Dimensions.get('window').height;
+import {colors, stylesCommon} from '@stylesCommon';
+import {IS_IOS} from '@util';
+
+const ATTACH_ICON_WIDTH = 24;
+export const TOOLBAR_MIN_HEIGHT = 44;
+const SEND_BUTTON_WIDTH = 30;
+const COMPOSER_MARGIN_BOTTOM = IS_IOS ? 5 : 3;
+export const calPositionButton = (height: number) =>
+  (TOOLBAR_MIN_HEIGHT - height) / 2 + COMPOSER_MARGIN_BOTTOM;
 
 const styles = StyleSheet.create({
   container: {
     ...stylesCommon.viewContainer,
+  },
+  attachIcon: {
+    width: ATTACH_ICON_WIDTH,
+    height: ATTACH_ICON_WIDTH,
+    bottom: calPositionButton(ATTACH_ICON_WIDTH),
+    marginBottom: 0,
+    marginLeft: scale(15),
   },
   viewPinMessage: {
     backgroundColor: '#FFFFFF',
@@ -102,9 +116,6 @@ const styles = StyleSheet.create({
     color: colors.darkGrayText,
     ...stylesCommon.fontWeight500,
   },
-  viewBottom: {
-    height: height_screen >= 812 ? verticalScale(50) : verticalScale(25),
-  },
   colorIcon: {
     tintColor: colors.darkGrayText,
   },
@@ -112,7 +123,6 @@ const styles = StyleSheet.create({
     width: 23,
     height: 23,
   },
-  addBtn: {},
   imageSmall: {
     width: moderateScale(50),
     height: moderateScale(50),
@@ -123,7 +133,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(5),
   },
-  buttonRight: {marginRight: 16, marginLeft: 0},
+  buttonRight: {
+    marginRight: 16,
+    marginLeft: 10,
+    marginBottom: 0,
+    width: SEND_BUTTON_WIDTH,
+    height: SEND_BUTTON_WIDTH,
+    bottom: calPositionButton(SEND_BUTTON_WIDTH),
+  },
   imageFile: {
     width: moderateScale(25),
     height: moderateScale(25),
@@ -152,19 +169,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '18%',
   },
-  imageTask: {},
   displayNone: {
     display: 'none',
   },
-  blackout: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    zIndex: 1000,
-    backgroundColor: '#787878',
-    opacity: 0.9,
+  activeSendButton: {
+    backgroundColor: '#1EB7C1',
+    borderRadius: 21,
+  },
+  sendButton: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

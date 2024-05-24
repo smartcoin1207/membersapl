@@ -1,29 +1,31 @@
-import React, {useEffect, useState, useRef} from 'react';
-import {
-  View,
-  StyleSheet,
-  Modal,
-  Text,
-  TouchableOpacity,
-  Image,
-  StatusBar,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-  Platform,
-} from 'react-native';
-import {useSelector} from 'react-redux';
 import CheckBox from '@react-native-community/checkbox';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment/moment';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  Keyboard,
+  Modal,
+  Platform,
+  StatusBar,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import {MultiSelect} from 'react-native-element-dropdown';
+import {getBottomSpace} from 'react-native-iphone-x-helper';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
+
 import {AppButton, AppInput} from '@component';
 import {iconClose} from '@images';
-import {getBottomSpace} from 'react-native-iphone-x-helper';
-import {colors, stylesCommon} from '@stylesCommon';
-import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
 import {HITSLOP} from '@util';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import {MultiSelect} from 'react-native-element-dropdown';
-import {Colors} from '../../Project/Task/component/Colors';
-import moment from 'moment/moment';
+import {colors, stylesCommon} from '@stylesCommon';
+
+import {Colors} from './Colors';
 
 type PropType = {
   onCancel: () => void;
@@ -31,7 +33,7 @@ type PropType = {
   idRoomChat: any;
   selected: any[];
   setSelected: React.Dispatch<React.SetStateAction<any[]>>;
-  showTaskForm: boolean;
+  showTaskForm?: boolean;
   onSaveTask?: (input: any) => Promise<void>;
   item?: any;
   onUpdateTask?: (data: any) => Promise<void>;
