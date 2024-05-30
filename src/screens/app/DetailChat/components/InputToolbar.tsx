@@ -16,8 +16,8 @@ import {
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
-  Composer,
 } from '../../../../lib/react-native-gifted-chat';
+import Composer from './Composer';
 import {calPositionButton} from '../styles';
 
 const MAX_INPUT_HEIGHT = 132;
@@ -150,8 +150,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     backgroundColor: '#FFF',
-    paddingTop: Platform.OS === 'ios' ? 7 : 8,
-    paddingBottom: Platform.OS === 'ios' ? 15 : 8,
+    paddingTop: Platform.OS === 'ios' ? 7 : 11,
+    paddingBottom: Platform.OS === 'ios' ? 15 : 11,
     borderRadius: moderateScale(21),
     position: 'relative',
     marginLeft: 13,
