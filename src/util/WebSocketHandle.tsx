@@ -40,23 +40,22 @@ function createAppSocket() {
       console.log(EVENT_SOCKET.NEW_MESSAGE_IND, data);
       const state = store.getState();
       if (data?.room_id === state?.chat?.id_roomChat) {
-        return null;
-      } else {
-        if (state?.chat?.roomList?.length > 0) {
-          const dataList = [...state?.chat?.roomList];
-          const index = dataList.findIndex(
-            (element: any) => element?.id === data?.room_id,
+        return;
+      }
+      if (state?.chat?.roomList?.length > 0) {
+        const dataList = [...state?.chat?.roomList];
+        const index = dataList.findIndex(
+          (element: any) => element?.id === data?.room_id,
+        );
+        if (index > -1) {
+          store.dispatch(
+            getRoomList({
+              company_id: state?.chat?.idCompany,
+              search: null,
+              type: state?.chat?.type_Filter,
+              category_id: state?.chat?.categoryID_Filter,
+            }),
           );
-          if (index > -1) {
-            store.dispatch(
-              getRoomList({
-                company_id: state?.chat?.idCompany,
-                search: null,
-                type: state?.chat?.type_Filter,
-                category_id: state?.chat?.categoryID_Filter,
-              }),
-            );
-          }
         }
       }
     });
@@ -66,21 +65,19 @@ function createAppSocket() {
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
       console.log(EVENT_SOCKET.MESSAGE_IND, data);
       const state = store.getState();
-      if (data?.user_id !== state?.auth?.userInfo?.id) {
-        if (data?.room_id === state?.chat?.id_roomChat) {
-          if (data?.message_type === 3) {
-            const value = {
-              id_message: data?.relation_message_id,
-              message_type: data?.message_type,
-            };
-            store.dispatch(updateMessageReaction(value));
-          } else {
-            const value = {
-              id_message: data?.message_id,
-              message_type: data?.message_type,
-            };
-            store.dispatch(getDetailMessageSocket(value));
-          }
+      if (data?.user_id !== state?.auth?.userInfo?.id && data?.room_id === state?.chat?.id_roomChat) {
+        if (data?.message_type === 3) {
+          const value = {
+            id_message: data?.relation_message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(updateMessageReaction(value));
+        } else {
+          const value = {
+            id_message: data?.message_id,
+            message_type: data?.message_type,
+          };
+          store.dispatch(getDetailMessageSocket(value));
         }
       } else {
         if (data?.room_id === state?.chat?.id_roomChat) {
@@ -100,7 +97,7 @@ function createAppSocket() {
             id_message: data?.message_id,
             message_type: data?.message_type,
           };
-          store.dispatch(getDetailMessageSocketCurrent(value));          
+          store.dispatch(getDetailMessageSocketCurrent(value));
         }
       }
     });

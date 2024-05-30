@@ -159,14 +159,14 @@ const InfoRoomChat = (props: any) => {
       const userIds = listUserChat.map(({id}: extractUserId) => id);
       await leaveRoomChat(body);
       socket.emit('ChatGroup_update_ind2', {
-        'user_id': user_id,
-        'room_id': idRoomChat,
-        'task_id': null,
-        'method': 12,
-        'room_name': null,
-        'member_info': {
-          'type': 1,
-          'ids': userIds
+        user_id: user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        method: 12,
+        room_name: null,
+        member_info: {
+          type: 1,
+          ids: userIds
         }
       });
       navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
@@ -182,12 +182,12 @@ const InfoRoomChat = (props: any) => {
       onCancelModalDelete();
       await deleteRoom(idRoomChat);
       socket.emit('ChatGroup_update_ind2', {
-        'user_id': user_id,
-        'room_id': idRoomChat,
-        'task_id': null,
-        'method': 3,
-        'room_name': null,
-        'member_info': null
+        user_id: user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        method: 3,
+        room_name: null,
+        member_info: null
       });
       GlobalService.hideLoading();
       navigation.pop(2);

@@ -74,7 +74,10 @@ const ListUser = (props: any) => {
       };
       // websocket用のアクションをemitする際に必要となる配列を取得
       // delete前にdeleteするユーザーを除いた配列を作成
-      const userIds = listUser.map(({id}) => id).filter((id) => id !== idUser);
+      const userIds: number[] = [];
+      listUser.forEach((user: {id: number}) => {
+        if(user.id !== idUser) userIds.push(user.id);
+      });
 
       const result = await removeUser(body);
       socket.emit('message_ind2', {
