@@ -1,35 +1,76 @@
-import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {type RefObject} from 'react';
 import {
-  Composer,
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {getBottomSpace} from 'react-native-iphone-x-helper';
+import {moderateScale, scale} from 'react-native-size-matters';
+
+import {iconEmoji, iconEmojiActive} from '@images';
+
+import {
   InputToolbar,
   type ComposerProps,
   type GiftedChatProps,
   type InputToolbarProps,
+  Composer,
 } from '../../../../lib/react-native-gifted-chat';
-import {moderateScale, scale} from 'react-native-size-matters';
+import {calPositionButton} from '../styles';
 
-import {iconEmoji, iconEmojiActive} from '@images';
-import {IS_IOS} from '@util';
-
-import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
-
-const MAX_INPUT_HEIGHT = 118;
+const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
 
-export const renderInputToolbar = (
-  inputProps: Readonly<InputToolbarProps> &
-    Readonly<{
-      children?: React.ReactNode;
-    }>,
-) => {
+const getToolbarStyles = (isShowKeyboard: boolean) =>
+  StyleSheet.create({
+    toolBar: {
+      borderTopWidth: 0,
+      bottom: isShowKeyboard ? 21 + getBottomSpace() : 0,
+    },
+    accessoryStyle: {
+      height: 'auto',
+    },
+    toolbarPrimaryStyles: {
+      backgroundColor: '#F4F2EF',
+      justifyContent: 'flex-end',
+      paddingTop: 12,
+      paddingBottom: getBottomSpace() > 33 ? 33 : 33 - getBottomSpace(),
+    },
+    scrollMessage: {
+      maxHeight: MAX_INPUT_HEIGHT,
+      lineHeight: 22,
+      fontSize: 14,
+      paddingLeft: 12,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 30,
+      marginTop: 0,
+      marginBottom: 0,
+    },
+  });
+
+export const renderInputToolbar = ({
+  ref,
+  ...inputProps
+}: Readonly<InputToolbarProps> &
+  Readonly<{
+    children?: React.ReactNode;
+    ref: RefObject<InputToolbar> | null;
+  }>) => {
+  const isShowKeyboard = ref?.current?.state?.position === 'relative';
+
+  const toolbarStyles = getToolbarStyles(isShowKeyboard);
+
   return (
     <>
       <InputToolbar
         {...inputProps}
-        containerStyle={styles.toolBar}
-        primaryStyle={styles.toolbarPrimaryStyles}
-        accessoryStyle={styles.accessoryStyle}
+        ref={ref}
+        containerStyle={toolbarStyles.toolBar}
+        primaryStyle={toolbarStyles.toolbarPrimaryStyles}
+        accessoryStyle={toolbarStyles.accessoryStyle}
       />
     </>
   );
@@ -42,6 +83,7 @@ export const renderComposer = ({
   showModalStamp,
   isShowModalStamp,
   textInputProps,
+  composerHeight,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
@@ -52,21 +94,22 @@ export const renderComposer = ({
   return (
     <View style={styles.composerContainer}>
       <Composer
-        multiline
         {...rest}
         textInputStyle={[
           styles.scrollMessage,
-          !formattedText.length
-            ? {maxHeight: styles.scrollMessage.minHeight}
-            : {},
+          {borderRadius: (composerHeight ?? 0) > 44 ? scale(12) : scale(21)},
         ]}
+        multiline
+        composerHeight={composerHeight}
         textInputProps={{
           value: undefined,
+          textAlignVertical: 'center',
           onChangeText: onInputTextChanged,
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
           placeholder: 'メッセージ',
+
           ...textInputProps,
         }}
       />
@@ -88,28 +131,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  toolBar: {
-    borderTopWidth: 0,
-  },
-  accessoryStyle: {
-    height: 'auto',
-  },
-  toolbarPrimaryStyles: {
-    backgroundColor: '#F4F2EF',
-    justifyContent: 'flex-end',
-    paddingTop: 12,
-    paddingBottom: IS_IOS ? 31 : 33,
-  },
   scrollMessage: {
-    backgroundColor: '#FFF',
-    borderRadius: moderateScale(21),
     maxHeight: MAX_INPUT_HEIGHT,
-    lineHeight: 17,
+    lineHeight: 22,
     fontSize: 14,
     paddingLeft: 12,
-    paddingTop: IS_IOS ? 12 : undefined,
+    paddingTop: 0,
+    paddingBottom: 0,
     paddingRight: 30,
-    minHeight: TOOLBAR_MIN_HEIGHT,
+    marginTop: 0,
+    marginBottom: 0,
   },
   iconEmojiStyle: {
     width: EMOJI_ICON_WIDTH,
@@ -118,7 +149,12 @@ const styles = StyleSheet.create({
   composerContainer: {
     flex: 1,
     flexDirection: 'row',
+    backgroundColor: '#FFF',
+    paddingTop: Platform.OS === 'ios' ? 7 : 8,
+    paddingBottom: Platform.OS === 'ios' ? 15 : 8,
+    borderRadius: moderateScale(21),
     position: 'relative',
+    marginLeft: 13,
   },
   inputContainer: {
     flexDirection: 'row',

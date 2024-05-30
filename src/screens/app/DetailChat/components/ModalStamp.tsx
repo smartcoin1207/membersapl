@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -6,114 +6,130 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {FlatList} from 'react-native-gesture-handler';
 
-import {chatStamp1, chatStamp2, chatStamp3, chatStamp4} from '@images';
+import {CHAT_STAMP_ICONS} from '@images';
 
-const DATA = [
-  {id: 1, url: chatStamp1},
-  {id: 2, url: chatStamp2},
-  {id: 3, url: chatStamp3},
-  {id: 4, url: chatStamp4},
-] as const;
+const CONTAINER_PADDING_HORIZONTAL = 17;
+const CONTAINER_PADDING_VERTICAL = 7;
 
-const CONTAINER_PADDING_HORIZONTAL = 20;
-const CONTAINER_PADDING_VERTICAL = 12;
-const WINDOW_WIDTH = Dimensions.get('screen').width;
+const GAP_X = 25;
+const GAP_Y = 5;
 
-const GAPX = 12;
-const GAPY = 12;
-const ITEM_PER_ROW = WINDOW_WIDTH < 500 ? 4 : WINDOW_WIDTH / 100;
-const TOTAL_GAP = (ITEM_PER_ROW - 1) * GAPX;
-const TOTAL_ROW = DATA.length / ITEM_PER_ROW;
-const CHILD_WIDTH = Math.floor(
-  (WINDOW_WIDTH - CONTAINER_PADDING_HORIZONTAL * 2 - TOTAL_GAP) / ITEM_PER_ROW,
-);
-const MAX_ROW = 1;
+const DEFAULT_NUM_COLUMNS = 4;
+
+const getNumColumns = (width: number, height: number) => {
+  const numColumns = Math.round(
+    width < height ? DEFAULT_NUM_COLUMNS : width / 100,
+  );
+  return numColumns || DEFAULT_NUM_COLUMNS;
+};
+
+const getMaxRow = (width: number, height: number) => {
+  if (width < height) {
+    return 3;
+  }
+  return 1;
+};
+
+const getStyles = (childWith: number, maxHeight: number) =>
+  StyleSheet.create({
+    wrap: {
+      width: '100%',
+      flexDirection: 'row',
+      shadowColor: '#D6D6D6',
+      shadowOffset: {width: 1, height: 1},
+      shadowOpacity: 0.8,
+      shadowRadius: 8,
+      elevation: 14,
+      maxHeight,
+    },
+    flatList: {
+      width: '100%',
+      paddingHorizontal: CONTAINER_PADDING_HORIZONTAL,
+      backgroundColor: '#fff',
+    },
+    flatListColumnWrapperStyle: {
+      justifyContent: 'space-between',
+      marginBottom: GAP_Y,
+    },
+    flatListContentContainerStyle: {
+      paddingVertical: CONTAINER_PADDING_VERTICAL,
+    },
+    image: {
+      width: childWith,
+      height: childWith,
+    },
+  });
 
 const ModalStamp = React.memo((props: any) => {
   const {onChose} = props;
 
+  const [layout, setLayout] = useState<{width: number; height: number}>({
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  });
+
+  const orientation = layout.width > layout.height ? 'landscape' : 'portrait';
+
+  useEffect(() => {
+    const handleResize = () => {
+      setLayout({
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+      });
+    };
+
+    const handleWindowResizeEvent = Dimensions.addEventListener(
+      'change',
+      handleResize,
+    );
+
+    return () => {
+      handleWindowResizeEvent.remove();
+    };
+  }, []);
+
+  const numColumns = getNumColumns(layout.width, layout.height);
+  const totalGap = (numColumns - 1) * GAP_X;
+  const childWidth = Math.floor(
+    (layout.width - totalGap - CONTAINER_PADDING_HORIZONTAL * 2) / numColumns,
+  );
+
+  const maxRow = getMaxRow(layout.width, layout.height);
+
+  const maxHeight =
+    childWidth * maxRow + GAP_Y * (maxRow - 1) + CONTAINER_PADDING_VERTICAL * 2;
+
+  const styles = getStyles(childWidth, maxHeight);
+
   return (
     <View style={styles.wrap}>
-      <ScrollView
-        style={[
-          styles.scrollView,
-          {
-            maxHeight:
-              CHILD_WIDTH * MAX_ROW +
-              (GAPY * (MAX_ROW - 1) + CONTAINER_PADDING_VERTICAL * 2) +
-              12,
-          },
-        ]}>
-        <View style={styles.container}>
-          {DATA.map((item: any, index) => {
-            return (
-              <TouchableOpacity
-                key={item?.id}
-                onPress={() => {
-                  onChose(item?.id);
-                }}>
-                <Image
-                  source={item?.url}
-                  style={[
-                    styles.image,
-                    (index + 1) % ITEM_PER_ROW !== 0
-                      ? styles.imageMarginRight
-                      : styles.imageNoMarginRight,
-                    (index + 1) / ITEM_PER_ROW < TOTAL_ROW
-                      ? styles.imageMarginBottom
-                      : styles.imageNoMarginBottom,
-                  ]}
-                  resizeMode="contain"
-                />
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-      </ScrollView>
+      <FlatList
+        keyboardShouldPersistTaps="handled"
+        data={CHAT_STAMP_ICONS}
+        contentContainerStyle={styles.flatListContentContainerStyle}
+        columnWrapperStyle={styles.flatListColumnWrapperStyle}
+        style={styles.flatList}
+        key={orientation}
+        renderItem={({item}) => (
+          <TouchableOpacity
+            key={item?.id}
+            onPress={() => {
+              onChose(item?.id);
+            }}>
+            <Image
+              source={item?.url}
+              resizeMode="contain"
+              style={styles.image}
+            />
+          </TouchableOpacity>
+        )}
+        keyExtractor={item => `modal_stamp_${item.id}`}
+        numColumns={numColumns}
+      />
     </View>
   );
-});
-
-const styles = StyleSheet.create({
-  wrap: {
-    width: '100%',
-    flexDirection: 'row',
-    paddingTop: 12,
-    shadowColor: '#D6D6D6',
-    shadowOffset: {width: 1, height: 1},
-    shadowOpacity: 0.8,
-    shadowRadius: 8,
-    elevation: 14,
-  },
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: CONTAINER_PADDING_HORIZONTAL,
-    flexWrap: 'wrap',
-    paddingVertical: CONTAINER_PADDING_VERTICAL,
-  },
-  scrollView: {
-    width: '100%',
-    backgroundColor: '#fff',
-  },
-  image: {
-    width: CHILD_WIDTH,
-    height: CHILD_WIDTH,
-  },
-  imageMarginRight: {
-    marginRight: GAPX,
-  },
-  imageNoMarginRight: {
-    marginRight: 0,
-  },
-  imageMarginBottom: {
-    marginBottom: GAPY,
-  },
-  imageNoMarginBottom: {
-    marginBottom: 0,
-  },
 });
 
 export {ModalStamp};

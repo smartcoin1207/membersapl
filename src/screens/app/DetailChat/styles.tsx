@@ -1,15 +1,14 @@
 import {StyleSheet} from 'react-native';
+import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {colors, stylesCommon} from '@stylesCommon';
-import {IS_IOS} from '@util';
 
 const ATTACH_ICON_WIDTH = 24;
 export const TOOLBAR_MIN_HEIGHT = 44;
 const SEND_BUTTON_WIDTH = 30;
-const COMPOSER_MARGIN_BOTTOM = IS_IOS ? 5 : 3;
 export const calPositionButton = (height: number) =>
-  (TOOLBAR_MIN_HEIGHT - height) / 2 + COMPOSER_MARGIN_BOTTOM;
+  (TOOLBAR_MIN_HEIGHT - height) / 2;
 
 const styles = StyleSheet.create({
   container: {
@@ -184,4 +183,12 @@ const styles = StyleSheet.create({
   },
 });
 
-export {styles};
+const footerStyles = (accessoryHeight: number, isShowKeyboard: boolean) =>
+  StyleSheet.create({
+    footerView: {
+      height:
+        accessoryHeight + 20 + 33 + (isShowKeyboard ? getBottomSpace() : 0),
+    },
+  });
+
+export {styles, footerStyles};

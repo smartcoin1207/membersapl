@@ -110,6 +110,7 @@ const ModalTagName = React.memo((props: any) => {
   return (
     <View style={styles.container}>
       <FlatList
+        keyboardShouldPersistTaps="handled"
         data={dataLocal}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}

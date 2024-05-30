@@ -873,6 +873,8 @@ export const useFunction = (props: any) => {
       if (isShowTagModal) {
         setShowTag(false);
       }
+
+      Keyboard.dismiss();
       removeMessageModals();
     }
 

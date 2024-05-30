@@ -1,4 +1,4 @@
-import React, {useCallback, useRef} from 'react';
+import React, {useCallback, useRef, type RefObject} from 'react';
 import {
   Image,
   Keyboard,
@@ -20,7 +20,11 @@ import {
 } from '@images';
 import {IS_ANDROID, IS_IOS} from '@util';
 
-import {Actions, GiftedChat} from '../../../lib/react-native-gifted-chat';
+import {
+  Actions,
+  GiftedChat,
+  InputToolbar,
+} from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
 import {renderComposer, renderInputToolbar} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
@@ -32,7 +36,7 @@ import {ModalReply} from './components/ModalReply';
 import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
 import {ShowPickedFile} from './components/ShowPickedFile';
-import {styles} from './styles';
+import {footerStyles, styles} from './styles';
 import {useFunction} from './useFunction';
 
 const DetailChat = (props: any) => {
@@ -108,6 +112,9 @@ const DetailChat = (props: any) => {
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
+
+  const inputRef: RefObject<InputToolbar> | null = useRef(null);
+  const isShowKeyboard = inputRef?.current?.state?.position === 'relative';
 
   //Render ra UI chọn ảnh, video, file
   const renderActions = useCallback(
@@ -423,7 +430,9 @@ const DetailChat = (props: any) => {
           onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}
-          renderInputToolbar={renderInputToolbar}
+          renderInputToolbar={inputProps =>
+            renderInputToolbar({...inputProps, ref: inputRef})
+          }
           renderComposer={composerProps =>
             renderComposer({
               toggleDecoButtons,
@@ -441,8 +450,9 @@ const DetailChat = (props: any) => {
           user={chatUser}
           renderSend={renderSend}
           renderActions={renderActions}
-          maxComposerHeight={118}
-          minComposerHeight={17}
+          maxComposerHeight={133}
+          minComposerHeight={22}
+          minInputToolbarHeight={56}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{
             scrollEventThrottle: 400,
@@ -485,7 +495,11 @@ const DetailChat = (props: any) => {
               setInputIndex(nativeEvent.selection.start);
             },
           }}
-          renderFooter={() => <View style={{height: accessoryHeight + 70}} />}
+          renderFooter={() => (
+            <View
+              style={footerStyles(accessoryHeight, isShowKeyboard).footerView}
+            />
+          )}
           //Chú ý đây là phần xử lý các UI nằm bên trên của input chat (có custom trong thư viện)
           renderAccessory={() => {
             return (
