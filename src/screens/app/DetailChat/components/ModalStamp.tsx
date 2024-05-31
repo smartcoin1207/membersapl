@@ -22,7 +22,7 @@ const getNumColumns = (width: number, height: number) => {
   const numColumns = Math.round(
     width < height ? DEFAULT_NUM_COLUMNS : width / 100,
   );
-  return numColumns || DEFAULT_NUM_COLUMNS;
+  return numColumns;
 };
 
 const getMaxRow = (width: number, height: number) => {
