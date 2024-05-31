@@ -35,17 +35,6 @@ const getToolbarStyles = (isShowKeyboard: boolean) =>
       paddingTop: 12,
       paddingBottom: getBottomSpace() > 33 ? 33 : 33 - getBottomSpace(),
     },
-    scrollMessage: {
-      maxHeight: MAX_INPUT_HEIGHT,
-      lineHeight: 22,
-      fontSize: 14,
-      paddingLeft: 12,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 30,
-      marginTop: 0,
-      marginBottom: 0,
-    },
   });
 
 export const renderInputToolbar = ({
@@ -73,7 +62,7 @@ export const renderInputToolbar = ({
   );
 };
 
-const getComposerStyles = (minHeight: number) => {
+const getComposerStyles = (minHeight: number, composerHeight: number) => {
   const defaultPadding = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
 
   return StyleSheet.create({
@@ -87,6 +76,18 @@ const getComposerStyles = (minHeight: number) => {
       borderRadius: moderateScale(21),
       position: 'relative',
       marginLeft: 13,
+    },
+    scrollMessage: {
+      maxHeight: MAX_INPUT_HEIGHT,
+      lineHeight: 22,
+      fontSize: 14,
+      paddingLeft: 12,
+      paddingTop: 0,
+      paddingBottom: 0,
+      paddingRight: 30,
+      marginTop: 0,
+      marginBottom: 0,
+      borderRadius: composerHeight > TOOLBAR_MIN_HEIGHT ? scale(12) : scale(21),
     },
   });
 };
@@ -110,15 +111,12 @@ export const renderComposer = ({
   setDefaultMinHeightInput: (height: number) => void;
   minHeightInput: number;
 } & GiftedChatProps) => {
-  const composerStyles = getComposerStyles(minHeightInput);
+  const composerStyles = getComposerStyles(minHeightInput, composerHeight ?? 0);
   return (
     <View style={composerStyles.composerContainer}>
       <Composer
         {...rest}
-        textInputStyle={[
-          styles.scrollMessage,
-          {borderRadius: (composerHeight ?? 0) > 44 ? scale(12) : scale(21)},
-        ]}
+        textInputStyle={[composerStyles.scrollMessage]}
         multiline
         composerHeight={composerHeight}
         textInputProps={{
@@ -153,17 +151,6 @@ const styles = StyleSheet.create({
   },
   accessoryStyle: {
     height: 'auto',
-  },
-  scrollMessage: {
-    maxHeight: MAX_INPUT_HEIGHT,
-    lineHeight: 22,
-    fontSize: 14,
-    paddingLeft: 12,
-    paddingTop: 0,
-    paddingBottom: 0,
-    paddingRight: 30,
-    marginTop: 0,
-    marginBottom: 0,
   },
   iconEmojiStyle: {
     width: EMOJI_ICON_WIDTH,
