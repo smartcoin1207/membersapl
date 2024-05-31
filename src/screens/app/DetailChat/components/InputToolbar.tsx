@@ -112,9 +112,7 @@ export const renderComposer = ({
 } & GiftedChatProps) => {
   const composerStyles = getComposerStyles(minHeightInput);
   return (
-    <View
-      style={composerStyles.composerContainer}
-      onLayout={e => console.log({a: e.nativeEvent.layout.height})}>
+    <View style={composerStyles.composerContainer}>
       <Composer
         {...rest}
         textInputStyle={[
