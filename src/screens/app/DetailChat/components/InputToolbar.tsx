@@ -116,7 +116,7 @@ export const renderComposer = ({
     <View style={composerStyles.composerContainer}>
       <Composer
         {...rest}
-        textInputStyle={[composerStyles.scrollMessage]}
+        textInputStyle={composerStyles.scrollMessage}
         multiline
         composerHeight={composerHeight}
         textInputProps={{
