@@ -44,18 +44,6 @@ const getStyles = (childWith: number, maxHeight: number) =>
       elevation: 14,
       maxHeight,
     },
-    flatList: {
-      width: '100%',
-      paddingHorizontal: CONTAINER_PADDING_HORIZONTAL,
-      backgroundColor: '#fff',
-    },
-    flatListColumnWrapperStyle: {
-      justifyContent: 'space-between',
-      marginBottom: GAP_Y,
-    },
-    flatListContentContainerStyle: {
-      paddingVertical: CONTAINER_PADDING_VERTICAL,
-    },
     image: {
       width: childWith,
       height: childWith,
@@ -101,10 +89,10 @@ const ModalStamp = React.memo((props: any) => {
   const maxHeight =
     childWidth * maxRow + GAP_Y * (maxRow - 1) + CONTAINER_PADDING_VERTICAL * 2;
 
-  const styles = getStyles(childWidth, maxHeight);
+  const modalStampStyles = getStyles(childWidth, maxHeight);
 
   return (
-    <View style={styles.wrap}>
+    <View style={modalStampStyles.wrap}>
       <FlatList
         keyboardShouldPersistTaps="handled"
         data={CHAT_STAMP_ICONS}
@@ -121,7 +109,7 @@ const ModalStamp = React.memo((props: any) => {
             <Image
               source={item?.url}
               resizeMode="contain"
-              style={styles.image}
+              style={modalStampStyles.image}
             />
           </TouchableOpacity>
         )}
@@ -130,6 +118,21 @@ const ModalStamp = React.memo((props: any) => {
       />
     </View>
   );
+});
+
+const styles = StyleSheet.create({
+  flatList: {
+    width: '100%',
+    paddingHorizontal: CONTAINER_PADDING_HORIZONTAL,
+    backgroundColor: '#fff',
+  },
+  flatListColumnWrapperStyle: {
+    justifyContent: 'space-between',
+    marginBottom: GAP_Y,
+  },
+  flatListContentContainerStyle: {
+    paddingVertical: CONTAINER_PADDING_VERTICAL,
+  },
 });
 
 export {ModalStamp};

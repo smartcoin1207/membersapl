@@ -1,14 +1,14 @@
 import React, {useState} from 'react';
 import {StyleSheet, TextInput, type NativeSyntheticEvent} from 'react-native';
-import {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
+import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
 import {DEFAULT_PLACEHOLDER} from '../../../../lib/react-native-gifted-chat/lib/Constant';
 
-const Composer: React.FC<ComposerProps> = ({
+const Composer = ({
   text = '',
   placeholder = DEFAULT_PLACEHOLDER,
   placeholderTextColor = Color.defaultColor,
-  textInputProps = null,
+  textInputProps = {},
   onTextChanged,
   onInputSizeChanged,
   multiline = true,
@@ -16,7 +16,7 @@ const Composer: React.FC<ComposerProps> = ({
   textInputStyle = {},
   textInputAutoFocus = false,
   keyboardAppearance = 'default',
-}) => {
+}: ComposerProps) => {
   const [currentContentSize, setCurrentContentSize] = useState<
     {width: number; height: number} | undefined
   >();

@@ -74,16 +74,16 @@ export const renderInputToolbar = ({
 };
 
 const getComposerStyles = (minHeight: number) => {
-  const DEFAULT_PADDING = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
+  const defaultPadding = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
 
   return StyleSheet.create({
     composerContainer: {
       flex: 1,
       flexDirection: 'row',
       backgroundColor: '#FFF',
-      paddingTop: Platform.OS === 'ios' ? DEFAULT_PADDING - 4 : DEFAULT_PADDING,
+      paddingTop: Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding,
       paddingBottom:
-        Platform.OS === 'ios' ? DEFAULT_PADDING + 4 : DEFAULT_PADDING,
+        Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding,
       borderRadius: moderateScale(21),
       position: 'relative',
       marginLeft: 13,
