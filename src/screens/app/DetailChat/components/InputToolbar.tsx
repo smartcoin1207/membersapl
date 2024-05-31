@@ -18,7 +18,7 @@ import {
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
 import Composer from './Composer';
-import {calPositionButton} from '../styles';
+import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
@@ -73,6 +73,24 @@ export const renderInputToolbar = ({
   );
 };
 
+const getComposerStyles = (minHeight: number) => {
+  const DEFAULT_PADDING = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
+
+  return StyleSheet.create({
+    composerContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      backgroundColor: '#FFF',
+      paddingTop: Platform.OS === 'ios' ? DEFAULT_PADDING - 4 : DEFAULT_PADDING,
+      paddingBottom:
+        Platform.OS === 'ios' ? DEFAULT_PADDING + 4 : DEFAULT_PADDING,
+      borderRadius: moderateScale(21),
+      position: 'relative',
+      marginLeft: 13,
+    },
+  });
+};
+
 export const renderComposer = ({
   toggleDecoButtons,
   formattedText,
@@ -81,15 +99,22 @@ export const renderComposer = ({
   isShowModalStamp,
   textInputProps,
   composerHeight,
+  setDefaultMinHeightInput,
+  minHeightInput,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: (string | JSX.Element)[];
+  setDefaultMinHeightInput: (height: number) => void;
+  minHeightInput: number;
 } & GiftedChatProps) => {
+  const composerStyles = getComposerStyles(minHeightInput);
   return (
-    <View style={styles.composerContainer}>
+    <View
+      style={composerStyles.composerContainer}
+      onLayout={e => console.log({a: e.nativeEvent.layout.height})}>
       <Composer
         {...rest}
         textInputStyle={[
@@ -101,12 +126,12 @@ export const renderComposer = ({
         textInputProps={{
           value: undefined,
           textAlignVertical: 'center',
+          onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
           onChangeText: onInputTextChanged,
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
           placeholder: 'メッセージ',
-
           ...textInputProps,
         }}
       />
@@ -145,16 +170,6 @@ const styles = StyleSheet.create({
   iconEmojiStyle: {
     width: EMOJI_ICON_WIDTH,
     height: EMOJI_ICON_WIDTH,
-  },
-  composerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#FFF',
-    paddingTop: Platform.OS === 'ios' ? 7 : 11,
-    paddingBottom: Platform.OS === 'ios' ? 15 : 11,
-    borderRadius: moderateScale(21),
-    position: 'relative',
-    marginLeft: 13,
   },
   inputContainer: {
     flexDirection: 'row',

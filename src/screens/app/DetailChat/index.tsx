@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, type RefObject} from 'react';
+import React, {useCallback, useRef, useState, type RefObject} from 'react';
 import {
   Image,
   Keyboard,
@@ -115,6 +115,14 @@ const DetailChat = (props: any) => {
 
   const inputRef: RefObject<InputToolbar> | null = useRef(null);
   const isShowKeyboard = inputRef?.current?.state?.position === 'relative';
+
+  const [minHeightInput, setMinHeightInput] = useState(0);
+
+  const setDefaultMinHeightInput = (height: number) => {
+    if (!minHeightInput) {
+      setMinHeightInput(height);
+    }
+  };
 
   //Render ra UI chọn ảnh, video, file
   const renderActions = useCallback(
@@ -438,6 +446,8 @@ const DetailChat = (props: any) => {
               toggleDecoButtons,
               formattedText,
               showModalStamp,
+              setDefaultMinHeightInput,
+              minHeightInput,
               isShowModalStamp: isShowModalStamp,
               onInputTextChanged: txt => {
                 formatText(txt, false);
