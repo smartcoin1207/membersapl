@@ -29,9 +29,6 @@ const getToolbarStyles = (isShowKeyboard: boolean) =>
       borderTopWidth: 0,
       bottom: isShowKeyboard ? 21 + getBottomSpace() : 0,
     },
-    accessoryStyle: {
-      height: 'auto',
-    },
     toolbarPrimaryStyles: {
       backgroundColor: '#F4F2EF',
       justifyContent: 'flex-end',
@@ -70,7 +67,7 @@ export const renderInputToolbar = ({
         ref={ref}
         containerStyle={toolbarStyles.toolBar}
         primaryStyle={toolbarStyles.toolbarPrimaryStyles}
-        accessoryStyle={toolbarStyles.accessoryStyle}
+        accessoryStyle={styles.accessoryStyle}
       />
     </>
   );
@@ -130,6 +127,9 @@ const styles = StyleSheet.create({
     height: 20,
     alignSelf: 'center',
     flex: 1,
+  },
+  accessoryStyle: {
+    height: 'auto',
   },
   scrollMessage: {
     maxHeight: MAX_INPUT_HEIGHT,
