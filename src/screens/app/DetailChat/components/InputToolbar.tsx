@@ -81,7 +81,7 @@ const getComposerStyles = (minHeight: number, composerHeight: number) => {
       maxHeight: MAX_INPUT_HEIGHT,
       lineHeight: 22,
       fontSize: 14,
-      paddingLeft: 12,
+      paddingLeft: 13,
       paddingTop: 0,
       paddingBottom: 0,
       paddingRight: 30,
