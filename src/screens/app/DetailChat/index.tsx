@@ -225,7 +225,7 @@ const DetailChat = (props: any) => {
             setListUserSelect={setListUserSelect}
             setInputText={setInputText}
             setPageLoading={setPageLoading}
-          />
+                      />
         </>
       );
     },
@@ -295,9 +295,15 @@ const DetailChat = (props: any) => {
               mentionedUsers.push('@' + honorificTitle);
               mentionedUsers.push('@' + value);
               // @の入力位置の前までの文字列を切り出す
-              const before = inputText.slice(0, inputIndex - 1);
+              let before = inputText.slice(0, inputIndex - 1);
+              
+              let index = inputIndex;
+              if (before === "@") {
+                index -= 1;
+                before = "";
+              }
               // @の入力位置より後の文字を切り出す
-              const after = inputText.slice(inputIndex, inputText.length);
+              const after = inputText.slice(index, inputText.length);
               // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
               const replacedText = `${before} @${honorificTitle} ${after}`;
               formatText(replacedText, true);
