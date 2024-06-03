@@ -10,6 +10,7 @@ import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
+import {IS_IOS} from '@util';
 
 import {
   InputToolbar,
@@ -19,7 +20,6 @@ import {
 } from '../../../../lib/react-native-gifted-chat';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 import Composer from './Composer';
-import {IS_IOS} from '@util';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
@@ -61,20 +61,25 @@ export const renderInputToolbar = ({
   );
 };
 
-const getComposerStyles = (minHeight: number, composerHeight: number) => {
+const getComposerStyles = (
+  minHeight: number,
+  composerHeight: number,
+  formattedText: (string | JSX.Element)[],
+) => {
   const defaultPadding = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
 
   return StyleSheet.create({
     composerContainer: {
       flex: 1,
       flexDirection: 'row',
-      backgroundColor: '#FFF',
+      backgroundColor: '#fff',
       paddingTop: Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding,
       paddingBottom:
         Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding,
       borderRadius: moderateScale(21),
       position: 'relative',
       marginLeft: 13,
+      ...(!formattedText?.length ? {maxHeight: 44} : {}),
     },
     scrollMessage: {
       maxHeight: MAX_INPUT_HEIGHT,
@@ -86,6 +91,7 @@ const getComposerStyles = (minHeight: number, composerHeight: number) => {
       paddingRight: 30,
       marginTop: 0,
       marginBottom: 0,
+      minHeight: 22,
       borderRadius: composerHeight > TOOLBAR_MIN_HEIGHT ? scale(12) : scale(21),
     },
   });
@@ -110,9 +116,17 @@ export const renderComposer = ({
   setDefaultMinHeightInput: (height: number) => void;
   minHeightInput: number;
 } & GiftedChatProps) => {
-  const composerStyles = getComposerStyles(minHeightInput, composerHeight ?? 0);
+  const composerStyles = getComposerStyles(
+    minHeightInput,
+    composerHeight ?? 0,
+    formattedText,
+  );
   return (
-    <View style={composerStyles.composerContainer}>
+    <View
+      style={[
+        composerStyles.composerContainer,
+        !formattedText.length ? {maxHeight: 44} : {},
+      ]}>
       <Composer
         {...rest}
         textInputStyle={composerStyles.scrollMessage}
