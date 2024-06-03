@@ -2,11 +2,10 @@ import React, {useState} from 'react';
 import {StyleSheet, TextInput, type NativeSyntheticEvent} from 'react-native';
 import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
-import {DEFAULT_PLACEHOLDER} from '../../../../lib/react-native-gifted-chat/lib/Constant';
 
 const Composer = ({
   text = '',
-  placeholder = DEFAULT_PLACEHOLDER,
+  placeholder,
   placeholderTextColor = Color.defaultColor,
   textInputProps = {},
   onTextChanged,

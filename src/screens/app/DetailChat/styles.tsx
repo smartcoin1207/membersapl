@@ -187,8 +187,11 @@ const footerStyles = (accessoryHeight: number, isShowKeyboard: boolean) =>
   StyleSheet.create({
     footerView: {
       height:
-        // 20 is bottom space between message and input toolbar and 33 is padding bottom of input toolbar
-        accessoryHeight + 20 + 33 + (isShowKeyboard ? getBottomSpace() : 0),
+        // 20 is bottom space between message and input toolbar and 16 or 28 is padding bottom of input toolbar
+        accessoryHeight +
+        20 +
+        (isShowKeyboard ? 16 : 28) +
+        (isShowKeyboard ? getBottomSpace() : 0),
     },
   });
 

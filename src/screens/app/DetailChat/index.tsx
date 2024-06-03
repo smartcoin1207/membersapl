@@ -109,12 +109,15 @@ const DetailChat = (props: any) => {
     accessoryHeight,
     setAccessoryHeight,
     toggleDecoButtons,
+    keyboardHeight,
   } = useFunction(props);
 
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
   const inputRef: RefObject<InputToolbar> | null = useRef(null);
-  const isShowKeyboard = inputRef?.current?.state?.position === 'relative';
+  const isShowKeyboard = IS_ANDROID
+    ? !!keyboardHeight
+    : inputRef?.current?.state?.position === 'relative';
 
   const [minHeightInput, setMinHeightInput] = useState(0);
 
@@ -439,7 +442,7 @@ const DetailChat = (props: any) => {
           alwaysShowSend={true}
           renderMessage={renderMessage}
           renderInputToolbar={inputProps =>
-            renderInputToolbar({...inputProps, ref: inputRef})
+            renderInputToolbar({...inputProps, ref: inputRef, isShowKeyboard})
           }
           renderComposer={composerProps =>
             renderComposer({
@@ -462,7 +465,7 @@ const DetailChat = (props: any) => {
           renderActions={renderActions}
           maxComposerHeight={133}
           minComposerHeight={22}
-          minInputToolbarHeight={56}
+          minInputToolbarHeight={60}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{
             scrollEventThrottle: 400,

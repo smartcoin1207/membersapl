@@ -17,8 +17,9 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
-import Composer from './Composer';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
+import Composer from './Composer';
+import {IS_IOS} from '@util';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
@@ -27,38 +28,36 @@ const getToolbarStyles = (isShowKeyboard: boolean) =>
   StyleSheet.create({
     toolBar: {
       borderTopWidth: 0,
-      bottom: isShowKeyboard ? 21 + getBottomSpace() : 0,
+      bottom: isShowKeyboard ? getBottomSpace() + (IS_IOS ? 6 : 0) : 0,
     },
     toolbarPrimaryStyles: {
       backgroundColor: '#F4F2EF',
       justifyContent: 'flex-end',
-      paddingTop: 12,
-      paddingBottom: getBottomSpace() > 33 ? 33 : 33 - getBottomSpace(),
+      paddingTop: 16,
+      paddingBottom: isShowKeyboard ? 16 : 28,
     },
   });
 
 export const renderInputToolbar = ({
   ref,
+  isShowKeyboard,
   ...inputProps
 }: Readonly<InputToolbarProps> &
   Readonly<{
     children?: React.ReactNode;
+    isShowKeyboard: boolean;
     ref: RefObject<InputToolbar> | null;
   }>) => {
-  const isShowKeyboard = ref?.current?.state?.position === 'relative';
-
   const toolbarStyles = getToolbarStyles(isShowKeyboard);
 
   return (
-    <>
-      <InputToolbar
-        {...inputProps}
-        ref={ref}
-        containerStyle={toolbarStyles.toolBar}
-        primaryStyle={toolbarStyles.toolbarPrimaryStyles}
-        accessoryStyle={styles.accessoryStyle}
-      />
-    </>
+    <InputToolbar
+      {...inputProps}
+      ref={ref}
+      containerStyle={toolbarStyles.toolBar}
+      primaryStyle={toolbarStyles.toolbarPrimaryStyles}
+      accessoryStyle={styles.accessoryStyle}
+    />
   );
 };
 
@@ -118,7 +117,6 @@ export const renderComposer = ({
         {...rest}
         textInputStyle={composerStyles.scrollMessage}
         multiline
-        composerHeight={composerHeight}
         textInputProps={{
           value: undefined,
           textAlignVertical: 'center',

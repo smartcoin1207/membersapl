@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
   decoContainer: {
     flexDirection: 'row',
     paddingLeft: moderateScale(10),
+    alignItems: 'center',
   },
   decoButton: {
     width: moderateScale(45),
