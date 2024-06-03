@@ -10,7 +10,11 @@ import {
   updateRoomList,
 } from '@redux';
 import {store} from '../redux/store';
-import {SOCKETIO_DOMAIN, EVENT_SOCKET, WEBSOCKET_METHOD_TYPE} from './constanString';
+import {
+  SOCKETIO_DOMAIN,
+  EVENT_SOCKET,
+  WEBSOCKET_METHOD_TYPE,
+} from './constanString';
 
 export const socketURL = `https://${SOCKETIO_DOMAIN}:443`;
 
@@ -28,10 +32,10 @@ function createAppSocket() {
     };
     socketIO = io(socketURL, SOCKET_CONFIG);
     socketIO.connect();
-    onHanleEvent(socketIO);
+    onHandleEvent(socketIO);
   };
 
-  const onHanleEvent = (socket: any) => {
+  const onHandleEvent = (socket: any) => {
     socket.on(EVENT_SOCKET.CONNECT, () => {});
 
     // 誰かがメッセージ送信&socketサーバに送信(NEW_MESSAGE_IND)->ここで受信
@@ -43,8 +47,7 @@ function createAppSocket() {
         return;
       }
       if (state?.chat?.roomList?.length > 0) {
-        const dataList = [...state?.chat?.roomList];
-        const index = dataList.findIndex(
+        const index = state.chat.roomList.findIndex(
           (element: any) => element?.id === data?.room_id,
         );
         if (index > -1) {
@@ -65,7 +68,10 @@ function createAppSocket() {
     socket.on(EVENT_SOCKET.MESSAGE_IND, (data: any) => {
       console.log(EVENT_SOCKET.MESSAGE_IND, data);
       const state = store.getState();
-      if (data?.user_id !== state?.auth?.userInfo?.id && data?.room_id === state?.chat?.id_roomChat) {
+      if (
+        data?.user_id !== state?.auth?.userInfo?.id &&
+        data?.room_id === state?.chat?.id_roomChat
+      ) {
         if (data?.message_type === 3) {
           const value = {
             id_message: data?.relation_message_id,
@@ -81,10 +87,12 @@ function createAppSocket() {
         }
       } else {
         if (data?.room_id === state?.chat?.id_roomChat) {
-          store.dispatch(getDetailMessageSocket({
-            id_message: data?.message_id,
-            message_type: data?.message_type,
-          }));
+          store.dispatch(
+            getDetailMessageSocket({
+              id_message: data?.message_id,
+              message_type: data?.message_type,
+            }),
+          );
         }
         if (data?.message_type === 3) {
           const value = {
@@ -109,14 +117,19 @@ function createAppSocket() {
         store.dispatch(saveIsGetInfoRoom(true));
       } else {
         // リストチャット状態の処理
-        if (data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD || data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_EDIT) {
+        if (
+          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD ||
+          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_EDIT
+        ) {
           // 追加処理の場合
           // method 11はwebで新規作成
           // method 2はアプリで新規作成
           // member_info.idsに自身のidが含まれている場合にreloadを行う
-          if (data?.member_info?.ids?.findIndex(
-            (userId: number) => userId === state?.auth?.userInfo?.id,
-          ) > -1) {
+          if (
+            data?.member_info?.ids?.findIndex(
+              (userId: number) => userId === state?.auth?.userInfo?.id,
+            ) > -1
+          ) {
             store.dispatch(
               getRoomList({
                 company_id: state?.chat?.idCompany,
@@ -124,14 +137,19 @@ function createAppSocket() {
                 type: state?.chat?.type_Filter,
                 category_id: state?.chat?.categoryID_Filter,
               }),
-            );  
+            );
           }
-        } else if (data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_DELETE || data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_DELETE) {
+        } else if (
+          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_DELETE ||
+          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_DELETE
+        ) {
           // メンバー追加・削除、ルーム削除の場合
           // 既存のリストに対象となるルームIDが存在する場合reloadを行う
-          if (state?.chat?.roomList?.findIndex(
-            (el: any) => el.id === data?.room_id,
-          ) > -1) {
+          if (
+            state?.chat?.roomList?.findIndex(
+              (el: any) => el.id === data?.room_id,
+            ) > -1
+          ) {
             store.dispatch(
               getRoomList({
                 company_id: state?.chat?.idCompany,
@@ -139,7 +157,7 @@ function createAppSocket() {
                 type: state?.chat?.type_Filter,
                 category_id: state?.chat?.categoryID_Filter,
               }),
-            );  
+            );
           }
         }
       }
@@ -150,22 +168,24 @@ function createAppSocket() {
       // 但し自分のみ追加の場合は、Web版の場合メッセージが追加されないこと、
       // 未読状態を連携しなくても良いので除外（投稿した瞬間必ず既読になるため）
       if (
-        (
-          // アプリ版の条件
-          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_EDIT && (
-            data?.member_info?.ids.findIndex((userId: number) => userId === state?.auth?.userInfo?.id) > -1 ||
-            data?.user_id === state?.auth?.userInfo?.id
-          )
-        ) || (
-          // web版の条件
-          data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD &&
+        // アプリ版の条件
+        (data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_EDIT &&
+          (data?.member_info?.ids.findIndex(
+            (userId: number) => userId === state?.auth?.userInfo?.id,
+          ) > -1 ||
+            data?.user_id === state?.auth?.userInfo?.id)) ||
+        // web版の条件
+        (data?.method === WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD &&
           data?.member_info?.ids?.length > 1 &&
-          data?.member_info?.ids?.findIndex((userId: number) => userId === state?.auth?.userInfo?.id) > -1
-        )
+          data?.member_info?.ids?.findIndex(
+            (userId: number) => userId === state?.auth?.userInfo?.id,
+          ) > -1)
       ) {
-        if (state?.chat?.roomList?.findIndex(
-          (el: any) => el.id === data?.room_id
-        ) === -1) {
+        if (
+          state?.chat?.roomList?.findIndex(
+            (el: any) => el.id === data?.room_id,
+          ) === -1
+        ) {
           store.dispatch(
             registerRoomChat({
               connect_room_id: data?.room_id,
@@ -225,7 +245,7 @@ function createAppSocket() {
     init,
     endConnect,
     getSocket,
-    onHanleEvent,
+    onHandleEvent,
   };
 }
 
