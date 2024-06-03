@@ -34,11 +34,11 @@ import {updateImageRoomChat, deleteImageRoomChat, deleteRoom} from '@services';
 import {colors} from '@stylesCommon';
 import FastImage from 'react-native-fast-image';
 import {useSelector} from 'react-redux';
-import {AppSocket} from '@util';
+import {AppSocket, WEBSOCKET_METHOD_TYPE} from '@util';
 
 type extractUserId = {
-  id: number
-}
+  id: number;
+};
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -162,7 +162,7 @@ const InfoRoomChat = (props: any) => {
         user_id,
         room_id: idRoomChat,
         task_id: null,
-        method: 12,
+        method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_DELETE,
         room_name: null,
         member_info: {
           type: 1,
@@ -174,7 +174,7 @@ const InfoRoomChat = (props: any) => {
     } catch {
       GlobalService.hideLoading();
     }
-  }, [idRoomChat, navigation, onCancelModal, listUserChat]);
+  }, [idRoomChat, navigation, onCancelModal, listUserChat, user_id, socket]);
 
   const onDelete = useCallback(async () => {
     try {
@@ -185,7 +185,7 @@ const InfoRoomChat = (props: any) => {
         user_id,
         room_id: idRoomChat,
         task_id: null,
-        method: 3,
+        method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_DELETE,
         room_name: null,
         member_info: null,
       });
@@ -194,7 +194,7 @@ const InfoRoomChat = (props: any) => {
     } catch {
       GlobalService.hideLoading();
     }
-  }, [idRoomChat, navigation, onCancelModalDelete]);
+  }, [idRoomChat, navigation, onCancelModalDelete, user_id, socket]);
 
   const upLoadImage = () => {
     ImagePicker.openPicker({
@@ -341,7 +341,10 @@ const InfoRoomChat = (props: any) => {
             <ViewItem
               sourceImage={iconDetailRow}
               title="概要"
-              content={dataDetail?.summary_column?.replace(/<br\s*[\/]?>/gi, '\n')}
+              content={dataDetail?.summary_column?.replace(
+                /<br\s*[\/]?>/gi,
+                '\n',
+              )}
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
                   idRoomChat: idRoomChat,

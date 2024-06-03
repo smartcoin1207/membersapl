@@ -12,7 +12,7 @@ import {Header, AppInput, AppButton} from '@component';
 import {iconClose} from '@images';
 import {colors} from '@stylesCommon';
 import {debounce} from 'lodash';
-import {AppSocket} from '@util';
+import {AppSocket, WEBSOCKET_METHOD_TYPE} from '@util';
 
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, useDispatch} from 'react-redux';
@@ -84,14 +84,17 @@ const CreateRoomChat = (props: any) => {
     setListUser(prev => prev.filter(element => element?.id !== item?.id));
   }, []);
 
-  const renderIdUser = useCallback((defaultId: number = 0) => {
-    const data: number[] = [];
-    if (defaultId) data.push(defaultId);
-    for (let i = 0; i < listUser.length; i++) {
-      data.push(listUser[i].id);
-    }
-    return data;
-  }, [listUser]);
+  const renderIdUser = useCallback(
+    (defaultId: number = 0) => {
+      const data: number[] = [];
+      if (defaultId) data.push(defaultId);
+      for (let i = 0; i < listUser.length; i++) {
+        data.push(listUser[i].id);
+      }
+      return data;
+    },
+    [listUser],
+  );
 
   const renderNameRoom = useCallback(() => {
     if (renderIdUser().length === 1) {
@@ -118,13 +121,13 @@ const CreateRoomChat = (props: any) => {
         };
         const result = await createRoom(body);
         socket.emit('ChatGroup_update_ind2', {
-          user_id: user_id,
+          user_id,
           room_id: result?.data?.data?.id,
           member_info: {
             type: 1,
             ids: user_ids,
           },
-          method: 11,
+          method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD,
           room_name: name ?? renderNameRoom(),
         });
         navigation.goBack();
@@ -144,7 +147,7 @@ const CreateRoomChat = (props: any) => {
         };
         const result = await inviteMember(body);
         socket.emit('message_ind2', {
-          user_id: user_id,
+          user_id,
           room_id: idRoomchat,
           task_id: null,
           to_info: null,
@@ -160,13 +163,13 @@ const CreateRoomChat = (props: any) => {
           time: result?.data?.data?.created_at,
         });
         socket.emit('ChatGroup_update_ind2', {
-          user_id: user_id,
+          user_id,
           room_id: idRoomchat,
           member_info: {
             type: 1,
             ids: renderIdUser(),
           },
-          method: 11,
+          method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD,
         });
         dispatch(getDetailMessageSocketSuccess([result?.data?.data]));
         navigation.goBack();
@@ -191,13 +194,7 @@ const CreateRoomChat = (props: any) => {
   ]);
 
   const validateDisabled = () => {
-    if (typeScreen === 'CREATE') {
-      // if (name && name?.length > 0) {
-      //   return false;
-      // } else {
-      //   return true;
-      // }
-    } else {
+    if (typeScreen !== 'CREATE') {
       return false;
     }
   };
