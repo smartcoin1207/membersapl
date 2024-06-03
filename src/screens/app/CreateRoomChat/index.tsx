@@ -84,17 +84,13 @@ const CreateRoomChat = (props: any) => {
     setListUser(prev => prev.filter(element => element?.id !== item?.id));
   }, []);
 
-  const renderIdUser = useCallback(
-    (defaultId: number = 0) => {
-      const data: number[] = [];
-      if (defaultId) data.push(defaultId);
-      for (let i = 0; i < listUser.length; i++) {
-        data.push(listUser[i].id);
-      }
-      return data;
-    },
-    [listUser],
-  );
+  const renderIdUser = useCallback(() => {
+    const data: number[] = [];
+    listUser.forEach(user => {
+      data.push(user.id);
+    });
+    return data;
+  }, [listUser]);
 
   const renderNameRoom = useCallback(() => {
     if (renderIdUser().length === 1) {
@@ -114,10 +110,10 @@ const CreateRoomChat = (props: any) => {
     if (typeScreen === 'CREATE') {
       try {
         GlobalService.showLoading();
-        const user_ids = renderIdUser(user_id);
+        const ids = renderIdUser();
         const body = {
           name: name ?? renderNameRoom(),
-          user_id: user_ids,
+          user_id: ids,
         };
         const result = await createRoom(body);
         socket.emit('ChatGroup_update_ind2', {
@@ -125,7 +121,7 @@ const CreateRoomChat = (props: any) => {
           room_id: result?.data?.data?.id,
           member_info: {
             type: 1,
-            ids: user_ids,
+            ids,
           },
           method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_ADD,
           room_name: name ?? renderNameRoom(),
