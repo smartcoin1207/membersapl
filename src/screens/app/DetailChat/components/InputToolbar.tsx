@@ -28,7 +28,7 @@ const getToolbarStyles = (isShowKeyboard: boolean) =>
   StyleSheet.create({
     toolBar: {
       borderTopWidth: 0,
-      bottom: isShowKeyboard ? getBottomSpace() + (IS_IOS ? 6 : 0) : 0,
+      bottom: isShowKeyboard ? getBottomSpace() + (IS_IOS ? 6 : 1) : 0,
     },
     toolbarPrimaryStyles: {
       backgroundColor: '#F4F2EF',
@@ -79,7 +79,7 @@ const getComposerStyles = (
       borderRadius: moderateScale(21),
       position: 'relative',
       marginLeft: 13,
-      ...(!formattedText?.length ? {maxHeight: 44} : {}),
+      ...(formattedText?.length <= 1 ? {maxHeight: MAX_INPUT_HEIGHT} : {}),
     },
     scrollMessage: {
       maxHeight: MAX_INPUT_HEIGHT,
@@ -122,11 +122,7 @@ export const renderComposer = ({
     formattedText,
   );
   return (
-    <View
-      style={[
-        composerStyles.composerContainer,
-        !formattedText.length ? {maxHeight: 44} : {},
-      ]}>
+    <View style={composerStyles.composerContainer}>
       <Composer
         {...rest}
         textInputStyle={composerStyles.scrollMessage}
