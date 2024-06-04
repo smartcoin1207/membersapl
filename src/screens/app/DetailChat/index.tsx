@@ -465,7 +465,7 @@ const DetailChat = (props: any) => {
           renderActions={renderActions}
           maxComposerHeight={133}
           minComposerHeight={22}
-          minInputToolbarHeight={60}
+          minInputToolbarHeight={52}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{
             scrollEventThrottle: 400,
