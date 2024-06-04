@@ -21,7 +21,7 @@ import {
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 import Composer from './Composer';
 
-const MAX_INPUT_HEIGHT = 132;
+const MAX_INPUT_HEIGHT = 154;
 const EMOJI_ICON_WIDTH = 18;
 
 const getToolbarStyles = (isShowKeyboard: boolean) =>
