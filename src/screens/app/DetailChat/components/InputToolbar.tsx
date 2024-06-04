@@ -126,16 +126,13 @@ export const renderComposer = ({
       <Composer
         {...rest}
         textInputStyle={composerStyles.scrollMessage}
-        multiline
         textInputProps={{
           value: undefined,
-          textAlignVertical: 'center',
           onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
           onChangeText: onInputTextChanged,
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
-          placeholder: 'メッセージ',
           ...textInputProps,
         }}
       />

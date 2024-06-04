@@ -5,12 +5,10 @@ import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
 
 const Composer = ({
   text = '',
-  placeholder,
   placeholderTextColor = Color.defaultColor,
   textInputProps = {},
   onTextChanged,
   onInputSizeChanged,
-  multiline = true,
   disableComposer = false,
   textInputStyle = {},
   textInputAutoFocus = false,
@@ -45,12 +43,12 @@ const Composer = ({
 
   return (
     <TextInput
-      testID={placeholder}
+      testID="メッセージ"
       accessible
-      accessibilityLabel={placeholder}
-      placeholder={placeholder}
+      accessibilityLabel="メッセージ"
+      placeholder="メッセージ"
       placeholderTextColor={placeholderTextColor}
-      multiline={multiline}
+      multiline
       editable={!disableComposer}
       onChange={handleContentSizeChange}
       onContentSizeChange={handleContentSizeChange}
@@ -61,6 +59,7 @@ const Composer = ({
       enablesReturnKeyAutomatically
       underlineColorAndroid="transparent"
       keyboardAppearance={keyboardAppearance}
+      textAlignVertical="center"
       {...textInputProps}
     />
   );
