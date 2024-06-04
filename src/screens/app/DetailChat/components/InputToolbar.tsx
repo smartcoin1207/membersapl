@@ -21,7 +21,7 @@ import {
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 import Composer from './Composer';
 
-const MAX_INPUT_HEIGHT = 146;
+const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
 
 const getToolbarStyles = (isShowKeyboard: boolean) =>
@@ -68,15 +68,32 @@ const getComposerStyles = (
 ) => {
   const defaultPadding = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
 
+  const getPaddingTop = () => {
+    if (!minHeight) {
+      return undefined;
+    }
+
+    return Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding;
+  };
+
+  const getPaddingBottom = () => {
+    if (!minHeight) {
+      return undefined;
+    }
+
+    return Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding;
+  };
+
   return StyleSheet.create({
     composerContainer: {
       flex: 1,
       flexDirection: 'row',
+      alignItems: 'center',
       backgroundColor: '#fff',
-      paddingTop: Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding,
-      paddingBottom:
-        Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding,
+      paddingTop: getPaddingTop(),
+      paddingBottom: getPaddingBottom(),
       borderRadius: moderateScale(21),
+      minHeight: TOOLBAR_MIN_HEIGHT,
       position: 'relative',
       marginLeft: 13,
       ...(formattedText?.length < 1 ? {maxHeight: TOOLBAR_MIN_HEIGHT} : {}),
@@ -91,7 +108,6 @@ const getComposerStyles = (
       paddingRight: 30,
       marginTop: 0,
       marginBottom: 0,
-      minHeight: 22,
       borderRadius: composerHeight > TOOLBAR_MIN_HEIGHT ? scale(12) : scale(21),
     },
   });
