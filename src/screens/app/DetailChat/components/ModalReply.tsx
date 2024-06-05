@@ -141,12 +141,6 @@ const styles = StyleSheet.create({
     height: moderateScale(45),
     marginHorizontal: moderateScale(2),
   },
-  imageLike: {
-    width: moderateScale(45),
-    height: moderateScale(45),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
-  },
   iconClose: {
     tintColor: colors.darkGrayText,
   },

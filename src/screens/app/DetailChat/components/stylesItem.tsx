@@ -155,10 +155,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(5),
   },
-  imageStamp: {
-    width: moderateScale(30),
-    height: moderateScale(30),
-  },
   imageStampBig: {
     width: moderateScale(100),
     height: moderateScale(100),
@@ -213,12 +209,6 @@ const styles = StyleSheet.create({
     width: moderateScale(45),
     height: moderateScale(45),
     marginHorizontal: moderateScale(2),
-  },
-  imageLikeReply: {
-    width: moderateScale(45),
-    height: moderateScale(45),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
   },
   senderInfo: {
     marginLeft: scale(34),

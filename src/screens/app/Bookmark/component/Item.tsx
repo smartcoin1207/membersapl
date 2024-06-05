@@ -182,12 +182,6 @@ const styles = StyleSheet.create({
     height: moderateScale(25),
     marginHorizontal: moderateScale(2),
   },
-  imageLike: {
-    width: moderateScale(25),
-    height: moderateScale(25),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
-  },
   viewRow: {
     flexDirection: 'row',
     marginTop: verticalScale(10),
