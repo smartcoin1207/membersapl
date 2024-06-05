@@ -26,7 +26,11 @@ import {
   InputToolbar,
 } from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
-import {renderComposer, renderInputToolbar} from './components/InputToolbar';
+import {
+  MIN_COMPOSER_HEIGHT,
+  renderComposer,
+  renderInputToolbar,
+} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPickFile} from './components/ModalPickFile';
@@ -38,6 +42,8 @@ import {ModalTagName} from './components/ModalTagName';
 import {ShowPickedFile} from './components/ShowPickedFile';
 import {footerStyles, styles} from './styles';
 import {useFunction} from './useFunction';
+
+const MAX_COMPOSER_HEIGHT = 133;
 
 const DetailChat = (props: any) => {
   // custom hook logic
@@ -384,6 +390,26 @@ const DetailChat = (props: any) => {
     viewAreaCoveragePercentThreshold: 0,
   });
 
+  const onInputSizeChanged = (size: {width: number; height: number}) => {
+    const newComposerHeight = Math.max(
+      MIN_COMPOSER_HEIGHT,
+      Math.min(MAX_COMPOSER_HEIGHT, size.height),
+    );
+    const newMessagesContainerHeight =
+      giftedChatRef.current._keyboardHeight > 0
+        ? giftedChatRef.current.getMessagesContainerHeightWithKeyboard(
+            newComposerHeight,
+          )
+        : giftedChatRef.current.getBasicMessagesContainerHeight(
+            newComposerHeight,
+          );
+
+    giftedChatRef.current.setState({
+      composerHeight: newComposerHeight,
+      messagesContainerHeight: newMessagesContainerHeight,
+    });
+  };
+
   return (
     <View style={styles.container}>
       <View style={{height: '100%'}}>
@@ -457,14 +483,15 @@ const DetailChat = (props: any) => {
                 setInputText(txt);
               },
               ...composerProps,
+              onInputSizeChanged,
             })
           }
           wrapInSafeArea={false}
           user={chatUser}
           renderSend={renderSend}
           renderActions={renderActions}
-          maxComposerHeight={133}
-          minComposerHeight={28}
+          maxComposerHeight={MAX_COMPOSER_HEIGHT}
+          minComposerHeight={MIN_COMPOSER_HEIGHT}
           minInputToolbarHeight={52}
           //Các props của flatlist nhúng vào gifted chat
           listViewProps={{

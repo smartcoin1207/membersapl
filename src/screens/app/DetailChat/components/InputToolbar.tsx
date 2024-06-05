@@ -23,6 +23,7 @@ import Composer from './Composer';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
+export const MIN_COMPOSER_HEIGHT = 28;
 
 const getToolbarStyles = (isShowKeyboard: boolean) =>
   StyleSheet.create({
@@ -92,7 +93,10 @@ const getComposerStyles = (
       backgroundColor: '#fff',
       paddingTop: getPaddingTop(),
       paddingBottom: getPaddingBottom(),
-      borderRadius: moderateScale(21),
+      borderRadius:
+        composerHeight > MIN_COMPOSER_HEIGHT
+          ? moderateScale(12)
+          : moderateScale(21),
       minHeight: TOOLBAR_MIN_HEIGHT,
       position: 'relative',
       marginLeft: 13,
@@ -108,7 +112,6 @@ const getComposerStyles = (
       paddingRight: 30,
       marginTop: 0,
       marginBottom: 0,
-      borderRadius: composerHeight > TOOLBAR_MIN_HEIGHT ? scale(12) : scale(21),
     },
   });
 };
