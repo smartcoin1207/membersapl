@@ -102,17 +102,6 @@ const getComposerStyles = (
       marginLeft: 13,
       ...(!formattedText?.length ? {maxHeight: TOOLBAR_MIN_HEIGHT} : {}),
     },
-    scrollMessage: {
-      maxHeight: MAX_INPUT_HEIGHT,
-      lineHeight: 22,
-      fontSize: 14,
-      paddingLeft: 13,
-      paddingTop: 0,
-      paddingBottom: 0,
-      paddingRight: 30,
-      marginTop: 0,
-      marginBottom: 0,
-    },
   });
 };
 
@@ -144,7 +133,7 @@ export const renderComposer = ({
     <View style={composerStyles.composerContainer}>
       <Composer
         {...rest}
-        textInputStyle={composerStyles.scrollMessage}
+        textInputStyle={styles.scrollMessage}
         textInputProps={{
           value: undefined,
           onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
@@ -191,5 +180,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: calPositionButton(EMOJI_ICON_WIDTH),
     right: 12,
+  },
+  scrollMessage: {
+    maxHeight: MAX_INPUT_HEIGHT,
+    lineHeight: 22,
+    fontSize: 14,
+    paddingLeft: 13,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: 30,
+    marginTop: 0,
+    marginBottom: 0,
   },
 });
