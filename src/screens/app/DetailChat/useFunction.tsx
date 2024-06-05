@@ -108,6 +108,7 @@ export const useFunction = (props: any) => {
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
   const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
+  const [isMovedRedLine, setIsMovedRedLine] = useState(false);
 
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
@@ -1435,6 +1436,11 @@ export const useFunction = (props: any) => {
    * 遷移直後のページに未読が存在しない場合は未読メッセージの存在するページに遷移する.
    */
   useEffect(() => {
+    // 未読ライン遷移済の場合は移動しない
+    if (isMovedRedLine) {
+      return;
+    }
+
     // メッセージ検索によるチャット詳細画面遷移の場合は、未読が存在しても未読ラインに移動しない
     if (idMessageSearch) {
       return;
@@ -1483,6 +1489,8 @@ export const useFunction = (props: any) => {
       animating: false,
     });
 
+    // 未読ラインへの移動はチャット詳細画面では一度しか実施しない
+    setIsMovedRedLine(true);
     GlobalService.hideLoading();
   }, [indexRedLine]);
 
