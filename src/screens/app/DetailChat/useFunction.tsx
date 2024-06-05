@@ -265,7 +265,7 @@ export const useFunction = (props: any) => {
         navigation.pop(1);
       }
     } finally {
-      // GlobalService.hideLoading();
+      GlobalService.hideLoading();
     }
   }, [idRoomChat, dispatch]);
 
