@@ -80,12 +80,7 @@ const ModalReply = React.memo(() => {
           </View>
         ) : null}
         {messageReply?.stamp_no ? (
-          <Image
-            source={renderStamp()}
-            style={
-              messageReply?.stamp_no == 1 ? styles.imageLike : styles.imageStamp
-            }
-          />
+          <Image source={renderStamp()} style={styles.imageStamp} />
         ) : null}
       </View>
       <TouchableOpacity
@@ -145,12 +140,6 @@ const styles = StyleSheet.create({
     width: moderateScale(45),
     height: moderateScale(45),
     marginHorizontal: moderateScale(2),
-  },
-  imageLike: {
-    width: moderateScale(45),
-    height: moderateScale(45),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
   },
   iconClose: {
     tintColor: colors.darkGrayText,

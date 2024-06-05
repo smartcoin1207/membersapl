@@ -1,20 +1,19 @@
 import React, {useCallback} from 'react';
 import {TouchableOpacity, StyleSheet, View, Image, Text} from 'react-native';
 import {scale, verticalScale, moderateScale} from 'react-native-size-matters';
+import FastImage from 'react-native-fast-image';
+import {decode} from 'html-entities';
+
 import {colors, stylesCommon} from '@stylesCommon';
 import {
-  iconNext,
   defaultAvatar,
-  iconPin,
   iconPdf,
   iconDoc,
   iconXls,
   iconFile,
   iconDelete,
 } from '@images';
-import FastImage from 'react-native-fast-image';
 import {convertString} from '@util';
-import {decode} from 'html-entities';
 
 const Item = React.memo((props: any) => {
   const {item, onClickItem, onDeleteItem} = props;
@@ -63,20 +62,18 @@ const Item = React.memo((props: any) => {
             ) : null}
             {item?.stamp_no ? (
               <Image
-                style={
-                  item?.stamp_no == 1 ? styles.imageLike : styles.imageStamp
-                }
+                style={styles.imageStamp}
                 source={{uri: item?.stamp_icon}}
               />
             ) : null}
             {item?.attachment_files?.length > 0 ? (
               <View style={styles.viewRow}>
-                {item?.attachment_files?.map((item: any) => (
-                  <View key={item?.id}>
-                    {item?.type == 4 ? (
+                {item?.attachment_files?.map((file: any) => (
+                  <View key={file?.id}>
+                    {file?.type == 4 ? (
                       <FastImage
                         source={{
-                          uri: item?.path,
+                          uri: file?.path,
                           priority: FastImage.priority.high,
                           cache: FastImage.cacheControl.immutable,
                         }}
@@ -84,7 +81,7 @@ const Item = React.memo((props: any) => {
                       />
                     ) : (
                       <Image
-                        source={renderImgaeFile(item?.type)}
+                        source={renderImgaeFile(file?.type)}
                         style={styles.imageFile}
                       />
                     )}
@@ -184,12 +181,6 @@ const styles = StyleSheet.create({
     width: moderateScale(25),
     height: moderateScale(25),
     marginHorizontal: moderateScale(2),
-  },
-  imageLike: {
-    width: moderateScale(25),
-    height: moderateScale(25),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
   },
   viewRow: {
     flexDirection: 'row',
