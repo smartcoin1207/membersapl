@@ -57,6 +57,7 @@ const Composer = ({
       underlineColorAndroid="transparent"
       keyboardAppearance={keyboardAppearance}
       textAlignVertical="center"
+      value={undefined}
       {...textInputProps}
     />
   );

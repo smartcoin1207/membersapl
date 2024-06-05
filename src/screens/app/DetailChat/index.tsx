@@ -26,11 +26,7 @@ import {
   InputToolbar,
 } from '../../../lib/react-native-gifted-chat';
 import DecoButton from './components/DecoButton';
-import {
-  MIN_COMPOSER_HEIGHT,
-  renderComposer,
-  renderInputToolbar,
-} from './components/InputToolbar';
+import {renderComposer, renderInputToolbar} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
 import {ModalEdit} from './components/ModalEdit';
 import {ModalPickFile} from './components/ModalPickFile';
@@ -44,6 +40,7 @@ import {footerStyles, styles} from './styles';
 import {useFunction} from './useFunction';
 
 const MAX_COMPOSER_HEIGHT = 133;
+export const MIN_COMPOSER_HEIGHT = IS_IOS ? 22 : 28;
 
 const DetailChat = (props: any) => {
   // custom hook logic

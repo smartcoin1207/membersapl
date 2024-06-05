@@ -18,12 +18,12 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
+import {MIN_COMPOSER_HEIGHT} from '../index';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 import Composer from './Composer';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
-export const MIN_COMPOSER_HEIGHT = IS_IOS ? 22 : 28;
 
 const getToolbarStyles = (isShowKeyboard: boolean) =>
   StyleSheet.create({
@@ -135,7 +135,6 @@ export const renderComposer = ({
         {...rest}
         textInputStyle={styles.scrollMessage}
         textInputProps={{
-          value: undefined,
           onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
           onChangeText: onInputTextChanged,
           onFocus: toggleDecoButtons,
