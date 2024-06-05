@@ -23,7 +23,7 @@ import Composer from './Composer';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
-export const MIN_COMPOSER_HEIGHT = 28;
+export const MIN_COMPOSER_HEIGHT = IS_IOS ? 22 : 28;
 
 const getToolbarStyles = (isShowKeyboard: boolean) =>
   StyleSheet.create({
