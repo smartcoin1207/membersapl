@@ -5,7 +5,7 @@ import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {
-  CHAT_STAMP_ICONS,
+  CHAT_STAMP_URLS,
   iconClose,
   iconDoc,
   iconFile,
@@ -40,8 +40,7 @@ const ModalReply = React.memo(() => {
   }, []);
 
   const renderStamp = useCallback(() => {
-    return CHAT_STAMP_ICONS.find(icon => icon.id === messageReply?.stamp_no)
-      ?.url;
+    return CHAT_STAMP_URLS[messageReply?.stamp_no];
   }, [messageReply?.stamp_no]);
 
   return (
