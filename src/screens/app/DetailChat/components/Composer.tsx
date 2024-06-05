@@ -43,7 +43,6 @@ const Composer = ({
 
   return (
     <TextInput
-      testID="メッセージ"
       accessible
       accessibilityLabel="メッセージ"
       placeholder="メッセージ"

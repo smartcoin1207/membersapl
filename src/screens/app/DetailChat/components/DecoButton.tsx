@@ -9,12 +9,12 @@ const decoButtonArr = [
   {
     text: 'タイトル',
     tag: 'title',
-    width: 72,
+    width: 76,
   },
   {
     text: '囲み枠',
     tag: 'info',
-    width: 72,
+    width: 68,
   },
   {
     text: '罫線',
