@@ -483,11 +483,7 @@ const ItemMessage = React.memo((props: any) => {
                         priority: FastImage.priority.high,
                         cache: FastImage.cacheControl.immutable,
                       }}
-                      style={
-                        stamp_no === 1
-                          ? styles.imageStamp
-                          : styles.imageStampBig
-                      }
+                      style={styles.imageStampBig}
                     />
                   ) : (
                     <View style={styles.containerViewChatWrap}>
@@ -625,11 +621,7 @@ const ItemMessage = React.memo((props: any) => {
                                           cache:
                                             FastImage.cacheControl.immutable,
                                         }}
-                                        style={
-                                          reply_to_message_stamp?.stamp_no === 1
-                                            ? styles.imageLikeReply
-                                            : styles.imageStampRepLy
-                                        }
+                                        style={styles.imageStampRepLy}
                                       />
                                     ) : null}
                                   </View>
