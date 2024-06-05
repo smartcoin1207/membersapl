@@ -100,7 +100,7 @@ const getComposerStyles = (
       minHeight: TOOLBAR_MIN_HEIGHT,
       position: 'relative',
       marginLeft: 13,
-      ...(formattedText?.length < 1 ? {maxHeight: TOOLBAR_MIN_HEIGHT} : {}),
+      ...(!formattedText?.length ? {maxHeight: TOOLBAR_MIN_HEIGHT} : {}),
     },
     scrollMessage: {
       maxHeight: MAX_INPUT_HEIGHT,
