@@ -265,7 +265,7 @@ export const useFunction = (props: any) => {
         navigation.pop(1);
       }
     } finally {
-      GlobalService.hideLoading();
+      // GlobalService.hideLoading();
     }
   }, [idRoomChat, dispatch]);
 
@@ -1429,20 +1429,62 @@ export const useFunction = (props: any) => {
     }
   }, [idMessageSearchListChat, dispatch]);
 
-  // 未読メッセージが存在するページをfetch
+  /**
+   * 未読ラインが存在するページへの遷移処理.
+   * 遷移直後のページ（1ページ目）に未読が存在する場合は未読ラインへの移動用変数を更新する.
+   * 遷移直後のページに未読が存在しない場合は未読メッセージの存在するページに遷移する.
+   */
   useEffect(() => {
+    // メッセージ検索によるチャット詳細画面遷移の場合は、未読が存在しても未読ラインに移動しない
+    if (idMessageSearch) {
+      return;
+    }
+
     if (redLineId) {
       setIdRedLine(redLineId);
+    } else {
+      return;
     }
+
     if (idRedLine) {
-      const index = listChat.findIndex(
+      const targetIndex = listChat.findIndex(
         (element: any) => element?.id === idRedLine,
       );
-      if (index > 0) {
-        setIndexRedLine(index);
+
+      if (targetIndex >= 0) {
+        // 初期表示のページ（1ページ目）に未読ラインが存在する場合
+        setIndexRedLine(targetIndex);
+      } else {
+        // 初期表示のページ以外（1ページ目以外）に未読ラインが存在する場合
+
+        // 最新ページ読み込みができるように初期化
+        setBottomPage(null);
+
+        // 未読ラインの存在するページを取得
+        fetchMessageSearch(idRedLine);
       }
     }
-  }, [redLineId, idRedLine, dispatch, idRoomChat, listChat]);
+  }, [redLineId, idRedLine, listChat, fetchMessageSearch, idMessageSearch]);
+
+  /**
+   * 未読ラインへのスクロール処理.
+   * チャット詳細への遷移後、未読ラインが存在する場合はそこに移動する.
+   */
+  useEffect(() => {
+    // 未読ラインが存在しない場合は移動しない
+    if (!indexRedLine) {
+      return;
+    }
+
+    // 未読ライン下メッセージにスクロール
+    console.log('unread message line index', indexRedLine);
+    giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
+      index: Math.max(indexRedLine - 1, 0),
+      animating: false,
+    });
+
+    GlobalService.hideLoading();
+  }, [indexRedLine]);
 
   // WebSocket
   useEffect(() => {
