@@ -1,38 +1,108 @@
-import React from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {type RefObject} from 'react';
 import {
-  Composer,
-  InputToolbar,
-  type ComposerProps,
-  type GiftedChatProps,
-  type InputToolbarProps,
-} from '../../../../lib/react-native-gifted-chat';
+  Image,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {moderateScale, scale} from 'react-native-size-matters';
 
 import {iconEmoji, iconEmojiActive} from '@images';
 import {IS_IOS} from '@util';
 
+import {
+  InputToolbar,
+  type ComposerProps,
+  type GiftedChatProps,
+  type InputToolbarProps,
+} from '../../../../lib/react-native-gifted-chat';
+import {MIN_COMPOSER_HEIGHT} from '../styles';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
+import Composer from './Composer';
 
-const MAX_INPUT_HEIGHT = 118;
+const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
 
-export const renderInputToolbar = (
-  inputProps: Readonly<InputToolbarProps> &
-    Readonly<{
-      children?: React.ReactNode;
-    }>,
-) => {
+const getToolbarStyles = (isShowKeyboard: boolean) =>
+  StyleSheet.create({
+    toolBar: {
+      borderTopWidth: 0,
+      bottom: isShowKeyboard ? getBottomSpace() + (IS_IOS ? 6 : 1) : 0,
+    },
+    toolbarPrimaryStyles: {
+      backgroundColor: '#F4F2EF',
+      justifyContent: 'flex-end',
+      paddingTop: 16,
+      paddingBottom: isShowKeyboard ? 16 : 28,
+    },
+  });
+
+export const renderInputToolbar = ({
+  ref,
+  isShowKeyboard,
+  ...inputProps
+}: Readonly<InputToolbarProps> &
+  Readonly<{
+    children?: React.ReactNode;
+    isShowKeyboard: boolean;
+    ref: RefObject<InputToolbar> | null;
+  }>) => {
+  const toolbarStyles = getToolbarStyles(isShowKeyboard);
+
   return (
-    <>
-      <InputToolbar
-        {...inputProps}
-        containerStyle={styles.toolBar}
-        primaryStyle={styles.toolbarPrimaryStyles}
-        accessoryStyle={styles.accessoryStyle}
-      />
-    </>
+    <InputToolbar
+      {...inputProps}
+      ref={ref}
+      containerStyle={toolbarStyles.toolBar}
+      primaryStyle={toolbarStyles.toolbarPrimaryStyles}
+      accessoryStyle={styles.accessoryStyle}
+    />
   );
+};
+
+const getComposerStyles = (
+  minHeight: number,
+  composerHeight: number,
+  formattedText: (string | JSX.Element)[],
+) => {
+  const defaultPadding = (TOOLBAR_MIN_HEIGHT - minHeight) / 2;
+
+  const getPaddingTop = () => {
+    if (!minHeight) {
+      return undefined;
+    }
+
+    return Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding;
+  };
+
+  const getPaddingBottom = () => {
+    if (!minHeight) {
+      return undefined;
+    }
+
+    return Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding;
+  };
+
+  return StyleSheet.create({
+    composerContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: '#fff',
+      paddingTop: getPaddingTop(),
+      paddingBottom: getPaddingBottom(),
+      borderRadius:
+        composerHeight > MIN_COMPOSER_HEIGHT
+          ? moderateScale(12)
+          : moderateScale(21),
+      minHeight: TOOLBAR_MIN_HEIGHT,
+      position: 'relative',
+      marginLeft: 13,
+      ...(!formattedText?.length ? {maxHeight: TOOLBAR_MIN_HEIGHT} : {}),
+    },
+  });
 };
 
 export const renderComposer = ({
@@ -42,31 +112,34 @@ export const renderComposer = ({
   showModalStamp,
   isShowModalStamp,
   textInputProps,
+  composerHeight,
+  setDefaultMinHeightInput,
+  minHeightInput,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
   isShowModalStamp: boolean;
   showModalStamp: () => void;
   formattedText: (string | JSX.Element)[];
+  setDefaultMinHeightInput: (height: number) => void;
+  minHeightInput: number;
 } & GiftedChatProps) => {
+  const composerStyles = getComposerStyles(
+    minHeightInput,
+    composerHeight ?? 0,
+    formattedText,
+  );
   return (
-    <View style={styles.composerContainer}>
+    <View style={composerStyles.composerContainer}>
       <Composer
-        multiline
         {...rest}
-        textInputStyle={[
-          styles.scrollMessage,
-          !formattedText.length
-            ? {maxHeight: styles.scrollMessage.minHeight}
-            : {},
-        ]}
+        textInputStyle={styles.scrollMessage}
         textInputProps={{
-          value: undefined,
+          onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
           onChangeText: onInputTextChanged,
           onFocus: toggleDecoButtons,
           onBlur: toggleDecoButtons,
           children: <>{formattedText}</>,
-          placeholder: 'メッセージ',
           ...textInputProps,
         }}
       />
@@ -88,37 +161,12 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     flex: 1,
   },
-  toolBar: {
-    borderTopWidth: 0,
-  },
   accessoryStyle: {
     height: 'auto',
-  },
-  toolbarPrimaryStyles: {
-    backgroundColor: '#F4F2EF',
-    justifyContent: 'flex-end',
-    paddingTop: 12,
-    paddingBottom: IS_IOS ? 31 : 33,
-  },
-  scrollMessage: {
-    backgroundColor: '#FFF',
-    borderRadius: moderateScale(21),
-    maxHeight: MAX_INPUT_HEIGHT,
-    lineHeight: 17,
-    fontSize: 14,
-    paddingLeft: 12,
-    paddingTop: IS_IOS ? 12 : undefined,
-    paddingRight: 30,
-    minHeight: TOOLBAR_MIN_HEIGHT,
   },
   iconEmojiStyle: {
     width: EMOJI_ICON_WIDTH,
     height: EMOJI_ICON_WIDTH,
-  },
-  composerContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    position: 'relative',
   },
   inputContainer: {
     flexDirection: 'row',
@@ -131,5 +179,16 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: calPositionButton(EMOJI_ICON_WIDTH),
     right: 12,
+  },
+  scrollMessage: {
+    maxHeight: MAX_INPUT_HEIGHT,
+    lineHeight: 22,
+    fontSize: 14,
+    paddingLeft: 13,
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingRight: 30,
+    marginTop: 0,
+    marginBottom: 0,
   },
 });

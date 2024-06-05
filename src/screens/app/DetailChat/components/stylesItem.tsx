@@ -284,17 +284,18 @@ const styles = StyleSheet.create({
   },
   decoContainer: {
     flexDirection: 'row',
-    paddingLeft: moderateScale(15),
-    marginBottom: moderateScale(8),
+    paddingLeft: moderateScale(10),
+    alignItems: 'center',
   },
   decoButton: {
-    width: moderateScale(56),
-    height: moderateScale(32),
+    width: moderateScale(45),
+    height: moderateScale(28),
     backgroundColor: colors.white,
     borderColor: '#D6D6D6',
     borderWidth: 1,
     borderRadius: 16,
     paddingVertical: 0,
+    marginBottom: moderateVerticalScale(8),
     marginLeft: 5,
   },
   decoText: {
