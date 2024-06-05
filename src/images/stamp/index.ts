@@ -1,3 +1,5 @@
+import type {ImageSourcePropType} from 'react-native';
+
 export const CHAT_STAMP_ICONS = [
   {id: 1, url: require('./chat-stamp1.png')},
   {id: 2, url: require('./chat-stamp2.png')},
@@ -29,7 +31,7 @@ export const CHAT_STAMP_ICONS = [
   {id: 28, url: require('./chat-stamp28.png')},
 ] as const;
 
-export const CHAT_STAMP_URLS: {[key: number]: string} = {
+export const CHAT_STAMP_URLS: {[key: number]: ImageSourcePropType} = {
   1: require('./chat-stamp1.png'),
   2: require('./chat-stamp2.png'),
   3: require('./chat-stamp3.png'),
