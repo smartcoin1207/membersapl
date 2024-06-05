@@ -12,7 +12,7 @@ const Composer = ({
   textInputStyle = {},
   textInputAutoFocus = false,
   keyboardAppearance = 'default',
-}: Omit<ComposerProps, 'text'>) => {
+}: ComposerProps) => {
   const [currentContentSize, setCurrentContentSize] = useState<
     {width: number; height: number} | undefined
   >();
