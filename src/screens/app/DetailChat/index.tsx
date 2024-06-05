@@ -36,11 +36,10 @@ import {ModalReply} from './components/ModalReply';
 import {ModalStamp} from './components/ModalStamp';
 import {ModalTagName} from './components/ModalTagName';
 import {ShowPickedFile} from './components/ShowPickedFile';
-import {footerStyles, styles} from './styles';
+import {MIN_COMPOSER_HEIGHT, footerStyles, styles} from './styles';
 import {useFunction} from './useFunction';
 
 const MAX_COMPOSER_HEIGHT = 133;
-export const MIN_COMPOSER_HEIGHT = IS_IOS ? 22 : 28;
 
 const DetailChat = (props: any) => {
   // custom hook logic

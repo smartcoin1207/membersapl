@@ -3,12 +3,14 @@ import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 
 import {colors, stylesCommon} from '@stylesCommon';
+import {IS_IOS} from '@util';
 
 const ATTACH_ICON_WIDTH = 24;
 export const TOOLBAR_MIN_HEIGHT = 36;
 const SEND_BUTTON_WIDTH = 30;
 export const calPositionButton = (height: number) =>
   (TOOLBAR_MIN_HEIGHT - height) / 2;
+export const MIN_COMPOSER_HEIGHT = IS_IOS ? 22 : 28;
 
 const styles = StyleSheet.create({
   container: {

@@ -18,7 +18,7 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
-import {MIN_COMPOSER_HEIGHT} from '../index';
+import {MIN_COMPOSER_HEIGHT} from '../styles';
 import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
 import Composer from './Composer';
 
