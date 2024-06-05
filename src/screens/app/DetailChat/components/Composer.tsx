@@ -4,7 +4,6 @@ import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
 
 const Composer = ({
-  text = '',
   placeholderTextColor = Color.defaultColor,
   textInputProps = {},
   onTextChanged,
@@ -13,7 +12,7 @@ const Composer = ({
   textInputStyle = {},
   textInputAutoFocus = false,
   keyboardAppearance = 'default',
-}: ComposerProps) => {
+}: Omit<ComposerProps, 'text'>) => {
   const [currentContentSize, setCurrentContentSize] = useState<
     {width: number; height: number} | undefined
   >();
@@ -54,7 +53,6 @@ const Composer = ({
       onChangeText={handleChangeText}
       style={[styles.textInput, textInputStyle]}
       autoFocus={textInputAutoFocus}
-      value={text}
       enablesReturnKeyAutomatically
       underlineColorAndroid="transparent"
       keyboardAppearance={keyboardAppearance}
