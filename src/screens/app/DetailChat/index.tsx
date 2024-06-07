@@ -245,6 +245,7 @@ const DetailChat = (props: any) => {
             setListUserSelect={setListUserSelect}
             setInputText={setInputText}
             setPageLoading={setPageLoading}
+            inputText={inputText}
           />
         </>
       );
