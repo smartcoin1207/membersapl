@@ -226,7 +226,7 @@ const ItemMessage = React.memo((props: any) => {
               {word}
             </Text>
           );
-          const emptyText = (
+          const inputTextTag = (
             <Text
               key={parseInt(index, 10) + 1}
               style={{
@@ -237,7 +237,7 @@ const ItemMessage = React.memo((props: any) => {
             </Text>
           );
           formattedText1.push(mention);
-          setFormattedText([' ', emptyText, '', ...formattedText1]);
+          setFormattedText([' ', inputTextTag, '', ...formattedText1]);
           setInputText(word);
           break;
         case 10:
