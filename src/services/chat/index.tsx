@@ -2,7 +2,7 @@ import api from '../api';
 
 const GET_LIST_ROOM = 'user/chat/rooms';
 const GET_LIST_USER = 'user/list';
-const CREATE_ROOM_LIST = 'user/chat/create-room';
+const CREATE_ROOM = 'user/chat/create-room';
 const REMOVE_USER = 'user/chat/room/remove-member';
 const DETAIL_ROOM_CHAT = 'user/chat/room';
 const UPDATE_INFO_ROOM_CHAT = 'user/chat/room/update-info';
@@ -81,7 +81,7 @@ export const getListUserOfRoomApi: any = async (id: any) => {
 };
 
 export const createRoom: any = async (body: any) => {
-  const response = api.post(CREATE_ROOM_LIST, body);
+  const response = api.post(CREATE_ROOM, body);
   return response;
 };
 

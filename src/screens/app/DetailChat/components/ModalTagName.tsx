@@ -116,6 +116,7 @@ const ModalTagName = React.memo((props: any) => {
     <View style={styles.container}>
       <FlatList
         data={filteredData}
+        keyboardShouldPersistTaps="handled"
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
