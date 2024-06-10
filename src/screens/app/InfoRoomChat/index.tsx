@@ -34,6 +34,11 @@ import {updateImageRoomChat, deleteImageRoomChat, deleteRoom} from '@services';
 import {colors} from '@stylesCommon';
 import FastImage from 'react-native-fast-image';
 import {useSelector} from 'react-redux';
+import {AppSocket, WEBSOCKET_METHOD_TYPE} from '@util';
+
+type extractUserId = {
+  id: number;
+};
 
 const InfoRoomChat = (props: any) => {
   const {route} = props;
@@ -46,6 +51,9 @@ const InfoRoomChat = (props: any) => {
   const [modalDelete, setModalDelete] = useState(false);
   const [modalLink, setModalLink] = useState(false);
   const [image, setImage] = useState<any>(null);
+  const user_id = useSelector((state: any) => state.auth.userInfo.id);
+  const {getSocket} = AppSocket;
+  const socket = getSocket();
 
   const getDetail = useCallback(async () => {
     try {
@@ -120,7 +128,7 @@ const InfoRoomChat = (props: any) => {
     }
   }, [dataDetail?.pin_flag]);
 
-  const onGhimRoomChat = async () => {
+  const onPinRoomChat = async () => {
     try {
       GlobalService.showLoading();
       const response = await pinFlag(
@@ -148,25 +156,45 @@ const InfoRoomChat = (props: any) => {
       const body = {
         room_id: idRoomChat,
       };
+      const userIds = listUserChat.map(({id}: extractUserId) => id);
       await leaveRoomChat(body);
+      socket.emit('ChatGroup_update_ind2', {
+        user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_MEMBER_DELETE,
+        room_name: null,
+        member_info: {
+          type: 1,
+          ids: userIds,
+        },
+      });
+      navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
       GlobalService.hideLoading();
-      navigation.pop(2);
     } catch {
       GlobalService.hideLoading();
     }
-  }, [idRoomChat, navigation, onCancelModal]);
+  }, [idRoomChat, navigation, onCancelModal, listUserChat, user_id, socket]);
 
   const onDelete = useCallback(async () => {
     try {
       GlobalService.showLoading();
       onCancelModalDelete();
       await deleteRoom(idRoomChat);
+      socket.emit('ChatGroup_update_ind2', {
+        user_id,
+        room_id: idRoomChat,
+        task_id: null,
+        method: WEBSOCKET_METHOD_TYPE.CHAT_ROOM_DELETE,
+        room_name: null,
+        member_info: null,
+      });
       GlobalService.hideLoading();
       navigation.pop(2);
     } catch {
       GlobalService.hideLoading();
     }
-  }, [idRoomChat, navigation, onCancelModalDelete]);
+  }, [idRoomChat, navigation, onCancelModalDelete, user_id, socket]);
 
   const upLoadImage = () => {
     ImagePicker.openPicker({
@@ -268,8 +296,8 @@ const InfoRoomChat = (props: any) => {
                 )}
 
                 <TouchableOpacity
-                  style={styles.buttonGhim}
-                  onPress={onGhimRoomChat}>
+                  style={styles.pinButton}
+                  onPress={onPinRoomChat}>
                   <Image
                     source={iconPin}
                     style={[
@@ -313,7 +341,10 @@ const InfoRoomChat = (props: any) => {
             <ViewItem
               sourceImage={iconDetailRow}
               title="概要"
-              content={dataDetail?.summary_column?.replace(/<br\s*[\/]?>/gi, '\n')}
+              content={dataDetail?.summary_column?.replace(
+                /<br\s*[\/]?>/gi,
+                '\n',
+              )}
               onClick={() => {
                 navigation.navigate(ROUTE_NAME.EDIT_ROOM_CHAT, {
                   idRoomChat: idRoomChat,
