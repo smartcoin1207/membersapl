@@ -15,7 +15,13 @@ import {API_DOMAIN} from '@util';
 import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
-let regexp_makeMailLink = (mail: string) => {
+const REGEXP_URL =
+  /((h?)(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
+
+const REGEXP_EMAIL =
+  /(\/|:)?([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+/g;
+
+const regexpMakeMailLink = (mail: string) => {
   // 先頭が'/'または':'であればリンク化しない
   let first_char = mail.slice(0, 1);
   if (first_char === '/' || first_char === ':') {
@@ -23,6 +29,16 @@ let regexp_makeMailLink = (mail: string) => {
   } else {
     return '<a href="mailto:' + mail + '" target="_blank">' + mail + '</a>';
   }
+};
+
+const customAnchorify = (str: string) => {
+  if (str === null) {
+    return str;
+  }
+
+  return str
+    .replace(REGEXP_URL, '<a href="$1">$1</a>')
+    .replace(REGEXP_EMAIL, regexpMakeMailLink);
 };
 
 const customHTMLElementModels = {
@@ -207,21 +223,6 @@ export default function MessageInfo({
    *
    * @param {string} str - メッセージ
    */
-  const customAnchorify = useCallback((str: string) => {
-    if (str === null) {
-      return str;
-    }
-
-    const regexp_url =
-      /((h?)(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
-
-    const regexp_email =
-      /(\/|:)?([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+/g;
-
-    return str
-      .replace(regexp_url, '<a href="$1">$1</a>')
-      .replace(regexp_email, regexp_makeMailLink);
-  }, []);
 
   const convertMessageNotation = useCallback((input: string) => {
     let replaceText = input;
