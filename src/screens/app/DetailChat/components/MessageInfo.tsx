@@ -15,6 +15,16 @@ import {API_DOMAIN} from '@util';
 import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
+let regexp_makeMailLink = (mail: string) => {
+  // 先頭が'/'または':'であればリンク化しない
+  let first_char = mail.slice(0, 1);
+  if (first_char === '/' || first_char === ':') {
+    return mail;
+  } else {
+    return '<a href="mailto:' + mail + '" target="_blank">' + mail + '</a>';
+  }
+};
+
 const customHTMLElementModels = {
   'deco-info': HTMLElementModel.fromCustomModel({
     tagName: 'deco-info',
@@ -204,21 +214,13 @@ export default function MessageInfo({
 
     const regexp_url =
       /((h?)(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
-    str = str.replace(regexp_url, '<a href="$1">$1</a>');
 
     const regexp_email =
       /(\/|:)?([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+/g;
-    let regexp_makeMailLink = function (mail: string) {
-      // 先頭が'/'または':'であればリンク化しない
-      let first_char = mail.slice(0, 1);
-      if (first_char === '/' || first_char === ':') {
-        return mail;
-      } else {
-        return '<a href="mailto:' + mail + '" target="_blank">' + mail + '</a>';
-      }
-    };
 
-    return str.replace(regexp_email, regexp_makeMailLink);
+    return str
+      .replace(regexp_url, '<a href="$1">$1</a>')
+      .replace(regexp_email, regexp_makeMailLink);
   }, []);
 
   const convertMessageNotation = useCallback((input: string) => {
