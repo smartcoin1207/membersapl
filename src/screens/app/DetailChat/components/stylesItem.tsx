@@ -9,6 +9,18 @@ import {
 import {colors, stylesCommon} from '@stylesCommon';
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    alignItems: 'flex-start',
+    paddingHorizontal: scale(11),
+    marginVertical: verticalScale(3),
+  },
+  containerCurrent: {
+    width: '100%',
+    alignItems: 'flex-end',
+    paddingHorizontal: scale(11),
+    marginVertical: verticalScale(3),
+  },
   viewCenter: {
     width: '100%',
     paddingHorizontal: scale(11),
@@ -283,41 +295,6 @@ const styles = StyleSheet.create({
   spaceName: {
     paddingLeft: scale(8),
   },
-  replyMentionText: {
-    alignSelf: 'flex-start',
-    color: '#3366CC',
-    fontWeight: 'bold',
-  },
-  replyEmptyText: {
-    alignSelf: 'flex-start',
-    color: colors.black,
-  },
-  viewAvatarContainer: {
-    flex: 1,
-  },
 });
 
-const getContainerStyleByRedLineIndex = (
-  isOwnMessage: boolean,
-  isLastIndexRedLine: boolean,
-) =>
-  StyleSheet.create({
-    container: {
-      ...(isOwnMessage
-        ? {
-            width: '100%',
-            alignItems: 'flex-end',
-            paddingHorizontal: scale(11),
-            marginVertical: verticalScale(3),
-          }
-        : {
-            width: '100%',
-            alignItems: 'flex-start',
-            paddingHorizontal: scale(11),
-            marginVertical: verticalScale(3),
-          }),
-      marginBottom: isLastIndexRedLine ? moderateVerticalScale(30) : 0,
-    },
-  });
-
-export {styles, getContainerStyleByRedLineIndex};
+export {styles};
