@@ -1,17 +1,19 @@
 import React, {useCallback, useMemo} from 'react';
 import {Linking, useWindowDimensions} from 'react-native';
-import RenderHtml, {
-  HTMLElementModel,
-  HTMLContentModel,
-} from 'react-native-render-html';
 import {showMessage} from 'react-native-flash-message';
-import {styles} from './stylesItem';
-import {saveIdMessageSearch, saveIdRoomChat, resetDataChat} from '@redux';
-import {store} from '../../../../redux/store';
-import {ROUTE_NAME} from '@routeName';
+import RenderHtml, {
+  HTMLContentModel,
+  HTMLElementModel,
+} from 'react-native-render-html';
+
 import {NavigationUtils} from '@navigation';
-import {API_DOMAIN} from '@util';
+import {resetDataChat, saveIdMessageSearch, saveIdRoomChat} from '@redux';
+import {ROUTE_NAME} from '@routeName';
 import {GlobalService} from '@services';
+import {API_DOMAIN} from '@util';
+
+import {store} from '../../../../redux/store';
+import {styles} from './stylesItem';
 
 const customHTMLElementModels = {
   'deco-info': HTMLElementModel.fromCustomModel({
@@ -203,8 +205,6 @@ export default function MessageInfo({
     const regexp_url =
       /((h?)(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
     str = str.replace(regexp_url, '<a href="$1">$1</a>');
-    str = str.replace('">https://', '">');
-    str = str.replace('">http://', '">');
 
     const regexp_email =
       /(\/|:)?([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+/g;

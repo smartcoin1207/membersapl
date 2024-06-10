@@ -1,3 +1,22 @@
+/*
+  MESSAGE_TYPE = {
+    TEXT: 0,            // メッセージ(添付ファイルがあっても、メッセージがついている場合は本種別値を指定する)
+    STAMP: 1,           // スタンプ
+    ATTACHMENT: 2,      // 添付ファイルのみ
+    REACTION: 3,        // リアクション
+    MEMBER_JOIN: 4,     // メンバー追加
+    INVITATION: 5,      // 招待リンクからの参加
+    TASK_NOTICE: 6,     // タスクからの通知
+    COMPLETION: 7,      // タスク完了通知
+    REQUEST_APPLY: 8,   // 承認申請
+    GUEST_JOIN: 9,      // ゲスト追加
+    LEAVE: 10,          // ルーム退出
+    PIN: 11,            // スマホで使われてる
+    CREATE_ROOM: 12,    // スマホで使われてる
+    AI: 13,             // AIの送信
+    ADD_TASK: 14,       // タスク追加
+  };
+*/
 import moment from 'moment';
 import React, {useCallback, useState} from 'react';
 import {Dimensions, Image, Text, TouchableOpacity, View} from 'react-native';
@@ -30,7 +49,7 @@ import MessageInfo from '../components/MessageInfo';
 import {MenuOption} from './MenuOption';
 import {MsgFile} from './MsgFile';
 import {Reaction} from './Reaction';
-import {styles} from './stylesItem';
+import {getContainerStyleByRedLineIndex, styles} from './stylesItem';
 import {ViewTask} from './ViewTask';
 import {ViewUserSeen} from './viewUserSeen';
 
@@ -215,23 +234,12 @@ const ItemMessage = React.memo((props: any) => {
             },
           ]);
           const mention = (
-            <Text
-              key={word + index}
-              style={{
-                alignSelf: 'flex-start',
-                color: '#3366CC',
-                fontWeight: 'bold',
-              }}>
+            <Text key={word + index} style={styles.replyMentionText}>
               {word}
             </Text>
           );
           const emptyText = (
-            <Text
-              key={parseInt(index, 10) + 1}
-              style={{
-                alignSelf: 'flex-start',
-                color: colors.black,
-              }}>
+            <Text key={parseInt(index, 10) + 1} style={styles.replyEmptyText}>
               {''}
             </Text>
           );
@@ -414,17 +422,12 @@ const ItemMessage = React.memo((props: any) => {
             </View>
           ) : null}
           <View
-            style={[
-              user?._id === user_id
-                ? styles.containerCurrent
-                : styles.container,
-              {
-                marginBottom:
-                  indexRedLine && indexRedLine - 1 === index
-                    ? moderateVerticalScale(30)
-                    : 0,
-              },
-            ]}>
+            style={
+              getContainerStyleByRedLineIndex(
+                user?._id === user_id,
+                indexRedLine && indexRedLine - 1 === index,
+              ).container
+            }>
             <>
               {user?._id === user_id ? null : renderTxtName()}
               {msg_type === 6 ? (
@@ -472,7 +475,7 @@ const ItemMessage = React.memo((props: any) => {
                         }}
                       />
                     )}
-                    <View style={{flex: 1}} />
+                    <View style={styles.viewAvatarContainer} />
                   </View>
                 )}
                 <>
