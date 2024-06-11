@@ -317,7 +317,7 @@ const DetailChat = (props: any) => {
               mentionedUsers.push('@' + honorificTitle);
               mentionedUsers.push('@' + value);
               // @の入力位置の前までの文字列を切り出す
-              let before = inputText.slice(0, inputIndex - 1);
+              let before = mentionQuery ? "" : inputText.slice(0, inputIndex - 1);
               
               let index = inputIndex;
               if (before === "@") {
