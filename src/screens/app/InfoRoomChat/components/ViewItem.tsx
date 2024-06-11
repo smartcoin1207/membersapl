@@ -29,7 +29,6 @@ const ViewItem = React.memo((props: any) => {
   const onClickContent = useCallback(() => {
     if (validateLink(content)) {
       Linking.openURL(content);
-    } else {
     }
   }, []);
 

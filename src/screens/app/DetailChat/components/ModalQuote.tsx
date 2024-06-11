@@ -1,13 +1,12 @@
 import React, {useCallback} from 'react';
 import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
-import {
-  iconClose,
-  iconQuote
-} from '@images';
-import {colors, stylesCommon} from '@stylesCommon';
 import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+
+import {iconClose, iconQuote} from '@images';
+import {colors, stylesCommon} from '@stylesCommon';
 import {saveMessageQuote} from '@redux';
+
 import MessageInfo from '../components/MessageInfo';
 
 const ModalQuote = React.memo(() => {
@@ -25,7 +24,14 @@ const ModalQuote = React.memo(() => {
       </View>
       <View style={styles.viewTxtRepMessage}>
         <Text style={styles.name}>引用メッセージ</Text>
-        {messageQuote?.text ? <MessageInfo text={messageQuote?.text} textSetting={{numberOfLines: 1}} /> : <></>}
+        {messageQuote?.text ? (
+          <MessageInfo
+            text={messageQuote?.text}
+            textSetting={{numberOfLines: 1}}
+          />
+        ) : (
+          <></>
+        )}
       </View>
       <TouchableOpacity
         style={styles.viewIconRepMessage}

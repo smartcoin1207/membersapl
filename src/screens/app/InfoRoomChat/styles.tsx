@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: colors.darkGrayText,
   },
-  buttonGhim: {
+  pinButton: {
     width: verticalScale(33),
     height: verticalScale(33),
     borderRadius: verticalScale(33) / 2,

@@ -1,22 +1,21 @@
 import React, {useCallback} from 'react';
-import {StyleSheet, View, Image, Text, TouchableOpacity} from 'react-native';
-import {useSelector, useDispatch} from 'react-redux';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
+import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
+import {useDispatch, useSelector} from 'react-redux';
+
 import {
-  menuReply,
+  CHAT_STAMP_URLS,
   iconClose,
+  iconDoc,
   iconFile,
   iconPdf,
-  iconDoc,
   iconXls,
-  chatStamp2,
-  chatStamp3,
-  chatStamp4,
-  iconLike,
+  menuReply,
 } from '@images';
-import FastImage from 'react-native-fast-image';
-import {colors, stylesCommon} from '@stylesCommon';
-import {moderateScale, scale, verticalScale} from 'react-native-size-matters';
 import {saveMessageReply} from '@redux';
+import {colors, stylesCommon} from '@stylesCommon';
+
 import MessageInfo from '../components/MessageInfo';
 
 const ModalReply = React.memo(() => {
@@ -41,16 +40,7 @@ const ModalReply = React.memo(() => {
   }, []);
 
   const renderStamp = useCallback(() => {
-    switch (messageReply?.stamp_no) {
-      case 1:
-        return iconLike;
-      case 2:
-        return chatStamp2;
-      case 3:
-        return chatStamp3;
-      case 4:
-        return chatStamp4;
-    }
+    return CHAT_STAMP_URLS[messageReply?.stamp_no];
   }, [messageReply?.stamp_no]);
 
   return (
@@ -61,7 +51,10 @@ const ModalReply = React.memo(() => {
       <View style={styles.viewTxtRepMessage}>
         <Text style={styles.name}>返信メッセージ</Text>
         {messageReply?.text ? (
-          <MessageInfo text={messageReply?.text} textSetting={{numberOfLines: 1}} />
+          <MessageInfo
+            text={messageReply?.text}
+            textSetting={{numberOfLines: 1}}
+          />
         ) : null}
         {messageReply?.attachment_files?.length > 0 ? (
           <View style={styles.viewRow}>
@@ -87,12 +80,7 @@ const ModalReply = React.memo(() => {
           </View>
         ) : null}
         {messageReply?.stamp_no ? (
-          <Image
-            source={renderStamp()}
-            style={
-              messageReply?.stamp_no == 1 ? styles.imageLike : styles.imageStamp
-            }
-          />
+          <Image source={renderStamp()} style={styles.imageStamp} />
         ) : null}
       </View>
       <TouchableOpacity
@@ -152,12 +140,6 @@ const styles = StyleSheet.create({
     width: moderateScale(45),
     height: moderateScale(45),
     marginHorizontal: moderateScale(2),
-  },
-  imageLike: {
-    width: moderateScale(45),
-    height: moderateScale(45),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
   },
   iconClose: {
     tintColor: colors.darkGrayText,

@@ -155,10 +155,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     marginTop: verticalScale(5),
   },
-  imageStamp: {
-    width: moderateScale(30),
-    height: moderateScale(30),
-  },
   imageStampBig: {
     width: moderateScale(100),
     height: moderateScale(100),
@@ -213,12 +209,6 @@ const styles = StyleSheet.create({
     width: moderateScale(45),
     height: moderateScale(45),
     marginHorizontal: moderateScale(2),
-  },
-  imageLikeReply: {
-    width: moderateScale(45),
-    height: moderateScale(45),
-    marginHorizontal: moderateScale(2),
-    tintColor: colors.primary,
   },
   senderInfo: {
     marginLeft: scale(34),
@@ -284,17 +274,18 @@ const styles = StyleSheet.create({
   },
   decoContainer: {
     flexDirection: 'row',
-    paddingLeft: moderateScale(15),
-    marginBottom: moderateScale(8),
+    paddingLeft: moderateScale(10),
+    alignItems: 'center',
   },
   decoButton: {
-    width: moderateScale(56),
-    height: moderateScale(32),
+    width: moderateScale(45),
+    height: moderateScale(28),
     backgroundColor: colors.white,
     borderColor: '#D6D6D6',
     borderWidth: 1,
     borderRadius: 16,
     paddingVertical: 0,
+    marginBottom: moderateVerticalScale(8),
     marginLeft: 5,
   },
   decoText: {
