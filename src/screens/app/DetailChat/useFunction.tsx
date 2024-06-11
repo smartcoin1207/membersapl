@@ -604,7 +604,7 @@ export const useFunction = (props: any) => {
         task_id: null,
         to_info: null,
         level: res?.data?.data?.msg_level,
-        message_id: null,
+        message_id: id,
         message_type: 3,
         method: 0,
         attachment_files: res?.data?.attachmentFiles,
