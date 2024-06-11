@@ -46,6 +46,7 @@ const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
 
   const {
+    onUnFocus,
     deleteMsg,
     pinMsg,
     replyMsg,
@@ -101,8 +102,10 @@ const ItemMessage = React.memo((props: any) => {
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const onShowMenu = useCallback(() => {
-    setVisible(!visible);
-  }, [visible]);
+    onUnFocus();
+
+    setTimeout(() => setVisible(!visible), 700);
+  }, [visible, onUnFocus]);
 
   const onShowModalDelete = useCallback(() => {
     setShowModalDelete(!showModalDelete);

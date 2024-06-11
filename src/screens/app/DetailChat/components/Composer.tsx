@@ -1,18 +1,37 @@
-import React, {useState} from 'react';
+import React, {
+  type Ref,
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {StyleSheet, TextInput, type NativeSyntheticEvent} from 'react-native';
 import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
 
-const Composer = ({
-  placeholderTextColor = Color.defaultColor,
-  textInputProps = {},
-  onTextChanged,
-  onInputSizeChanged,
-  disableComposer = false,
-  textInputStyle = {},
-  textInputAutoFocus = false,
-  keyboardAppearance = 'default',
-}: ComposerProps) => {
+export type ComposerRef = {
+  onUnFocus: () => void;
+};
+
+const Composer = (
+  {
+    placeholderTextColor = Color.defaultColor,
+    textInputProps = {},
+    onTextChanged,
+    onInputSizeChanged,
+    disableComposer = false,
+    textInputStyle = {},
+    textInputAutoFocus = false,
+    keyboardAppearance = 'default',
+  }: ComposerProps,
+  ref: Ref<ComposerRef> | undefined,
+) => {
+  const refInput = useRef<any>();
+
+  useImperativeHandle(ref, () => ({
+    onUnFocus,
+  }));
+
   const [currentContentSize, setCurrentContentSize] = useState<
     {width: number; height: number} | undefined
   >();
@@ -40,6 +59,10 @@ const Composer = ({
     onTextChanged?.(textChange);
   };
 
+  const onUnFocus = () => {
+    refInput.current.blur();
+  };
+
   return (
     <TextInput
       accessible
@@ -59,6 +82,7 @@ const Composer = ({
       textAlignVertical="center"
       value={undefined}
       {...textInputProps}
+      ref={refInput}
     />
   );
 };
@@ -70,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Composer;
+export default forwardRef(Composer);

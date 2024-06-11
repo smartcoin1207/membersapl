@@ -1,4 +1,4 @@
-import React, {type RefObject} from 'react';
+import React, {Ref, type RefObject} from 'react';
 import {
   Image,
   Platform,
@@ -18,9 +18,12 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
-import {MIN_COMPOSER_HEIGHT} from '../styles';
-import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
-import Composer from './Composer';
+import {
+  MIN_COMPOSER_HEIGHT,
+  TOOLBAR_MIN_HEIGHT,
+  calPositionButton,
+} from '../styles';
+import Composer, {type ComposerRef} from './Composer';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
@@ -115,6 +118,7 @@ export const renderComposer = ({
   composerHeight,
   setDefaultMinHeightInput,
   minHeightInput,
+  composerRef,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
@@ -123,6 +127,7 @@ export const renderComposer = ({
   formattedText: (string | JSX.Element)[];
   setDefaultMinHeightInput: (height: number) => void;
   minHeightInput: number;
+  composerRef: Ref<ComposerRef>;
 } & GiftedChatProps) => {
   const composerStyles = getComposerStyles(
     minHeightInput,
@@ -132,6 +137,7 @@ export const renderComposer = ({
   return (
     <View style={composerStyles.composerContainer}>
       <Composer
+        ref={composerRef}
         {...rest}
         textInputStyle={styles.scrollMessage}
         textInputProps={{
