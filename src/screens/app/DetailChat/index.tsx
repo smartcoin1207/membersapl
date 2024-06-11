@@ -1,11 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type RefObject,
-  type Ref,
-} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 
 import {
   Image,
@@ -126,8 +119,8 @@ const DetailChat = (props: any) => {
   const [mentionQuery, setMentionQuery] = useState<string>('');
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
-  const inputRef: RefObject<InputToolbar> | null = useRef(null);
-  const composerRef: Ref<ComposerRef> | undefined = useRef(null);
+  const inputRef = useRef<InputToolbar | null>(null);
+  const composerRef = useRef<ComposerRef | null>(null);
 
   const isShowKeyboard = IS_ANDROID
     ? !!keyboardHeight
