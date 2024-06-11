@@ -1,4 +1,4 @@
-import React, {Ref, type RefObject} from 'react';
+import React, {type Ref, type RefObject} from 'react';
 import {
   Image,
   Platform,
