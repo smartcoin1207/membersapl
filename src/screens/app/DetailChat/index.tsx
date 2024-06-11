@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState, type RefObject} from 'react';
+import React, {useCallback, useEffect, useRef, useState, type RefObject} from 'react';
 import {
   Image,
   Keyboard,
@@ -114,6 +114,7 @@ const DetailChat = (props: any) => {
     keyboardHeight,
   } = useFunction(props);
 
+  const [mentionQuery, setMentionQuery] = useState<string>('');
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
   const inputRef: RefObject<InputToolbar> | null = useRef(null);
@@ -281,6 +282,7 @@ const DetailChat = (props: any) => {
       return (
         <ModalTagName
           idRoomChat={idRoomChat}
+          mentionQuery={mentionQuery}
           choseUser={(value: any, title: string, id: any) => {
             setShowTag(false);
             let mentionUserIds = [];
@@ -386,6 +388,18 @@ const DetailChat = (props: any) => {
     viewAreaCoveragePercentThreshold: 0,
   });
 
+  useEffect(() => {
+    if (mentionQuery) {
+      const filtered = listUserChat.filter((user: any) => {
+        const fullName = user.last_name + user.first_name;
+        return fullName.includes(mentionQuery);
+      });
+      setShowTag(filtered.length > 0);
+    } else {
+      setShowTag(false);
+    }
+  }, [mentionQuery, listUserChat]);
+
   const onInputSizeChanged = (size: {width: number; height: number}) => {
     const newComposerHeight = Math.max(
       MIN_COMPOSER_HEIGHT,
@@ -458,6 +472,12 @@ const DetailChat = (props: any) => {
           onInputTextChanged={txt => {
             formatText(txt, false);
             setInputText(txt);
+            if (txt.includes('@')) {
+              const mention = txt.split('@').pop();
+              setMentionQuery(mention || '');
+            } else {
+              setMentionQuery('');
+            }
           }}
           messages={getConvertedMessages(listChat)}
           onSend={sendMessage}
@@ -522,8 +542,11 @@ const DetailChat = (props: any) => {
           }}
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
-            onTextInput: ({nativeEvent}: any) => {
-              nativeEvent.text === '@' ? showModalTagName() : setShowTag(false);
+            onTextInput: ({ nativeEvent }: any) => {
+              if (nativeEvent.text === '@') {
+                showModalTagName();
+                setShowTag(true);
+              }
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;
