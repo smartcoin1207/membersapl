@@ -104,7 +104,6 @@ export const useFunction = (props: any) => {
   const [inputIndex, setInputIndex] = useState<number>(-1);
   const [textSelection, setTextSelection] = useState<any>({start: 0, end: 0});
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [irregularMessageIds, setIrregularMessageIds] = useState<any[]>([]);
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
   const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
@@ -224,16 +223,12 @@ export const useFunction = (props: any) => {
     [generateDatabaseDateTime],
   );
 
-  const getConvertedMessages = useCallback(
-    (msgs: any) => {
-      const messages = msgs?.filter(
-        (el: any) => !irregularMessageIds.includes(el?.id),
-      );
-      return messages?.map((item: any, index: any) => {
-        return convertDataMessage(item, index);
-      });
-    },
-    [convertDataMessage, irregularMessageIds],
+  const convertedMessageList = useMemo(
+    () =>
+      (listChat ?? []).map((item: any, index: any) =>
+        convertDataMessage(item, index),
+      ),
+    [listChat, convertDataMessage],
   );
 
   const chatUser = useMemo(() => {
@@ -327,8 +322,7 @@ export const useFunction = (props: any) => {
   );
 
   const getCurrentPage = useCallback(() => {
-    const res = store.getState();
-    const currentPage = res.chat.pagingDetail?.current_page ?? 1;
+    const currentPage = paging?.current_page ?? 1;
     if (!page) {
       setPage(currentPage);
     }
@@ -339,7 +333,7 @@ export const useFunction = (props: any) => {
       setBottomPage(currentPage);
     }
     return currentPage;
-  }, [page, topPage, bottomPage]);
+  }, [paging?.current_page, page, topPage, bottomPage]);
 
   const onLoadMore = useCallback(() => {
     const currentPage = getCurrentPage();
@@ -1503,25 +1497,14 @@ export const useFunction = (props: any) => {
     }
   }, [isGetInfoRoom, getDetail]);
 
-  // check if messages belongs to this room
   useEffect(() => {
-    const res = store.getState();
-    const currentPage = res.chat.pagingDetail?.current_page ?? 1;
-    if (idMessageSearch > 0 && page !== currentPage) {
+    const currentPage = paging?.current_page ?? 1;
+    if (pageLoading && page !== currentPage) {
       setPage(currentPage);
       setTopPage(currentPage);
       setBottomPage(currentPage);
-      dispatch(saveIdMessageSearch(0));
     }
-    if (idRoomChat && listChat.length > 0) {
-      const irregular_message_ids: number[] = listChat.map((el: any) => {
-        return idRoomChat !== el.room_id;
-      });
-      if (irregular_message_ids.length > 0) {
-        setIrregularMessageIds(irregular_message_ids);
-      }
-    }
-  }, [listChat, pageLoading, dispatch, idMessageSearch, idRoomChat, page]);
+  }, [dispatch, idMessageSearch, page, paging?.current_page, pageLoading]);
 
   useEffect(() => {
     if (messageEdit || messageReply || messageQuote) {
@@ -1562,8 +1545,8 @@ export const useFunction = (props: any) => {
     idRoomChat,
     visible,
     onShowMenu,
-    getConvertedMessages,
     listChat,
+    convertedMessageList,
     deleteMsg,
     dataDetail,
     sendMessage,
