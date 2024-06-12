@@ -318,7 +318,6 @@ const DetailChat = (props: any) => {
               mentionedUsers.push('@' + value);
               // @の入力位置の前までの文字列を切り出す
               let before = mentionQuery ? "" : inputText.slice(0, inputIndex - 1);
-              
               let index = inputIndex;
               if (before === "@") {
                 index -= 1;
@@ -400,9 +399,13 @@ const DetailChat = (props: any) => {
         const fullName = user.last_name + user.first_name;
         return fullName.includes(mentionQuery);
       });
-      setShowTag(filtered.length > 0);
-    } else {
-      setShowTag(false);
+      const isFind = filtered.length > 0;
+      if (!isFind) {
+        setMentionQuery('');
+      }
+      setShowTag(true);
+    } else if (mentionQuery === '@') {
+      setShowTag(true);
     }
   }, [mentionQuery, listUserChat]);
 
@@ -478,11 +481,27 @@ const DetailChat = (props: any) => {
           onInputTextChanged={txt => {
             formatText(txt, false);
             setInputText(txt);
+
+            // 現在のカーソル位置から手前の@マークまでの文字列を取得
+            const cursorPosition = textSelection.start;
+            const textBeforeCursor = txt.slice(0, cursorPosition);
+            const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+
+            let substTxt= "";
+            if (lastAtIndex !== -1) {
+              substTxt = textBeforeCursor.slice(lastAtIndex, cursorPosition-1);
+            }
             if (txt.includes('@')) {
+              setMentionQuery('@');
               const mention = txt.split('@').pop();
               setMentionQuery(mention || '');
+              if (substTxt.includes('@')) {
+                const mention = substTxt.split('@').pop();
+                setMentionQuery(mention || '');
+              }
             } else {
               setMentionQuery('');
+              setShowTag(false);
             }
           }}
           messages={getConvertedMessages(listChat)}
