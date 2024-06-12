@@ -1,10 +1,4 @@
-import React, {
-  type Ref,
-  useImperativeHandle,
-  useRef,
-  useState,
-  forwardRef,
-} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
 import {StyleSheet, TextInput, type NativeSyntheticEvent} from 'react-native';
 import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
@@ -25,7 +19,7 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
       textInputAutoFocus = false,
       keyboardAppearance = 'default',
     }: ComposerProps,
-    ref: Ref<ComposerRef> | undefined,
+    ref,
   ) => {
     const inputRef = useRef<any>();
 
