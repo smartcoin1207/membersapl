@@ -26,9 +26,9 @@ export type MainStackParamList = {
     idRoomchat: string;
   };
   DETAIL_CHAT: {
-    id: string;
-    page: number;
-    key: string;
+    idRoomChat: number;
+    idMessageSearchListChat?: number;
+    messId?: string;
   };
   INFO_ROOM_CHAT: {
     idRoomChat: string;
