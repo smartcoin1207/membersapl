@@ -1,4 +1,11 @@
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react';
+import React, {
+  forwardRef,
+  memo,
+  useCallback,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import {StyleSheet, TextInput, type NativeSyntheticEvent} from 'react-native';
 import type {ComposerProps} from '../../../../lib/react-native-gifted-chat/lib';
 import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
@@ -18,10 +25,10 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
       textInputStyle = {},
       textInputAutoFocus = false,
       keyboardAppearance = 'default',
-    }: ComposerProps,
+    },
     ref,
   ) => {
-    const inputRef = useRef<any>();
+    const inputRef = useRef<TextInput | null>(null);
 
     useImperativeHandle(ref, () => ({
       onUnFocus,
@@ -31,32 +38,38 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
       {width: number; height: number} | undefined
     >();
 
-    const handleContentSizeChange = (e: NativeSyntheticEvent<any>) => {
-      const {contentSize} = e.nativeEvent;
+    const handleContentSizeChange = useCallback(
+      (e: NativeSyntheticEvent<any>) => {
+        const {contentSize} = e.nativeEvent;
 
-      // Support earlier versions of React Native on Android
-      if (!contentSize) {
-        return;
-      }
+        // Support earlier versions of React Native on Android
+        if (!contentSize) {
+          return;
+        }
 
-      if (
-        !currentContentSize ||
-        (currentContentSize &&
-          (currentContentSize.width !== contentSize.width ||
-            currentContentSize.height !== contentSize.height))
-      ) {
-        setCurrentContentSize(contentSize);
-        onInputSizeChanged?.(contentSize);
-      }
-    };
+        if (
+          !currentContentSize ||
+          (currentContentSize &&
+            (currentContentSize.width !== contentSize.width ||
+              currentContentSize.height !== contentSize.height))
+        ) {
+          setCurrentContentSize(contentSize);
+          onInputSizeChanged?.(contentSize);
+        }
+      },
+      [currentContentSize, onInputSizeChanged],
+    );
 
-    const handleChangeText = (textChange: string) => {
-      onTextChanged?.(textChange);
-    };
+    const handleChangeText = useCallback(
+      (textChange: string) => {
+        onTextChanged?.(textChange);
+      },
+      [onTextChanged],
+    );
 
-    const onUnFocus = () => {
-      inputRef.current.blur();
-    };
+    const onUnFocus = useCallback(() => {
+      inputRef?.current?.blur?.();
+    }, []);
 
     return (
       <TextInput
@@ -90,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Composer;
+export default memo(Composer);
