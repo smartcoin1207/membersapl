@@ -77,7 +77,7 @@ const getComposerStyles = (
       return undefined;
     }
 
-    return Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding;
+    return IS_IOS ? defaultPadding - 2 : defaultPadding;
   };
 
   const getPaddingBottom = () => {
@@ -85,7 +85,7 @@ const getComposerStyles = (
       return undefined;
     }
 
-    return Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding;
+    return IS_IOS ? defaultPadding + 2 : defaultPadding;
   };
 
   return StyleSheet.create({
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
   scrollMessage: {
     maxHeight: MAX_INPUT_HEIGHT,
     lineHeight: 22,
-    fontSize: 14,
+    fontSize: 16,
     paddingLeft: 13,
     paddingTop: 0,
     paddingBottom: 0,
