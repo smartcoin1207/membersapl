@@ -47,6 +47,7 @@ const ItemMessage = React.memo((props: any) => {
 
   const {
     onUnFocus,
+    isFocusedInput,
     deleteMsg,
     pinMsg,
     replyMsg,
@@ -104,8 +105,12 @@ const ItemMessage = React.memo((props: any) => {
   const onShowMenu = useCallback(() => {
     onUnFocus();
 
-    setTimeout(() => setVisible(!visible), 500);
-  }, [visible, onUnFocus]);
+    if (isFocusedInput) {
+      setTimeout(() => setVisible(!visible), 500);
+    } else {
+      setVisible(!visible);
+    }
+  }, [visible, onUnFocus, isFocusedInput]);
 
   const onShowModalDelete = useCallback(() => {
     setShowModalDelete(!showModalDelete);

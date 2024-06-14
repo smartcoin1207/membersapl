@@ -1,9 +1,10 @@
 import React, {type Ref, type RefObject} from 'react';
 import {
   Image,
-  Platform,
+  Keyboard,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
@@ -135,28 +136,33 @@ export const renderComposer = ({
     formattedText,
   );
   return (
-    <View style={composerStyles.composerContainer}>
-      <Composer
-        ref={composerRef}
-        {...rest}
-        textInputStyle={styles.scrollMessage}
-        textInputProps={{
-          onLayout: e => setDefaultMinHeightInput(e.nativeEvent.layout.height),
-          onChangeText: onInputTextChanged,
-          onFocus: toggleDecoButtons,
-          onBlur: toggleDecoButtons,
-          children: <>{formattedText}</>,
-          ...textInputProps,
-        }}
-      />
-      <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
-        <Image
-          source={isShowModalStamp ? iconEmojiActive : iconEmoji}
-          style={styles.iconEmojiStyle}
-          resizeMode="contain"
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={composerStyles.composerContainer}>
+        <Composer
+          ref={composerRef}
+          {...rest}
+          textInputStyle={styles.scrollMessage}
+          textInputProps={{
+            onLayout: e =>
+              setDefaultMinHeightInput(e.nativeEvent.layout.height),
+            onChangeText: onInputTextChanged,
+            onFocus: toggleDecoButtons,
+            onBlur: toggleDecoButtons,
+            children: <>{formattedText}</>,
+            ...textInputProps,
+          }}
         />
-      </TouchableOpacity>
-    </View>
+        <TouchableOpacity
+          onPress={showModalStamp}
+          style={styles.showStampButton}>
+          <Image
+            source={isShowModalStamp ? iconEmojiActive : iconEmoji}
+            style={styles.iconEmojiStyle}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

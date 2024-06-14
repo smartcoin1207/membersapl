@@ -12,6 +12,7 @@ import Color from '../../../../lib/react-native-gifted-chat/lib/Color';
 
 export type ComposerRef = {
   onUnFocus: () => void;
+  isFocused: boolean;
 };
 
 const Composer = forwardRef<ComposerRef, ComposerProps>(
@@ -32,6 +33,7 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
 
     useImperativeHandle(ref, () => ({
       onUnFocus,
+      isFocused: inputRef?.current?.isFocused() ?? false,
     }));
 
     const [currentContentSize, setCurrentContentSize] = useState<
@@ -67,9 +69,9 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
       [onTextChanged],
     );
 
-    const onUnFocus = useCallback(() => {
-      inputRef?.current?.blur?.();
-    }, []);
+    const onUnFocus = () => {
+      inputRef.current?.blur?.();
+    };
 
     return (
       <TextInput

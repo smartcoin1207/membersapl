@@ -206,6 +206,7 @@ const DetailChat = (props: any) => {
           <ItemMessage
             {...inputProps}
             idRoomChat={idRoomChat}
+            isFocusedInput={composerRef.current?.isFocused}
             deleteMsg={deleteMsg}
             onUnFocus={composerRef.current?.onUnFocus}
             pinMsg={updateGimMessage}
@@ -546,6 +547,7 @@ const DetailChat = (props: any) => {
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
         />
+
         {chosenFiles.length > 0 && (
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}
