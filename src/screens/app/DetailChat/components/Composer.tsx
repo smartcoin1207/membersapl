@@ -69,9 +69,9 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
       [onTextChanged],
     );
 
-    const onUnFocus = () => {
+    const onUnFocus = useCallback(() => {
       inputRef.current?.blur?.();
-    };
+    }, []);
 
     return (
       <TextInput
