@@ -70,9 +70,7 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
     );
 
     const onUnFocus = useCallback(() => {
-      if (inputRef.current?.isFocused()) {
-        inputRef.current?.blur?.();
-      }
+      inputRef.current?.blur?.();
     }, []);
 
     return (
