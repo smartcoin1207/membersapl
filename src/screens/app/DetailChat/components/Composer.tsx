@@ -33,7 +33,7 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
 
     useImperativeHandle(ref, () => ({
       onUnFocus,
-      isFocused: inputRef?.current?.isFocused() ?? false,
+      isFocused: inputRef.current?.isFocused() ?? false,
     }));
 
     const [currentContentSize, setCurrentContentSize] = useState<
@@ -70,7 +70,9 @@ const Composer = forwardRef<ComposerRef, ComposerProps>(
     );
 
     const onUnFocus = useCallback(() => {
-      inputRef.current?.blur?.();
+      if (inputRef.current?.isFocused()) {
+        inputRef.current?.blur?.();
+      }
     }, []);
 
     return (
