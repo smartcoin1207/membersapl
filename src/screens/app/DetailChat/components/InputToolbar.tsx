@@ -131,7 +131,6 @@ export const renderComposer = ({
   return (
     <View style={composerStyles.composerContainer}>
       <Composer
-        ref={composerRef}
         {...rest}
         textInputStyle={styles.scrollMessage}
         textInputProps={{
@@ -142,6 +141,7 @@ export const renderComposer = ({
           children: <>{formattedText}</>,
           ...textInputProps,
         }}
+        ref={composerRef}
       />
       <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
         <Image
