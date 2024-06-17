@@ -31,10 +31,6 @@ const regexpMakeMailLink = (mail: string) => {
 };
 
 const customAnchorify = (str: string) => {
-  if (str === null) {
-    return str;
-  }
-
   return str
     .replace(REGEXP_URL, '<a href="$1">$1</a>')
     .replace(REGEXP_EMAIL, regexpMakeMailLink);
@@ -217,11 +213,6 @@ export default function MessageInfo({
 
     return replaceText;
   }, []);
-
-  /**
-   *
-   * @param {string} str - メッセージ
-   */
 
   const convertMessageNotation = useCallback((input: string) => {
     let replaceText = input;
