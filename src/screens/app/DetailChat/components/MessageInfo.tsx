@@ -30,11 +30,10 @@ const regexpMakeMailLink = (mail: string) => {
   return `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
 };
 
-const customAnchorify = (str: string) => {
-  return str
+const customAnchorify = (str: string) =>
+  str
     .replace(REGEXP_URL, '<a href="$1">$1</a>')
     .replace(REGEXP_EMAIL, regexpMakeMailLink);
-};
 
 const customHTMLElementModels = {
   'deco-info': HTMLElementModel.fromCustomModel({
