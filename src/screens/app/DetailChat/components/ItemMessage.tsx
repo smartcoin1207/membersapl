@@ -105,9 +105,6 @@ const ItemMessage = React.memo((props: any) => {
   const onShowMenu = useCallback(() => {
     if (isFocusedInput) {
       onUnFocus();
-    }
-
-    if (isFocusedInput) {
       setTimeout(() => setVisible(!visible), 500);
     } else {
       setVisible(!visible);
