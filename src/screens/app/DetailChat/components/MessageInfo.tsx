@@ -23,12 +23,11 @@ const REGEXP_EMAIL =
 
 const regexpMakeMailLink = (mail: string) => {
   // 先頭が'/'または':'であればリンク化しない
-  let first_char = mail.slice(0, 1);
+  const first_char = mail.slice(0, 1);
   if (first_char === '/' || first_char === ':') {
     return mail;
-  } else {
-    return '<a href="mailto:' + mail + '" target="_blank">' + mail + '</a>';
   }
+  return `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
 };
 
 const customAnchorify = (str: string) => {
