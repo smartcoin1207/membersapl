@@ -41,10 +41,12 @@ const ModalTagName = React.memo((props: any) => {
     setDataLocal(dataAddAll);
   }, [listUserChat]);
 
-  const filteredData = dataLocal.filter((item) => {
-    const fullName = item.last_name + item.first_name;
-    return fullName.includes(mentionQuery);
-  });
+  const filteredData = mentionQuery === '@'
+  ? dataLocal 
+  : dataLocal.filter((item) => {
+      const fullName = item.last_name + item.first_name;
+      return fullName.includes(mentionQuery);
+    });
 
   const onChoseUser = (item: any) => {
     if (item?.id === 'All') {
