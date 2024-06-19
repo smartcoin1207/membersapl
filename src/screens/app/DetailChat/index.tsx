@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState, type RefObject} from 'react';
+import React, {useCallback, useRef, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -25,6 +25,7 @@ import {
   GiftedChat,
   InputToolbar,
 } from '../../../lib/react-native-gifted-chat';
+import type {ComposerRef} from './components/Composer';
 import DecoButton from './components/DecoButton';
 import {renderComposer, renderInputToolbar} from './components/InputToolbar';
 import {ItemMessage} from './components/ItemMessage';
@@ -114,10 +115,11 @@ const DetailChat = (props: any) => {
     keyboardHeight,
   } = useFunction(props);
 
-  const [mentionQuery, setMentionQuery] = useState<string>('');
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
-  const inputRef: RefObject<InputToolbar> | null = useRef(null);
+  const inputRef = useRef<InputToolbar | null>(null);
+  const composerRef = useRef<ComposerRef | null>(null);
+
   const isShowKeyboard = IS_ANDROID
     ? !!keyboardHeight
     : inputRef?.current?.state?.position === 'relative';
@@ -204,49 +206,31 @@ const DetailChat = (props: any) => {
           <ItemMessage
             {...inputProps}
             idRoomChat={idRoomChat}
-            deleteMsg={(id: any) => {
-              deleteMsg(id);
-            }}
-            pinMsg={(id: any) => {
-              updateGimMessage(id, 1);
-            }}
-            replyMsg={(data: any) => {
-              replyMessage(data);
-            }}
-            editMsg={(data: any) => {
-              editMessage(data);
-            }}
-            bookmarkMsg={(data: any) => {
-              bookmarkMessage(data);
-            }}
-            onReaction={(data: any, idMsg: any) => {
-              reactionMessage(data, idMsg);
-            }}
-            changePartCopy={(data: any) => {
-              changePartCopy(data);
-            }}
-            quoteMsg={(data: any) => {
-              quoteMessage(data);
-            }}
-            navigatiteToListReaction={(idMsg: any) => {
-              navigatiteToListReaction(idMsg);
-            }}
+            isFocusedInput={composerRef.current?.isFocused}
+            deleteMsg={deleteMsg}
+            onUnFocus={composerRef.current?.onUnFocus}
+            pinMsg={updateGimMessage}
+            replyMsg={replyMessage}
+            editMsg={editMessage}
+            bookmarkMsg={bookmarkMessage}
+            onReaction={reactionMessage}
+            changePartCopy={changePartCopy}
+            quoteMsg={quoteMessage}
+            navigatiteToListReaction={navigatiteToListReaction}
             listUser={listUserChat}
             newIndexArray={newIndexArray}
             me={me}
             showRedLine={showRedLine}
             idRedLine={idRedLine}
             isAdmin={dataDetail?.is_admin}
-            moveToMessage={(id: any) => {
-              navigateToMessage(id);
-            }}
+            moveToMessage={navigateToMessage}
             indexRedLine={indexRedLine}
             setFormattedText={setFormattedText}
             mentionedUsers={mentionedUsers}
             setListUserSelect={setListUserSelect}
             setInputText={setInputText}
             setPageLoading={setPageLoading}
-                      />
+          />
         </>
       );
     },
@@ -282,7 +266,6 @@ const DetailChat = (props: any) => {
       return (
         <ModalTagName
           idRoomChat={idRoomChat}
-          mentionQuery={mentionQuery}
           choseUser={(value: any, title: string, id: any) => {
             setShowTag(false);
             let mentionUserIds = [];
@@ -547,6 +530,7 @@ const DetailChat = (props: any) => {
               },
               ...composerProps,
               onInputSizeChanged,
+              composerRef,
             })
           }
           wrapInSafeArea={false}
@@ -589,11 +573,8 @@ const DetailChat = (props: any) => {
           }}
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
-            onTextInput: ({ nativeEvent }: any) => {
-              if (nativeEvent.text === '@') {
-                showModalTagName();
-                setShowTag(true);
-              }
+            onTextInput: ({nativeEvent}: any) => {
+              nativeEvent.text === '@' ? showModalTagName() : setShowTag(false);
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;
@@ -631,6 +612,7 @@ const DetailChat = (props: any) => {
           bottomOffset={0}
           messagesContainerStyle={styles.containerMessage}
         />
+
         {chosenFiles.length > 0 && (
           <ShowPickedFile chosenFiles={chosenFiles} deleteFile={deleteFile} />
         )}
