@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -115,6 +115,7 @@ const DetailChat = (props: any) => {
     keyboardHeight,
   } = useFunction(props);
 
+  const [mentionQuery, setMentionQuery] = useState<string>('');
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
   const inputRef = useRef<InputToolbar | null>(null);
@@ -266,6 +267,7 @@ const DetailChat = (props: any) => {
       return (
         <ModalTagName
           idRoomChat={idRoomChat}
+          mentionQuery={mentionQuery}
           choseUser={(value: any, title: string, id: any) => {
             setShowTag(false);
             let mentionUserIds = [];
