@@ -16,10 +16,10 @@ import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
 const REGEXP_URL =
-  /((https?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
+  /((https?:\/\/)(?:\S+(?::\S*)?@)?(?:[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+(?:[a-zA-Z]{2,})(?::\d{1,5})?(?:\/[^\s]*)?(?:\?[^\s]*)?(?:#[^\s]*)?)/g;
 
 const REGEXP_EMAIL =
-  /([A-Z0-9_'+\-.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}/gi;
+  /(\/|:)?([A-Z0-9_'+\-.]*)[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]*\.)+[A-Z]{2,}/gi;
 
 const regexpMakeMailLink = (mail: string) => {
   // 先頭が'/'または':'であればリンク化しない
