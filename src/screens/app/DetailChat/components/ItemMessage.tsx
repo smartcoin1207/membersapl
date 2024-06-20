@@ -237,7 +237,7 @@ const ItemMessage = React.memo((props: any) => {
             </Text>
           );
           formattedText1.push(mention);
-          setFormattedText([' ', inputText, ' ', ...formattedText1, ' ', emptyText]);
+          setFormattedText([' ', ...formattedText1, ' ', inputText, ' ', emptyText]);
           setInputText(word);
           break;
         case 10:
