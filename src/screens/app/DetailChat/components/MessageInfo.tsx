@@ -21,12 +21,12 @@ const REGEXP_URL =
 const REGEXP_EMAIL =
   /(\/|:)?([A-Z0-9_'+\-.]{1,63})[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]{0,61}[A-Z0-9]?\.)+[A-Z]{2,}/gi;
 
-const regexpMakeMailLink = (mail: string) => {
+const regexpMakeMailLink = (mail: string) =>
   // 先頭が'/'または':'であればリンク化しない
-  return /^[:/]/.test(mail)
-    ? mail
-    : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
-};
+  mail.replace(
+    /^(?![:/]).*/,
+    `<a href="mailto:${mail}" target="_blank">${mail}</a>`,
+  );
 
 const customAnchorify = (str: string) =>
   str
