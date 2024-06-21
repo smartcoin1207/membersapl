@@ -130,8 +130,8 @@ const ModalTask = React.memo((prop: PropType) => {
           return person.user_id;
         }),
       );
-      setIsGoogleCalendar(item?.gcalendar_flg);
-      setIsAllDay(item?.all_day_flg);
+      setIsGoogleCalendar(Boolean(item?.gcalendar_flg));
+      setIsAllDay(Boolean(item?.all_day_flg));
     }
   }, [item, setSelected]);
 
