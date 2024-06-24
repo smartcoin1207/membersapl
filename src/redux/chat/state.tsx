@@ -1,14 +1,14 @@
 export type ChatState = {
   roomList: any;
   pagingListRoom: any;
-  detailChat: any;
+  detailChat: any[];
   pagingDetail: any;
   idCompany: any;
   message_pinned: any;
   id_roomChat: any;
   messageReply: any;
   messageEdit: any;
-  id_messageSearch: any;
+  id_messageSearch: number | null;
   isGetInfoRoom: boolean;
   messageQuote: any;
   redLineId: any;
