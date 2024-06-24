@@ -19,7 +19,7 @@ const REGEXP_URL =
   /((h?)(ttps?:\/\/)(?:\S+(?::\S*)?@)?(?:[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]?\.)+(?:[a-zA-Z]{2,})(?::\d{1,5})?(?:\/[^\s]*)?(?:\?[^\s]*)?(?:#[^\s]*)?)/g;
 
 const REGEXP_EMAIL =
-  /(\/|:)?([A-Z0-9_'+\-.]{1,63})[A-Z0-9_+-]@([A-Z0-9][A-Z0-9-]{0,61}[A-Z0-9]?\.)+[A-Z]{2,}/gi;
+  /(\/|:)?([A-Z0-9_'+-]{1,63})([A-Z0-9_+-]@[A-Z0-9][A-Z0-9-]{0,61}[A-Z0-9]?\.)+[A-Z]{2,}/gi;
 
 const regexpMakeMailLink = (mail: string, p1: string) =>
   p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
