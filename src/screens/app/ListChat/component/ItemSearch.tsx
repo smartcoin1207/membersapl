@@ -34,7 +34,7 @@ const ItemSearchMessage = React.memo((props: any) => {
               {item?.user_send?.last_name} {item?.user_send?.first_name}
             </Text>
             <Text style={styles.txtTitle} numberOfLines={2}>
-              {convertString(item?.message || '')}
+              {convertString(item?.message)}
             </Text>
             <Text style={styles.txtDate} numberOfLines={2}>
               {item?.created_at}
