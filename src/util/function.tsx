@@ -45,7 +45,6 @@ export const convertString = (str: any = '') => {
       rv[`${item}`] = '';
     });
   }
-
   text = replaceAll(str, rv) || '';
   text = text.replace(/\[(\/*)(title|info|hr|bold|red)\]/g, '');
   text = text.replace(/<br>/g, '\n');
