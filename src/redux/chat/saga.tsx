@@ -50,7 +50,9 @@ export function* getRoomListSaga(action: any) {
 //AHD-11819用修正。
 //チャットルームが新規作成された場合に使用デバイスとしてサーバに登録させるリクエストを送る。
 function* registerRoomChatDevice(action: any) {
-  const result: ResponseGenerator = yield detailRoomchat(action.payload.connect_room_id);
+  const result: ResponseGenerator = yield detailRoomchat(
+    action.payload.connect_room_id,
+  );
   const body = {
     id_room: action.payload.connect_room_id,
     id_message: result.data.room.lastMessageJoin.id,
@@ -130,7 +132,7 @@ export function* getDetailMessageSaga(action: any) {
           result?.data?.message?.msg_type === 10 &&
           state?.auth?.userInfo?.id === result?.data?.message?.from_id
         ) {
-          NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
+          NavigationUtils.navigate(ROUTE_NAME.TAB_SCREEN);
         } else {
           yield put(getDetailMessageSocketSuccess([result?.data?.message]));
         }
@@ -183,7 +185,7 @@ export function* getDetailMessageSagaCurrent(action: any) {
       result?.data?.message?.msg_type === 10 &&
       state?.auth?.userInfo?.id === result?.data?.message?.from_id
     ) {
-      NavigationUtils.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
+      NavigationUtils.navigate(ROUTE_NAME.TAB_SCREEN);
     } else if (result?.data?.message?.msg_type === 4) {
       yield put(getRoomList({company_id: state?.chat?.idCompany}));
     }
@@ -372,10 +374,7 @@ export function* chatSaga() {
     typeChat.GET_UNREAD_MESSAGE_COUNT_ALL,
     getUnreadMessageCountSaga,
   );
-  yield takeEvery(
-    typeChat.REGISTER_ROOMCHAT,
-    registerRoomChatDevice,
-  );
+  yield takeEvery(typeChat.REGISTER_ROOMCHAT, registerRoomChatDevice);
   // deactivate temporally
   // yield takeEvery(typeChat.LOG_MESSAGE, logMessageSaga);
 }
