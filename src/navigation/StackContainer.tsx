@@ -1,12 +1,13 @@
-import * as React from 'react';
+import React, {forwardRef, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import {API_DOMAIN, AppSocket} from '@util';
 
 import {screens} from '../screens';
 import {ROUTE_NAME} from './routeName';
 import {useSelector} from 'react-redux';
 import StackTab from './StackTab';
-import {API_DOMAIN, AppSocket} from '@util';
 
 const {init, endConnect} = AppSocket;
 
@@ -21,7 +22,7 @@ const config = {
         messId: (messId?: string) => messId && parseInt(messId, 10),
       },
     },
-    [ROUTE_NAME.LISTCHAT_SCREEN]: '*',
+    [ROUTE_NAME.LOGIN]: '*',
   },
 };
 
@@ -32,12 +33,13 @@ const linking = {
 
 //Vì dự án bị thay đổi requirement khá nhiều ở luồng app nên file navigation đang phải để tạm thế này, sau này ai rảnh thì sửa lại nhé
 
-const NavigationApp = React.forwardRef((props: any, ref: any) => {
+const NavigationApp = forwardRef((props: any, ref: any) => {
   const screenOptions = {
     headerShown: false,
   };
   const wsToken = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
-  React.useEffect(() => {
+
+  useEffect(() => {
     if (wsToken) {
       init(wsToken);
       return () => {
