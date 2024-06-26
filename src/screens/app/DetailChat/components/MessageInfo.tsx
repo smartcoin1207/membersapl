@@ -29,7 +29,7 @@ const IP6_REGEX =
 const DOMAIN_REGEX =
   '(?:(?:[a-z\\u00a1-\\uffff0-9][-_]*)*[a-z\\u00a1-\\uffff0-9]+)(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*';
 
-const PORT_REGEX = '(?::\\d{2,5})?)';
+const PORT_REGEX = '(:\\d*)?)';
 
 const PATH_REGEX =
   "(/((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)+(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?";
