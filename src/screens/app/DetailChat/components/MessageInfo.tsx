@@ -45,7 +45,7 @@ const completeRegexString = `((${PROTOCOL_REGEX}(${USER_INFO_REGEX}(${IP4_REGEX}
 const REGEXP_URL = new RegExp(completeRegexString, 'gi');
 
 const REGEXP_EMAIL =
-  /(\/|:)?(?=[A-Za-z0-9-_])([A-Z0-9_'+\-.]{1,63}[A-Z0-9_+-])@([A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Z]{2,63}/gi;
+  /(\/|:)?(?=[A-Za-z0-9-_])([A-Za-z0-9_'+\-.]{1,63}[A-Za-z0-9_+-])@([A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,63}/g;
 
 const regexpMakeMailLink = (mail: string, p1: string) =>
   p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
