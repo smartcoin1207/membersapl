@@ -1,11 +1,5 @@
-import React, {type RefObject} from 'react';
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React, {type Ref, type RefObject} from 'react';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {getBottomSpace} from 'react-native-iphone-x-helper';
 import {moderateScale, scale} from 'react-native-size-matters';
 
@@ -18,9 +12,12 @@ import {
   type GiftedChatProps,
   type InputToolbarProps,
 } from '../../../../lib/react-native-gifted-chat';
-import {MIN_COMPOSER_HEIGHT} from '../styles';
-import {TOOLBAR_MIN_HEIGHT, calPositionButton} from '../styles';
-import Composer from './Composer';
+import {
+  MIN_COMPOSER_HEIGHT,
+  TOOLBAR_MIN_HEIGHT,
+  calPositionButton,
+} from '../styles';
+import Composer, {type ComposerRef} from './Composer';
 
 const MAX_INPUT_HEIGHT = 132;
 const EMOJI_ICON_WIDTH = 18;
@@ -74,7 +71,7 @@ const getComposerStyles = (
       return undefined;
     }
 
-    return Platform.OS === 'ios' ? defaultPadding - 4 : defaultPadding;
+    return IS_IOS ? defaultPadding - 2 : defaultPadding;
   };
 
   const getPaddingBottom = () => {
@@ -82,7 +79,7 @@ const getComposerStyles = (
       return undefined;
     }
 
-    return Platform.OS === 'ios' ? defaultPadding + 4 : defaultPadding;
+    return IS_IOS ? defaultPadding + 2 : defaultPadding;
   };
 
   return StyleSheet.create({
@@ -115,6 +112,7 @@ export const renderComposer = ({
   composerHeight,
   setDefaultMinHeightInput,
   minHeightInput,
+  composerRef,
   ...rest
 }: ComposerProps & {
   toggleDecoButtons: () => void;
@@ -123,6 +121,7 @@ export const renderComposer = ({
   formattedText: (string | JSX.Element)[];
   setDefaultMinHeightInput: (height: number) => void;
   minHeightInput: number;
+  composerRef: Ref<ComposerRef>;
 } & GiftedChatProps) => {
   const composerStyles = getComposerStyles(
     minHeightInput,
@@ -142,6 +141,7 @@ export const renderComposer = ({
           children: <>{formattedText}</>,
           ...textInputProps,
         }}
+        ref={composerRef}
       />
       <TouchableOpacity onPress={showModalStamp} style={styles.showStampButton}>
         <Image
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
   scrollMessage: {
     maxHeight: MAX_INPUT_HEIGHT,
     lineHeight: 22,
-    fontSize: 14,
+    fontSize: 16,
     paddingLeft: 13,
     paddingTop: 0,
     paddingBottom: 0,

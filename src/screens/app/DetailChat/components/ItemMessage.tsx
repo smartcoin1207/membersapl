@@ -46,6 +46,8 @@ const ItemMessage = React.memo((props: any) => {
   const user_id = useSelector((state: any) => state.auth.userInfo.id);
 
   const {
+    onUnFocus,
+    isFocusedInput,
     deleteMsg,
     pinMsg,
     replyMsg,
@@ -69,6 +71,7 @@ const ItemMessage = React.memo((props: any) => {
     setListUserSelect,
     setInputText,
     setPageLoading,
+    inputText,
   } = props;
   const {
     user,
@@ -101,8 +104,13 @@ const ItemMessage = React.memo((props: any) => {
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   const onShowMenu = useCallback(() => {
-    setVisible(!visible);
-  }, [visible]);
+    if (isFocusedInput) {
+      onUnFocus();
+      setTimeout(() => setVisible(!visible), 500);
+    } else {
+      setVisible(!visible);
+    }
+  }, [visible, onUnFocus, isFocusedInput]);
 
   const onShowModalDelete = useCallback(() => {
     setShowModalDelete(!showModalDelete);
@@ -236,7 +244,7 @@ const ItemMessage = React.memo((props: any) => {
             </Text>
           );
           formattedText1.push(mention);
-          setFormattedText([' ', ...formattedText1, ' ', emptyText]);
+          setFormattedText([' ', ...formattedText1, ' ', inputText, ' ', emptyText]);
           setInputText(word);
           break;
         case 10:
