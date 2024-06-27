@@ -27,7 +27,8 @@ const config = {
 };
 
 const linking = {
-  prefixes: ['mem-bers://', `https://${API_DOMAIN}`],
+  // TODO 一旦本番ドメイン固定とするのでstage向けも個別にできるようになったらAPI_DOMAIN利用にする
+  prefixes: ['mem-bers://', 'https://mem-bers.jp'],
   config,
 };
 
