@@ -49,7 +49,8 @@
                 <data android:scheme="http" />
                 <data android:scheme="https" />
                 <data android:host="mem-bers.jp" />
-                <data android:pathPattern="/chat/.*?messId=.*" />
+                <data android:pathPattern="/chat/.*" />
+                <data android:pathAdvancedPattern="/chat/[1-9][0-9]*" />
             </intent-filter>
         </activity>
     </application>
