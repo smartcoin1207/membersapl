@@ -381,18 +381,13 @@ const DetailChat = (props: any) => {
   useEffect(() => {
     if (mentionQuery === '@') {
       setShowTag(true);
-    }
-    else if (mentionQuery) {
+    } else if (mentionQuery) {
       const filtered = listUserChat.filter((user: any) => {
         const fullName = user.last_name + user.first_name;
         return fullName.includes(mentionQuery);
       });
       const isFind = filtered.length > 0;
-
-      if (!isFind) {
-        setShowTag(false);
-      }
-      setShowTag(true);
+      isFind ? setShowTag(false) : setShowTag(true);
     }
   }, [mentionQuery, listUserChat]);
 
