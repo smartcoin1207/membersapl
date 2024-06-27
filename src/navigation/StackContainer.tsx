@@ -1,32 +1,52 @@
-import * as React from 'react';
+import React, {forwardRef, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import {API_DOMAIN, AppSocket} from '@util';
 
 import {screens} from '../screens';
 import {ROUTE_NAME} from './routeName';
 import {useSelector} from 'react-redux';
 import StackTab from './StackTab';
-import {AppSocket} from '@util';
-let {init, endConnect} = AppSocket;
+
+const {init, endConnect} = AppSocket;
 
 const Stack = createNativeStackNavigator();
 
+const config = {
+  screens: {
+    [ROUTE_NAME.DETAIL_CHAT]: {
+      path: 'chat/:idRoomChat',
+      parse: {
+        idRoomChat: Number,
+        messId: (messId?: string) => messId && parseInt(messId, 10),
+      },
+    },
+    [ROUTE_NAME.LOGIN]: '*',
+  },
+};
+
+const linking = {
+  prefixes: ['mem-bers://', `https://${API_DOMAIN}`],
+  config,
+};
+
 //Vì dự án bị thay đổi requirement khá nhiều ở luồng app nên file navigation đang phải để tạm thế này, sau này ai rảnh thì sửa lại nhé
 
-const NavigationApp = React.forwardRef((props: any, ref: any) => {
+const NavigationApp = forwardRef((props: any, ref: any) => {
   const screenOptions = {
     headerShown: false,
   };
-  let token = useSelector((state: any) => state?.auth?.token);
-  let ws_token = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
-  React.useEffect(() => {
-    if (ws_token) {
-      init(ws_token);
+  const wsToken = useSelector((state: any) => state?.auth?.userInfo?.ws_token);
+
+  useEffect(() => {
+    if (wsToken) {
+      init(wsToken);
       return () => {
         endConnect();
       };
     }
-  }, [ws_token]);
+  }, [wsToken]);
 
   const renderStackApp = () => {
     return (
@@ -114,10 +134,7 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
           name={ROUTE_NAME.ADD_GROUP_FILTER_CHAT}
           component={screens.AddGroupFilterChat}
         />
-        <Stack.Screen
-          name={ROUTE_NAME.TASK_SCREEN}
-          component={screens.Task}
-        />
+        <Stack.Screen name={ROUTE_NAME.TASK_SCREEN} component={screens.Task} />
         <Stack.Screen
           name={ROUTE_NAME.MUTE_SETTING}
           component={screens.MuteSetting}
@@ -126,7 +143,7 @@ const NavigationApp = React.forwardRef((props: any, ref: any) => {
     );
   };
   return (
-    <NavigationContainer ref={ref}>
+    <NavigationContainer ref={ref} linking={linking}>
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen
           name={ROUTE_NAME.SPLASH_SCREEN}

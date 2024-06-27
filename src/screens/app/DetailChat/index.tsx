@@ -47,8 +47,7 @@ const DetailChat = (props: any) => {
   const {
     idRoomChat,
     chatUser,
-    getConvertedMessages,
-    listChat,
+    convertedMessageList,
     deleteMsg,
     dataDetail,
     sendMessage,
@@ -445,7 +444,7 @@ const DetailChat = (props: any) => {
             formatText(txt, false);
             setInputText(txt);
           }}
-          messages={getConvertedMessages(listChat)}
+          messages={convertedMessageList}
           onSend={sendMessage}
           alwaysShowSend={true}
           renderMessage={renderMessage}

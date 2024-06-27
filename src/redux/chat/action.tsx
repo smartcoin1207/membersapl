@@ -119,7 +119,7 @@ export const fetchResultMessageSuccess = (payload: any) => ({
   payload,
 });
 
-export const saveIdMessageSearch = (payload: any) => ({
+export const saveIdMessageSearch = (payload: number) => ({
   type: typeChat.SAVE_MESSAGE_SEARCH,
   payload,
 });

@@ -1,4 +1,4 @@
-import {put, takeLatest, select} from 'redux-saga/effects';
+import {put, takeLatest} from 'redux-saga/effects';
 
 import {saveToken, saveInfoUser} from './action';
 import {saveIdCompany} from '../chat/action';
@@ -25,10 +25,10 @@ export function* loginSaga(action: any) {
   }
 }
 
-export function* logOutSaga(action: any) {
+export function* logOutSaga() {
   try {
     GlobalService.showLoading();
-    const result: ResponseGenerator = yield logOutApi();
+    yield logOutApi();
     yield put(saveToken(null));
     yield put(saveIdCompany(null));
     yield put(saveInfoUser(null));
