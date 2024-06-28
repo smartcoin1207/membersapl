@@ -1,5 +1,12 @@
 import {useNavigation} from '@react-navigation/native';
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useLayoutEffect,
+} from 'react';
 import {Keyboard, KeyboardEvent, Text} from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {showMessage} from 'react-native-flash-message';
@@ -56,12 +63,12 @@ export const useFunction = (props: any) => {
   const dispatch = useDispatch();
 
   const {route} = props;
-  const {idRoomChat, idMessageSearchListChat} = route?.params;
+  const {idRoomChat, idMessageSearchListChat, messId} = route?.params;
 
   const giftedChatRef = useRef<any>(null);
 
   const me = useSelector((state: any) => state.auth.userInfo);
-  const user_id = useSelector((state: any) => state.auth.userInfo.id);
+  const userId = useSelector((state: any) => state.auth.userInfo?.id);
   const listChat = useSelector((state: any) => state.chat?.detailChat);
   const listUserChat = useSelector((state: any) => state.chat?.listUserChat);
   const paging = useSelector((state: any) => state.chat?.pagingDetail);
@@ -104,11 +111,18 @@ export const useFunction = (props: any) => {
   const [inputIndex, setInputIndex] = useState<number>(-1);
   const [textSelection, setTextSelection] = useState<any>({start: 0, end: 0});
   const [keyboardHeight, setKeyboardHeight] = useState(0);
-  const [irregularMessageIds, setIrregularMessageIds] = useState<any[]>([]);
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
   const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
   const [isMovedRedLine, setIsMovedRedLine] = useState(false);
+
+  // deeplinkを追加したためログイン前に来ることがあるのでその対応
+  // meが存在するかの確認をfetch前に行うことが必要
+  useLayoutEffect(() => {
+    if (!me) {
+      navigation.navigate({name: ROUTE_NAME.LOGIN});
+    }
+  }, [me, navigation]);
 
   // メッセージが存在するページをfetch
   const fetchMessageSearch = useCallback(
@@ -119,8 +133,6 @@ export const useFunction = (props: any) => {
           id_message: idMessage,
         };
         await dispatch(fetchResultMessageActionListRoom(body));
-        setPageLoading(false);
-        GlobalService.hideLoading();
       }, 1000);
     },
     [idRoomChat, dispatch],
@@ -140,9 +152,8 @@ export const useFunction = (props: any) => {
     navigation.navigate(ROUTE_NAME.INFO_ROOM_CHAT, {idRoomChat: idRoomChat});
   }, [idRoomChat, navigation]);
 
-  const convertDataMessage = useCallback((message: any, index: any) => {
-    //Hàm xử lý lại dữ liệu message khi nhận từ api trả về
-    return {
+  const convertDataMessage = useCallback(
+    (message: any, index: number) => ({
       _id: message?.id,
       text: message?.message,
       createdAt: message?.created_at,
@@ -165,7 +176,7 @@ export const useFunction = (props: any) => {
       reply_to_message_user: message?.reply_to_message_user,
       reply_to_message_user_id: message?.reply_to_message_user_id,
       stamp_no: message?.stamp_no,
-      index: index,
+      index,
       users_seen: message?.users_seen,
       task: message?.task,
       task_message: message?.task_message,
@@ -175,8 +186,9 @@ export const useFunction = (props: any) => {
       quote_message_id: message?.quote_message_id,
       quote_message_user: message?.quote_message_user,
       quote_message_user_id: message?.quote_message_user_id,
-    };
-  }, []);
+    }),
+    [],
+  );
 
   const generateDatabaseDateTime = useCallback(date => {
     return date.toLocaleString().replace('T', ' ').substring(0, 19);
@@ -224,23 +236,19 @@ export const useFunction = (props: any) => {
     [generateDatabaseDateTime],
   );
 
-  const getConvertedMessages = useCallback(
-    (msgs: any) => {
-      const messages = msgs?.filter(
-        (el: any) => !irregularMessageIds.includes(el?.id),
-      );
-      return messages?.map((item: any, index: any) => {
-        return convertDataMessage(item, index);
-      });
-    },
-    [convertDataMessage, irregularMessageIds],
+  const convertedMessageList = useMemo(
+    () =>
+      (listChat ?? []).map((item: any, index: number) =>
+        convertDataMessage(item, index),
+      ),
+    [listChat, convertDataMessage],
   );
 
   const chatUser = useMemo(() => {
     return {
-      _id: user_id,
+      _id: userId,
     };
-  }, [user_id]);
+  }, [userId]);
 
   const getListChat = useCallback(
     async nextPage => {
@@ -265,10 +273,8 @@ export const useFunction = (props: any) => {
         console.error(error.message);
         navigation.pop(1);
       }
-    } finally {
-      GlobalService.hideLoading();
     }
-  }, [idRoomChat, dispatch]);
+  }, [idRoomChat, dispatch, navigation]);
 
   const onShowMenu = useCallback(() => {
     setVisible(!visible);
@@ -281,7 +287,7 @@ export const useFunction = (props: any) => {
         GlobalService.showLoading();
         const res = await deleteMessageApi(id, idRoomChat);
         socket.emit('message_ind2', {
-          user_id: user_id,
+          user_id: userId,
           room_id: idRoomChat,
           task_id: null,
           to_info: null,
@@ -305,7 +311,7 @@ export const useFunction = (props: any) => {
         GlobalService.hideLoading();
       }
     },
-    [idRoomChat, dispatch, socket, user_id],
+    [idRoomChat, dispatch, socket, userId],
   );
 
   const updateGimMessage = useCallback(
@@ -327,30 +333,32 @@ export const useFunction = (props: any) => {
   );
 
   const getCurrentPage = useCallback(() => {
-    const res = store.getState();
-    const currentPage = res.chat.pagingDetail?.current_page ?? 1;
+    const currentPage = paging?.current_page ?? 1;
     if (!page) {
       setPage(currentPage);
     }
-    if (!topPage) {
+    if (!topPage || topPage < currentPage) {
       setTopPage(currentPage);
     }
-    if (!bottomPage) {
+    if (!bottomPage || bottomPage > currentPage) {
       setBottomPage(currentPage);
     }
     return currentPage;
-  }, [page, topPage, bottomPage]);
+  }, [paging?.current_page, page, topPage, bottomPage]);
 
   const onLoadMore = useCallback(() => {
     const currentPage = getCurrentPage();
-    const nextPage = topPage ? topPage + 1 : currentPage + 1;
+    const nextPage = Math.max(
+      topPage ? topPage + 1 : currentPage + 1,
+      currentPage + 1,
+    );
     if (nextPage > paging?.last_page) {
       return;
     }
     setPage(nextPage);
     setTopPage(nextPage);
     setPageLoading(true);
-  }, [topPage, paging, getCurrentPage]);
+  }, [getCurrentPage, topPage, paging?.last_page]);
 
   const onLoadMoreDown = useCallback(() => {
     const currentPage = getCurrentPage();
@@ -599,7 +607,7 @@ export const useFunction = (props: any) => {
       };
       const res = await sendReactionApi(body);
       socket.emit('message_ind2', {
-        user_id: user_id,
+        user_id: userId,
         room_id: idRoomChat,
         task_id: null,
         to_info: null,
@@ -622,7 +630,7 @@ export const useFunction = (props: any) => {
         ids: listUserChat?.map(el => el.id),
       };
       socket.emit('notification_ind2', {
-        user_id: user_id,
+        user_id: userId,
         room_id: idRoomChat,
         room_name: dataDetail?.name,
         join_users: joinUsers,
@@ -640,7 +648,7 @@ export const useFunction = (props: any) => {
         editMessageAction({id: res?.data?.data?.id, data: res?.data?.data}),
       );
     },
-    [dispatch, idRoomChat, socket, user_id, dataDetail, listUserChat],
+    [dispatch, idRoomChat, socket, userId, dataDetail, listUserChat],
   );
 
   const navigatiteToListReaction = useCallback(
@@ -695,10 +703,10 @@ export const useFunction = (props: any) => {
           GlobalService.showLoading();
           // send files
           for (const item of chosenFiles) {
-            let data = new FormData();
+            const data = new FormData();
             if (item?.sourceURL || item?.path) {
               // in case of image
-              let isHEIC =
+              const isHEIC =
                 item?.sourceURL?.endsWith('.heic') ||
                 item?.sourceURL?.endsWith('.HEIC') ||
                 item?.path?.endsWith('.HEIC') ||
@@ -721,7 +729,7 @@ export const useFunction = (props: any) => {
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
-              data.append('from_id', user_id);
+              data.append('from_id', userId);
             } else {
               // in case of file
               data.append('attachment[]', {
@@ -733,11 +741,11 @@ export const useFunction = (props: any) => {
               });
               data.append('msg_type', 2);
               data.append('room_id', idRoomChat);
-              data.append('from_id', user_id);
+              data.append('from_id', userId);
             }
             const res = await sendMessageApi(data);
             socket.emit('message_ind2', {
-              user_id: user_id,
+              user_id: userId,
               room_id: idRoomChat,
               task_id: null,
               to_info: null,
@@ -776,7 +784,7 @@ export const useFunction = (props: any) => {
         GlobalService.hideLoading();
       }
     },
-    [chosenFiles, dispatch, idRoomChat, socket, user_id, callApiChatBotRequest],
+    [chosenFiles, dispatch, idRoomChat, socket, userId, callApiChatBotRequest],
   );
 
   const sendLabel = async (stamp_no: any) => {
@@ -786,14 +794,14 @@ export const useFunction = (props: any) => {
     try {
       const data = new FormData();
       data.append('room_id', idRoomChat);
-      data.append('from_id', user_id);
+      data.append('from_id', userId);
       data.append('msg_level', 0);
       data.append('msg_type', 1);
       data.append('method', 0);
       data.append('stamp_no', stamp_no);
       const res = await sendLabelApi(data);
       socket.emit('message_ind2', {
-        user_id: user_id,
+        user_id: userId,
         room_id: idRoomChat,
         task_id: null,
         to_info: null,
@@ -816,7 +824,7 @@ export const useFunction = (props: any) => {
         ids: listUserChat?.map(el => el.id),
       };
       socket.emit('notification_ind2', {
-        user_id: user_id,
+        user_id: userId,
         room_id: idRoomChat,
         room_name: dataDetail?.name,
         join_users: joinUsers,
@@ -953,7 +961,7 @@ export const useFunction = (props: any) => {
           }
           const data = new FormData();
           data.append('room_id', idRoomChat);
-          data.append('from_id', user_id);
+          data.append('from_id', userId);
           data.append('message', mes[0]?.text?.split('\n').join('<br>'));
           data.append('reply_to_message_id', messageReply?.id);
           ids?.forEach((item: any) => {
@@ -962,7 +970,7 @@ export const useFunction = (props: any) => {
           // at first show temporally data
           const tempData = {
             room_id: idRoomChat,
-            from_id: user_id,
+            from_id: userId,
             message: mes[0]?.text?.split('\n').join('<br>'),
             reply_to_message_id: messageReply?.id,
           };
@@ -1089,7 +1097,7 @@ export const useFunction = (props: any) => {
           }
           const data = new FormData();
           data.append('room_id', idRoomChat);
-          data.append('from_id', user_id);
+          data.append('from_id', userId);
           data.append('message', mes[0]?.text?.split('\n').join('<br>'));
           data.append('message_quote', messageQuote?.text);
           data.append('quote_message_id', messageQuote?.id);
@@ -1262,7 +1270,7 @@ export const useFunction = (props: any) => {
       makeTemporallyDataMessage,
       sendFile,
       socket,
-      user_id,
+      userId,
       listUserChat,
       dataDetail,
       isSendingMessage,
@@ -1319,7 +1327,7 @@ export const useFunction = (props: any) => {
   );
 
   const customBack = useCallback(() => {
-    navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN, {
+    navigation.navigate(ROUTE_NAME.TAB_SCREEN, {
       idRoomChat,
     });
   }, [navigation, idRoomChat]);
@@ -1347,7 +1355,7 @@ export const useFunction = (props: any) => {
   }, []);
 
   useEffect(() => {
-    if (!pageLoading) {
+    if (!pageLoading || !me) {
       return;
     }
     if (!idMessageSearch) {
@@ -1360,12 +1368,14 @@ export const useFunction = (props: any) => {
         }
       }
       setPageLoading(false);
-      GlobalService.hideLoading();
+      if (!messId && !idMessageSearchListChat) {
+        GlobalService.hideLoading();
+      }
     } else if (idMessageSearch > 0) {
       const index = listChat.findIndex(
         (element: any) => element?.id === Number(idMessageSearch),
       );
-      if (index && index >= 0) {
+      if (index >= 0) {
         try {
           giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
             animated: true,
@@ -1381,6 +1391,7 @@ export const useFunction = (props: any) => {
           GlobalService.hideLoading();
         }
       } else {
+        setBottomPage(null);
         // メッセージが存在するページをloadしていない場合、fetch
         fetchMessageSearch(idMessageSearch);
       }
@@ -1397,12 +1408,18 @@ export const useFunction = (props: any) => {
     paging?.current_page,
     listUserChat,
     getUserListChat,
+    me,
+    messId,
+    idMessageSearchListChat,
   ]);
 
   // route?.paramsが変わったら実行
   // FirebaseMessage.tsxのhandleUserInteractionNotificationの中からこちらが実行される
   // push通知をタップした時に、route?.params.idRoomChatが変更になりこちらが実行される
   useEffect(() => {
+    if (!me) {
+      return;
+    }
     if (pageLoading) {
       setIdRoom(idRoomChat);
     } else if (!pageLoading && idRoom !== idRoomChat) {
@@ -1419,7 +1436,7 @@ export const useFunction = (props: any) => {
         setIdRoom(idRoomChat);
       })();
     }
-  }, [idRoomChat, pageLoading, getDetail, getListChat, idRoom, dispatch]);
+  }, [idRoomChat, pageLoading, getDetail, getListChat, idRoom, dispatch, me]);
 
   // 他画面からの遷移、メッセージへスクロール
   useEffect(() => {
@@ -1431,6 +1448,17 @@ export const useFunction = (props: any) => {
       }, 200);
     }
   }, [idMessageSearchListChat, dispatch]);
+
+  // deeplink対応、メッセージへスクロール
+  useEffect(() => {
+    if (messId > 0 && me) {
+      GlobalService.showLoading();
+      setTimeout(() => {
+        dispatch(saveIdMessageSearch(messId));
+        setPageLoading(true);
+      }, 200);
+    }
+  }, [messId, dispatch, me]);
 
   /**
    * 未読ラインが存在するページへの遷移処理.
@@ -1472,7 +1500,14 @@ export const useFunction = (props: any) => {
         fetchMessageSearch(idRedLine);
       }
     }
-  }, [redLineId, idRedLine, listChat, fetchMessageSearch, idMessageSearch]);
+  }, [
+    redLineId,
+    idRedLine,
+    listChat,
+    fetchMessageSearch,
+    idMessageSearch,
+    isMovedRedLine,
+  ]);
 
   /**
    * 未読ラインへのスクロール処理.
@@ -1502,26 +1537,6 @@ export const useFunction = (props: any) => {
       getDetail();
     }
   }, [isGetInfoRoom, getDetail]);
-
-  // check if messages belongs to this room
-  useEffect(() => {
-    const res = store.getState();
-    const currentPage = res.chat.pagingDetail?.current_page ?? 1;
-    if (idMessageSearch > 0 && page !== currentPage) {
-      setPage(currentPage);
-      setTopPage(currentPage);
-      setBottomPage(currentPage);
-      dispatch(saveIdMessageSearch(0));
-    }
-    if (idRoomChat && listChat.length > 0) {
-      const irregular_message_ids: number[] = listChat.map((el: any) => {
-        return idRoomChat !== el.room_id;
-      });
-      if (irregular_message_ids.length > 0) {
-        setIrregularMessageIds(irregular_message_ids);
-      }
-    }
-  }, [listChat, pageLoading, dispatch, idMessageSearch, idRoomChat, page]);
 
   useEffect(() => {
     if (messageEdit || messageReply || messageQuote) {
@@ -1562,8 +1577,8 @@ export const useFunction = (props: any) => {
     idRoomChat,
     visible,
     onShowMenu,
-    getConvertedMessages,
     listChat,
+    convertedMessageList,
     deleteMsg,
     dataDetail,
     sendMessage,

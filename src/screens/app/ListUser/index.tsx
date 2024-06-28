@@ -107,7 +107,7 @@ const ListUser = (props: any) => {
         room_name: null,
         task_id: null,
       });
-      if(user_id == idUser) {
+      if (user_id == idUser) {
         // 自分自身を削除した場合、listChatに戻る（退出と同様の動作）
         navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
       } else {

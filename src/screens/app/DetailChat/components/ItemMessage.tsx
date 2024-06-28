@@ -71,6 +71,7 @@ const ItemMessage = React.memo((props: any) => {
     setListUserSelect,
     setInputText,
     setPageLoading,
+    inputText,
   } = props;
   const {
     user,
@@ -243,7 +244,7 @@ const ItemMessage = React.memo((props: any) => {
             </Text>
           );
           formattedText1.push(mention);
-          setFormattedText([' ', ...formattedText1, ' ', emptyText]);
+          setFormattedText([' ', ...formattedText1, ' ', inputText, ' ', emptyText]);
           setInputText(word);
           break;
         case 10:
