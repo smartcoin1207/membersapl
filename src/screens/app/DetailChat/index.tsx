@@ -382,7 +382,14 @@ const DetailChat = (props: any) => {
     if (mentionQuery === '@') {
       setShowTag(true);
     } else if (mentionQuery) {
-      setShowTag(true);
+      const filtered = listUserChat.filter((user: any) => {
+        const fullName = user.last_name + user.first_name;
+        return fullName.includes(mentionQuery);
+      });
+      const isFind = filtered.length > 0;
+      if (isFind) {
+        setShowTag(true);
+      }
     }
   }, [mentionQuery, listUserChat]);
 
