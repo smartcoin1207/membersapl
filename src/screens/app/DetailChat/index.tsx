@@ -382,12 +382,7 @@ const DetailChat = (props: any) => {
     if (mentionQuery === '@') {
       setShowTag(true);
     } else if (mentionQuery) {
-      const filtered = listUserChat.filter((user: any) => {
-        const fullName = user.last_name + user.first_name;
-        return fullName.includes(mentionQuery);
-      });
-      const isFind = filtered.length > 0;
-      isFind ? setShowTag(false) : setShowTag(true);
+      setShowTag(true);
     }
   }, [mentionQuery, listUserChat]);
 
@@ -471,7 +466,7 @@ const DetailChat = (props: any) => {
             // 最後に出現した@マークのインデックスを取得
             const lastAtIndex = textBeforeCursor.lastIndexOf('@');
 
-            let substTxt = "";
+            let substTxt = '';
             // @マークが存在する場合、その後の文字列を取得
             if (lastAtIndex !== -1) {
               substTxt = textBeforeCursor.slice(lastAtIndex, cursorPosition);
