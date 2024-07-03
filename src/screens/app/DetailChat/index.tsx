@@ -306,7 +306,7 @@ const DetailChat = (props: any) => {
               let substTxt = "";
 
               if (lastAtIndex !== -1) {
-                substTxt = inputText.slice(0, lastAtIndex).trim();
+                substTxt = inputText.slice(0, lastAtIndex);
               }
               // @の入力位置より後の文字を切り出す
               const after = inputText.slice(inputIndex, inputText.length);
@@ -573,7 +573,9 @@ const DetailChat = (props: any) => {
           //Các props của textInput nhúng vào gifted chat
           textInputProps={{
             onTextInput: ({nativeEvent}: any) => {
-              nativeEvent.text === '@' ? showModalTagName() : setShowTag(false);
+              if (nativeEvent.text === '@') {
+                showModalTagName();
+              };
             },
             onSelectionChange: ({nativeEvent}: any) => {
               textSelection.start = nativeEvent.selection.start;
