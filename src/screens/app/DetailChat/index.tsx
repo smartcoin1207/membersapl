@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Image,
   Keyboard,
@@ -114,6 +114,7 @@ const DetailChat = (props: any) => {
     keyboardHeight,
   } = useFunction(props);
 
+  const [mentionQuery, setMentionQuery] = useState<string>('');
   const mute = useSelector((state: any) => state.chat.isMuteStatusRoom);
 
   const inputRef = useRef<InputToolbar | null>(null);
@@ -266,6 +267,7 @@ const DetailChat = (props: any) => {
       return (
         <ModalTagName
           idRoomChat={idRoomChat}
+          mentionQuery={mentionQuery}
           choseUser={(value: any, title: string, id: any) => {
             setShowTag(false);
             let mentionUserIds = [];
@@ -299,12 +301,17 @@ const DetailChat = (props: any) => {
               // メンション先に追加
               mentionedUsers.push('@' + honorificTitle);
               mentionedUsers.push('@' + value);
-              // @の入力位置の前までの文字列を切り出す
-              const before = inputText.slice(0, inputIndex - 1);
+              // 最後の@より前の文字列を切り出す
+              const lastAtIndex = inputText.lastIndexOf('@');
+              let substTxt = "";
+
+              if (lastAtIndex !== -1) {
+                substTxt = inputText.slice(0, lastAtIndex).trim();
+              }
               // @の入力位置より後の文字を切り出す
               const after = inputText.slice(inputIndex, inputText.length);
               // 切り出した前後の文字列を@敬称名に結合することで入力した@をメンション先氏名に置換する
-              const replacedText = `${before} @${honorificTitle} ${after}`;
+              const replacedText = `${substTxt} @${honorificTitle} ${after}`;
               formatText(replacedText, true);
               setInputText(replacedText);
             }
@@ -370,6 +377,21 @@ const DetailChat = (props: any) => {
   const viewConfigRef = useRef({
     viewAreaCoveragePercentThreshold: 0,
   });
+
+  useEffect(() => {
+    if (mentionQuery === '@') {
+      setShowTag(true);
+    } else if (mentionQuery) {
+      const filtered = listUserChat.filter((user: any) => {
+        const fullName = user.last_name + user.first_name;
+        return fullName.includes(mentionQuery);
+      });
+      const isFind = filtered.length > 0;
+      if (isFind) {
+        setShowTag(true);
+      }
+    }
+  }, [mentionQuery, listUserChat]);
 
   const onInputSizeChanged = (size: {width: number; height: number}) => {
     const newComposerHeight = Math.max(
@@ -443,6 +465,48 @@ const DetailChat = (props: any) => {
           onInputTextChanged={txt => {
             formatText(txt, false);
             setInputText(txt);
+
+            // 現在のカーソル位置を取得
+            const cursorPosition = textSelection.start;
+            // カーソル位置より前のテキストを取得
+            const textBeforeCursor = txt.slice(0, cursorPosition);
+            // 最後に出現した@マークのインデックスを取得
+            const lastAtIndex = textBeforeCursor.lastIndexOf('@');
+
+            let substTxt = '';
+            // @マークが存在する場合、その後の文字列を取得
+            if (lastAtIndex !== -1) {
+              substTxt = textBeforeCursor.slice(lastAtIndex, cursorPosition);
+            }
+
+            // テキストに@マークが含まれる場合の処理
+            if (txt.includes('@')) {
+              // 最初に@マークをクエリに設定
+              setMentionQuery('@');
+              // @マーク以降の文字列を取得してクエリに設定
+              const mention = txt.split('@').pop();
+              setMentionQuery(mention || '');
+              
+              // substTxtが空または@のみの場合の処理
+              if (!substTxt || substTxt === '@') {
+                setMentionQuery('@');
+              }
+              // substTxtに@が含まれる場合、その後の文字列をクエリに設定
+              else if (substTxt.includes('@')) {
+                const mention = substTxt.split('@').pop();
+                setMentionQuery(mention || '');
+              }
+            }
+
+            // 条件に合致する場合、クエリをリセットしてタグ表示をオフにする
+            if (
+              (txt == substTxt && !txt.includes('@'))
+              || (!substTxt && !txt.includes('@'))
+            ) {
+              setMentionQuery('');
+              setShowTag(false);
+            }
+
           }}
           messages={convertedMessageList}
           onSend={sendMessage}

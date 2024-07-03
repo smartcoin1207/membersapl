@@ -18,7 +18,7 @@ import {colors, stylesCommon} from '@stylesCommon';
 const width = Dimensions.get('window').width;
 
 const ModalTagName = React.memo((props: any) => {
-  const {choseUser} = props;
+  const {choseUser, mentionQuery} = props;
   const [dataLocal, setDataLocal] = useState<any[]>([]);
   const listUserChat = useSelector((state: any) => state.chat?.listUserChat);
 
@@ -40,6 +40,13 @@ const ModalTagName = React.memo((props: any) => {
 
     setDataLocal(dataAddAll);
   }, [listUserChat]);
+
+  const filteredData = mentionQuery === '@'
+  ? dataLocal 
+  : dataLocal.filter((item) => {
+      const fullName = item.last_name + item.first_name;
+      return fullName.includes(mentionQuery);
+    });
 
   const onChoseUser = (item: any) => {
     if (item?.id === 'All') {
@@ -111,7 +118,7 @@ const ModalTagName = React.memo((props: any) => {
     <View style={styles.container}>
       <FlatList
         keyboardShouldPersistTaps="handled"
-        data={dataLocal}
+        data={filteredData}
         renderItem={renderItem}
         keyExtractor={(item, index) => index.toString()}
         showsVerticalScrollIndicator={false}
