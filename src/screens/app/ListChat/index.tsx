@@ -108,44 +108,6 @@ const ListChat = (props: any) => {
     }, [type_Filter, categoryID_Filter, dispatch, idCompany, key]),
   );
 
-  const openScheme = useCallback(
-    async url => {
-      const parseUrl = String(url).split('/');
-      if (parseUrl[0] === 'mem-bers:' && parseUrl[2] === 'chat') {
-        const parseParams = String(parseUrl[3]).split('?messId=');
-        const roomId = Number(parseParams[0]);
-        const messageId = parseParams[1];
-        if (roomId > 0) {
-          await dispatch(resetDataChat());
-          await dispatch(saveIdRoomChat(roomId));
-          navigation.navigate(ROUTE_NAME.DETAIL_CHAT, {
-            idRoomChat: roomId,
-            idMessageSearchListChat: messageId, // messageIdが存在しなければroomへの遷移のみ
-          });
-        }
-      }
-    },
-    [dispatch, navigation],
-  );
-
-  useEffect(() => {
-    const urlSchemeSubscription = Linking.addEventListener('url', url => {
-      openScheme(url.url);
-    });
-    const appStateSubscription = AppState.addEventListener(
-      'change',
-      (newState: AppStateStatus) => {
-        if (newState === 'active') {
-          onRefresh();
-        }
-      },
-    );
-    return () => {
-      urlSchemeSubscription.remove();
-      appStateSubscription.remove();
-    };
-  }, [openScheme, onRefresh]);
-
   useEffect(() => {
     setIsLoadMore(false);
   }, [listRoom]);

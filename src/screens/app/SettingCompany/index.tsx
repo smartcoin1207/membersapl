@@ -26,9 +26,9 @@ const SettingCompany = () => {
     }
   }, [idCompany]);
 
-  const getListCompanyApi = async (data?: any) => {
+  const getListCompanyApi = async (params?: any) => {
     try {
-      const res = await getListCompany(data);
+      const res = await getListCompany(params);
       setData(res?.data.data);
     } catch (error) {}
   };
@@ -53,14 +53,14 @@ const SettingCompany = () => {
   const onNavigate = useCallback(async () => {
     try {
       GlobalService.showLoading();
-      const res = await selectCompany(active);
+      await selectCompany(active);
       dispatch(saveIdCompany(active));
       navigation.navigate(ROUTE_NAME.LISTCHAT_SCREEN);
       GlobalService.hideLoading();
     } catch (error: any) {
       GlobalService.hideLoading();
     }
-  }, [active]);
+  }, [active, dispatch, navigation]);
 
   const onChangeText = (text: any) => {
     setKey(text);
