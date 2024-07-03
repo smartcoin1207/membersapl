@@ -940,7 +940,6 @@ export const useFunction = (props: any) => {
         room_id: idRoomChat,
         message_text: message,
         error_message: error.message,
-        timestamp: new Date().toISOString(),
         device_info: navigation.userAgent || '',
         network_status: navigation.onLine ? 'online' : 'offline',
       };
