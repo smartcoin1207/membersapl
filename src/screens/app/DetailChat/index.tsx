@@ -301,8 +301,12 @@ const DetailChat = (props: any) => {
               // メンション先に追加
               mentionedUsers.push('@' + honorificTitle);
               mentionedUsers.push('@' + value);
-              // 最後の@より前の文字列を切り出す
-              const lastAtIndex = inputText.lastIndexOf('@');
+              // 現在のカーソル位置を取得
+              const cursorPosition = textSelection.start;
+              // カーソル位置より前のテキストを取得
+              const textBeforeCursor = inputText.slice(0, cursorPosition);
+              // @より前の文字列を切り出す
+              const lastAtIndex = textBeforeCursor.lastIndexOf('@');
               let substTxt = "";
 
               if (lastAtIndex !== -1) {
