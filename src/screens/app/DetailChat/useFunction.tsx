@@ -41,6 +41,7 @@ import {
   editMessageApi,
   pinMessageApi,
   replyMessageApi,
+  sendMessageErrorLog,
   sendLabelApi,
   sendMessageApi,
   sendReactionApi,
@@ -940,6 +941,20 @@ export const useFunction = (props: any) => {
     }
   }, []);
 
+  const sendMessageError = async (error: any, message: any) => {
+    if (error instanceof Error) {
+      const errorData = {
+        user_id: user_id,
+        room_id: idRoomChat,
+        message_text: message,
+        error_message: error.message,
+        device_info: navigation.userAgent || '',
+        network_status: navigation.onLine ? 'online' : 'offline',
+      };
+      await sendMessageErrorLog(errorData);
+    }
+  };
+  
   const sendMessage = useCallback(
     async mes => {
       if (isSendingMessage) {
@@ -1027,6 +1042,7 @@ export const useFunction = (props: any) => {
         } catch (error) {
           if (error instanceof Error) {
             console.error(error.message);
+            sendMessageError(error, mes[0]?.text);
           }
         }
       } else if (messageEdit) {
@@ -1083,6 +1099,7 @@ export const useFunction = (props: any) => {
         } catch (error) {
           if (error instanceof Error) {
             console.error(error.message);
+            sendMessageError(error, mes[0]?.text);
           }
         }
       } else if (messageQuote) {
@@ -1152,9 +1169,10 @@ export const useFunction = (props: any) => {
         } catch (error) {
           if (error instanceof Error) {
             console.error(error.message);
+            sendMessageError(error, mes[0]?.text);
           }
         }
-      } else {
+      } else { 
         try {
           if (mes[0]?.text) {
             const data = new FormData();
@@ -1233,6 +1251,7 @@ export const useFunction = (props: any) => {
         } catch (error) {
           if (error instanceof Error) {
             console.error(error.message);
+            sendMessageError(error, mes[0]?.text);
           }
         }
       }

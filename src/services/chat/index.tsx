@@ -48,6 +48,7 @@ const DELETE_CATEGORY = 'user/chat/category';
 const GET_UNREAD_MESSAGE_COUNT_ALL = 'user/chat/get_unread_message_count_all';
 const LOG_MESSAGE = 'user/chat/irregular-message-report';
 const CALL_CHAT_BOT = 'user/chat/notification';
+const SEND_MESSAGE_ERROR_LOG = 'user/chat/send-message-error-log';
 
 export const getRoomListApi: any = async (params: any) => {
   const {key, company_id, page, type, category_id} = params;
@@ -324,5 +325,10 @@ export const updateTask: any = async (body: any) => {
 };
 export const logMessage: any = async (body: any) => {
   const response = api.post(`${LOG_MESSAGE}`, body);
+  return response;
+};
+
+export const sendMessageErrorLog: any = async (body: any) => {
+  const response = api.post(`${SEND_MESSAGE_ERROR_LOG}`, body);
   return response;
 };
