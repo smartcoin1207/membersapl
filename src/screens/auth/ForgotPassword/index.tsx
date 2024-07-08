@@ -73,7 +73,7 @@ const ForgotPassword = () => {
                     </Text>
                     <Text style={styles.titleInput}>メンバーID</Text>
                     <AppInput
-                      placeholder="MB000001"
+                      placeholder="MB000000"
                       onChange={props.handleChange('login')}
                       value={props.values.login}
                       error={props.errors.login}
