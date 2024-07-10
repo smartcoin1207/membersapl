@@ -1541,7 +1541,7 @@ export const useFunction = (props: any) => {
     // 未読ライン下メッセージにスクロール
     console.log('unread message line index', indexRedLine);
     giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
-      index: Math.max(indexRedLine - 1, 0),
+      index: Math.max(indexRedLine, 0),
       animating: false,
     });
 

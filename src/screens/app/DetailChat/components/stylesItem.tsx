@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   viewCenter: {
     width: '100%',
     paddingHorizontal: scale(11),
+    marginBottom: scale(30),
     alignItems: 'center',
   },
   containerViewChat: {
