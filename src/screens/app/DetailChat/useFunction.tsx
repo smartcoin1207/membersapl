@@ -115,7 +115,7 @@ export const useFunction = (props: any) => {
   const [isSendingMessage, setIsSendingMessage] = useState<boolean>(false);
   const [isShowDecoButtons, setIsShowDecoButtons] = useState(false);
   const [accessoryHeight, setAccessoryHeight] = useState(0);
-  const [isMovedRedLine, setIsMovedRedLine] = useState(false);
+  const [allowMoveToRedLine, setAllowMoveToRedLine] = useState(true);
 
   // deeplinkを追加したためログイン前に来ることがあるのでその対応
   // meが存在するかの確認をfetch前に行うことが必要
@@ -954,7 +954,7 @@ export const useFunction = (props: any) => {
       await sendMessageErrorLog(errorData);
     }
   };
-  
+
   const sendMessage = useCallback(
     async mes => {
       if (isSendingMessage) {
@@ -1391,6 +1391,8 @@ export const useFunction = (props: any) => {
         GlobalService.hideLoading();
       }
     } else if (idMessageSearch > 0) {
+      // 未読ラインへ遷移しないようにする
+      setAllowMoveToRedLine(false);
       const index = listChat.findIndex(
         (element: any) => element?.id === Number(idMessageSearch),
       );
@@ -1485,13 +1487,8 @@ export const useFunction = (props: any) => {
    * 遷移直後のページに未読が存在しない場合は未読メッセージの存在するページに遷移する.
    */
   useEffect(() => {
-    // 未読ライン遷移済の場合は移動しない
-    if (isMovedRedLine) {
-      return;
-    }
-
-    // メッセージ検索によるチャット詳細画面遷移の場合は、未読が存在しても未読ラインに移動しない
-    if (idMessageSearch) {
+    // 未読ラインへの遷移が許可されてない場合は移動しない
+    if (!allowMoveToRedLine) {
       return;
     }
 
@@ -1525,7 +1522,7 @@ export const useFunction = (props: any) => {
     listChat,
     fetchMessageSearch,
     idMessageSearch,
-    isMovedRedLine,
+    allowMoveToRedLine,
   ]);
 
   /**
@@ -1533,12 +1530,13 @@ export const useFunction = (props: any) => {
    * チャット詳細への遷移後、未読ラインが存在する場合はそこに移動する.
    */
   useEffect(() => {
+
     // 未読ラインが存在しない場合は移動しない
     if (!indexRedLine) {
       return;
     }
 
-    // 未読ライン下メッセージにスクロール
+    // 未読ラインにスクロール
     console.log('unread message line index', indexRedLine);
     giftedChatRef.current?._messageContainerRef?.current?.scrollToIndex({
       index: Math.max(indexRedLine, 0),
@@ -1546,7 +1544,7 @@ export const useFunction = (props: any) => {
     });
 
     // 未読ラインへの移動はチャット詳細画面では一度しか実施しない
-    setIsMovedRedLine(true);
+    setAllowMoveToRedLine(false);
     GlobalService.hideLoading();
   }, [indexRedLine]);
 
