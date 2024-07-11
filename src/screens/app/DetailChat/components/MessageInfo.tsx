@@ -249,6 +249,19 @@ export default function MessageInfo({
     return replaceText;
   }, []);
 
+  const escapeHtml = useCallback((str) => {
+    return str
+      .replace(/<br>/g, '\n')
+      .replace(/<br\/>/g, '\n')
+      .replace(/<br \/>/g, '\n')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/\r\n|\n|\r/g, '<br>');
+  }, []);
+
   return (
     <>
       <RenderHtml
@@ -259,7 +272,7 @@ export default function MessageInfo({
           html: text
             ? convertMentionToLink(
                 customAnchorify(
-                  convertMessageNotation(text.replace(/\n/g, '<br>')),
+                  convertMessageNotation(escapeHtml(text.replace(/\n/g, '<br>'))),
                 ),
                 joinedUsers,
               )
