@@ -10,49 +10,28 @@ import {NavigationUtils} from '@navigation';
 import {resetDataChat, saveIdMessageSearch, saveIdRoomChat} from '@redux';
 import {ROUTE_NAME} from '@routeName';
 import {GlobalService} from '@services';
-import {API_DOMAIN} from '@util';
+import {API_DOMAIN, REGEXP_EMAIL, REGEXP_URL} from '@util';
 
 import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
-const PROTOCOL_REGEX = '((h?)(ttps?:\\/\\/))';
+const regexpMakeAnchorLink = (url: string) => {
+  let anchorLink = url;
+  if (anchorLink[0] !== 'h') {
+    anchorLink = 'h' + anchorLink;
+  }
 
-const USER_INFO_REGEX =
-  "((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:)*@)?";
+  return `<a href="${anchorLink}">${url}</a>`;
+};
 
-const IP4_REGEX =
-  '(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}';
-
-const IP6_REGEX =
-  '\\[?(?:(?:[a-f\\d]{1,4}:){7}(?:[a-f\\d]{1,4}|:)|(?:[a-f\\d]{1,4}:){6}(?:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|:[a-f\\d]{1,4}|:)|(?:[a-f\\d]{1,4}:){5}(?::(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,2}|:)|(?:[a-f\\d]{1,4}:){4}(?:(?::[a-f\\d]{1,4}){0,1}:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,3}|:)|(?:[a-f\\d]{1,4}:){3}(?:(?::[a-f\\d]{1,4}){0,2}:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,4}|:)|(?:[a-f\\d]{1,4}:){2}(?:(?::[a-f\\d]{1,4}){0,3}:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,5}|:)|(?:[a-f\\d]{1,4}:){1}(?:(?::[a-f\\d]{1,4}){0,4}:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,6}|:)|(?::(?:(?::[a-f\\d]{1,4}){0,5}:(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]\\d|\\d)){3}|(?::[a-f\\d]{1,4}){1,7}|:)))(?:%[0-9a-z]{1,})?\\]?';
-
-const DOMAIN_REGEX =
-  '(?:(?:xn--[a-z\\d]+(?:-[a-z\\d]+)*|[a-z\\u00a1-\\uffff\\d]+(?:-[a-z\\u00a1-\\uffff\\d]+)*)(?:\\.[a-z\\u00a1-\\uffff\\d]+(?:-[a-z\\u00a1-\\uffff\\d]+)*)*(?:\\.[a-z\\u00a1-\\uffff]{1,}))';
-
-const PORT_REGEX = '(:\\d*)?)';
-
-const PATH_REGEX =
-  "(/((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)+(\\/(([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)*)*)?)?";
-
-const QUERY_REGEX =
-  "(\\?((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)|[\\uE000-\\uF8FF]|\\/|\\?)*)?";
-
-const FRAGMENT_REGEX =
-  "(#((([a-z]|\\d|-|\\.|_|~|[\\u00A0-\\uD7FF\\uF900-\\uFDCF\\uFDF0-\\uFFEF])|(%[\\da-f]{2})|[!$&'()*+,;=]|:|@)|\\/|\\?)*)?";
-
-const URL_REGEX_STRING = `((${PROTOCOL_REGEX}(${USER_INFO_REGEX}(${IP4_REGEX}|${IP6_REGEX}|localhost|${DOMAIN_REGEX})${PORT_REGEX}${PATH_REGEX}${QUERY_REGEX}${FRAGMENT_REGEX}))`;
-
-const REGEXP_URL = new RegExp(URL_REGEX_STRING, 'gi');
-
-const REGEXP_EMAIL =
-  /(\/|:)?(?=[a-z0-9-_])((?!.*\.\.)[a-z0-9_+\-.]{1,63}[a-z0-9_+-])@([a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)*\.[a-z]{2,63}/gi;
 const regexpMakeMailLink = (mail: string, p1: string) =>
   p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
 
-const customAnchorify = (str: string) =>
-  str
-    .replace(REGEXP_URL, '<a href="$1">$1</a>')
+const customAnchorify = (str: string) => {
+  return str
+    .replace(REGEXP_URL, regexpMakeAnchorLink)
     .replace(REGEXP_EMAIL, regexpMakeMailLink);
+};
 
 const customHTMLElementModels = {
   'deco-info': HTMLElementModel.fromCustomModel({
