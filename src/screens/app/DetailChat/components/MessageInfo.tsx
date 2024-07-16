@@ -15,16 +15,16 @@ import {API_DOMAIN, REGEXP_EMAIL, REGEXP_URL} from '@util';
 import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
-const regexpMakeAnchorLink = (url: string) => {
+const regexpMakeAnchorLink = (url: string, p1?: string) => {
   let anchorLink = url;
-  if (anchorLink[0] !== 'h') {
+  if (!p1) {
     anchorLink = 'h' + anchorLink;
   }
 
   return `<a href="${anchorLink}">${url}</a>`;
 };
 
-const regexpMakeMailLink = (mail: string, p1: string) =>
+const regexpMakeMailLink = (mail: string, p1?: string) =>
   p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
 
 const customAnchorify = (str: string) => {
