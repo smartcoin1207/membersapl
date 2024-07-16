@@ -16,7 +16,7 @@ import {store} from '../../../../redux/store';
 import {styles} from './stylesItem';
 
 const regexpMakeAnchorLink = (url: string, p1?: string) =>
-  `<a href="${!p1 ? 'h' : ''}${url}">${url}</a>`;
+  `<a href="${p1 === 'h' ? '' : 'h'}${url}">${url}</a>`;
 
 const regexpMakeMailLink = (mail: string, p1?: string) =>
   p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
