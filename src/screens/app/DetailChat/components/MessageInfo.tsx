@@ -18,7 +18,7 @@ import {styles} from './stylesItem';
 const regexpMakeAnchorLink = (url: string, p1?: string) => {
   let anchorLink = url;
   if (!p1) {
-    anchorLink = 'h' + anchorLink;
+    anchorLink = `h${anchorLink}`;
   }
 
   return `<a href="${anchorLink}">${url}</a>`;
