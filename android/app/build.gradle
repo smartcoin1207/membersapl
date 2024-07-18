@@ -138,7 +138,7 @@ android {
         applicationId "jp.aidma_hd.members"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 236
+        versionCode 237
         versionName "1.2.28"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
         vectorDrawables.useSupportLibrary = true
