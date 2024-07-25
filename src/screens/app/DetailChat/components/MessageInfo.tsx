@@ -1,17 +1,30 @@
 import React, {useCallback, useMemo} from 'react';
 import {Linking, useWindowDimensions} from 'react-native';
-import RenderHtml, {
-  HTMLElementModel,
-  HTMLContentModel,
-} from 'react-native-render-html';
 import {showMessage} from 'react-native-flash-message';
-import {styles} from './stylesItem';
-import {saveIdMessageSearch, saveIdRoomChat, resetDataChat} from '@redux';
-import {store} from '../../../../redux/store';
-import {ROUTE_NAME} from '@routeName';
+import RenderHtml, {
+  HTMLContentModel,
+  HTMLElementModel,
+} from 'react-native-render-html';
+
 import {NavigationUtils} from '@navigation';
-import {API_DOMAIN} from '@util';
+import {resetDataChat, saveIdMessageSearch, saveIdRoomChat} from '@redux';
+import {ROUTE_NAME} from '@routeName';
 import {GlobalService} from '@services';
+import {API_DOMAIN, REGEXP_EMAIL, REGEXP_URL} from '@util';
+
+import {store} from '../../../../redux/store';
+import {styles} from './stylesItem';
+
+const regexpMakeAnchorLink = (url: string, p1?: string) =>
+  `<a href="${p1 ? '' : 'h'}${url}">${url}</a>`;
+
+const regexpMakeMailLink = (mail: string, p1?: string) =>
+  p1 ? mail : `<a href="mailto:${mail}" target="_blank">${mail}</a>`;
+
+const customAnchorify = (str: string) =>
+  str
+    .replace(REGEXP_URL, regexpMakeAnchorLink)
+    .replace(REGEXP_EMAIL, regexpMakeMailLink);
 
 const customHTMLElementModels = {
   'deco-info': HTMLElementModel.fromCustomModel({
@@ -189,36 +202,6 @@ export default function MessageInfo({
     replaceText = replaceText.replace(/@AI<\/p>/g, '<b>@AI</b></p>');
 
     return replaceText;
-  }, []);
-
-  /**
-   *
-   * @param {string} str - メッセージ
-   */
-  const customAnchorify = useCallback((str: string) => {
-    if (str === null) {
-      return str;
-    }
-
-    const regexp_url =
-      /((h?)(ttps?:\/\/[-_.!~*'()a-zA-Z0-9;"'/?:@&=+$,%#[…\]\u3001-\u30FE\u4E00-\u9FA0\uFF01-\uFFE3]+))/g;
-    str = str.replace(regexp_url, '<a href="$1">$1</a>');
-    str = str.replace('">https://', '">');
-    str = str.replace('">http://', '">');
-
-    const regexp_email =
-      /(\/|:)?([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+/g;
-    let regexp_makeMailLink = function (mail: string) {
-      // 先頭が'/'または':'であればリンク化しない
-      let first_char = mail.slice(0, 1);
-      if (first_char === '/' || first_char === ':') {
-        return mail;
-      } else {
-        return '<a href="mailto:' + mail + '" target="_blank">' + mail + '</a>';
-      }
-    };
-
-    return str.replace(regexp_email, regexp_makeMailLink);
   }, []);
 
   const convertMessageNotation = useCallback((input: string) => {
