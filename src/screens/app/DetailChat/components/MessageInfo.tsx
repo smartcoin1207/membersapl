@@ -255,7 +255,7 @@ export default function MessageInfo({
           html: text
             ? convertMentionToLink(
                 customAnchorify(
-                  convertMessageNotation(escapeHtml(text.replace(/\n/g, '<br>'))),
+                  convertMessageNotation(escapeHtml(text)),
                 ),
                 joinedUsers,
               )
