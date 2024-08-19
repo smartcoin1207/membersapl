@@ -448,7 +448,7 @@ export const useFunction = (props: any) => {
           'mention_members',
           JSON.stringify(convertArrUnique(mentionMembers, 'userId')),
         );
-        formData.append('message', sanitizeMessage(message));
+        formData.append('message', escapeHtml(message));
         formData.append('message_id', messageId);
         formData.append('room_id', idRoomChat);
         await callApiChatBot(formData);
@@ -467,7 +467,7 @@ export const useFunction = (props: any) => {
    * @param message サニタイズする文字列
    * @returns サニタイズされた文字列
    */
-  const sanitizeMessage = (message: string): string =>
+  const escapeHtml = (message: string): string =>
     message
       .replace(/<br>/g, '\n')
       .replace(/<br\/>/g, '\n')
