@@ -448,7 +448,7 @@ export const useFunction = (props: any) => {
           'mention_members',
           JSON.stringify(convertArrUnique(mentionMembers, 'userId')),
         );
-        formData.append('message', message);
+        formData.append('message', escapeHtml(message));
         formData.append('message_id', messageId);
         formData.append('room_id', idRoomChat);
         await callApiChatBot(formData);
@@ -460,6 +460,24 @@ export const useFunction = (props: any) => {
     },
     [idRoomChat, listUserChat, listUserSelect, me, inputText],
   );
+
+  /**
+   * メッセージ内のHTMLタグや特殊文字をサニタイズし、改行を正規化
+   *
+   * @param message サニタイズする文字列
+   * @returns サニタイズされた文字列
+   */
+  const escapeHtml = (message: string): string =>
+    message
+      .replace(/<br>/g, '\n')
+      .replace(/<br\/>/g, '\n')
+      .replace(/<br \/>/g, '\n')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;')
+      .replace(/\r\n|\n|\r/g, '<br>');
 
   /**
    * format method
