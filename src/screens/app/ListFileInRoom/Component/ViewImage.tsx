@@ -19,7 +19,7 @@ import {HITSLOP} from '@util';
 import {iconDowload, iconClose} from '@images';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import RNFetchBlob from 'rn-fetch-blob';
-import CameraRoll from '@react-native-community/cameraroll';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
 

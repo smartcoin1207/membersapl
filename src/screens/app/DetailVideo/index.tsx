@@ -17,7 +17,7 @@ import {useNavigation} from '@react-navigation/native';
 import Video from 'react-native-video';
 import MediaControls from 'react-native-media-controls';
 import RNFetchBlob from 'rn-fetch-blob';
-import CameraRoll from '@react-native-community/cameraroll';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
 

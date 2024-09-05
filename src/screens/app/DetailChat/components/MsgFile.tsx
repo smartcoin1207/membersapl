@@ -26,7 +26,7 @@ import ImageView from 'react-native-image-viewing';
 import {getStatusBarHeight} from 'react-native-iphone-x-helper';
 import {HITSLOP} from '@util';
 import RNFetchBlob from 'rn-fetch-blob';
-import CameraRoll from '@react-native-community/cameraroll';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
 import {showMessage} from 'react-native-flash-message';
 import {GlobalService} from '@services';
 import FastImage from 'react-native-fast-image';
